@@ -73,7 +73,16 @@ class Utils {
     log(":Result>>>>>" + val);
     return val;
   }
-
+  static String getPageRouteName(){
+    try{
+      String extractName = (html.window.location.href.split("?")[0])
+          .split(ApiFactory.SPLIT_CLEAR_PAGE)[1];
+      print(">>>>>>>formName$extractName");
+      return extractName;
+    }catch(e){
+      return "";
+    }
+  }
   static String normalCaseToPascalCase(String input) {
     List<String> words = input.split(' ');
     List<String> pascalCaseWords = [];

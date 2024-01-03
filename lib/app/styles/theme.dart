@@ -42,6 +42,8 @@ ThemeData primaryThemeData = ThemeData(
 PlutoGridConfiguration plutoGridConfiguration({
   Function? actionOnPress,
   String? actionKey,
+  String? formName,
+  Function(int, bool)? spaceOnPress,
   bool autoScale = true,
   Color? checkColor = const Color(0xFFD1C4E9),
   required FocusNode focusNode,
