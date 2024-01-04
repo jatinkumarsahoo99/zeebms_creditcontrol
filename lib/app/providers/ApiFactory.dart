@@ -54,9 +54,21 @@ class ApiFactory {
   static String CONVERT_TO_PDF =
       "$BASE_URL_COMMON/api/Common/ConvertTableToPDF";
 
+  ////////////////////// DOCS /////////////////////////////
 
+  static String COMMON_DOCS_LOAD(String docKey) =>
+      "$BASE_URL_COMMON/api/CommonDoc/loadDocument?DocumentKey=$docKey";
+  static String COMMON_DOCS_VIEW(String docId) =>
+      "$BASE_URL_COMMON/api/CommonDoc/ViewDocument?DocId=$docId";
+  static String get COMMON_DOCS_ADD =>
+      "$BASE_URL_COMMON/api/CommonDoc/AddDocument";
+  static String COMMON_DOCS_DELETE(String docId) =>
+      "$BASE_URL_COMMON/api/CommonDoc/DeleteDocument?DocumentID=$docId";
+  static String USER_SETTINGS = "$BASE_URL_COMMON/api/MDI/SaveUserSettingData";
+  static String FETCH_USER_SETTING = "$BASE_URL_COMMON/api/MDI/GetUserSetting";
 
   ////////////////////// SEARCH ////////////////////////////
+  ///
   ///
   ///
 
