@@ -8,6 +8,7 @@ abstract class Routes {
   static List<String> listRoutes = [];
   static const ASRUN_IMPORT_SECONDARY_EVENTS =
       _Paths.ASRUN_IMPORT_SECONDARY_EVENTS;
+  static const COMPANY_MASTER = _Paths.COMPANY_MASTER;
 }
 
 abstract class RoutesList {
@@ -24,4 +25,5 @@ abstract class _Paths {
 
   static const HOME = '/home';
   static const ASRUN_IMPORT_SECONDARY_EVENTS = '/frmSecondaryAsRunImport';
+  static const COMPANY_MASTER = '/frmCompanyMaster';
 }
