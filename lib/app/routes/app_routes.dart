@@ -6,6 +6,8 @@ abstract class Routes {
 
   static const HOME = _Paths.HOME;
   static List<String> listRoutes = [];
+  static const ASRUN_IMPORT_SECONDARY_EVENTS =
+      _Paths.ASRUN_IMPORT_SECONDARY_EVENTS;
 }
 
 abstract class RoutesList {
@@ -21,4 +23,5 @@ abstract class _Paths {
   _Paths._();
 
   static const HOME = '/home';
+  static const ASRUN_IMPORT_SECONDARY_EVENTS = '/frmSecondaryAsRunImport';
 }
