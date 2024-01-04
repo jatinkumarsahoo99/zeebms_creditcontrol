@@ -26,6 +26,8 @@ dependencies:
   azure_application_insights: ^3.1.0
   flutter_cache_manager:
   pdf:
+  file_picker:
+  file_saver:
 
   flutter: 
     sdk: flutter

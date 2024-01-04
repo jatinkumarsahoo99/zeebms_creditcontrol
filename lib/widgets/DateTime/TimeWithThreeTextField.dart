@@ -68,7 +68,7 @@ class _DateTimeWithThreeTextFieldState extends State<TimeWithThreeTextField> {
   Widget build(BuildContext context) {
     final textColor = (widget.isEnable) ? Colors.black : Colors.grey;
     final borderColor =
-        (widget.isEnable) ? Colors.deepPurpleAccent : Colors.grey;
+    (widget.isEnable) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -415,27 +415,27 @@ class _DateTimeWithThreeTextFieldState extends State<TimeWithThreeTextField> {
                   focusNode: iconFocusNode,
                   onTap: widget.isEnable
                       ? () {
-                          showTimePicker(
-                            context: context,
-                            initialTime: TimeOfDay.now(),
-                            initialEntryMode: TimePickerEntryMode.dial,
-                            useRootNavigator: true,
-                          ).then((pickedTime) {
-                            if (pickedTime != null) {
-                              textCtr[1].text =
-                                  pickedTime.minute.toString(); //minutes
-                              addZeroAndSetCursorAtLast(1,
-                                  setCUrsor: false); // minutes
-                              textCtr[0].text =
-                                  pickedTime.hour.toString(); // hour
-                              addZeroAndSetCursorAtLast(0,
-                                  setCUrsor: false); // hours
-                              FocusScope.of(context)
-                                  .requestFocus(iconFocusNode);
-                              FocusScope.of(context).previousFocus();
-                            }
-                          });
-                        }
+                    showTimePicker(
+                      context: context,
+                      initialTime: TimeOfDay.now(),
+                      initialEntryMode: TimePickerEntryMode.dial,
+                      useRootNavigator: true,
+                    ).then((pickedTime) {
+                      if (pickedTime != null) {
+                        textCtr[1].text =
+                            pickedTime.minute.toString(); //minutes
+                        addZeroAndSetCursorAtLast(1,
+                            setCUrsor: false); // minutes
+                        textCtr[0].text =
+                            pickedTime.hour.toString(); // hour
+                        addZeroAndSetCursorAtLast(0,
+                            setCUrsor: false); // hours
+                        FocusScope.of(context)
+                            .requestFocus(iconFocusNode);
+                        FocusScope.of(context).previousFocus();
+                      }
+                    });
+                  }
                       : null,
                   child: Icon(Icons.date_range,
                       size: 16,
