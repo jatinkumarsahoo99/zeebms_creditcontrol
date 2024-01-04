@@ -2,6 +2,10 @@ import 'package:get/get.dart';
 
 import '../modules/AsrunImportSecondaryEvents/bindings/asrun_import_secondary_events_binding.dart';
 import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
+import '../modules/ClientMaster/bindings/client_master_binding.dart';
+import '../modules/ClientMaster/views/client_master_view.dart';
+import '../modules/ROAudit/bindings/r_o_audit_binding.dart';
+import '../modules/ROAudit/views/r_o_audit_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../providers/AuthGuard1.dart';
@@ -25,6 +29,16 @@ class AppPages {
         childName: _Paths.ASRUN_IMPORT_SECONDARY_EVENTS,
       ),
       // binding: AsrunImportSecondaryEventsBinding(),
+    ),
+    GetPage(
+      name: _Paths.CLIENT_MASTER,
+      page: () => const ClientMasterView(),
+      binding: ClientMasterBinding(),
+    ),
+    GetPage(
+      name: _Paths.R_O_AUDIT,
+      page: () => const ROAuditView(),
+      binding: ROAuditBinding(),
     ),
   ];
 }
