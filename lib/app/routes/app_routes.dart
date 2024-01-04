@@ -9,6 +9,8 @@ abstract class Routes {
   static const ASRUN_IMPORT_SECONDARY_EVENTS =
       _Paths.ASRUN_IMPORT_SECONDARY_EVENTS;
   static const COMPANY_MASTER = _Paths.COMPANY_MASTER;
+  static const COMBO_DEAL_ENTRY = _Paths.COMBO_DEAL_ENTRY;
+  static const READYTO_BILLS = _Paths.READYTO_BILLS;
 }
 
 abstract class RoutesList {
@@ -26,4 +28,6 @@ abstract class _Paths {
   static const HOME = '/home';
   static const ASRUN_IMPORT_SECONDARY_EVENTS = '/frmSecondaryAsRunImport';
   static const COMPANY_MASTER = '/frmCompanyMaster';
+  static const COMBO_DEAL_ENTRY = '/frmLinkDeal';
+  static const READYTO_BILLS = '/frmSetReadyToBill';
 }

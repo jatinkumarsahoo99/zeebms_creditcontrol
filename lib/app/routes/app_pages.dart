@@ -6,6 +6,10 @@ import '../modules/AsrunImportSecondaryEvents/bindings/asrun_import_secondary_ev
 import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
 import '../modules/CompanyMaster/bindings/company_master_binding.dart';
 import '../modules/CompanyMaster/views/company_master_view.dart';
+import '../modules/ComboDealEntry/bindings/combo_deal_entry_binding.dart';
+import '../modules/ComboDealEntry/views/combo_deal_entry_view.dart';
+import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
+import '../modules/ReadytoBills/views/readyto_bills_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../providers/AuthGuard1.dart';
@@ -29,9 +33,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ASRUN_IMPORT_SECONDARY_EVENTS,
-      page: () => AuthGuard(
-        childName: _Paths.ASRUN_IMPORT_SECONDARY_EVENTS,
-      ),
+      page: () => AuthGuard(childName: _Paths.ASRUN_IMPORT_SECONDARY_EVENTS),
       // binding: AsrunImportSecondaryEventsBinding(),
     ),
     GetPage(
@@ -39,6 +41,14 @@ class AppPages {
       page: () => AuthGuard(
         childName: _Paths.COMPANY_MASTER,
       ),
+    ),
+    GetPage(
+      name: _Paths.COMBO_DEAL_ENTRY,
+      page: () => AuthGuard(childName: _Paths.COMBO_DEAL_ENTRY),
+    ),
+    GetPage(
+      name: _Paths.READYTO_BILLS,
+      page: () => AuthGuard(childName: _Paths.READYTO_BILLS),
     ),
   ];
 }
