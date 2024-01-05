@@ -28,6 +28,7 @@ dependencies:
   pdf:
   file_picker:
   file_saver:
+  flutter_inset_box_shadow:
 
   flutter: 
     sdk: flutter
