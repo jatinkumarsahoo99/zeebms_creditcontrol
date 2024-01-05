@@ -10,6 +10,10 @@ import '../modules/ComboDealEntry/bindings/combo_deal_entry_binding.dart';
 import '../modules/ComboDealEntry/views/combo_deal_entry_view.dart';
 import '../modules/Ebills/bindings/ebills_binding.dart';
 import '../modules/Ebills/views/ebills_view.dart';
+import '../modules/CompanyMaster/bindings/company_master_binding.dart';
+import '../modules/CompanyMaster/views/company_master_view.dart';
+import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
+import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
 import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
 import '../modules/ReadytoBills/views/readyto_bills_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -39,14 +43,22 @@ class AppPages {
       // binding: AsrunImportSecondaryEventsBinding(),
     ),
     GetPage(
+      name: _Paths.COMPANY_MASTER,
+      page: () => AuthGuard(
+        childName: _Paths.COMPANY_MASTER,
+      ),
+    ),
+    GetPage(
       name: _Paths.COMBO_DEAL_ENTRY,
       page: () => AuthGuard(childName: _Paths.COMBO_DEAL_ENTRY),
-      // binding: ComboDealEntryBinding(),
     ),
     GetPage(
       name: _Paths.READYTO_BILLS,
       page: () => AuthGuard(childName: _Paths.READYTO_BILLS),
-      // binding: ReadytoBillsBinding(),
+    ),
+    GetPage(
+      name: _Paths.INVOICE_REVISION,
+      page: () => AuthGuard(childName: _Paths.INVOICE_REVISION),
     ),
     GetPage(
       name: _Paths.ASRUN_VERIFICATION,

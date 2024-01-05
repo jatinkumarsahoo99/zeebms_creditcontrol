@@ -8,10 +8,12 @@ abstract class Routes {
   static List<String> listRoutes = [];
   static const ASRUN_IMPORT_SECONDARY_EVENTS =
       _Paths.ASRUN_IMPORT_SECONDARY_EVENTS;
+  static const COMPANY_MASTER = _Paths.COMPANY_MASTER;
   static const COMBO_DEAL_ENTRY = _Paths.COMBO_DEAL_ENTRY;
   static const READYTO_BILLS = _Paths.READYTO_BILLS;
   static const ASRUN_VERIFICATION = _Paths.ASRUN_VERIFICATION;
   static const EBILLS = _Paths.EBILLS;
+  static const INVOICE_REVISION = _Paths.INVOICE_REVISION;
 }
 
 abstract class RoutesList {
@@ -28,8 +30,10 @@ abstract class _Paths {
 
   static const HOME = '/home';
   static const ASRUN_IMPORT_SECONDARY_EVENTS = '/frmSecondaryAsRunImport';
+  static const COMPANY_MASTER = '/frmCompanyMaster';
   static const COMBO_DEAL_ENTRY = '/frmLinkDeal';
   static const READYTO_BILLS = '/frmSetReadyToBill';
   static const ASRUN_VERIFICATION = '/frmAsRunModification';
   static const EBILLS = '/frmEbiller';
+  static const INVOICE_REVISION = '/frmBillRevision';
 }
