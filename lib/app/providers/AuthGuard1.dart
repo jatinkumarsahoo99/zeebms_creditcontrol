@@ -57,7 +57,7 @@ class AuthGuard extends StatelessWidget {
               currentWidget = ReadytoBillsView();
               break;
             case Routes.ASRUN_IMPORT_SECONDARY_EVENTS:
-              currentWidget = const AsrunImportSecondaryEventsView();
+              currentWidget =  AsrunImportSecondaryEventsView();
               break;
             case Routes.R_O_AUDIT:
               currentWidget =  ROAuditView();
