@@ -11,6 +11,10 @@ abstract class Routes {
   static const CLIENT_MASTER = _Paths.CLIENT_MASTER;
   static const R_O_AUDIT = _Paths.R_O_AUDIT;
   static const AGENCY_MASTER = _Paths.AGENCY_MASTER;
+  static const CLIENT_EMBARGO = _Paths.CLIENT_EMBARGO;
+  static const E_BILLS_FOR_BONUS_ACTIVITY = _Paths.E_BILLS_FOR_BONUS_ACTIVITY;
+  static const SECONDARY_ASRUN_MODIFICATION =
+      _Paths.SECONDARY_ASRUN_MODIFICATION;
 }
 
 abstract class RoutesList {
@@ -21,6 +25,7 @@ abstract class RoutesList {
     _Paths.HOME,
     _Paths.R_O_AUDIT,
     _Paths.AGENCY_MASTER,
+    _Paths.CLIENT_EMBARGO,
   ];
 }
 
@@ -32,4 +37,7 @@ abstract class _Paths {
   static const CLIENT_MASTER = '/client-master';
   static const R_O_AUDIT = '/frmAuditStatus';
   static const AGENCY_MASTER = '/frmAgencyMaster';
+  static const CLIENT_EMBARGO = '/frmClientEmbargo';
+  static const E_BILLS_FOR_BONUS_ACTIVITY = '/e-bills-for-bonus-activity';
+  static const SECONDARY_ASRUN_MODIFICATION = '/secondary-asrun-modification';
 }

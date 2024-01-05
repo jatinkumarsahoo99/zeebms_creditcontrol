@@ -5,6 +5,7 @@ import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
 import '../modules/AgencyMaster/views/agency_master_view.dart';
 import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
+import '../modules/ClientEmbargo/views/client_embargo_view.dart';
 import '../modules/ROAudit/views/r_o_audit_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
@@ -42,6 +43,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.AGENCY_MASTER:
               currentWidget =  AgencyMasterView();
+              break;
+            case Routes.CLIENT_EMBARGO:
+              currentWidget =  ClientEmbargoView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
