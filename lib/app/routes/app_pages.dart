@@ -16,6 +16,14 @@ import '../modules/ROAudit/bindings/r_o_audit_binding.dart';
 import '../modules/ROAudit/views/r_o_audit_view.dart';
 import '../modules/SecondaryAsrunModification/bindings/secondary_asrun_modification_binding.dart';
 import '../modules/SecondaryAsrunModification/views/secondary_asrun_modification_view.dart';
+import '../modules/ComboDealEntry/bindings/combo_deal_entry_binding.dart';
+import '../modules/ComboDealEntry/views/combo_deal_entry_view.dart';
+import '../modules/CompanyMaster/bindings/company_master_binding.dart';
+import '../modules/CompanyMaster/views/company_master_view.dart';
+import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
+import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
+import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
+import '../modules/ReadytoBills/views/readyto_bills_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../providers/AuthGuard1.dart';
@@ -38,10 +46,14 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ASRUN_IMPORT_SECONDARY_EVENTS,
-      page: () => AuthGuard(
-        childName: _Paths.ASRUN_IMPORT_SECONDARY_EVENTS,
-      ),
+      page: () => AuthGuard(childName: _Paths.ASRUN_IMPORT_SECONDARY_EVENTS),
       // binding: AsrunImportSecondaryEventsBinding(),
+    ),
+    GetPage(
+      name: _Paths.COMPANY_MASTER,
+      page: () => AuthGuard(
+        childName: _Paths.COMPANY_MASTER,
+      ),
     ),
     GetPage(
       name: _Paths.CLIENT_MASTER,
@@ -81,6 +93,18 @@ class AppPages {
       name: _Paths.SECONDARY_ASRUN_MODIFICATION,
       page: () => const SecondaryAsrunModificationView(),
       binding: SecondaryAsrunModificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.COMBO_DEAL_ENTRY,
+      page: () => AuthGuard(childName: _Paths.COMBO_DEAL_ENTRY),
+    ),
+    GetPage(
+      name: _Paths.READYTO_BILLS,
+      page: () => AuthGuard(childName: _Paths.READYTO_BILLS),
+    ),
+    GetPage(
+      name: _Paths.INVOICE_REVISION,
+      page: () => AuthGuard(childName: _Paths.INVOICE_REVISION),
     ),
   ];
 }

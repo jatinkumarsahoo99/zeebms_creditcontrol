@@ -1,9 +1,10 @@
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 
 class AsrunImportSecondaryEventsController extends GetxController {
-  //TODO: Implement AsrunImportSecondaryEventsController
+  TextEditingController logDate = TextEditingController();
 
-  final count = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -19,5 +20,13 @@ class AsrunImportSecondaryEventsController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  pickFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    if (result != null && result.files.single != null) {
+      print(result.files[0]);
+      // importfile(result.files[0]);
+    } else {
+      // User canceled the pic5ker
+    }
+  }
 }

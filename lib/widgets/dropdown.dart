@@ -12,11 +12,14 @@ import 'CustomSearchDropDown/dropdown_search.dart';
 import 'CustomSearchDropDown/src/popupMenu.dart';
 import 'LabelTextStyle.dart';
 
-
 class DropDownField {
   static Widget formDropDown(List items, Function callback) {
     return Padding(
-        padding: const EdgeInsets.only(left: SizeDefine.paddingHorizontal, right: SizeDefine.paddingHorizontal, top: 6.0, bottom: 6.0),
+        padding: const EdgeInsets.only(
+            left: SizeDefine.paddingHorizontal,
+            right: SizeDefine.paddingHorizontal,
+            top: 6.0,
+            bottom: 6.0),
         child: DropdownButtonFormField(
           items: items.map((item) {
             return DropdownMenuItem(
@@ -58,7 +61,8 @@ class DropDownField {
           // hintText: "dd/MM/yyyy",
           contentPadding: const EdgeInsets.only(left: 10),
           labelText: label,
-          labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
+          labelStyle:
+              TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
           border: InputBorder.none,
           // suffixIcon: Icon(
           //   Icons.calendar_today,
@@ -105,7 +109,8 @@ class DropDownField {
             // hintText: "dd/MM/yyyy",
             contentPadding: const EdgeInsets.only(left: 10),
             labelText: label,
-            labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
+            labelStyle:
+                TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
             border: InputBorder.none,
             // suffixIcon: Icon(
             //   Icons.calendar_today,
@@ -132,6 +137,566 @@ class DropDownField {
     );
   }
 
+  static Widget formDropDownSearchAPI2Expand(
+    GlobalKey widgetKey,
+    BuildContext context, {
+    required String title,
+    required String url,
+    String parseKeyForValue = "programName",
+    String parseKeyForKey = "programCode",
+    required void Function(DropDownValue) onchanged,
+    DropDownValue? selectedValue,
+    String textFieldHintText = "Search",
+    String hintText = "Select Item",
+    double dialogHeight = 350.0,
+    double? width,
+    bool isEnable = true,
+    double? textSizeboxWidth,
+    bool autoFocus = false,
+    dynamic customInData,
+    double? widthofDialog,
+    FocusNode? inkwellFocus,
+    bool startFromLeft = true,
+    int maxLength = 40,
+    int miniumSearchLength = 2,
+    bool titleInLeft = false,
+    double leftPad = 5,
+  }) {
+    final textColor = isEnable ? Colors.black : Colors.grey;
+    final iconLineColor = isEnable ? Colors.deepPurpleAccent : Colors.grey;
+    var items = RxList([]);
+    var isLoading = RxBool(false);
+    var msg = RxnString();
+    getDataFromAPI(String value) async {
+      await Get.find<ConnectorControl>().GETMETHODCALL(
+          api: url + Uri.encodeQueryComponent(value),
+          fun: (data) async {
+            var tempData = [];
+            items.clear();
+            if (customInData != null) {
+              data = await data[customInData];
+            }
+            for (var element in data) {
+              tempData.add(Map.from(element));
+            }
+            items.addAll(tempData);
+            tempData.clear();
+            if (items.isEmpty) {
+              msg.value = "No Data Found";
+            } else {
+              msg.value = "";
+            }
+          });
+    }
+
+    inkwellFocus ??= FocusNode();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (!titleInLeft) ...{
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: SizeDefine.labelSize1,
+              color: textColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 5),
+        },
+        Row(
+          children: [
+            if (titleInLeft) ...{
+              SizedBox(
+                width: textSizeboxWidth,
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    fontSize: SizeDefine.labelSize1,
+                    color: textColor,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
+              SizedBox(height: leftPad),
+            },
+            Expanded(
+              child: StatefulBuilder(builder: (context, re) {
+                return InkWell(
+                    key: widgetKey,
+                    autofocus: autoFocus,
+                    focusNode: inkwellFocus,
+                    canRequestFocus: isEnable,
+                    onTap: !isEnable
+                        ? null
+                        : () {
+                            String fieldText = "";
+                            final RenderBox renderBox = widgetKey.currentContext
+                                ?.findRenderObject() as RenderBox;
+                            final offset = renderBox.localToGlobal(Offset.zero);
+                            final top = offset.dy + renderBox.size.height;
+                            final left = offset.dx;
+                            final right = startFromLeft
+                                ? left + renderBox.size.width
+                                : offset.dy;
+                            final width = renderBox.size.width;
+
+                            searchData(String value) {
+                              if (value.length >= miniumSearchLength &&
+                                  (!isLoading.value)) {
+                                isLoading.value = true;
+                                getDataFromAPI(value).then((value) {
+                                  isLoading.value = false;
+                                });
+                              }
+                            }
+
+                            showMenu(
+                              context: context,
+                              useRootNavigator: true,
+                              position:
+                                  RelativeRect.fromLTRB(left, top, right, 0.0),
+                              constraints: BoxConstraints.expand(
+                                width: widthofDialog ?? width,
+                                height: dialogHeight,
+                              ),
+                              items: [
+                                CustomPopupMenuItem(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: SizeDefine.fontSizeInputField),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    height: dialogHeight - 20,
+                                    child: Column(
+                                      children: [
+                                        /// search
+                                        TextFormField(
+                                          maxLength: maxLength,
+                                          decoration: InputDecoration(
+                                            contentPadding:
+                                                const EdgeInsets.fromLTRB(
+                                                    12.0, 17.0, 20.0, 15.0),
+                                            isDense: true,
+                                            isCollapsed: true,
+                                            hintText: textFieldHintText,
+                                            suffixIcon: IconButton(
+                                              padding: EdgeInsets.zero,
+                                              onPressed: () =>
+                                                  searchData(fieldText),
+                                              icon: const Icon(Icons.search),
+                                              splashRadius: 15,
+                                            ),
+                                          ),
+                                          style: TextStyle(
+                                            fontSize:
+                                                SizeDefine.fontSizeInputField,
+                                          ),
+                                          onFieldSubmitted: searchData,
+                                          onChanged: (value) =>
+                                              fieldText = value,
+                                          autofocus: true,
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(
+                                                "  "),
+                                          ],
+                                        ),
+
+                                        /// progreesbar
+                                        Obx(() {
+                                          return Visibility(
+                                            visible: isLoading.value,
+                                            child:
+                                                const LinearProgressIndicator(
+                                              minHeight: 3,
+                                            ),
+                                          );
+                                        }),
+
+                                        const SizedBox(height: 5),
+
+                                        /// list
+                                        Expanded(
+                                          child: Obx(
+                                            () {
+                                              return (msg.value != null &&
+                                                      msg.value != "")
+                                                  ? Center(
+                                                      child: Text(msg.value!),
+                                                    )
+                                                  : ListView(
+                                                      shrinkWrap: true,
+                                                      children: items
+                                                          .map(
+                                                            (element) =>
+                                                                InkWell(
+                                                              onTap: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                                selectedValue =
+                                                                    DropDownValue(
+                                                                  key: element[
+                                                                          parseKeyForKey]
+                                                                      .toString(),
+                                                                  value: element[
+                                                                          parseKeyForValue]
+                                                                      .toString(),
+                                                                );
+                                                                re(() {});
+                                                                FocusScope.of(
+                                                                        context)
+                                                                    .requestFocus(
+                                                                        inkwellFocus);
+                                                                onchanged(
+                                                                    selectedValue!);
+                                                              },
+                                                              child: Padding(
+                                                                padding: const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        8),
+                                                                child: Text(
+                                                                  (element[parseKeyForValue] ??
+                                                                          "null")
+                                                                      .toString(),
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontSize:
+                                                                        SizeDefine.dropDownFontSize -
+                                                                            1,
+                                                                  ),
+                                                                ),
+                                                              ),
+                                                            ),
+                                                          )
+                                                          .toList(),
+                                                    );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                    child: Builder(builder: (context) {
+                      if (inkwellFocus!.hasFocus) {
+                        FocusScope.of(context).requestFocus(inkwellFocus);
+                      }
+                      return Container(
+                        // width: width ?? Get.width * .15,
+                        height: SizeDefine.heightInputField,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                            color: iconLineColor,
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Expanded(
+                                child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8, right: 4),
+                                child: Text(
+                                  (selectedValue?.value ?? ""),
+                                  style: TextStyle(
+                                    fontSize: SizeDefine.fontSizeInputField,
+                                    color: textColor,
+                                  ),
+                                  maxLines: 1,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                            )),
+                            Icon(
+                              Icons.arrow_drop_down,
+                              color: iconLineColor,
+                            )
+                          ],
+                        ),
+                      );
+                    }));
+              }),
+            )
+          ],
+        ),
+      ],
+    );
+  }
+
+  static Widget formDropDown1WidthMapExpand(
+    List<DropDownValue>? items,
+    Function(DropDownValue) callback,
+    String hint, {
+    double? height,
+    double? titleSizeBoxWidth,
+    double paddingLeft = 10,
+    DropDownValue? selected,
+    bool? isEnable,
+    String? Function(DropDownValue? value)? validator,
+    bool? searchReq,
+    bool autoFocus = false,
+    double dialogHeight = 350,
+    void Function(bool)? onFocusChange,
+    double? dialogWidth,
+    FocusNode? inkWellFocusNode,
+    GlobalKey? widgetKey,
+    bool showtitle = true,
+    bool titleInLeft = false,
+  }) {
+    isEnable ??= true;
+    widgetKey ??= GlobalKey();
+    final textColor = (isEnable) ? Colors.black : Colors.grey;
+    final iconLineColor = (isEnable) ? Colors.deepPurpleAccent : Colors.grey;
+    inkWellFocusNode ??= FocusNode();
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (showtitle && !titleInLeft) ...{
+          Text(
+            hint,
+            style: TextStyle(
+              fontSize: SizeDefine.labelSize1,
+              color: textColor,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+          const SizedBox(height: 5),
+        },
+        StatefulBuilder(builder: (context, re) {
+          bool showNoRecord = false;
+          return Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (titleInLeft) ...{
+                SizedBox(
+                  width: titleSizeBoxWidth,
+                  child: Text(
+                    hint,
+                    style: TextStyle(
+                      fontSize: SizeDefine.labelSize1,
+                      color: textColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                SizedBox(width: paddingLeft),
+              },
+              Expanded(
+                child: InkWell(
+                    autofocus: autoFocus,
+                    focusNode: inkWellFocusNode,
+                    canRequestFocus: (isEnable ?? true),
+                    onFocusChange: onFocusChange,
+                    onTap: (!isEnable!)
+                        ? null
+                        : () {
+                            var isLoading = RxBool(false);
+
+                            final RenderBox renderBox =
+                                widgetKey!.currentContext?.findRenderObject()
+                                    as RenderBox;
+                            final offset = renderBox.localToGlobal(Offset.zero);
+                            final left = offset.dx;
+                            final top = offset.dy + renderBox.size.height;
+                            final right = left + renderBox.size.width;
+                            final width = renderBox.size.width;
+                            if ((items == null || items.isEmpty)) {
+                              showMenu(
+                                  context: context,
+                                  useRootNavigator: true,
+                                  position: RelativeRect.fromLTRB(
+                                      left, top, right, 0.0),
+                                  constraints: BoxConstraints.expand(
+                                    width: dialogWidth ?? width,
+                                    height: 120,
+                                  ),
+                                  items: [
+                                    PopupMenuItem(
+                                        child: Text(
+                                      "No Record Found",
+                                      style: TextStyle(
+                                        fontSize:
+                                            SizeDefine.dropDownFontSize - 1,
+                                      ),
+                                    ))
+                                  ]);
+                            } else {
+                              var tempList = RxList<DropDownValue>([]);
+                              tempList.addAll(items);
+                              showMenu(
+                                context: context,
+                                useRootNavigator: true,
+                                position: RelativeRect.fromLTRB(
+                                    left, top, right, 0.0),
+                                constraints: BoxConstraints.expand(
+                                  width: dialogWidth ?? width,
+                                  height: dialogHeight,
+                                ),
+                                items: [
+                                  CustomPopupMenuItem(
+                                    textStyle: TextStyle(
+                                        color: Colors.black,
+                                        fontSize:
+                                            SizeDefine.fontSizeInputField),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(8),
+                                      height: dialogHeight - 20,
+                                      child: Column(
+                                        children: [
+                                          /// search
+                                          TextFormField(
+                                            decoration: const InputDecoration(
+                                              contentPadding:
+                                                  EdgeInsets.all(12),
+                                              isDense: true,
+                                              isCollapsed: true,
+                                              hintText: "Search",
+                                            ),
+                                            autofocus: true,
+                                            style: TextStyle(
+                                              fontSize:
+                                                  SizeDefine.fontSizeInputField,
+                                            ),
+                                            onChanged: ((value) {
+                                              if (value.isNotEmpty) {
+                                                tempList.clear();
+                                                for (var i = 0;
+                                                    i < items.length;
+                                                    i++) {
+                                                  if (items[i]
+                                                      .value!
+                                                      .toLowerCase()
+                                                      .contains(value
+                                                          .toLowerCase())) {
+                                                    tempList.add(items[i]);
+                                                  }
+                                                }
+                                              }
+                                            }),
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter.deny(
+                                                  "  "),
+                                            ],
+                                          ),
+
+                                          /// progreesbar
+                                          Obx(() {
+                                            return Visibility(
+                                              visible: isLoading.value,
+                                              child:
+                                                  const LinearProgressIndicator(
+                                                minHeight: 3,
+                                              ),
+                                            );
+                                          }),
+
+                                          const SizedBox(height: 5),
+
+                                          /// list
+                                          Expanded(
+                                            child: Obx(
+                                              () {
+                                                return ListView(
+                                                  shrinkWrap: true,
+                                                  children: tempList
+                                                      .map(
+                                                        (element) => InkWell(
+                                                          onTap: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                            selected = element;
+                                                            re(() {});
+                                                            callback(element);
+                                                            FocusScope.of(
+                                                                    context)
+                                                                .requestFocus(
+                                                                    inkWellFocusNode);
+                                                          },
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        8),
+                                                            child: Text(
+                                                              element.value ??
+                                                                  "null",
+                                                              style: TextStyle(
+                                                                fontSize: SizeDefine
+                                                                        .dropDownFontSize -
+                                                                    1,
+                                                              ),
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      )
+                                                      .toList(),
+                                                );
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              );
+                            }
+                          },
+                    child: Container(
+                      key: widgetKey,
+                      height: SizeDefine.heightInputField,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: iconLineColor,
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Expanded(
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8, right: 4),
+                                child: Text(
+                                  (selected?.value ??
+                                      (items!.isEmpty && showNoRecord
+                                          ? "NO Record Found"
+                                          : "")),
+                                  style: TextStyle(
+                                    fontSize: SizeDefine.fontSizeInputField,
+                                    color: textColor,
+                                  ),
+                                  maxLines: 1,
+                                  textAlign: TextAlign.start,
+                                ),
+                              ),
+                            ),
+                          ),
+                          Icon(
+                            Icons.arrow_drop_down,
+                            color: iconLineColor,
+                          )
+                        ],
+                      ),
+                    )),
+              ),
+            ],
+          );
+        }),
+      ],
+    );
+  }
+
   static Widget searchDropdownWithRatio({
     required BuildContext context,
     required List<DropDownValue>? items,
@@ -149,7 +714,8 @@ class DropDownField {
     enable ??= RxBool(true);
     final widgetKey = GlobalKey();
     final textColor = (enable.value) ? Colors.black : Colors.grey;
-    final iconLineColor = (enable.value) ? Colors.deepPurpleAccent : Colors.grey;
+    final iconLineColor =
+        (enable.value) ? Colors.deepPurpleAccent : Colors.grey;
     FocusNode inkWellFocusNode = FocusNode();
     return Column(
       key: widgetKey,
@@ -173,109 +739,123 @@ class DropDownField {
               onTap: !enable!.value
                   ? null
                   : () {
-                if ((items == null || items.isEmpty)) {
-                  return;
-                }
-                var isLoading = RxBool(false);
-                var tempList = RxList<DropDownValue>([]);
-                tempList.addAll(items);
-                final width = (widgetKey.currentContext?.size?.width ?? 200);
-                final height = (widgetKey.currentContext?.size?.height ?? 200);
-                var box = widgetKey.currentContext!.findRenderObject() as RenderBox;
-                var startpoints = box.localToGlobal(Offset(0, height));
-                showMenu(
-                  context: context,
-                  position: RelativeRect.fromSize((startpoints & const Size(0, 0)), Get.size),
-                  constraints: BoxConstraints.expand(
-                    width: width,
-                    height: dialogHeight,
-                  ),
-                  items: [
-                    CustomPopupMenuItem(
-                      textStyle: TextStyle(color: Colors.black, fontSize: SizeDefine.fontSizeInputField),
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        height: dialogHeight - 20,
-                        child: Column(
-                          children: [
-                            /// search
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.all(12),
-                                isDense: true,
-                                isCollapsed: true,
-                                hintText: "Search",
-                              ),
-                              autofocus: true,
-                              style: TextStyle(
-                                fontSize: SizeDefine.fontSizeInputField,
-                              ),
-                              onChanged: ((value) {
-                                if (value.isNotEmpty) {
-                                  tempList.clear();
-                                  for (var i = 0; i < items.length; i++) {
-                                    if (items[i].value!.toLowerCase().contains(value.toLowerCase())) {
-                                      tempList.add(items[i]);
-                                    }
-                                  }
-                                }
-                              }),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny("  "),
-                              ],
-                            ),
-
-                            /// progreesbar
-                            Obx(() {
-                              return Visibility(
-                                visible: isLoading.value,
-                                child: const LinearProgressIndicator(
-                                  minHeight: 3,
-                                ),
-                              );
-                            }),
-
-                            const SizedBox(height: 5),
-
-                            /// list
-                            Expanded(
-                              child: Obx(
-                                    () {
-                                  return ListView(
-                                    shrinkWrap: true,
-                                    children: tempList
-                                        .map(
-                                          (element) => InkWell(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          selectedItem = element;
-                                          seleceted(element);
-                                          re(() {});
-                                          FocusScope.of(context).requestFocus(inkWellFocusNode);
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8),
-                                          child: Text(
-                                            element.value ?? "null",
-                                            style: TextStyle(
-                                              fontSize: SizeDefine.dropDownFontSize - 1,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                        .toList(),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
+                      if ((items == null || items.isEmpty)) {
+                        return;
+                      }
+                      var isLoading = RxBool(false);
+                      var tempList = RxList<DropDownValue>([]);
+                      tempList.addAll(items);
+                      final width =
+                          (widgetKey.currentContext?.size?.width ?? 200);
+                      final height =
+                          (widgetKey.currentContext?.size?.height ?? 200);
+                      var box = widgetKey.currentContext!.findRenderObject()
+                          as RenderBox;
+                      var startpoints = box.localToGlobal(Offset(0, height));
+                      showMenu(
+                        context: context,
+                        position: RelativeRect.fromSize(
+                            (startpoints & const Size(0, 0)), Get.size),
+                        constraints: BoxConstraints.expand(
+                          width: width,
+                          height: dialogHeight,
                         ),
-                      ),
-                    ),
-                  ],
-                );
-              },
+                        items: [
+                          CustomPopupMenuItem(
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: SizeDefine.fontSizeInputField),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              height: dialogHeight - 20,
+                              child: Column(
+                                children: [
+                                  /// search
+                                  TextFormField(
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.all(12),
+                                      isDense: true,
+                                      isCollapsed: true,
+                                      hintText: "Search",
+                                    ),
+                                    autofocus: true,
+                                    style: TextStyle(
+                                      fontSize: SizeDefine.fontSizeInputField,
+                                    ),
+                                    onChanged: ((value) {
+                                      if (value.isNotEmpty) {
+                                        tempList.clear();
+                                        for (var i = 0; i < items.length; i++) {
+                                          if (items[i]
+                                              .value!
+                                              .toLowerCase()
+                                              .contains(value.toLowerCase())) {
+                                            tempList.add(items[i]);
+                                          }
+                                        }
+                                      }
+                                    }),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.deny("  "),
+                                    ],
+                                  ),
+
+                                  /// progreesbar
+                                  Obx(() {
+                                    return Visibility(
+                                      visible: isLoading.value,
+                                      child: const LinearProgressIndicator(
+                                        minHeight: 3,
+                                      ),
+                                    );
+                                  }),
+
+                                  const SizedBox(height: 5),
+
+                                  /// list
+                                  Expanded(
+                                    child: Obx(
+                                      () {
+                                        return ListView(
+                                          shrinkWrap: true,
+                                          children: tempList
+                                              .map(
+                                                (element) => InkWell(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                    selectedItem = element;
+                                                    seleceted(element);
+                                                    re(() {});
+                                                    FocusScope.of(context)
+                                                        .requestFocus(
+                                                            inkWellFocusNode);
+                                                  },
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 8),
+                                                    child: Text(
+                                                      element.value ?? "null",
+                                                      style: TextStyle(
+                                                        fontSize: SizeDefine
+                                                                .dropDownFontSize -
+                                                            1,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList(),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
               child: Container(
                 width: Get.width * widthRatio,
                 height: SizeDefine.heightInputField,
@@ -288,20 +868,20 @@ class DropDownField {
                   children: [
                     Expanded(
                         child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 4),
-                            child: Text(
-                              (selectedItem?.value ?? ""),
-                              style: TextStyle(
-                                fontSize: SizeDefine.fontSizeInputField,
-                                color: textColor,
-                              ),
-                              maxLines: 1,
-                              textAlign: TextAlign.start,
-                            ),
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 4),
+                        child: Text(
+                          (selectedItem?.value ?? ""),
+                          style: TextStyle(
+                            fontSize: SizeDefine.fontSizeInputField,
+                            color: textColor,
                           ),
-                        )),
+                          maxLines: 1,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    )),
                     Icon(
                       Icons.arrow_drop_down,
                       color: iconLineColor,
@@ -495,14 +1075,14 @@ class DropDownField {
 
   static Widget searchDropdownWithRatio1(
       {required BuildContext context,
-        required List<DropDownValue>? items,
-        required String label,
-        DropDownValue? selectedItem,
-        required Function(DropDownValue? value) seleceted,
-        widthRatio = 0.20,
-        double? height,
-        String? Function(DropDownValue? value)? validator,
-        controller}) {
+      required List<DropDownValue>? items,
+      required String label,
+      DropDownValue? selectedItem,
+      required Function(DropDownValue? value) seleceted,
+      widthRatio = 0.20,
+      double? height,
+      String? Function(DropDownValue? value)? validator,
+      controller}) {
     return Focus(
       child: Container(
         margin: const EdgeInsets.only(left: 10),
@@ -515,7 +1095,8 @@ class DropDownField {
           dropdownBuilder: (context, selectedItem) {
             return Text(
               selectedItem == null ? "" : selectedItem.value!,
-              style: TextStyle(color: Colors.black, fontSize: SizeDefine.fontSizeInputField),
+              style: TextStyle(
+                  color: Colors.black, fontSize: SizeDefine.fontSizeInputField),
             );
           },
           dropdownButtonProps: IconButtonProps(
@@ -534,7 +1115,8 @@ class DropDownField {
             contentPadding: const EdgeInsets.only(left: 10),
             labelText: label,
 
-            labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
+            labelStyle:
+                TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
             border: InputBorder.none,
             errorBorder: InputBorder.none,
             // suffixIcon: Icon(
@@ -561,14 +1143,14 @@ class DropDownField {
 
   static Widget searchDropdownWithRatio2(
       {required BuildContext context,
-        required List<DropDownValue>? items,
-        required String label,
-        DropDownValue? selectedItem,
-        required Function(DropDownValue? value) seleceted,
-        widthRatio = 0.20,
-        double? height,
-        String? Function(DropDownValue? value)? validator,
-        controller}) {
+      required List<DropDownValue>? items,
+      required String label,
+      DropDownValue? selectedItem,
+      required Function(DropDownValue? value) seleceted,
+      widthRatio = 0.20,
+      double? height,
+      String? Function(DropDownValue? value)? validator,
+      controller}) {
     // print("Selected Item???>>>"+jsonEncode(selectedItem??{}));
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -588,7 +1170,9 @@ class DropDownField {
             dropdownBuilder: (context, selectedItem) {
               return Text(
                 selectedItem == null ? "" : selectedItem.value!,
-                style: TextStyle(fontSize: SizeDefine.fontSizeInputField, color: Colors.black),
+                style: TextStyle(
+                    fontSize: SizeDefine.fontSizeInputField,
+                    color: Colors.black),
               );
             },
             dropdownButtonProps: IconButtonProps(
@@ -607,7 +1191,8 @@ class DropDownField {
               contentPadding: const EdgeInsets.only(left: 10),
               // labelText: label,
 
-              labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
+              labelStyle: TextStyle(
+                  fontSize: SizeDefine.labelSize, color: Colors.black),
               border: InputBorder.none,
               // suffixIcon: Icon(
               //   Icons.calendar_today,
@@ -634,19 +1219,19 @@ class DropDownField {
   }
 
   static Widget simpleDropDownwithWidthRatio(
-      List<DropDownValue> items,
-      Function(DropDownValue? value) seleceted,
-      String hint,
-      widthRatio,
-      context, {
-        DropDownValue? value,
-        double? leftpad = 10,
-        bool autoFocus = false,
-        PopupMenuPosition position = PopupMenuPosition.under,
-        RxBool? enable,
-        TextEditingController? controller,
-        String? Function(DropDownValue? value)? validator,
-      }) {
+    List<DropDownValue> items,
+    Function(DropDownValue? value) seleceted,
+    String hint,
+    widthRatio,
+    context, {
+    DropDownValue? value,
+    double? leftpad = 10,
+    bool autoFocus = false,
+    PopupMenuPosition position = PopupMenuPosition.under,
+    RxBool? enable,
+    TextEditingController? controller,
+    String? Function(DropDownValue? value)? validator,
+  }) {
     enable ??= RxBool(true);
     controller ??= TextEditingController(text: "");
     if (value != null) {
@@ -661,13 +1246,14 @@ class DropDownField {
           child: LabelText.style(hint: hint),
         ),
         Container(
-          decoration: BoxDecoration(border: Border.all(color: Colors.deepPurpleAccent)),
+          decoration:
+              BoxDecoration(border: Border.all(color: Colors.deepPurpleAccent)),
           margin: EdgeInsets.only(left: leftpad),
           height: SizeDefine.heightInputField,
           width: MediaQuery.of(context).size.width * widthRatio,
 
           child: Obx(
-                () => PopupMenuButton<DropDownValue>(
+            () => PopupMenuButton<DropDownValue>(
               enabled: enable!.value,
               constraints: BoxConstraints(maxHeight: Get.height / 2),
               position: position,
@@ -702,17 +1288,27 @@ class DropDownField {
                           validator!(DropDownValue());
                         },
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        style: TextStyle(fontSize: SizeDefine.fontSizeInputField, color: Colors.black),
+                        style: TextStyle(
+                            fontSize: SizeDefine.fontSizeInputField,
+                            color: Colors.black),
                         readOnly: true,
                         controller: controller,
                         decoration: InputDecoration(
-                          disabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                          enabledBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
-                          focusedBorder: const OutlineInputBorder(borderSide: BorderSide(color: Colors.transparent)),
+                          disabledBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.transparent)),
+                          enabledBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.transparent)),
+                          focusedBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.transparent)),
                           errorBorder: InputBorder.none,
                           contentPadding: const EdgeInsets.only(left: 10),
 
-                          labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
+                          labelStyle: TextStyle(
+                              fontSize: SizeDefine.labelSize,
+                              color: Colors.black),
 
                           border: InputBorder.none,
 
@@ -791,14 +1387,14 @@ class DropDownField {
   }
 
   static Widget simpleDropDownwithWidthRatio2(
-      List<SystemEnviroment> items,
-      Function(SystemEnviroment? value) seleceted,
-      String hint,
-      widthRatio,
-      context, {
-        SystemEnviroment? value,
-        String? Function(SystemEnviroment? value)? validator,
-      }) {
+    List<SystemEnviroment> items,
+    Function(SystemEnviroment? value) seleceted,
+    String hint,
+    widthRatio,
+    context, {
+    SystemEnviroment? value,
+    String? Function(SystemEnviroment? value)? validator,
+  }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -817,7 +1413,9 @@ class DropDownField {
             dropdownBuilder: (context, selectedItem) {
               return Text(
                 selectedItem == null ? "" : selectedItem.value!,
-                style: TextStyle(fontSize: SizeDefine.fontSizeInputField, color: Colors.black),
+                style: TextStyle(
+                    fontSize: SizeDefine.fontSizeInputField,
+                    color: Colors.black),
               );
             },
             dropdownButtonProps: IconButtonProps(
@@ -835,7 +1433,8 @@ class DropDownField {
               contentPadding: const EdgeInsets.only(left: 10),
               // labelText: hint,
 
-              labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
+              labelStyle: TextStyle(
+                  fontSize: SizeDefine.labelSize, color: Colors.black),
               border: InputBorder.none,
               // suffixIcon: Icon(
               //   Icons.calendar_today,
@@ -861,8 +1460,14 @@ class DropDownField {
     );
   }
 
-  static Widget simpleDropDownwithWidthRatio1(List<DropDownValue> items, Function(DropDownValue? value) seleceted, String hint, widthRatio, context,
-      String? Function(DropDownValue? value)? validator, selected) {
+  static Widget simpleDropDownwithWidthRatio1(
+      List<DropDownValue> items,
+      Function(DropDownValue? value) seleceted,
+      String hint,
+      widthRatio,
+      context,
+      String? Function(DropDownValue? value)? validator,
+      selected) {
     return Container(
       margin: const EdgeInsets.only(left: 10),
       height: SizeDefine.heightInputField,
@@ -886,7 +1491,8 @@ class DropDownField {
         decoration: InputDecoration(
           contentPadding: const EdgeInsets.only(left: 10),
           labelText: hint,
-          labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
+          labelStyle:
+              TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
           border: InputBorder.none,
           // suffixIcon: Icon(
           //   Icons.calendar_today,
@@ -909,17 +1515,17 @@ class DropDownField {
   }
 
   static Widget formDropDown1(
-      List items,
-      Function callback,
-      String hint, {
-        double? height,
-        SystemEnviroment? selected,
-        String? Function(Object? value)? validator,
-      }) {
+    List items,
+    Function callback,
+    String hint, {
+    double? height,
+    SystemEnviroment? selected,
+    String? Function(Object? value)? validator,
+  }) {
     return Padding(
         padding: const EdgeInsets.only(
-          // left: SizeBox.paddingHorizontal,
-          // right: SizeBox.paddingHorizontal,
+            // left: SizeBox.paddingHorizontal,
+            // right: SizeBox.paddingHorizontal,
             left: 5,
             top: 6.0,
             bottom: 6.0),
@@ -942,7 +1548,8 @@ class DropDownField {
                       value: item,
                       child: Text(
                         item.value,
-                        style: TextStyle(fontSize: SizeDefine.fontSizeInputField),
+                        style:
+                            TextStyle(fontSize: SizeDefine.fontSizeInputField),
                       ));
                 }).toList(),
                 onChanged: (newValue) {
@@ -953,16 +1560,19 @@ class DropDownField {
                 style: TextStyle(fontSize: SizeDefine.fontSizeInputField),
 
                 decoration: InputDecoration(
-                  // labelText: hint,
-                    labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
+                    // labelText: hint,
+                    labelStyle: TextStyle(
+                        fontSize: SizeDefine.labelSize, color: Colors.black),
                     border: InputBorder.none,
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.deepPurpleAccent),
+                      borderSide:
+                          const BorderSide(color: Colors.deepPurpleAccent),
                       borderRadius: BorderRadius.circular(0),
                     ),
                     errorBorder: InputBorder.none,
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.deepPurpleAccent),
+                      borderSide:
+                          const BorderSide(color: Colors.deepPurpleAccent),
                       borderRadius: BorderRadius.circular(0),
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always),
@@ -978,12 +1588,13 @@ class DropDownField {
         ));
   }
 
-  static Widget formDropDown2(List<SystemEnviroment>? items, Function callback, String hint,
+  static Widget formDropDown2(
+      List<SystemEnviroment>? items, Function callback, String hint,
       {double? height, double? widthRatio, DropdownMenuItem? selectedItem}) {
     return Padding(
         padding: const EdgeInsets.only(
-          // left: SizeBox.paddingHorizontal,
-          // right: SizeBox.paddingHorizontal,
+            // left: SizeBox.paddingHorizontal,
+            // right: SizeBox.paddingHorizontal,
             left: 5,
             top: 6.0,
             bottom: 6.0),
@@ -1004,7 +1615,8 @@ class DropDownField {
                       value: item,
                       child: Text(
                         item.value ?? "",
-                        style: TextStyle(fontSize: SizeDefine.fontSizeInputField),
+                        style:
+                            TextStyle(fontSize: SizeDefine.fontSizeInputField),
                         overflow: TextOverflow.ellipsis,
                       ));
                 }).toList(),
@@ -1017,15 +1629,18 @@ class DropDownField {
                 decoration: InputDecoration(
                     labelText: hint,
                     contentPadding: const EdgeInsets.only(left: 8),
-                    labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
+                    labelStyle: TextStyle(
+                        fontSize: SizeDefine.labelSize, color: Colors.black),
                     border: InputBorder.none,
                     errorBorder: InputBorder.none,
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.deepPurpleAccent),
+                      borderSide:
+                          const BorderSide(color: Colors.deepPurpleAccent),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.deepPurpleAccent),
+                      borderSide:
+                          const BorderSide(color: Colors.deepPurpleAccent),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always),
@@ -1042,17 +1657,17 @@ class DropDownField {
   }
 
   static Widget formDropDownSelected(
-      List<SystemEnviroment>? items,
-      Function callback,
-      String hint,
-      SystemEnviroment? value, {
-        double? height,
-        Key? key,
-        double? widthRatio,
-        bool? searchReq,
-        double? paddingLeft,
-        bool? isEnable,
-      }) {
+    List<SystemEnviroment>? items,
+    Function callback,
+    String hint,
+    SystemEnviroment? value, {
+    double? height,
+    Key? key,
+    double? widthRatio,
+    bool? searchReq,
+    double? paddingLeft,
+    bool? isEnable,
+  }) {
     // return Padding(
     //     padding: const EdgeInsets.only(
     //         // left: SizeBox.paddingHorizontal,
@@ -1139,7 +1754,7 @@ class DropDownField {
               return Text(
                 selectedItem == null ? "" : selectedItem.value!,
                 style: TextStyle(
-                  // fontSize: SizeDefine.dropDownFontSize,
+                    // fontSize: SizeDefine.dropDownFontSize,
                     fontSize: SizeDefine.fontSizeInputField,
                     color: Colors.black),
               );
@@ -1150,7 +1765,7 @@ class DropDownField {
                   child: Text(
                     selectedItem == null ? "" : selectedItem.value!,
                     style: TextStyle(
-                      // fontSize: SizeDefine.dropDownFontSize,
+                        // fontSize: SizeDefine.dropDownFontSize,
                         fontSize: SizeDefine.fontSizeInputField,
                         color: Colors.black),
                   ));
@@ -1180,7 +1795,8 @@ class DropDownField {
               style: TextStyle(fontSize: SizeDefine.fontSizeInputField),
               decoration: InputDecoration(
                 hintText: "Search",
-                contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
                 isDense: true,
                 enabledBorder: OutlineInputBorder(
                   borderSide: const BorderSide(color: Colors.deepPurpleAccent),
@@ -1203,7 +1819,8 @@ class DropDownField {
               contentPadding: const EdgeInsets.only(left: 10),
               // labelText: hint,
 
-              labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
+              labelStyle: TextStyle(
+                  fontSize: SizeDefine.labelSize, color: Colors.black),
               border: InputBorder.none,
               // suffixIcon: Icon(
               //   Icons.calendar_today,
@@ -1228,27 +1845,27 @@ class DropDownField {
   }
 
   static Widget formDropDownSearchAPI2(
-      GlobalKey widgetKey,
-      BuildContext context, {
-        required String title,
-        required String url,
-        String parseKeyForValue = "programName",
-        String parseKeyForKey = "programCode",
-        required void Function(DropDownValue) onchanged,
-        DropDownValue? selectedValue,
-        String textFieldHintText = "Search",
-        String hintText = "Select Item",
-        double dialogHeight = 350.0,
-        double? width,
-        bool isEnable = true,
-        bool autoFocus = false,
-        dynamic customInData,
-        double? widthofDialog,
-        FocusNode? inkwellFocus,
-        bool startFromLeft = true,
-        int maxLength = 40,
-        int miniumSearchLength = 2,
-      }) {
+    GlobalKey widgetKey,
+    BuildContext context, {
+    required String title,
+    required String url,
+    String parseKeyForValue = "programName",
+    String parseKeyForKey = "programCode",
+    required void Function(DropDownValue) onchanged,
+    DropDownValue? selectedValue,
+    String textFieldHintText = "Search",
+    String hintText = "Select Item",
+    double dialogHeight = 350.0,
+    double? width,
+    bool isEnable = true,
+    bool autoFocus = false,
+    dynamic customInData,
+    double? widthofDialog,
+    FocusNode? inkwellFocus,
+    bool startFromLeft = true,
+    int maxLength = 40,
+    int miniumSearchLength = 2,
+  }) {
     final textColor = isEnable ? Colors.black : Colors.grey;
     final iconLineColor = isEnable ? Colors.deepPurpleAccent : Colors.grey;
     var items = RxList([]);
@@ -1299,123 +1916,147 @@ class DropDownField {
               onTap: !isEnable
                   ? null
                   : () {
-                String fieldText = "";
-                final RenderBox renderBox = widgetKey.currentContext?.findRenderObject() as RenderBox;
-                final offset = renderBox.localToGlobal(Offset.zero);
-                final top = offset.dy + renderBox.size.height;
-                final left = offset.dx;
-                final right = startFromLeft ? left + renderBox.size.width : offset.dy;
-                final width = renderBox.size.width;
+                      String fieldText = "";
+                      final RenderBox renderBox = widgetKey.currentContext
+                          ?.findRenderObject() as RenderBox;
+                      final offset = renderBox.localToGlobal(Offset.zero);
+                      final top = offset.dy + renderBox.size.height;
+                      final left = offset.dx;
+                      final right = startFromLeft
+                          ? left + renderBox.size.width
+                          : offset.dy;
+                      final width = renderBox.size.width;
 
-                searchData(String value) {
-                  if (value.length >= miniumSearchLength && (!isLoading.value)) {
-                    isLoading.value = true;
-                    getDataFromAPI(value).then((value) {
-                      isLoading.value = false;
-                    });
-                  }
-                }
+                      searchData(String value) {
+                        if (value.length >= miniumSearchLength &&
+                            (!isLoading.value)) {
+                          isLoading.value = true;
+                          getDataFromAPI(value).then((value) {
+                            isLoading.value = false;
+                          });
+                        }
+                      }
 
-                showMenu(
-                  context: context,
-                  useRootNavigator: true,
-                  position: RelativeRect.fromLTRB(left, top, right, 0.0),
-                  constraints: BoxConstraints.expand(
-                    width: widthofDialog ?? width,
-                    height: dialogHeight,
-                  ),
-                  items: [
-                    CustomPopupMenuItem(
-                      textStyle: TextStyle(color: Colors.black, fontSize: SizeDefine.fontSizeInputField),
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        height: dialogHeight - 20,
-                        child: Column(
-                          children: [
-                            /// search
-                            TextFormField(
-                              maxLength: maxLength,
-                              decoration: InputDecoration(
-                                contentPadding: const EdgeInsets.fromLTRB(12.0, 17.0, 20.0, 15.0),
-                                isDense: true,
-                                isCollapsed: true,
-                                hintText: textFieldHintText,
-                                suffixIcon: IconButton(
-                                  padding: EdgeInsets.zero,
-                                  onPressed: () => searchData(fieldText),
-                                  icon: const Icon(Icons.search),
-                                  splashRadius: 15,
-                                ),
-                              ),
-                              style: TextStyle(
-                                fontSize: SizeDefine.fontSizeInputField,
-                              ),
-                              onFieldSubmitted: searchData,
-                              onChanged: (value) => fieldText = value,
-                              autofocus: true,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny("  "),
-                              ],
-                            ),
-
-                            /// progreesbar
-                            Obx(() {
-                              return Visibility(
-                                visible: isLoading.value,
-                                child: const LinearProgressIndicator(
-                                  minHeight: 3,
-                                ),
-                              );
-                            }),
-
-                            const SizedBox(height: 5),
-
-                            /// list
-                            Expanded(
-                              child: Obx(
-                                    () {
-                                  return (msg.value != null && msg.value != "")
-                                      ? Center(
-                                    child: Text(msg.value!),
-                                  )
-                                      : ListView(
-                                    shrinkWrap: true,
-                                    children: items
-                                        .map(
-                                          (element) => InkWell(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          selectedValue = DropDownValue(
-                                            key: element[parseKeyForKey].toString(),
-                                            value: element[parseKeyForValue].toString(),
-                                          );
-                                          re(() {});
-                                          FocusScope.of(context).requestFocus(inkwellFocus);
-                                          onchanged(selectedValue!);
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8),
-                                          child: Text(
-                                            (element[parseKeyForValue] ?? "null").toString(),
-                                            style: TextStyle(
-                                              fontSize: SizeDefine.dropDownFontSize - 1,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                        .toList(),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
+                      showMenu(
+                        context: context,
+                        useRootNavigator: true,
+                        position: RelativeRect.fromLTRB(left, top, right, 0.0),
+                        constraints: BoxConstraints.expand(
+                          width: widthofDialog ?? width,
+                          height: dialogHeight,
                         ),
-                      ),
-                    ),
-                  ],
-                );
-              },
+                        items: [
+                          CustomPopupMenuItem(
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: SizeDefine.fontSizeInputField),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              height: dialogHeight - 20,
+                              child: Column(
+                                children: [
+                                  /// search
+                                  TextFormField(
+                                    maxLength: maxLength,
+                                    decoration: InputDecoration(
+                                      contentPadding: const EdgeInsets.fromLTRB(
+                                          12.0, 17.0, 20.0, 15.0),
+                                      isDense: true,
+                                      isCollapsed: true,
+                                      hintText: textFieldHintText,
+                                      suffixIcon: IconButton(
+                                        padding: EdgeInsets.zero,
+                                        onPressed: () => searchData(fieldText),
+                                        icon: const Icon(Icons.search),
+                                        splashRadius: 15,
+                                      ),
+                                    ),
+                                    style: TextStyle(
+                                      fontSize: SizeDefine.fontSizeInputField,
+                                    ),
+                                    onFieldSubmitted: searchData,
+                                    onChanged: (value) => fieldText = value,
+                                    autofocus: true,
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.deny("  "),
+                                    ],
+                                  ),
+
+                                  /// progreesbar
+                                  Obx(() {
+                                    return Visibility(
+                                      visible: isLoading.value,
+                                      child: const LinearProgressIndicator(
+                                        minHeight: 3,
+                                      ),
+                                    );
+                                  }),
+
+                                  const SizedBox(height: 5),
+
+                                  /// list
+                                  Expanded(
+                                    child: Obx(
+                                      () {
+                                        return (msg.value != null &&
+                                                msg.value != "")
+                                            ? Center(
+                                                child: Text(msg.value!),
+                                              )
+                                            : ListView(
+                                                shrinkWrap: true,
+                                                children: items
+                                                    .map(
+                                                      (element) => InkWell(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                          selectedValue =
+                                                              DropDownValue(
+                                                            key: element[
+                                                                    parseKeyForKey]
+                                                                .toString(),
+                                                            value: element[
+                                                                    parseKeyForValue]
+                                                                .toString(),
+                                                          );
+                                                          re(() {});
+                                                          FocusScope.of(context)
+                                                              .requestFocus(
+                                                                  inkwellFocus);
+                                                          onchanged(
+                                                              selectedValue!);
+                                                        },
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  vertical: 8),
+                                                          child: Text(
+                                                            (element[parseKeyForValue] ??
+                                                                    "null")
+                                                                .toString(),
+                                                            style: TextStyle(
+                                                              fontSize: SizeDefine
+                                                                      .dropDownFontSize -
+                                                                  1,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                    .toList(),
+                                              );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
               child: Builder(builder: (context) {
                 if (inkwellFocus!.hasFocus) {
                   FocusScope.of(context).requestFocus(inkwellFocus);
@@ -1432,20 +2073,20 @@ class DropDownField {
                     children: [
                       Expanded(
                           child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8, right: 4),
-                              child: Text(
-                                (selectedValue?.value ?? ""),
-                                style: TextStyle(
-                                  fontSize: SizeDefine.fontSizeInputField,
-                                  color: textColor,
-                                ),
-                                maxLines: 1,
-                                textAlign: TextAlign.start,
-                              ),
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.only(left: 8, right: 4),
+                          child: Text(
+                            (selectedValue?.value ?? ""),
+                            style: TextStyle(
+                              fontSize: SizeDefine.fontSizeInputField,
+                              color: textColor,
                             ),
-                          )),
+                            maxLines: 1,
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      )),
                       Icon(
                         Icons.arrow_drop_down,
                         color: iconLineColor,
@@ -1528,15 +2169,18 @@ class DropDownField {
                   controller: textCtr,
                   decoration: InputDecoration(
                     hintText: "Search",
-                    contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 12),
                     isDense: true,
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.deepPurpleAccent),
+                      borderSide:
+                          const BorderSide(color: Colors.deepPurpleAccent),
                       borderRadius: BorderRadius.circular(0),
                     ),
                     errorBorder: InputBorder.none,
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.deepPurpleAccent),
+                      borderSide:
+                          const BorderSide(color: Colors.deepPurpleAccent),
                       borderRadius: BorderRadius.circular(0),
                     ),
                   ),
@@ -1568,7 +2212,9 @@ class DropDownField {
                     padding: EdgeInsets.symmetric(vertical: 5, horizontal: 16),
                     child: Text(
                       selectedItem[parseKeyForTitle] ?? hintText,
-                      style: TextStyle(fontSize: SizeDefine.dropDownFontSize, color: Colors.black),
+                      style: TextStyle(
+                          fontSize: SizeDefine.dropDownFontSize,
+                          color: Colors.black),
                     ),
                   );
                 },
@@ -1592,28 +2238,29 @@ class DropDownField {
   }
 
   static Widget formDropDown1Width(
-      BuildContext buildcontext,
-      List<SystemEnviroment>? items,
-      Function callback,
-      String hint,
-      double widthRatio, {
-        double? height,
-        double? paddingLeft,
-        double? paddingTop,
-        // FocusNode? focusNode,
-        double? paddingBottom,
-        SystemEnviroment? selected,
-        bool? isEnable,
-        bool? searchReq,
-        bool autoFocus = false,
-        double dialogHeight = 350,
-        double? dialogWidth,
-      }) {
+    BuildContext buildcontext,
+    List<SystemEnviroment>? items,
+    Function callback,
+    String hint,
+    double widthRatio, {
+    double? height,
+    double? paddingLeft,
+    double? paddingTop,
+    // FocusNode? focusNode,
+    double? paddingBottom,
+    SystemEnviroment? selected,
+    bool? isEnable,
+    bool? searchReq,
+    bool autoFocus = false,
+    double dialogHeight = 350,
+    double? dialogWidth,
+  }) {
     isEnable ??= true;
     final widgetKey = GlobalKey();
     final textColor = (isEnable) ? Colors.black : Colors.grey;
     final iconLineColor = (isEnable) ? Colors.deepPurpleAccent : Colors.grey;
-    FocusNode inkwellFocus = FocusNode(descendantsAreFocusable: false, descendantsAreTraversable: false);
+    FocusNode inkwellFocus = FocusNode(
+        descendantsAreFocusable: false, descendantsAreTraversable: false);
     return Column(
       key: widgetKey,
       mainAxisSize: MainAxisSize.min,
@@ -1636,109 +2283,123 @@ class DropDownField {
               onTap: !isEnable!
                   ? null
                   : () {
-                if ((items == null || items.isEmpty)) {
-                  return;
-                }
-                // var isLoading = RxBool(false);
-                var tempList = RxList<SystemEnviroment>([]);
-                tempList.addAll(items);
-                final width = (widgetKey.currentContext?.size?.width ?? 200);
-                final height = (widgetKey.currentContext?.size?.height ?? 200);
-                var box = widgetKey.currentContext!.findRenderObject() as RenderBox;
-                var startpoints = box.localToGlobal(Offset(0, height));
-                showMenu(
-                  context: context,
-                  position: RelativeRect.fromSize((startpoints & const Size(0, 0)), Get.size),
-                  constraints: BoxConstraints.expand(
-                    width: dialogWidth ?? width,
-                    height: dialogHeight,
-                  ),
-                  items: [
-                    CustomPopupMenuItem(
-                      textStyle: TextStyle(color: Colors.black, fontSize: SizeDefine.fontSizeInputField),
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        height: dialogHeight - 20,
-                        child: Column(
-                          children: [
-                            /// search
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.all(12),
-                                isDense: true,
-                                isCollapsed: true,
-                                hintText: "Search",
-                              ),
-                              autofocus: true,
-                              style: TextStyle(
-                                fontSize: SizeDefine.fontSizeInputField,
-                              ),
-                              onChanged: ((value) {
-                                if (value.isNotEmpty) {
-                                  tempList.clear();
-                                  for (var i = 0; i < items.length; i++) {
-                                    if (items[i].value!.toLowerCase().contains(value.toLowerCase())) {
-                                      tempList.add(items[i]);
-                                    }
-                                  }
-                                }
-                              }),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny("  "),
-                              ],
-                            ),
-
-                            /// progreesbar
-                            // Obx(() {
-                            //   return Visibility(
-                            //     visible: isLoading.value,
-                            //     child: const LinearProgressIndicator(
-                            //       minHeight: 3,
-                            //     ),
-                            //   );
-                            // }),
-
-                            const SizedBox(height: 5),
-
-                            /// list
-                            Expanded(
-                              child: Obx(
-                                    () {
-                                  return ListView(
-                                    shrinkWrap: true,
-                                    children: tempList
-                                        .map(
-                                          (element) => InkWell(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          selected = element;
-                                          callback(element);
-                                          re(() {});
-                                          FocusScope.of(context).requestFocus(inkwellFocus);
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8),
-                                          child: Text(
-                                            element.value ?? "null",
-                                            style: TextStyle(
-                                              fontSize: SizeDefine.dropDownFontSize - 1,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                        .toList(),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
+                      if ((items == null || items.isEmpty)) {
+                        return;
+                      }
+                      // var isLoading = RxBool(false);
+                      var tempList = RxList<SystemEnviroment>([]);
+                      tempList.addAll(items);
+                      final width =
+                          (widgetKey.currentContext?.size?.width ?? 200);
+                      final height =
+                          (widgetKey.currentContext?.size?.height ?? 200);
+                      var box = widgetKey.currentContext!.findRenderObject()
+                          as RenderBox;
+                      var startpoints = box.localToGlobal(Offset(0, height));
+                      showMenu(
+                        context: context,
+                        position: RelativeRect.fromSize(
+                            (startpoints & const Size(0, 0)), Get.size),
+                        constraints: BoxConstraints.expand(
+                          width: dialogWidth ?? width,
+                          height: dialogHeight,
                         ),
-                      ),
-                    ),
-                  ],
-                );
-              },
+                        items: [
+                          CustomPopupMenuItem(
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: SizeDefine.fontSizeInputField),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              height: dialogHeight - 20,
+                              child: Column(
+                                children: [
+                                  /// search
+                                  TextFormField(
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.all(12),
+                                      isDense: true,
+                                      isCollapsed: true,
+                                      hintText: "Search",
+                                    ),
+                                    autofocus: true,
+                                    style: TextStyle(
+                                      fontSize: SizeDefine.fontSizeInputField,
+                                    ),
+                                    onChanged: ((value) {
+                                      if (value.isNotEmpty) {
+                                        tempList.clear();
+                                        for (var i = 0; i < items.length; i++) {
+                                          if (items[i]
+                                              .value!
+                                              .toLowerCase()
+                                              .contains(value.toLowerCase())) {
+                                            tempList.add(items[i]);
+                                          }
+                                        }
+                                      }
+                                    }),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.deny("  "),
+                                    ],
+                                  ),
+
+                                  /// progreesbar
+                                  // Obx(() {
+                                  //   return Visibility(
+                                  //     visible: isLoading.value,
+                                  //     child: const LinearProgressIndicator(
+                                  //       minHeight: 3,
+                                  //     ),
+                                  //   );
+                                  // }),
+
+                                  const SizedBox(height: 5),
+
+                                  /// list
+                                  Expanded(
+                                    child: Obx(
+                                      () {
+                                        return ListView(
+                                          shrinkWrap: true,
+                                          children: tempList
+                                              .map(
+                                                (element) => InkWell(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                    selected = element;
+                                                    callback(element);
+                                                    re(() {});
+                                                    FocusScope.of(context)
+                                                        .requestFocus(
+                                                            inkwellFocus);
+                                                  },
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 8),
+                                                    child: Text(
+                                                      element.value ?? "null",
+                                                      style: TextStyle(
+                                                        fontSize: SizeDefine
+                                                                .dropDownFontSize -
+                                                            1,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList(),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
               child: Container(
                 width: Get.width * widthRatio,
                 height: SizeDefine.heightInputField,
@@ -1751,20 +2412,20 @@ class DropDownField {
                   children: [
                     Expanded(
                         child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 4),
-                            child: Text(
-                              (selected?.value ?? ""),
-                              style: TextStyle(
-                                fontSize: SizeDefine.fontSizeInputField,
-                                color: textColor,
-                              ),
-                              maxLines: 1,
-                              textAlign: TextAlign.start,
-                            ),
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 4),
+                        child: Text(
+                          (selected?.value ?? ""),
+                          style: TextStyle(
+                            fontSize: SizeDefine.fontSizeInputField,
+                            color: textColor,
                           ),
-                        )),
+                          maxLines: 1,
+                          textAlign: TextAlign.start,
+                        ),
+                      ),
+                    )),
                     Icon(
                       Icons.arrow_drop_down,
                       color: iconLineColor,
@@ -1981,28 +2642,29 @@ class DropDownField {
   }
 
   static Widget formDropDown22Width(
-      BuildContext buildcontext,
-      List<SystemEnviroment>? items,
-      Function callback,
-      String hint,
-      double widthRatio, {
-        double? height,
-        double? paddingLeft,
-        double? paddingTop,
-        // FocusNode? focusNode,
-        double? paddingBottom,
-        Rxn<SystemEnviroment>? selected,
-        bool? isEnable,
-        bool? searchReq,
-        bool autoFocus = false,
-        double dialogHeight = 350,
-        double? widthofDialog,
-      }) {
+    BuildContext buildcontext,
+    List<SystemEnviroment>? items,
+    Function callback,
+    String hint,
+    double widthRatio, {
+    double? height,
+    double? paddingLeft,
+    double? paddingTop,
+    // FocusNode? focusNode,
+    double? paddingBottom,
+    Rxn<SystemEnviroment>? selected,
+    bool? isEnable,
+    bool? searchReq,
+    bool autoFocus = false,
+    double dialogHeight = 350,
+    double? widthofDialog,
+  }) {
     isEnable ??= true;
     final widgetKey = GlobalKey();
     final textColor = (isEnable) ? Colors.black : Colors.grey;
     final iconLineColor = (isEnable) ? Colors.deepPurpleAccent : Colors.grey;
-    FocusNode inkwellFocus = FocusNode(descendantsAreFocusable: false, descendantsAreTraversable: false);
+    FocusNode inkwellFocus = FocusNode(
+        descendantsAreFocusable: false, descendantsAreTraversable: false);
     return Column(
       key: widgetKey,
       mainAxisSize: MainAxisSize.min,
@@ -2025,132 +2687,143 @@ class DropDownField {
               onTap: !isEnable!
                   ? null
                   : () {
-                if ((items == null || items.isEmpty)) {
-                  return;
-                }
-                // var isLoading = RxBool(false);
-                var tempList = RxList<SystemEnviroment>([]);
-                tempList.addAll(items);
-                // final width =
-                //     (widgetKey.currentContext?.size?.width ?? 200);
-                // final height =
-                //     (widgetKey.currentContext?.size?.height ?? 200);
-                // var box = widgetKey.currentContext!.findRenderObject()
-                //     as RenderBox;
-                // var startpoints = box.localToGlobal(Offset(0, height));
+                      if ((items == null || items.isEmpty)) {
+                        return;
+                      }
+                      // var isLoading = RxBool(false);
+                      var tempList = RxList<SystemEnviroment>([]);
+                      tempList.addAll(items);
+                      // final width =
+                      //     (widgetKey.currentContext?.size?.width ?? 200);
+                      // final height =
+                      //     (widgetKey.currentContext?.size?.height ?? 200);
+                      // var box = widgetKey.currentContext!.findRenderObject()
+                      //     as RenderBox;
+                      // var startpoints = box.localToGlobal(Offset(0, height));
 
-                // final width =
-                //     (widgetKey.currentContext?.size?.width ?? 200);
-                // final height =
-                //     (widgetKey.currentContext?.size?.height ?? 200);
-                // var box = widgetKey.currentContext!.findRenderObject()
-                //     as RenderBox;
-                // var startpoints = box.localToGlobal(Offset(0, height));
-                //*get the render box from the context
-                final RenderBox renderBox = context.findRenderObject() as RenderBox;
-                //*get the global position, from the widget local position
-                final offset = renderBox.localToGlobal(Offset.zero);
-                //*calculate the start point in this case, below the button
-                final left = offset.dx;
-                final top = offset.dy + renderBox.size.height;
-                //*The right does not indicates the width
-                final right = left + renderBox.size.width;
-                final width = renderBox.size.width;
-                showMenu(
-                  context: context,
-                  position: RelativeRect.fromLTRB(left, top, right, 0.0),
-                  //  RelativeRect.fromSize(
-                  //     (startpoints & const Size(0, 0)), Get.size),
-                  constraints: BoxConstraints.expand(
-                    width: widthofDialog ?? width,
-                    height: dialogHeight,
-                  ),
-                  items: [
-                    CustomPopupMenuItem(
-                      textStyle: TextStyle(color: Colors.black, fontSize: SizeDefine.fontSizeInputField),
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        height: dialogHeight - 20,
-                        child: Column(
-                          children: [
-                            /// search
-                            TextFormField(
-                              decoration: const InputDecoration(
-                                contentPadding: EdgeInsets.all(12),
-                                isDense: true,
-                                isCollapsed: true,
-                                hintText: "Search",
-                              ),
-                              autofocus: true,
-                              style: TextStyle(
-                                fontSize: SizeDefine.fontSizeInputField,
-                              ),
-                              onChanged: ((value) {
-                                if (value.isNotEmpty) {
-                                  tempList.clear();
-                                  for (var i = 0; i < items.length; i++) {
-                                    if (items[i].value!.toLowerCase().contains(value.toLowerCase())) {
-                                      tempList.add(items[i]);
-                                    }
-                                  }
-                                }
-                              }),
-                              inputFormatters: [
-                                FilteringTextInputFormatter.deny("  "),
-                              ],
-                            ),
-
-                            /// progreesbar
-                            // Obx(() {
-                            //   return Visibility(
-                            //     visible: isLoading.value,
-                            //     child: const LinearProgressIndicator(
-                            //       minHeight: 3,
-                            //     ),
-                            //   );
-                            // }),
-
-                            const SizedBox(height: 5),
-
-                            /// list
-                            Expanded(
-                              child: Obx(
-                                    () {
-                                  return ListView(
-                                    shrinkWrap: true,
-                                    children: tempList
-                                        .map(
-                                          (element) => InkWell(
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                          selected?.value = element;
-                                          callback(element);
-                                          re(() {});
-                                          FocusScope.of(context).requestFocus(inkwellFocus);
-                                        },
-                                        child: Padding(
-                                          padding: const EdgeInsets.symmetric(vertical: 8),
-                                          child: Text(
-                                            element.value ?? "null",
-                                            style: TextStyle(
-                                              fontSize: SizeDefine.dropDownFontSize - 1,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    )
-                                        .toList(),
-                                  );
-                                },
-                              ),
-                            ),
-                          ],
+                      // final width =
+                      //     (widgetKey.currentContext?.size?.width ?? 200);
+                      // final height =
+                      //     (widgetKey.currentContext?.size?.height ?? 200);
+                      // var box = widgetKey.currentContext!.findRenderObject()
+                      //     as RenderBox;
+                      // var startpoints = box.localToGlobal(Offset(0, height));
+                      //*get the render box from the context
+                      final RenderBox renderBox =
+                          context.findRenderObject() as RenderBox;
+                      //*get the global position, from the widget local position
+                      final offset = renderBox.localToGlobal(Offset.zero);
+                      //*calculate the start point in this case, below the button
+                      final left = offset.dx;
+                      final top = offset.dy + renderBox.size.height;
+                      //*The right does not indicates the width
+                      final right = left + renderBox.size.width;
+                      final width = renderBox.size.width;
+                      showMenu(
+                        context: context,
+                        position: RelativeRect.fromLTRB(left, top, right, 0.0),
+                        //  RelativeRect.fromSize(
+                        //     (startpoints & const Size(0, 0)), Get.size),
+                        constraints: BoxConstraints.expand(
+                          width: widthofDialog ?? width,
+                          height: dialogHeight,
                         ),
-                      ),
-                    ),
-                  ],
-                );
-              },
+                        items: [
+                          CustomPopupMenuItem(
+                            textStyle: TextStyle(
+                                color: Colors.black,
+                                fontSize: SizeDefine.fontSizeInputField),
+                            child: Container(
+                              padding: const EdgeInsets.all(8),
+                              height: dialogHeight - 20,
+                              child: Column(
+                                children: [
+                                  /// search
+                                  TextFormField(
+                                    decoration: const InputDecoration(
+                                      contentPadding: EdgeInsets.all(12),
+                                      isDense: true,
+                                      isCollapsed: true,
+                                      hintText: "Search",
+                                    ),
+                                    autofocus: true,
+                                    style: TextStyle(
+                                      fontSize: SizeDefine.fontSizeInputField,
+                                    ),
+                                    onChanged: ((value) {
+                                      if (value.isNotEmpty) {
+                                        tempList.clear();
+                                        for (var i = 0; i < items.length; i++) {
+                                          if (items[i]
+                                              .value!
+                                              .toLowerCase()
+                                              .contains(value.toLowerCase())) {
+                                            tempList.add(items[i]);
+                                          }
+                                        }
+                                      }
+                                    }),
+                                    inputFormatters: [
+                                      FilteringTextInputFormatter.deny("  "),
+                                    ],
+                                  ),
+
+                                  /// progreesbar
+                                  // Obx(() {
+                                  //   return Visibility(
+                                  //     visible: isLoading.value,
+                                  //     child: const LinearProgressIndicator(
+                                  //       minHeight: 3,
+                                  //     ),
+                                  //   );
+                                  // }),
+
+                                  const SizedBox(height: 5),
+
+                                  /// list
+                                  Expanded(
+                                    child: Obx(
+                                      () {
+                                        return ListView(
+                                          shrinkWrap: true,
+                                          children: tempList
+                                              .map(
+                                                (element) => InkWell(
+                                                  onTap: () {
+                                                    Navigator.pop(context);
+                                                    selected?.value = element;
+                                                    callback(element);
+                                                    re(() {});
+                                                    FocusScope.of(context)
+                                                        .requestFocus(
+                                                            inkwellFocus);
+                                                  },
+                                                  child: Padding(
+                                                    padding: const EdgeInsets
+                                                        .symmetric(vertical: 8),
+                                                    child: Text(
+                                                      element.value ?? "null",
+                                                      style: TextStyle(
+                                                        fontSize: SizeDefine
+                                                                .dropDownFontSize -
+                                                            1,
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                              .toList(),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    },
               child: Container(
                 width: Get.width * widthRatio,
                 height: SizeDefine.heightInputField,
@@ -2163,22 +2836,22 @@ class DropDownField {
                   children: [
                     Expanded(
                         child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8, right: 4),
-                            child: Obx(() {
-                              return Text(
-                                selected?.value?.value ?? "",
-                                style: TextStyle(
-                                  fontSize: SizeDefine.fontSizeInputField,
-                                  color: textColor,
-                                ),
-                                maxLines: 1,
-                                textAlign: TextAlign.start,
-                              );
-                            }),
-                          ),
-                        )),
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 8, right: 4),
+                        child: Obx(() {
+                          return Text(
+                            selected?.value?.value ?? "",
+                            style: TextStyle(
+                              fontSize: SizeDefine.fontSizeInputField,
+                              color: textColor,
+                            ),
+                            maxLines: 1,
+                            textAlign: TextAlign.start,
+                          );
+                        }),
+                      ),
+                    )),
                     Icon(
                       Icons.arrow_drop_down,
                       color: iconLineColor,
@@ -2394,13 +3067,18 @@ class DropDownField {
     // });
   }
 
-  static Widget formDropDown2Width(List? items, Function? callback, String hint, double widthRatio,
-      {double? height, double? paddingLeft, double? paddingTop, double? paddingBottom, SystemEnviroment? selected}) {
+  static Widget formDropDown2Width(
+      List? items, Function? callback, String hint, double widthRatio,
+      {double? height,
+      double? paddingLeft,
+      double? paddingTop,
+      double? paddingBottom,
+      SystemEnviroment? selected}) {
     // FocusNode focusNode = FocusNode();
     return Padding(
         padding: EdgeInsets.only(
-          // left: SizeBox.paddingHorizontal,
-          // right: SizeBox.paddingHorizontal,
+            // left: SizeBox.paddingHorizontal,
+            // right: SizeBox.paddingHorizontal,
             left: paddingLeft ?? 5,
             top: paddingTop ?? 6.0,
             bottom: paddingBottom ?? 6.0),
@@ -2422,21 +3100,23 @@ class DropDownField {
                       value: item,
                       child: Text(
                         item.value!,
-                        style: TextStyle(fontSize: SizeDefine.fontSizeInputField),
+                        style:
+                            TextStyle(fontSize: SizeDefine.fontSizeInputField),
                       ));
                 }).toList(),
                 onChanged: (callback != null)
                     ? (val) {
-                  callback(val);
-                  // FocusScope.of(Get.context!).requestFocus(focusNode);
-                }
+                        callback(val);
+                        // FocusScope.of(Get.context!).requestFocus(focusNode);
+                      }
                     : null,
                 value: selected ?? null,
                 style: TextStyle(fontSize: SizeDefine.fontSizeInputField),
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(left: 10, right: 5),
                     // labelText: hint,
-                    labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
+                    labelStyle: TextStyle(
+                        fontSize: SizeDefine.labelSize, color: Colors.black),
                     border: InputBorder.none,
                     // suffixIcon: Icon(
                     //   Icons.calendar_today,
@@ -2444,11 +3124,13 @@ class DropDownField {
                     //   color: Colors.deepPurpleAccent,
                     // ),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.deepPurpleAccent),
+                      borderSide:
+                          const BorderSide(color: Colors.deepPurpleAccent),
                       borderRadius: BorderRadius.circular(0),
                     ),
                     focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.deepPurpleAccent),
+                      borderSide:
+                          const BorderSide(color: Colors.deepPurpleAccent),
                       borderRadius: BorderRadius.circular(0),
                     ),
                     floatingLabelBehavior: FloatingLabelBehavior.always),
@@ -2465,25 +3147,25 @@ class DropDownField {
   }
 
   static Widget formDropDown1WidthMap(
-      List<DropDownValue>? items,
-      Function(DropDownValue) callback,
-      String hint,
-      double widthRatio, {
-        double? height,
-        double? paddingBottom,
-        DropDownValue? selected,
-        bool? isEnable,
-        String? Function(DropDownValue? value)? validator,
-        bool? searchReq,
-        bool autoFocus = false,
-        double dialogHeight = 350,
-        void Function(bool)? onFocusChange,
-        double? dialogWidth,
-        FocusNode? inkWellFocusNode,
-        GlobalKey? widgetKey,
-        bool showtitle = true,
-        bool titleInLeft = false,
-      }) {
+    List<DropDownValue>? items,
+    Function(DropDownValue) callback,
+    String hint,
+    double widthRatio, {
+    double? height,
+    double? paddingBottom,
+    DropDownValue? selected,
+    bool? isEnable,
+    String? Function(DropDownValue? value)? validator,
+    bool? searchReq,
+    bool autoFocus = false,
+    double dialogHeight = 350,
+    void Function(bool)? onFocusChange,
+    double? dialogWidth,
+    FocusNode? inkWellFocusNode,
+    GlobalKey? widgetKey,
+    bool showtitle = true,
+    bool titleInLeft = false,
+  }) {
     isEnable ??= true;
     widgetKey ??= GlobalKey();
     final textColor = (isEnable) ? Colors.black : Colors.grey;
@@ -2522,8 +3204,8 @@ class DropDownField {
                 const SizedBox(width: 10),
               },
               InkWell(
-                // key: widgetKey,
-                // key: titleInLeft ? widgetKey : null,
+                  // key: widgetKey,
+                  // key: titleInLeft ? widgetKey : null,
                   autofocus: autoFocus,
                   focusNode: inkWellFocusNode,
                   canRequestFocus: (isEnable ?? true),
@@ -2531,130 +3213,153 @@ class DropDownField {
                   onTap: (!isEnable!)
                       ? null
                       : () {
-                    var isLoading = RxBool(false);
+                          var isLoading = RxBool(false);
 
-                    final RenderBox renderBox = widgetKey!.currentContext?.findRenderObject() as RenderBox;
-                    final offset = renderBox.localToGlobal(Offset.zero);
-                    final left = offset.dx;
-                    final top = offset.dy + renderBox.size.height;
-                    final right = left + renderBox.size.width;
-                    final width = renderBox.size.width;
-                    if ((items == null || items.isEmpty)) {
-                      showMenu(
-                          context: context,
-                          useRootNavigator: true,
-                          position: RelativeRect.fromLTRB(left, top, right, 0.0),
-                          constraints: BoxConstraints.expand(
-                            width: dialogWidth ?? width,
-                            height: 120,
-                          ),
-                          items: [
-                            PopupMenuItem(
-                                child: Text(
-                                  "No Record Found",
-                                  style: TextStyle(
-                                    fontSize: SizeDefine.dropDownFontSize - 1,
-                                  ),
-                                ))
-                          ]);
-                    } else {
-                      var tempList = RxList<DropDownValue>([]);
-                      tempList.addAll(items);
-                      showMenu(
-                        context: context,
-                        useRootNavigator: true,
-                        position: RelativeRect.fromLTRB(left, top, right, 0.0),
-                        constraints: BoxConstraints.expand(
-                          width: dialogWidth ?? width,
-                          height: dialogHeight,
-                        ),
-                        items: [
-                          CustomPopupMenuItem(
-                            textStyle: TextStyle(color: Colors.black, fontSize: SizeDefine.fontSizeInputField),
-                            child: Container(
-                              padding: const EdgeInsets.all(8),
-                              height: dialogHeight - 20,
-                              child: Column(
-                                children: [
-                                  /// search
-                                  TextFormField(
-                                    decoration: const InputDecoration(
-                                      contentPadding: EdgeInsets.all(12),
-                                      isDense: true,
-                                      isCollapsed: true,
-                                      hintText: "Search",
-                                    ),
-                                    autofocus: true,
+                          final RenderBox renderBox = widgetKey!.currentContext
+                              ?.findRenderObject() as RenderBox;
+                          final offset = renderBox.localToGlobal(Offset.zero);
+                          final left = offset.dx;
+                          final top = offset.dy + renderBox.size.height;
+                          final right = left + renderBox.size.width;
+                          final width = renderBox.size.width;
+                          if ((items == null || items.isEmpty)) {
+                            showMenu(
+                                context: context,
+                                useRootNavigator: true,
+                                position: RelativeRect.fromLTRB(
+                                    left, top, right, 0.0),
+                                constraints: BoxConstraints.expand(
+                                  width: dialogWidth ?? width,
+                                  height: 120,
+                                ),
+                                items: [
+                                  PopupMenuItem(
+                                      child: Text(
+                                    "No Record Found",
                                     style: TextStyle(
-                                      fontSize: SizeDefine.fontSizeInputField,
+                                      fontSize: SizeDefine.dropDownFontSize - 1,
                                     ),
-                                    onChanged: ((value) {
-                                      if (value.isNotEmpty) {
-                                        tempList.clear();
-                                        for (var i = 0; i < items.length; i++) {
-                                          if (items[i].value!.toLowerCase().contains(value.toLowerCase())) {
-                                            tempList.add(items[i]);
-                                          }
-                                        }
-                                      }
-                                    }),
-                                    inputFormatters: [
-                                      FilteringTextInputFormatter.deny("  "),
-                                    ],
-                                  ),
-
-                                  /// progreesbar
-                                  Obx(() {
-                                    return Visibility(
-                                      visible: isLoading.value,
-                                      child: const LinearProgressIndicator(
-                                        minHeight: 3,
-                                      ),
-                                    );
-                                  }),
-
-                                  const SizedBox(height: 5),
-
-                                  /// list
-                                  Expanded(
-                                    child: Obx(
-                                          () {
-                                        return ListView(
-                                          shrinkWrap: true,
-                                          children: tempList
-                                              .map(
-                                                (element) => InkWell(
-                                              onTap: () {
-                                                Navigator.pop(context);
-                                                selected = element;
-                                                re(() {});
-                                                callback(element);
-                                                FocusScope.of(context).requestFocus(inkWellFocusNode);
-                                              },
-                                              child: Padding(
-                                                padding: const EdgeInsets.symmetric(vertical: 8),
-                                                child: Text(
-                                                  element.value ?? "null",
-                                                  style: TextStyle(
-                                                    fontSize: SizeDefine.dropDownFontSize - 1,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          )
-                                              .toList(),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                ],
+                                  ))
+                                ]);
+                          } else {
+                            var tempList = RxList<DropDownValue>([]);
+                            tempList.addAll(items);
+                            showMenu(
+                              context: context,
+                              useRootNavigator: true,
+                              position:
+                                  RelativeRect.fromLTRB(left, top, right, 0.0),
+                              constraints: BoxConstraints.expand(
+                                width: dialogWidth ?? width,
+                                height: dialogHeight,
                               ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }
-                  },
+                              items: [
+                                CustomPopupMenuItem(
+                                  textStyle: TextStyle(
+                                      color: Colors.black,
+                                      fontSize: SizeDefine.fontSizeInputField),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(8),
+                                    height: dialogHeight - 20,
+                                    child: Column(
+                                      children: [
+                                        /// search
+                                        TextFormField(
+                                          decoration: const InputDecoration(
+                                            contentPadding: EdgeInsets.all(12),
+                                            isDense: true,
+                                            isCollapsed: true,
+                                            hintText: "Search",
+                                          ),
+                                          autofocus: true,
+                                          style: TextStyle(
+                                            fontSize:
+                                                SizeDefine.fontSizeInputField,
+                                          ),
+                                          onChanged: ((value) {
+                                            if (value.isNotEmpty) {
+                                              tempList.clear();
+                                              for (var i = 0;
+                                                  i < items.length;
+                                                  i++) {
+                                                if (items[i]
+                                                    .value!
+                                                    .toLowerCase()
+                                                    .contains(
+                                                        value.toLowerCase())) {
+                                                  tempList.add(items[i]);
+                                                }
+                                              }
+                                            }
+                                          }),
+                                          inputFormatters: [
+                                            FilteringTextInputFormatter.deny(
+                                                "  "),
+                                          ],
+                                        ),
+
+                                        /// progreesbar
+                                        Obx(() {
+                                          return Visibility(
+                                            visible: isLoading.value,
+                                            child:
+                                                const LinearProgressIndicator(
+                                              minHeight: 3,
+                                            ),
+                                          );
+                                        }),
+
+                                        const SizedBox(height: 5),
+
+                                        /// list
+                                        Expanded(
+                                          child: Obx(
+                                            () {
+                                              return ListView(
+                                                shrinkWrap: true,
+                                                children: tempList
+                                                    .map(
+                                                      (element) => InkWell(
+                                                        onTap: () {
+                                                          Navigator.pop(
+                                                              context);
+                                                          selected = element;
+                                                          re(() {});
+                                                          callback(element);
+                                                          FocusScope.of(context)
+                                                              .requestFocus(
+                                                                  inkWellFocusNode);
+                                                        },
+                                                        child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .symmetric(
+                                                                  vertical: 8),
+                                                          child: Text(
+                                                            element.value ??
+                                                                "null",
+                                                            style: TextStyle(
+                                                              fontSize: SizeDefine
+                                                                      .dropDownFontSize -
+                                                                  1,
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    )
+                                                    .toList(),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          }
+                        },
                   child: Container(
                     key: widgetKey,
                     width: Get.width * widthRatio,
@@ -2669,20 +3374,23 @@ class DropDownField {
                       children: [
                         Expanded(
                             child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: Padding(
-                                padding: const EdgeInsets.only(left: 8, right: 4),
-                                child: Text(
-                                  (selected?.value ?? (items!.isEmpty && showNoRecord ? "NO Record Found" : "")),
-                                  style: TextStyle(
-                                    fontSize: SizeDefine.fontSizeInputField,
-                                    color: textColor,
-                                  ),
-                                  maxLines: 1,
-                                  textAlign: TextAlign.start,
-                                ),
+                          alignment: Alignment.centerLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 8, right: 4),
+                            child: Text(
+                              (selected?.value ??
+                                  (items!.isEmpty && showNoRecord
+                                      ? "NO Record Found"
+                                      : "")),
+                              style: TextStyle(
+                                fontSize: SizeDefine.fontSizeInputField,
+                                color: textColor,
                               ),
-                            )),
+                              maxLines: 1,
+                              textAlign: TextAlign.start,
+                            ),
+                          ),
+                        )),
                         Icon(
                           Icons.arrow_drop_down,
                           color: iconLineColor,
@@ -2838,19 +3546,19 @@ class DropDownField {
   }
 
   static Widget formDropDownDisableWidth(
-      List? items,
-      String hint,
-      double widthRatio, {
-        required String selected,
-        double? height,
-        double? paddingLeft,
-        double? paddingTop,
-        double? paddingBottom,
-      }) {
+    List? items,
+    String hint,
+    double widthRatio, {
+    required String selected,
+    double? height,
+    double? paddingLeft,
+    double? paddingTop,
+    double? paddingBottom,
+  }) {
     return Padding(
         padding: EdgeInsets.only(
-          // left: SizeBox.paddingHorizontal,
-          // right: SizeBox.paddingHorizontal,
+            // left: SizeBox.paddingHorizontal,
+            // right: SizeBox.paddingHorizontal,
             left: paddingLeft ?? 5,
             top: paddingTop ?? 6.0,
             bottom: paddingBottom ?? 6.0),
@@ -2872,7 +3580,8 @@ class DropDownField {
                       value: item,
                       child: Text(
                         item.value!,
-                        style: TextStyle(fontSize: SizeDefine.fontSizeInputField),
+                        style:
+                            TextStyle(fontSize: SizeDefine.fontSizeInputField),
                       ));
                 }).toList(),
                 onChanged: null,
@@ -2881,7 +3590,8 @@ class DropDownField {
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.only(left: 10, right: 5),
                     // labelText: hint,
-                    labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.grey),
+                    labelStyle: TextStyle(
+                        fontSize: SizeDefine.labelSize, color: Colors.grey),
                     border: InputBorder.none,
                     // suffixIcon: Icon(
                     //   Icons.calendar_today,
