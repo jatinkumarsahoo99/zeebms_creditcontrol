@@ -1,13 +1,18 @@
 import 'package:bms_creditcontrol/app/controller/MainController.dart';
 import 'package:bms_creditcontrol/app/modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
+import 'package:bms_creditcontrol/app/modules/ClientGroupMaster/views/client_group_master_view.dart';
 import 'package:bms_creditcontrol/app/modules/ComboDealEntry/views/combo_deal_entry_view.dart';
 import 'package:bms_creditcontrol/app/modules/ReadytoBills/views/readyto_bills_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
+import '../modules/ClearSecondarySpots/views/clear_secondary_spots_view.dart';
 import '../modules/CompanyMaster/views/company_master_view.dart';
+import '../modules/CreditRateMaster/views/credit_rate_master_view.dart';
 import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
+import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
+import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
 
@@ -51,6 +56,21 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.READYTO_BILLS:
               currentWidget = ReadytoBillsView();
+              break;
+            case Routes.UNDO_CANCELATION:
+              currentWidget = UndoCancelationView();
+              break;
+            case Routes.CLEAR_SECONDARY_SPOTS:
+              currentWidget = ClearSecondarySpotsView();
+              break;
+            case Routes.CLIENT_GROUP_MASTER:
+              currentWidget = ClientGroupMasterView();
+              break;
+            case Routes.CREDIT_RATE_MASTER:
+              currentWidget = CreditRateMasterView();
+              break;
+            case Routes.PAYROUTE_CATEGORY_MASTER:
+              currentWidget = PayrouteCategoryMasterView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
