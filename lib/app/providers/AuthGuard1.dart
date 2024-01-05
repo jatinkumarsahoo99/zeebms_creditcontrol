@@ -6,12 +6,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
+import '../modules/AgencyGroupMaster/views/agency_group_master_view.dart';
 import '../modules/AgencyMaster/views/agency_master_view.dart';
 import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
 import '../modules/ClientEmbargo/views/client_embargo_view.dart';
+import '../modules/GSTPlantInfo/views/g_s_t_plant_info_view.dart';
+import '../modules/PlaceTypeMaster/views/place_type_master_view.dart';
 import '../modules/ROAudit/views/r_o_audit_view.dart';
 import '../modules/CompanyMaster/views/company_master_view.dart';
 import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
+import '../modules/SecondaryAsrunModification/views/secondary_asrun_modification_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
 
@@ -67,6 +71,18 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.CLIENT_EMBARGO:
               currentWidget =  ClientEmbargoView();
+              break;
+            case Routes.SECONDARY_ASRUN_MODIFICATION:
+              currentWidget =  SecondaryAsrunModificationView();
+              break;
+            case Routes.AGENCY_GROUP_MASTER:
+              currentWidget =  AgencyGroupMasterView();
+              break;
+            case Routes.G_S_T_PLANT_INFO:
+              currentWidget =  GSTPlantInfoView();
+              break;
+            case Routes.PLACE_TYPE_MASTER:
+              currentWidget =  PlaceTypeMasterView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

@@ -1,9 +1,10 @@
 import 'package:get/get.dart';
 
-class SecondaryAsrunModificationController extends GetxController {
-  //TODO: Implement SecondaryAsrunModificationController
+class AgencyGroupMasterController extends GetxController {
+  //TODO: Implement AgencyGroupMasterController
 
   final count = 0.obs;
+  double fixedWidth = 0.53;
   @override
   void onInit() {
     super.onInit();
@@ -24,4 +25,5 @@ class SecondaryAsrunModificationController extends GetxController {
   formHandler(String text){
 
   }
+
 }

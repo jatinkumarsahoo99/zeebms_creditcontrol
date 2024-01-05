@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class SecondaryAsrunModificationController extends GetxController {
-  //TODO: Implement SecondaryAsrunModificationController
+class GSTPlantInfoController extends GetxController {
+  //TODO: Implement GSTPlantInfoController
 
   final count = 0.obs;
   @override
@@ -19,9 +19,10 @@ class SecondaryAsrunModificationController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
 
   formHandler(String text){
 
   }
+
+  void increment() => count.value++;
 }

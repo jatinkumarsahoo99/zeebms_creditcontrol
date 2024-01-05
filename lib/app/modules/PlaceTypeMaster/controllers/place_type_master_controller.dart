@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 
-class SecondaryAsrunModificationController extends GetxController {
-  //TODO: Implement SecondaryAsrunModificationController
+class PlaceTypeMasterController extends GetxController {
+  //TODO: Implement PlaceTypeMasterController
 
   final count = 0.obs;
   @override
@@ -21,7 +21,8 @@ class SecondaryAsrunModificationController extends GetxController {
 
   void increment() => count.value++;
 
-  formHandler(String text){
+  formHandler(String string) {
 
   }
+
 }
