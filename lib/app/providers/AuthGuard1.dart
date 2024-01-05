@@ -1,6 +1,8 @@
 import 'package:bms_creditcontrol/app/controller/MainController.dart';
 import 'package:bms_creditcontrol/app/modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
+import 'package:bms_creditcontrol/app/modules/AsrunVerification/views/asrun_verification_view.dart';
 import 'package:bms_creditcontrol/app/modules/ComboDealEntry/views/combo_deal_entry_view.dart';
+import 'package:bms_creditcontrol/app/modules/Ebills/views/ebills_view.dart';
 import 'package:bms_creditcontrol/app/modules/ReadytoBills/views/readyto_bills_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -42,6 +44,12 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.READYTO_BILLS:
               currentWidget = ReadytoBillsView();
+              break;
+            case Routes.ASRUN_VERIFICATION:
+              currentWidget = AsrunVerificationView();
+              break;
+            case Routes.EBILLS:
+              currentWidget = EbillsView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

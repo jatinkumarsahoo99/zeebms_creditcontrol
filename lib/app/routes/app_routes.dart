@@ -10,6 +10,8 @@ abstract class Routes {
       _Paths.ASRUN_IMPORT_SECONDARY_EVENTS;
   static const COMBO_DEAL_ENTRY = _Paths.COMBO_DEAL_ENTRY;
   static const READYTO_BILLS = _Paths.READYTO_BILLS;
+  static const ASRUN_VERIFICATION = _Paths.ASRUN_VERIFICATION;
+  static const EBILLS = _Paths.EBILLS;
 }
 
 abstract class RoutesList {
@@ -28,4 +30,6 @@ abstract class _Paths {
   static const ASRUN_IMPORT_SECONDARY_EVENTS = '/frmSecondaryAsRunImport';
   static const COMBO_DEAL_ENTRY = '/frmLinkDeal';
   static const READYTO_BILLS = '/frmSetReadyToBill';
+  static const ASRUN_VERIFICATION = '/frmAsRunModification';
+  static const EBILLS = '/frmEbiller';
 }
