@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
+import '../modules/AgencyMaster/views/agency_master_view.dart';
+import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
+import '../modules/ROAudit/views/r_o_audit_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
 
@@ -30,6 +33,15 @@ class AuthGuard extends StatelessWidget {
           switch (childName) {
             case Routes.HOME:
               currentWidget = HomeView();
+              break;
+            case Routes.ASRUN_IMPORT_SECONDARY_EVENTS:
+              currentWidget = const AsrunImportSecondaryEventsView();
+              break;
+            case Routes.R_O_AUDIT:
+              currentWidget =  ROAuditView();
+              break;
+            case Routes.AGENCY_MASTER:
+              currentWidget =  AgencyMasterView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
