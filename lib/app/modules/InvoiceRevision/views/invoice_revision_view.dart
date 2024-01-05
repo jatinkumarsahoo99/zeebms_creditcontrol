@@ -75,25 +75,12 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
               // Obx(
               //   () =>
               Expanded(
-                  child:
-                      // controller.showList.isEmpty
-                      //     ?
-                      Container(
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.grey)),
-              )
-                  // : DataGridFromMap3(
-                  //     mapData: [],
-                  //     onload: (value) {
-
-                  //     },
-                  //     exportFileName: "Mix Master Delivery Status",
-                  //     witdthSpecificColumn: Get.find<HomeController>()
-                  //         .getGridWidthByKey(
-                  //             userGridSettingList:
-                  //                 controller.userGridSetting1?.value),
-                  //   ),
+                child: Container(
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
                   ),
+                ),
+              ),
 
               SizedBox(
                 // width: 40,
@@ -215,7 +202,7 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                         DropDownField.formDropDown1WidthMapExpand(
                           [],
                           (value) {},
-                          "Location",
+                          "Brand",
                           // .23,
                           autoFocus: true,
                           titleInLeft: true,
@@ -279,9 +266,6 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
           ),
         );
       },
-    )
-        // );
-
-        );
+    ));
   }
 }
