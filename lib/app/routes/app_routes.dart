@@ -59,7 +59,7 @@ abstract class _Paths {
   static const CLIENT_GROUP_MASTER = '/frmClientGroupMaster';
   static const CREDIT_RATE_MASTER = '/frmCreditRateMaster';
   static const PAYROUTE_CATEGORY_MASTER = '/frmPayRouteCategoryMaster';
-  static const CLIENT_MASTER = '/client-master';
+  // static const CLIENT_MASTER = '/client-master';
   static const R_O_AUDIT = '/frmAuditStatus';
   static const AGENCY_MASTER = '/frmAgencyMaster';
   static const CLIENT_EMBARGO = '/frmClientEmbargo';
