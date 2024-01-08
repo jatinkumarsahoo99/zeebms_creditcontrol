@@ -19,8 +19,10 @@ import '../modules/CompanyMaster/views/company_master_view.dart';
 import '../modules/CreditRateMaster/views/credit_rate_master_view.dart';
 import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
 import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
+import '../modules/SpotsNotTelecastedReport/views/spots_not_telecasted_report_view.dart';
 import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
 import '../modules/SecondaryAsrunModification/views/secondary_asrun_modification_view.dart';
+import '../modules/ViewDealChangeHistory/views/view_deal_change_history_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
 
@@ -104,6 +106,12 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.PLACE_TYPE_MASTER:
               currentWidget = PlaceTypeMasterView();
+              break;
+            case Routes.SPOTS_NOT_TELECASTED_REPORT:
+              currentWidget = SpotsNotTelecastedReportView();
+              break;
+            case Routes.VIEW_DEAL_CHANGE_HISTORY:
+              currentWidget = ViewDealChangeHistoryView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

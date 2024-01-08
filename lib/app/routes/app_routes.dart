@@ -28,6 +28,8 @@ abstract class Routes {
   static const DEAL_REPORT = _Paths.DEAL_REPORT;
   static const G_S_T_PLANT_INFO = _Paths.G_S_T_PLANT_INFO;
   static const PLACE_TYPE_MASTER = _Paths.PLACE_TYPE_MASTER;
+  static const SPOTS_NOT_TELECASTED_REPORT = _Paths.SPOTS_NOT_TELECASTED_REPORT;
+  static const VIEW_DEAL_CHANGE_HISTORY = _Paths.VIEW_DEAL_CHANGE_HISTORY;
 }
 
 abstract class RoutesList {
@@ -66,4 +68,7 @@ abstract class _Paths {
   static const DEAL_REPORT = '/deal-report';
   static const G_S_T_PLANT_INFO = '/frmGstPlantInfo';
   static const PLACE_TYPE_MASTER = '/frmPlaceTypeMaster';
+  static const SPOTS_NOT_TELECASTED_REPORT =
+      '/frmspotnottelecastedwithremarkreport';
+  static const VIEW_DEAL_CHANGE_HISTORY = '/Frmdealhistoryview';
 }
