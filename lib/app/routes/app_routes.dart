@@ -30,6 +30,9 @@ abstract class Routes {
   static const PLACE_TYPE_MASTER = _Paths.PLACE_TYPE_MASTER;
   static const SPOTS_NOT_TELECASTED_REPORT = _Paths.SPOTS_NOT_TELECASTED_REPORT;
   static const VIEW_DEAL_CHANGE_HISTORY = _Paths.VIEW_DEAL_CHANGE_HISTORY;
+  static const STATION_MASTER = _Paths.STATION_MASTER;
+  static const PLACE_MASTER = _Paths.PLACE_MASTER;
+  static const CURRENCY_TYPE_MASTER = _Paths.CURRENCY_TYPE_MASTER;
 }
 
 abstract class RoutesList {
@@ -71,4 +74,7 @@ abstract class _Paths {
   static const SPOTS_NOT_TELECASTED_REPORT =
       '/frmspotnottelecastedwithremarkreport';
   static const VIEW_DEAL_CHANGE_HISTORY = '/Frmdealhistoryview';
+  static const STATION_MASTER = '/frmStationMaster';
+  static const PLACE_MASTER = '/frmPlaceMaster';
+  static const CURRENCY_TYPE_MASTER = '/frmCurrencyTypeMaster';
 }
