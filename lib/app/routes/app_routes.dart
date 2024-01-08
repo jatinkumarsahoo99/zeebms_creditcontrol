@@ -46,14 +46,14 @@ abstract class _Paths {
   static const COMBO_DEAL_ENTRY = '/frmLinkDeal';
   static const READYTO_BILLS = '/frmSetReadyToBill';
   static const INVOICE_REVISION = '/frmBillRevision';
-  static const CLIENT_MASTER = '/client-master';
+  static const CLIENT_MASTER = '/frmClientMaster';
   static const R_O_AUDIT = '/frmAuditStatus';
   static const AGENCY_MASTER = '/frmAgencyMaster';
   static const CLIENT_EMBARGO = '/frmClientEmbargo';
   static const E_BILLS_FOR_BONUS_ACTIVITY = '/e-bills-for-bonus-activity';
   static const SECONDARY_ASRUN_MODIFICATION = '/frmSecondaryAsRunModification';
   static const AGENCY_GROUP_MASTER = '/frmAgencyGroupMaster';
-  static const DEAL_REPORT = '/deal-report';
+  static const DEAL_REPORT = '/frmdealreport';
   static const G_S_T_PLANT_INFO = '/frmGstPlantInfo';
   static const PLACE_TYPE_MASTER = '/frmPlaceTypeMaster';
 }

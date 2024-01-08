@@ -6,6 +6,7 @@ class AgencyMasterController extends GetxController {
   final count = 0.obs;
   double fixedWidth = 0.49;
   double fixedWidth1 = 0.23;
+  double fixedWidth2 = 0.43;
 
   formHandler(String string) {
 

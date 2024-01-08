@@ -30,6 +30,7 @@ class ROAuditController extends GetxController {
   Color backColor = const Color(0xFFE7ECEF);
   Rx<double> blur = Rx<double>(30);
   Rx<Offset> distance = Rx<Offset>( Offset(10,10));
+  Rx<int> selectedInt = Rx<int>(0);
   formHandler(String string) {
 
   }

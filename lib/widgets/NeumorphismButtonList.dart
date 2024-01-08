@@ -72,7 +72,7 @@ class NeumorphismButtonList extends StatelessWidget {
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey[700],
-                              fontSize: SizeDefine.fontSizeButton
+                              fontSize: SizeDefine.fontSizeButton +3
                           ),
                         ),
                       ),

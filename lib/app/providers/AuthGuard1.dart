@@ -10,6 +10,8 @@ import '../modules/AgencyGroupMaster/views/agency_group_master_view.dart';
 import '../modules/AgencyMaster/views/agency_master_view.dart';
 import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
 import '../modules/ClientEmbargo/views/client_embargo_view.dart';
+import '../modules/ClientMaster/views/client_master_view.dart';
+import '../modules/DealReport/views/deal_report_view.dart';
 import '../modules/GSTPlantInfo/views/g_s_t_plant_info_view.dart';
 import '../modules/PlaceTypeMaster/views/place_type_master_view.dart';
 import '../modules/ROAudit/views/r_o_audit_view.dart';
@@ -66,6 +68,9 @@ class AuthGuard extends StatelessWidget {
             case Routes.R_O_AUDIT:
               currentWidget =  ROAuditView();
               break;
+            case Routes.DEAL_REPORT:
+              currentWidget =  DealReportView();
+              break;
             case Routes.AGENCY_MASTER:
               currentWidget =  AgencyMasterView();
               break;
@@ -83,6 +88,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.PLACE_TYPE_MASTER:
               currentWidget =  PlaceTypeMasterView();
+              break;
+            case Routes.CLIENT_MASTER:
+              currentWidget =  ClientMasterView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
