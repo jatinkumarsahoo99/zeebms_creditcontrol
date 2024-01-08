@@ -313,6 +313,7 @@ class InputFields {
     String colorFromRespText = "",
     bool? isEnable,
     bool margin = false,
+    bool bottomPadding = true,
     bool autoFocus = false,
     bool showTitle = true,
     double? height,
@@ -460,7 +461,7 @@ class InputFields {
           ],
         ),
         SizedBox(
-          height: 10,
+          height: bottomPadding ? 10 : 0,
         )
       ],
     );
