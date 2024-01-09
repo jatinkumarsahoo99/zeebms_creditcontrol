@@ -33,6 +33,7 @@ abstract class Routes {
   static const STATION_MASTER = _Paths.STATION_MASTER;
   static const PLACE_MASTER = _Paths.PLACE_MASTER;
   static const CURRENCY_TYPE_MASTER = _Paths.CURRENCY_TYPE_MASTER;
+  static const EXPORT_BILLING_F_P_C = _Paths.EXPORT_BILLING_F_P_C;
 }
 
 abstract class RoutesList {
@@ -77,4 +78,5 @@ abstract class _Paths {
   static const STATION_MASTER = '/frmStationMaster';
   static const PLACE_MASTER = '/frmPlaceMaster';
   static const CURRENCY_TYPE_MASTER = '/frmCurrencyTypeMaster';
+  static const EXPORT_BILLING_F_P_C = '/Frmcarrtoonnetworkasrun';
 }
