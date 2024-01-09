@@ -28,6 +28,8 @@ import '../modules/DealReport/bindings/deal_report_binding.dart';
 import '../modules/DealReport/views/deal_report_view.dart';
 import '../modules/EBillsForBonusActivity/bindings/e_bills_for_bonus_activity_binding.dart';
 import '../modules/EBillsForBonusActivity/views/e_bills_for_bonus_activity_view.dart';
+import '../modules/ExportBillingFPC/bindings/export_billing_f_p_c_binding.dart';
+import '../modules/ExportBillingFPC/views/export_billing_f_p_c_view.dart';
 import '../modules/GSTPlantInfo/bindings/g_s_t_plant_info_binding.dart';
 import '../modules/GSTPlantInfo/views/g_s_t_plant_info_view.dart';
 import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
@@ -70,7 +72,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.CURRENCY_TYPE_MASTER +
+      : (Routes.EXPORT_BILLING_F_P_C +
           "?personalNo=ces%2FeKicpwo5mz%2FYFOQDvw%3D%3D&loginCode=zWc5qlvs%2BXZUagqFBqBN0A%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
 
   static final routes = [
@@ -203,6 +205,10 @@ class AppPages {
     GetPage(
       name: _Paths.CURRENCY_TYPE_MASTER,
       page: () => AuthGuard(childName: _Paths.CURRENCY_TYPE_MASTER),
+    ),
+    GetPage(
+      name: _Paths.EXPORT_BILLING_F_P_C,
+      page: () => AuthGuard(childName: _Paths.EXPORT_BILLING_F_P_C),
     ),
   ];
 }
