@@ -1,9 +1,6 @@
-// import 'package:bms_salesco/app/data/DropDownValue.dart';
-// import 'package:bms_salesco/widgets/CheckBox/app_check_box.dart';
+import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
+import 'package:bms_creditcontrol/widgets/CheckBox/app_check_box.dart';
 import 'package:flutter/widgets.dart';
-
-import '../../app/data/DropDownValue.dart';
-import 'app_check_box.dart';
 
 class MultiCheckBox extends StatelessWidget {
   final List<MultiCheckBoxModel> list;

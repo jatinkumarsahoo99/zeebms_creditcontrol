@@ -18,6 +18,8 @@ abstract class Routes {
   static const COMPANY_MASTER = _Paths.COMPANY_MASTER;
   static const COMBO_DEAL_ENTRY = _Paths.COMBO_DEAL_ENTRY;
   static const READYTO_BILLS = _Paths.READYTO_BILLS;
+  static const ASRUN_VERIFICATION = _Paths.ASRUN_VERIFICATION;
+  static const EBILLS = _Paths.EBILLS;
   static const INVOICE_REVISION = _Paths.INVOICE_REVISION;
   static const UNDO_CANCELATION = _Paths.UNDO_CANCELATION;
   static const CLEAR_SECONDARY_SPOTS = _Paths.CLEAR_SECONDARY_SPOTS;
@@ -28,6 +30,8 @@ abstract class Routes {
   static const DEAL_REPORT = _Paths.DEAL_REPORT;
   static const G_S_T_PLANT_INFO = _Paths.G_S_T_PLANT_INFO;
   static const PLACE_TYPE_MASTER = _Paths.PLACE_TYPE_MASTER;
+  static const PAYMENT_ROUTE_MASTER = _Paths.PAYMENT_ROUTE_MASTER;
+  static const AGENCY_EMBARGO = _Paths.AGENCY_EMBARGO;
   static const SPOTS_NOT_TELECASTED_REPORT = _Paths.SPOTS_NOT_TELECASTED_REPORT;
   static const VIEW_DEAL_CHANGE_HISTORY = _Paths.VIEW_DEAL_CHANGE_HISTORY;
   static const STATION_MASTER = _Paths.STATION_MASTER;
@@ -57,22 +61,27 @@ abstract class _Paths {
   static const COMPANY_MASTER = '/frmCompanyMaster';
   static const COMBO_DEAL_ENTRY = '/frmLinkDeal';
   static const READYTO_BILLS = '/frmSetReadyToBill';
+  static const ASRUN_VERIFICATION = '/frmAsRunModification';
+  static const EBILLS = '/frmEbiller';
   static const INVOICE_REVISION = '/frmBillRevision';
+  static const CLIENT_MASTER = '/frmClientMaster';
   static const UNDO_CANCELATION = '/frmmovieupdate';
   static const CLEAR_SECONDARY_SPOTS = '/frmscrollmarking';
   static const CLIENT_GROUP_MASTER = '/frmClientGroupMaster';
   static const CREDIT_RATE_MASTER = '/frmCreditRateMaster';
   static const PAYROUTE_CATEGORY_MASTER = '/frmPayRouteCategoryMaster';
-  static const CLIENT_MASTER = '/client-master';
+  // static const CLIENT_MASTER = '/client-master';
   static const R_O_AUDIT = '/frmAuditStatus';
   static const AGENCY_MASTER = '/frmAgencyMaster';
   static const CLIENT_EMBARGO = '/frmClientEmbargo';
   static const E_BILLS_FOR_BONUS_ACTIVITY = '/e-bills-for-bonus-activity';
   static const SECONDARY_ASRUN_MODIFICATION = '/frmSecondaryAsRunModification';
   static const AGENCY_GROUP_MASTER = '/frmAgencyGroupMaster';
-  static const DEAL_REPORT = '/deal-report';
+  static const DEAL_REPORT = '/frmdealreport';
   static const G_S_T_PLANT_INFO = '/frmGstPlantInfo';
   static const PLACE_TYPE_MASTER = '/frmPlaceTypeMaster';
+  static const PAYMENT_ROUTE_MASTER = '/frmPaymentRouteMaster';
+  static const AGENCY_EMBARGO = '/frmAgencyEmbargo';
   static const SPOTS_NOT_TELECASTED_REPORT =
       '/frmspotnottelecastedwithremarkreport';
   static const VIEW_DEAL_CHANGE_HISTORY = '/Frmdealhistoryview';

@@ -30,7 +30,7 @@ class AgencyGroupMasterView extends GetView<AgencyGroupMasterController> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   AppBar(
-                    title: Text('Client Embargo'),
+                    title: Text('Agency Group Master'),
                     centerTitle: true,
                     backgroundColor: Colors.deepPurple,
                   ),
