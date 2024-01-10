@@ -26,12 +26,16 @@ import '../modules/CompanyMaster/bindings/company_master_binding.dart';
 import '../modules/CompanyMaster/views/company_master_view.dart';
 import '../modules/CreditRateMaster/bindings/credit_rate_master_binding.dart';
 import '../modules/CreditRateMaster/views/credit_rate_master_view.dart';
+import '../modules/CurrencyTypeMaster/bindings/currency_type_master_binding.dart';
+import '../modules/CurrencyTypeMaster/views/currency_type_master_view.dart';
 import '../modules/DealReport/bindings/deal_report_binding.dart';
 import '../modules/DealReport/views/deal_report_view.dart';
 import '../modules/EBillsForBonusActivity/bindings/e_bills_for_bonus_activity_binding.dart';
 import '../modules/EBillsForBonusActivity/views/e_bills_for_bonus_activity_view.dart';
 import '../modules/Ebills/bindings/ebills_binding.dart';
 import '../modules/Ebills/views/ebills_view.dart';
+import '../modules/ExportBillingFPC/bindings/export_billing_f_p_c_binding.dart';
+import '../modules/ExportBillingFPC/views/export_billing_f_p_c_view.dart';
 import '../modules/GSTPlantInfo/bindings/g_s_t_plant_info_binding.dart';
 import '../modules/GSTPlantInfo/views/g_s_t_plant_info_view.dart';
 import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
@@ -42,6 +46,10 @@ import '../modules/PaymentRouteMaster/bindings/payment_route_master_binding.dart
 import '../modules/PaymentRouteMaster/views/payment_route_master_view.dart';
 import '../modules/PayrouteCategoryMaster/bindings/payroute_category_master_binding.dart';
 import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
+import '../modules/PayrouteCategoryMaster/bindings/payroute_category_master_binding.dart';
+import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
+import '../modules/PlaceMaster/bindings/place_master_binding.dart';
+import '../modules/PlaceMaster/views/place_master_view.dart';
 import '../modules/PlaceTypeMaster/bindings/place_type_master_binding.dart';
 import '../modules/PlaceTypeMaster/views/place_type_master_view.dart';
 import '../modules/ROAudit/bindings/r_o_audit_binding.dart';
@@ -54,6 +62,14 @@ import '../modules/SecondaryAsrunModification/bindings/secondary_asrun_modificat
 import '../modules/SecondaryAsrunModification/views/secondary_asrun_modification_view.dart';
 import '../modules/UndoCancelation/bindings/undo_cancelation_binding.dart';
 import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
+import '../modules/SpotsNotTelecastedReport/bindings/spots_not_telecasted_report_binding.dart';
+import '../modules/SpotsNotTelecastedReport/views/spots_not_telecasted_report_view.dart';
+import '../modules/StationMaster/bindings/station_master_binding.dart';
+import '../modules/StationMaster/views/station_master_view.dart';
+import '../modules/UndoCancelation/bindings/undo_cancelation_binding.dart';
+import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
+import '../modules/ViewDealChangeHistory/bindings/view_deal_change_history_binding.dart';
+import '../modules/ViewDealChangeHistory/views/view_deal_change_history_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../providers/AuthGuard1.dart';
@@ -90,7 +106,10 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CLIENT_MASTER,
-      page: () => const ClientMasterView(),
+      page: () => AuthGuard(
+        childName: _Paths.CLIENT_MASTER,
+      ),
+      // page: () =>  ClientMasterView(),
       binding: ClientMasterBinding(),
     ),
     GetPage(
@@ -177,7 +196,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DEAL_REPORT,
-      page: () => const DealReportView(),
+      // page: () =>  DealReportView(),
+      page: () => AuthGuard(childName: _Paths.DEAL_REPORT),
       binding: DealReportBinding(),
     ),
     GetPage(
@@ -202,5 +222,29 @@ class AppPages {
         page: () => AuthGuard(childName: _Paths.AGENCY_EMBARGO)
         // binding: AgencyEmbargoBinding(),
         ),
+    GetPage(
+      name: _Paths.SPOTS_NOT_TELECASTED_REPORT,
+      page: () => AuthGuard(childName: _Paths.SPOTS_NOT_TELECASTED_REPORT),
+    ),
+    GetPage(
+      name: _Paths.VIEW_DEAL_CHANGE_HISTORY,
+      page: () => AuthGuard(childName: _Paths.VIEW_DEAL_CHANGE_HISTORY),
+    ),
+    GetPage(
+      name: _Paths.STATION_MASTER,
+      page: () => AuthGuard(childName: _Paths.STATION_MASTER),
+    ),
+    GetPage(
+      name: _Paths.PLACE_MASTER,
+      page: () => AuthGuard(childName: _Paths.PLACE_MASTER),
+    ),
+    GetPage(
+      name: _Paths.CURRENCY_TYPE_MASTER,
+      page: () => AuthGuard(childName: _Paths.CURRENCY_TYPE_MASTER),
+    ),
+    GetPage(
+      name: _Paths.EXPORT_BILLING_F_P_C,
+      page: () => AuthGuard(childName: _Paths.EXPORT_BILLING_F_P_C),
+    ),
   ];
 }

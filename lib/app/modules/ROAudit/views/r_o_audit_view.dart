@@ -17,7 +17,7 @@ class ROAuditView extends GetView<ROAuditController> {
   ROAuditView({Key? key}) : super(key: key);
 
   ROAuditController controllerX =
-      Get.put<ROAuditController>(ROAuditController());
+  Get.put<ROAuditController>(ROAuditController());
 
   @override
   Widget build(BuildContext context) {
@@ -34,37 +34,39 @@ class ROAuditView extends GetView<ROAuditController> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Obx(
-                    () => DropDownField.formDropDown1WidthMap(
-                      controllerX.progTypeList.value ?? [],
-                      (value) {
-                        controllerX.selectedProgTypeList = value;
-                        // controllerX.getBMSVersion(programTypeCode: value.key??"");
-                      },
-                      "Location",
-                      .17,
-                      isEnable: controllerX.isEnable.value,
-                      selected: controllerX.selectedProgTypeList,
-                      dialogHeight: Get.height * .35,
-                      autoFocus: true,
-                    ),
+                        () =>
+                        DropDownField.formDropDown1WidthMap(
+                          controllerX.progTypeList.value ?? [],
+                              (value) {
+                            controllerX.selectedProgTypeList = value;
+                            // controllerX.getBMSVersion(programTypeCode: value.key??"");
+                          },
+                          "Location",
+                          .17,
+                          isEnable: controllerX.isEnable.value,
+                          selected: controllerX.selectedProgTypeList,
+                          dialogHeight: Get.height * .35,
+                          autoFocus: true,
+                        ),
                   ),
                   SizedBox(
                     width: 5,
                   ),
                   Obx(
-                    () => DropDownField.formDropDown1WidthMap(
-                      controllerX.bmsVersionList.value ?? [],
-                      (value) {
-                        controllerX.selectedBMSVersionList = value;
-                        // controllerX.getMatchDetails(programCode: value.key??"");
-                      },
-                      "Channel",
-                      .17,
-                      isEnable: controllerX.isEnable.value,
-                      selected: controllerX.selectedBMSVersionList,
-                      dialogHeight: Get.height * .35,
-                      autoFocus: true,
-                    ),
+                        () =>
+                        DropDownField.formDropDown1WidthMap(
+                          controllerX.bmsVersionList.value ?? [],
+                              (value) {
+                            controllerX.selectedBMSVersionList = value;
+                            // controllerX.getMatchDetails(programCode: value.key??"");
+                          },
+                          "Channel",
+                          .17,
+                          isEnable: controllerX.isEnable.value,
+                          selected: controllerX.selectedBMSVersionList,
+                          dialogHeight: Get.height * .35,
+                          autoFocus: true,
+                        ),
                   ),
                   SizedBox(
                     width: 5,
@@ -80,7 +82,7 @@ class ROAuditView extends GetView<ROAuditController> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.only(top: 14.0, left: 10, right: 10),
+                    const EdgeInsets.only(top: 14.0, left: 10, right: 10),
                     child: FormButtonWrapper(
                       btnText: "Show Details",
                       callback: () {
@@ -94,7 +96,7 @@ class ROAuditView extends GetView<ROAuditController> {
               SizedBox(
                 height: 8,
               ),
-            /*  Padding(
+              /*  Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
@@ -141,15 +143,25 @@ class ROAuditView extends GetView<ROAuditController> {
                 ),
               ),*/
               SizedBox(
-                  // height: Get.height*0.13,
-                  child: NeumorphismButtonList(btnName: const ["Additions",
-                    "Cancellation","Re-Schedule","Deal Approval","Additions Pending"], fun: (index,name){
-                    print(">>>>>>>>name&index"+name+index.toString());
-                  },)),
+                // height: Get.height*0.13,
+                  child: NeumorphismButtonList(
+                    btnName: const [
+                      "Additions",
+                      "Cancellation",
+                      "Re-Schedule",
+                      "Deal Approval",
+                      "Additions Pending"
+                    ],
+                    fun: (index, name) {
+                      print(">>>>>>>>name&index" + name + index.toString());
+                      controllerX.selectedInt.value = index;
+                      controllerX.selectedInt.refresh();
+                    },
+                  )),
               SizedBox(
                 height: 8,
               ),
-              Expanded(
+              /*  Expanded(
                 // flex: 9,
                 child: Container(
                   decoration:
@@ -160,7 +172,10 @@ class ROAuditView extends GetView<ROAuditController> {
                         return Container();
                       }),
                 ),
-              ),
+              ),*/
+              Obx(() {
+                return getSelectedWidget(index: controllerX.selectedInt.value);
+              }),
               SizedBox(height: 5),
               // const SizedBox(height: 8),
               Align(
@@ -169,10 +184,13 @@ class ROAuditView extends GetView<ROAuditController> {
                     id: "buttons",
                     init: Get.find<HomeController>(),
                     builder: (controller) {
-                      PermissionModel formPermissions = Get.find<MainController>()
+                      PermissionModel formPermissions =
+                      Get
+                          .find<MainController>()
                           .permissionList!
-                          .lastWhere((element) =>
-                      element.appFormName == "frmAuditStatus");
+                          .lastWhere(
+                              (element) =>
+                          element.appFormName == "frmAuditStatus");
                       if (controller.buttons != null) {
                         return ButtonBar(
                           alignment: MainAxisAlignment.start,
@@ -186,9 +204,10 @@ class ROAuditView extends GetView<ROAuditController> {
                                     controller, formPermissions) ==
                                     null
                                     ? null
-                                    : () => controllerX.formHandler(
-                                  btn['name'],
-                                ),
+                                    : () =>
+                                    controllerX.formHandler(
+                                      btn['name'],
+                                    ),
                               )
                           ],
                         );
@@ -201,5 +220,108 @@ class ROAuditView extends GetView<ROAuditController> {
         ),
       ),
     );
+  }
+
+  Widget getSelectedWidget({required int index}) {
+    switch (index) {
+      case 0:
+        return Expanded(
+          // flex: 9,
+          child: Container(
+            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+            child: GetBuilder<ROAuditController>(
+                id: "grid",
+                builder: (controllerX) {
+                  return SizedBox(
+                    width: Get.width * 0.99,
+                    height: Get.height * 0.8,
+                    child: Center(child: Text("data not found0")),
+                  );
+                }),
+          ),
+        );
+        break;
+      case 1:
+        return Expanded(
+          // flex: 9,
+          child: Container(
+            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+            child: GetBuilder<ROAuditController>(
+                id: "grid",
+                builder: (controllerX) {
+                  return SizedBox(
+                    width: Get.width * 0.99,
+                    height: Get.height * 0.8,
+                    child: Center(child: Text("data not found1")),
+                  );
+                }),
+          ),
+        );
+        break;
+      case 2:
+        return Expanded(
+          // flex: 9,
+          child: Container(
+            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+            child: GetBuilder<ROAuditController>(
+                id: "grid",
+                builder: (controllerX) {
+                  return SizedBox(
+                    width: Get.width * 0.99,
+                    height: Get.height * 0.8,
+                    child: Center(child: Text("data not found2")),
+                  );
+                }),
+          ),
+        );
+        break;
+      case 3:
+        return Expanded(
+          // flex: 9,
+          child: Container(
+            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+            child: GetBuilder<ROAuditController>(
+                id: "grid",
+                builder: (controllerX) {
+                  return SizedBox(
+                    width: Get.width * 0.99,
+                    height: Get.height * 0.8,
+                    child: Center(child: Text("data not found3")),
+                  );
+                }),
+          ),
+        );
+        break;
+      case 4:
+        return Expanded(
+          // flex: 9,
+          child: Container(
+            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+            child: GetBuilder<ROAuditController>(
+                id: "grid",
+                builder: (controllerX) {
+                  return SizedBox(
+                    width: Get.width * 0.99,
+                    height: Get.height * 0.8,
+                    child: Center(child: Text("data not found4")),
+                  );
+                }),
+          ),
+        );
+        break;
+      default:
+        return Expanded(
+          // flex: 9,
+          child: Container(
+            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+            child: GetBuilder<ROAuditController>(
+                id: "grid",
+                builder: (controllerX) {
+                  return Container();
+                }),
+          ),
+        );
+        break;
+    }
   }
 }

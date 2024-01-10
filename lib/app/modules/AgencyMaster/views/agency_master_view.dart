@@ -189,6 +189,7 @@ class AgencyMasterView extends GetView<AgencyMasterController> {
                                                   onchanged: (value) {},
                                                   autoFocus: false,
                                                   // focusNode: controllerX.productLevel1Focus
+
                                                   // autoFocus: true,
                                                 ),
                                                 InputFields.formField1(

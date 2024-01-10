@@ -32,6 +32,12 @@ abstract class Routes {
   static const PLACE_TYPE_MASTER = _Paths.PLACE_TYPE_MASTER;
   static const PAYMENT_ROUTE_MASTER = _Paths.PAYMENT_ROUTE_MASTER;
   static const AGENCY_EMBARGO = _Paths.AGENCY_EMBARGO;
+  static const SPOTS_NOT_TELECASTED_REPORT = _Paths.SPOTS_NOT_TELECASTED_REPORT;
+  static const VIEW_DEAL_CHANGE_HISTORY = _Paths.VIEW_DEAL_CHANGE_HISTORY;
+  static const STATION_MASTER = _Paths.STATION_MASTER;
+  static const PLACE_MASTER = _Paths.PLACE_MASTER;
+  static const CURRENCY_TYPE_MASTER = _Paths.CURRENCY_TYPE_MASTER;
+  static const EXPORT_BILLING_F_P_C = _Paths.EXPORT_BILLING_F_P_C;
 }
 
 abstract class RoutesList {
@@ -57,21 +63,29 @@ abstract class _Paths {
   static const ASRUN_VERIFICATION = '/frmAsRunModification';
   static const EBILLS = '/frmEbiller';
   static const INVOICE_REVISION = '/frmBillRevision';
+  static const CLIENT_MASTER = '/frmClientMaster';
   static const UNDO_CANCELATION = '/frmmovieupdate';
   static const CLEAR_SECONDARY_SPOTS = '/frmscrollmarking';
   static const CLIENT_GROUP_MASTER = '/frmClientGroupMaster';
   static const CREDIT_RATE_MASTER = '/frmCreditRateMaster';
   static const PAYROUTE_CATEGORY_MASTER = '/frmPayRouteCategoryMaster';
-  static const CLIENT_MASTER = '/client-master';
+  // static const CLIENT_MASTER = '/client-master';
   static const R_O_AUDIT = '/frmAuditStatus';
   static const AGENCY_MASTER = '/frmAgencyMaster';
   static const CLIENT_EMBARGO = '/frmClientEmbargo';
   static const E_BILLS_FOR_BONUS_ACTIVITY = '/e-bills-for-bonus-activity';
   static const SECONDARY_ASRUN_MODIFICATION = '/frmSecondaryAsRunModification';
   static const AGENCY_GROUP_MASTER = '/frmAgencyGroupMaster';
-  static const DEAL_REPORT = '/deal-report';
+  static const DEAL_REPORT = '/frmdealreport';
   static const G_S_T_PLANT_INFO = '/frmGstPlantInfo';
   static const PLACE_TYPE_MASTER = '/frmPlaceTypeMaster';
   static const PAYMENT_ROUTE_MASTER = '/frmPaymentRouteMaster';
   static const AGENCY_EMBARGO = '/frmAgencyEmbargo';
+  static const SPOTS_NOT_TELECASTED_REPORT =
+      '/frmspotnottelecastedwithremarkreport';
+  static const VIEW_DEAL_CHANGE_HISTORY = '/Frmdealhistoryview';
+  static const STATION_MASTER = '/frmStationMaster';
+  static const PLACE_MASTER = '/frmPlaceMaster';
+  static const CURRENCY_TYPE_MASTER = '/frmCurrencyTypeMaster';
+  static const EXPORT_BILLING_F_P_C = '/Frmcarrtoonnetworkasrun';
 }

@@ -16,15 +16,24 @@ import '../modules/AgencyGroupMaster/views/agency_group_master_view.dart';
 import '../modules/AgencyMaster/views/agency_master_view.dart';
 import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
 import '../modules/ClientEmbargo/views/client_embargo_view.dart';
+import '../modules/ClientMaster/views/client_master_view.dart';
+import '../modules/DealReport/views/deal_report_view.dart';
+import '../modules/CurrencyTypeMaster/views/currency_type_master_view.dart';
+import '../modules/ExportBillingFPC/views/export_billing_f_p_c_view.dart';
 import '../modules/GSTPlantInfo/views/g_s_t_plant_info_view.dart';
+import '../modules/MovieUpdate/views/movie_update_view.dart';
+import '../modules/PlaceMaster/views/place_master_view.dart';
 import '../modules/PlaceTypeMaster/views/place_type_master_view.dart';
 import '../modules/ROAudit/views/r_o_audit_view.dart';
 import '../modules/CompanyMaster/views/company_master_view.dart';
 import '../modules/CreditRateMaster/views/credit_rate_master_view.dart';
 import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
 import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
+import '../modules/SpotsNotTelecastedReport/views/spots_not_telecasted_report_view.dart';
+import '../modules/StationMaster/views/station_master_view.dart';
 import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
 import '../modules/SecondaryAsrunModification/views/secondary_asrun_modification_view.dart';
+import '../modules/ViewDealChangeHistory/views/view_deal_change_history_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
 
@@ -77,7 +86,7 @@ class AuthGuard extends StatelessWidget {
               break;
 
             case Routes.UNDO_CANCELATION:
-              currentWidget = UndoCancelationView();
+              currentWidget = MovieUpdateView();
               break;
             case Routes.CLEAR_SECONDARY_SPOTS:
               currentWidget = ClearSecondarySpotsView();
@@ -97,6 +106,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.R_O_AUDIT:
               currentWidget = ROAuditView();
+              break;
+            case Routes.DEAL_REPORT:
+              currentWidget = DealReportView();
               break;
             case Routes.AGENCY_MASTER:
               currentWidget = AgencyMasterView();
@@ -121,6 +133,28 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.AGENCY_EMBARGO:
               currentWidget = AgencyEmbargoView();
+              break;
+
+            case Routes.SPOTS_NOT_TELECASTED_REPORT:
+              currentWidget = SpotsNotTelecastedReportView();
+              break;
+            case Routes.VIEW_DEAL_CHANGE_HISTORY:
+              currentWidget = ViewDealChangeHistoryView();
+              break;
+            case Routes.CLIENT_MASTER:
+              currentWidget = ClientMasterView();
+              break;
+            case Routes.STATION_MASTER:
+              currentWidget = StationMasterView();
+              break;
+            case Routes.PLACE_MASTER:
+              currentWidget = PlaceMasterView();
+              break;
+            case Routes.CURRENCY_TYPE_MASTER:
+              currentWidget = CurrencyTypeMasterView();
+              break;
+            case Routes.EXPORT_BILLING_F_P_C:
+              currentWidget = ExportBillingFPCView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
