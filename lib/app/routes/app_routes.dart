@@ -18,6 +18,8 @@ abstract class Routes {
   static const COMPANY_MASTER = _Paths.COMPANY_MASTER;
   static const COMBO_DEAL_ENTRY = _Paths.COMBO_DEAL_ENTRY;
   static const READYTO_BILLS = _Paths.READYTO_BILLS;
+  static const ASRUN_VERIFICATION = _Paths.ASRUN_VERIFICATION;
+  static const EBILLS = _Paths.EBILLS;
   static const INVOICE_REVISION = _Paths.INVOICE_REVISION;
   static const UNDO_CANCELATION = _Paths.UNDO_CANCELATION;
   static const CLEAR_SECONDARY_SPOTS = _Paths.CLEAR_SECONDARY_SPOTS;
@@ -28,12 +30,15 @@ abstract class Routes {
   static const DEAL_REPORT = _Paths.DEAL_REPORT;
   static const G_S_T_PLANT_INFO = _Paths.G_S_T_PLANT_INFO;
   static const PLACE_TYPE_MASTER = _Paths.PLACE_TYPE_MASTER;
+  static const PAYMENT_ROUTE_MASTER = _Paths.PAYMENT_ROUTE_MASTER;
+  static const AGENCY_EMBARGO = _Paths.AGENCY_EMBARGO;
   static const SPOTS_NOT_TELECASTED_REPORT = _Paths.SPOTS_NOT_TELECASTED_REPORT;
   static const VIEW_DEAL_CHANGE_HISTORY = _Paths.VIEW_DEAL_CHANGE_HISTORY;
   static const STATION_MASTER = _Paths.STATION_MASTER;
   static const PLACE_MASTER = _Paths.PLACE_MASTER;
   static const CURRENCY_TYPE_MASTER = _Paths.CURRENCY_TYPE_MASTER;
   static const EXPORT_BILLING_F_P_C = _Paths.EXPORT_BILLING_F_P_C;
+  static const CLIENT_DEALS = _Paths.CLIENT_DEALS;
 }
 
 abstract class RoutesList {
@@ -56,6 +61,8 @@ abstract class _Paths {
   static const COMPANY_MASTER = '/frmCompanyMaster';
   static const COMBO_DEAL_ENTRY = '/frmLinkDeal';
   static const READYTO_BILLS = '/frmSetReadyToBill';
+  static const ASRUN_VERIFICATION = '/frmAsRunModification';
+  static const EBILLS = '/frmEbiller';
   static const INVOICE_REVISION = '/frmBillRevision';
   static const CLIENT_MASTER = '/frmClientMaster';
   static const UNDO_CANCELATION = '/frmmovieupdate';
@@ -73,6 +80,8 @@ abstract class _Paths {
   static const DEAL_REPORT = '/frmdealreport';
   static const G_S_T_PLANT_INFO = '/frmGstPlantInfo';
   static const PLACE_TYPE_MASTER = '/frmPlaceTypeMaster';
+  static const PAYMENT_ROUTE_MASTER = '/frmPaymentRouteMaster';
+  static const AGENCY_EMBARGO = '/frmAgencyEmbargo';
   static const SPOTS_NOT_TELECASTED_REPORT =
       '/frmspotnottelecastedwithremarkreport';
   static const VIEW_DEAL_CHANGE_HISTORY = '/Frmdealhistoryview';
@@ -80,4 +89,5 @@ abstract class _Paths {
   static const PLACE_MASTER = '/frmPlaceMaster';
   static const CURRENCY_TYPE_MASTER = '/frmCurrencyTypeMaster';
   static const EXPORT_BILLING_F_P_C = '/Frmcarrtoonnetworkasrun';
+  static const CLIENT_DEALS = '/frmDealMaster';
 }
