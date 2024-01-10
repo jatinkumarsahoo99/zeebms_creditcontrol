@@ -72,8 +72,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.EXPORT_BILLING_F_P_C +
-          "?personalNo=ces%2FeKicpwo5mz%2FYFOQDvw%3D%3D&loginCode=zWc5qlvs%2BXZUagqFBqBN0A%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
+      : (Routes.R_O_AUDIT +
+          "?personalNo=R9vVPL7er1Os%2FusemWG%2FIw%3D%3D&loginCode=0iGe3vK5h2KGjfSKZTpmsQ%3D%3D&formName=0JUkJLseCJROuXQJxWn0tvQx2tD7hbegZhslvSOuxHotg9L%2FT284%2FQNIMZExXr81");
 
   static final routes = [
     GetPage(
@@ -94,7 +94,10 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.CLIENT_MASTER,
-      page: () => const ClientMasterView(),
+      page: () => AuthGuard(
+        childName: _Paths.CLIENT_MASTER,
+      ),
+      // page: () =>  ClientMasterView(),
       binding: ClientMasterBinding(),
     ),
     GetPage(
@@ -171,7 +174,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.DEAL_REPORT,
-      page: () => const DealReportView(),
+      // page: () =>  DealReportView(),
+      page: () => AuthGuard(childName: _Paths.DEAL_REPORT),
       binding: DealReportBinding(),
     ),
     GetPage(

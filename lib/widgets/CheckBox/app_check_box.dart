@@ -1,7 +1,6 @@
+import 'package:bms_creditcontrol/app/providers/SizeDefine.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../../app/providers/SizeDefine.dart';
 
 class AppCheckBox extends StatelessWidget {
   final String title;

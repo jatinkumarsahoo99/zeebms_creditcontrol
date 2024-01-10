@@ -12,6 +12,8 @@ import '../modules/AgencyGroupMaster/views/agency_group_master_view.dart';
 import '../modules/AgencyMaster/views/agency_master_view.dart';
 import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
 import '../modules/ClientEmbargo/views/client_embargo_view.dart';
+import '../modules/ClientMaster/views/client_master_view.dart';
+import '../modules/DealReport/views/deal_report_view.dart';
 import '../modules/CurrencyTypeMaster/views/currency_type_master_view.dart';
 import '../modules/ExportBillingFPC/views/export_billing_f_p_c_view.dart';
 import '../modules/GSTPlantInfo/views/g_s_t_plant_info_view.dart';
@@ -94,6 +96,9 @@ class AuthGuard extends StatelessWidget {
             case Routes.R_O_AUDIT:
               currentWidget = ROAuditView();
               break;
+            case Routes.DEAL_REPORT:
+              currentWidget =  DealReportView();
+              break;
             case Routes.AGENCY_MASTER:
               currentWidget = AgencyMasterView();
               break;
@@ -117,6 +122,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.VIEW_DEAL_CHANGE_HISTORY:
               currentWidget = ViewDealChangeHistoryView();
+              break;
+            case Routes.CLIENT_MASTER:
+              currentWidget =  ClientMasterView();
               break;
             case Routes.STATION_MASTER:
               currentWidget = StationMasterView();
