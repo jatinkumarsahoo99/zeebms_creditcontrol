@@ -30,6 +30,8 @@ abstract class Routes {
   static const DEAL_REPORT = _Paths.DEAL_REPORT;
   static const G_S_T_PLANT_INFO = _Paths.G_S_T_PLANT_INFO;
   static const PLACE_TYPE_MASTER = _Paths.PLACE_TYPE_MASTER;
+  static const PAYMENT_ROUTE_MASTER = _Paths.PAYMENT_ROUTE_MASTER;
+  static const AGENCY_EMBARGO = _Paths.AGENCY_EMBARGO;
 }
 
 abstract class RoutesList {
@@ -70,4 +72,6 @@ abstract class _Paths {
   static const DEAL_REPORT = '/deal-report';
   static const G_S_T_PLANT_INFO = '/frmGstPlantInfo';
   static const PLACE_TYPE_MASTER = '/frmPlaceTypeMaster';
+  static const PAYMENT_ROUTE_MASTER = '/frmPaymentRouteMaster';
+  static const AGENCY_EMBARGO = '/frmAgencyEmbargo';
 }

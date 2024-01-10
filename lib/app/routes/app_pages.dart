@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 
 import 'package:get/get.dart';
 
+import '../modules/AgencyEmbargo/bindings/agency_embargo_binding.dart';
+import '../modules/AgencyEmbargo/views/agency_embargo_view.dart';
 import '../modules/AgencyGroupMaster/bindings/agency_group_master_binding.dart';
 import '../modules/AgencyGroupMaster/views/agency_group_master_view.dart';
 import '../modules/AgencyMaster/bindings/agency_master_binding.dart';
@@ -12,44 +14,46 @@ import '../modules/AsrunVerification/bindings/asrun_verification_binding.dart';
 import '../modules/AsrunVerification/views/asrun_verification_view.dart';
 import '../modules/ClearSecondarySpots/bindings/clear_secondary_spots_binding.dart';
 import '../modules/ClearSecondarySpots/views/clear_secondary_spots_view.dart';
-import '../modules/ClientGroupMaster/bindings/client_group_master_binding.dart';
-import '../modules/ClientGroupMaster/views/client_group_master_view.dart';
 import '../modules/ClientEmbargo/bindings/client_embargo_binding.dart';
 import '../modules/ClientEmbargo/views/client_embargo_view.dart';
+import '../modules/ClientGroupMaster/bindings/client_group_master_binding.dart';
+import '../modules/ClientGroupMaster/views/client_group_master_view.dart';
 import '../modules/ClientMaster/bindings/client_master_binding.dart';
 import '../modules/ClientMaster/views/client_master_view.dart';
 import '../modules/ComboDealEntry/bindings/combo_deal_entry_binding.dart';
 import '../modules/ComboDealEntry/views/combo_deal_entry_view.dart';
-import '../modules/Ebills/bindings/ebills_binding.dart';
-import '../modules/Ebills/views/ebills_view.dart';
 import '../modules/CompanyMaster/bindings/company_master_binding.dart';
 import '../modules/CompanyMaster/views/company_master_view.dart';
 import '../modules/CreditRateMaster/bindings/credit_rate_master_binding.dart';
 import '../modules/CreditRateMaster/views/credit_rate_master_view.dart';
-import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
-import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
-import '../modules/PayrouteCategoryMaster/bindings/payroute_category_master_binding.dart';
-import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
-import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
-import '../modules/ReadytoBills/views/readyto_bills_view.dart';
-import '../modules/UndoCancelation/bindings/undo_cancelation_binding.dart';
-import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
 import '../modules/DealReport/bindings/deal_report_binding.dart';
 import '../modules/DealReport/views/deal_report_view.dart';
 import '../modules/EBillsForBonusActivity/bindings/e_bills_for_bonus_activity_binding.dart';
 import '../modules/EBillsForBonusActivity/views/e_bills_for_bonus_activity_view.dart';
+import '../modules/Ebills/bindings/ebills_binding.dart';
+import '../modules/Ebills/views/ebills_view.dart';
 import '../modules/GSTPlantInfo/bindings/g_s_t_plant_info_binding.dart';
 import '../modules/GSTPlantInfo/views/g_s_t_plant_info_view.dart';
 import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
+import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
 import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
+import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
+import '../modules/PaymentRouteMaster/bindings/payment_route_master_binding.dart';
+import '../modules/PaymentRouteMaster/views/payment_route_master_view.dart';
+import '../modules/PayrouteCategoryMaster/bindings/payroute_category_master_binding.dart';
+import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
 import '../modules/PlaceTypeMaster/bindings/place_type_master_binding.dart';
 import '../modules/PlaceTypeMaster/views/place_type_master_view.dart';
 import '../modules/ROAudit/bindings/r_o_audit_binding.dart';
 import '../modules/ROAudit/views/r_o_audit_view.dart';
 import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
+import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
+import '../modules/ReadytoBills/views/readyto_bills_view.dart';
 import '../modules/ReadytoBills/views/readyto_bills_view.dart';
 import '../modules/SecondaryAsrunModification/bindings/secondary_asrun_modification_binding.dart';
 import '../modules/SecondaryAsrunModification/views/secondary_asrun_modification_view.dart';
+import '../modules/UndoCancelation/bindings/undo_cancelation_binding.dart';
+import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../providers/AuthGuard1.dart';
@@ -64,7 +68,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.EBILLS +
+      : (Routes.PAYMENT_ROUTE_MASTER +
           "?personalNo=CX5CP1oS3%2FepJloRhT%2F7JQ%3D%3D&loginCode=GhNK0fgJ1lghoL8cGVvoKg%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
 
   static final routes = [
@@ -188,5 +192,15 @@ class AppPages {
       page: () => AuthGuard(childName: _Paths.PLACE_TYPE_MASTER),
       binding: PlaceTypeMasterBinding(),
     ),
+    GetPage(
+        name: _Paths.PAYMENT_ROUTE_MASTER,
+        page: () => AuthGuard(childName: _Paths.PAYMENT_ROUTE_MASTER)
+        // binding: PaymentRouteMasterBinding(),
+        ),
+    GetPage(
+        name: _Paths.AGENCY_EMBARGO,
+        page: () => AuthGuard(childName: _Paths.AGENCY_EMBARGO)
+        // binding: AgencyEmbargoBinding(),
+        ),
   ];
 }
