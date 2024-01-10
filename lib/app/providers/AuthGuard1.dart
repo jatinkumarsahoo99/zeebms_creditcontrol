@@ -11,6 +11,7 @@ import '../modules/ClearSecondarySpots/views/clear_secondary_spots_view.dart';
 import '../modules/AgencyGroupMaster/views/agency_group_master_view.dart';
 import '../modules/AgencyMaster/views/agency_master_view.dart';
 import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
+import '../modules/ClientDeals/views/client_deals_view.dart';
 import '../modules/ClientEmbargo/views/client_embargo_view.dart';
 import '../modules/CurrencyTypeMaster/views/currency_type_master_view.dart';
 import '../modules/ExportBillingFPC/views/export_billing_f_p_c_view.dart';
@@ -129,6 +130,9 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.EXPORT_BILLING_F_P_C:
               currentWidget = ExportBillingFPCView();
+              break;
+            case Routes.CLIENT_DEALS:
+              currentWidget = ClientDealsView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

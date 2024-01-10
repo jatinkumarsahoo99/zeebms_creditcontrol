@@ -11,6 +11,8 @@ class SizeDefine {
   static double fontSizeButton = 10;
   static double widthInputField = Get.width * 0.12;
   static double labelSize = 18;
+  static double labelSizeMedium = 13;
+
   static double labelSize1 = 11;
   static double columnTitleFontSize = 12;
   static double marginGap = 5;
