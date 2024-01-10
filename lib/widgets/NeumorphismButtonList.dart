@@ -1,3 +1,4 @@
+import 'package:bms_creditcontrol/widgets/tap_effect.dart';
 import 'package:flutter/material.dart' hide BoxDecoration, BoxShadow;
 import 'package:flutter_inset_box_shadow/flutter_inset_box_shadow.dart';
 import 'package:get/get.dart';
@@ -29,8 +30,8 @@ class NeumorphismButtonList extends StatelessWidget {
         child: ListView.separated(
             itemBuilder: (BuildContext context,int index){
               return  Obx(() {
-                return InkWell(
-                  onTap: () {
+                return TapEffect(
+                  onClick: () {
 
                     for(int i=0;i<btnClickList.length;i++){
                       if(i == index){
@@ -42,7 +43,7 @@ class NeumorphismButtonList extends StatelessWidget {
                     }
                     btnClickList.refresh();
                     fun(index,btnName[index]);
-                  },
+                  },isClickable: true,
 
                   child: Container(
                     // margin: EdgeInsets.zero,
@@ -58,7 +59,7 @@ class NeumorphismButtonList extends StatelessWidget {
                             (btnClickList[index])
                                 ? 500
                                 : 300]!,
-                            offset: Offset(2.0, 2.0),
+                            offset: const Offset(2.0, 2.0),
                             blurRadius: 1.0,
                             spreadRadius: 1.0,
                             inset: btnClickList[index]),
@@ -68,7 +69,7 @@ class NeumorphismButtonList extends StatelessWidget {
                       padding: const EdgeInsets.all(8.0),
                       child: Center(
                         child: Text(
-                          btnName[index]??'Press me',
+                          btnName[index]??'',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.grey[700],

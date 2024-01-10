@@ -570,4 +570,17 @@ class ApiFactory {
   static String MODULE_FORM_TRANSACTION_GET_MODULE_LIST(String moduleCode) =>
       "$BASE_URL/api/ModuleFormTransaction/GetModuleFormDetails?ModuleCode=$moduleCode";
   ///////////////////////// END MODULE FORM TRANSACTION API//////
+
+
+//////////////////////////// SECONDARY ASRUN MODIFICATION ////////////////////////////////
+
+  static String get SECONDARY_ASRUN_MODIFICATION_LOCATION => "$BASE_URL/api/SecondaryAsrunModi/GetLocations";
+  static String get SECONDARY_ASRUN_MODIFICATION_CHANNEL  => "$BASE_URL/api/SecondaryAsrunModi/GetChannels";
+  static String get SECONDARY_ASRUN_MODIFICATION_BIND_GRID  => "$BASE_URL/api/SecondaryAsrunModi/GetBindGrid";
+  static String get SECONDARY_ASRUN_MODIFICATION_GET_OK  => "$BASE_URL/api/SecondaryAsrunModi/GetOkClick";
+  static String get SECONDARY_ASRUN_MODIFICATION_GET_CLEAR_MISMATCH  => "$BASE_URL/api/SecondaryAsrunModi/GetClearmismatch";
+  static String get SECONDARY_ASRUN_MODIFICATION_SAVE  => "$BASE_URL/api/SecondaryAsrunModi/PostSave";
+
+
+
 }

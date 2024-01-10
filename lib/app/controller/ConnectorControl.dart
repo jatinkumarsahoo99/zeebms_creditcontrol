@@ -116,6 +116,13 @@ class ConnectorControl extends GetConnect {
         updateToken(() {
           GETMETHODCALL(api: api, fun: fun, failed: failed);
         });
+      }else if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+        }
       } else {
         switch (e.type) {
           case DioErrorType.connectionTimeout:
@@ -315,6 +322,20 @@ class ConnectorControl extends GetConnect {
         updateToken(() {
           POSTMETHOD(api: api, json: json, fun: fun);
         });
+      }else if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          if (e.response?.data["status"] is num) {
+            LoadingDialog.showErrorDialog(
+                (e.response?.data["title"]).toString());
+          } else {
+            LoadingDialog.showErrorDialog(
+                (e.response?.data["status"]).toString());
+          }
+          // LoadingDialog.showErrorDialog((e.response?.data["status"]));
+        }
       } else {
         switch (e.type) {
           case DioErrorType.connectionTimeout:
@@ -373,6 +394,13 @@ class ConnectorControl extends GetConnect {
         updateToken(() {
           POSTMETHOD(api: api, json: json, fun: fun);
         });
+      }else if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+        }
       } else {
         switch (e.type) {
           case DioErrorType.connectionTimeout:
