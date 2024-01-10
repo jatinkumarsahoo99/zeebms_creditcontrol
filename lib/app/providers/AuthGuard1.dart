@@ -1,7 +1,11 @@
 import 'package:bms_creditcontrol/app/controller/MainController.dart';
+import 'package:bms_creditcontrol/app/modules/AgencyEmbargo/views/agency_embargo_view.dart';
 import 'package:bms_creditcontrol/app/modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
+import 'package:bms_creditcontrol/app/modules/AsrunVerification/views/asrun_verification_view.dart';
 import 'package:bms_creditcontrol/app/modules/ClientGroupMaster/views/client_group_master_view.dart';
 import 'package:bms_creditcontrol/app/modules/ComboDealEntry/views/combo_deal_entry_view.dart';
+import 'package:bms_creditcontrol/app/modules/Ebills/views/ebills_view.dart';
+import 'package:bms_creditcontrol/app/modules/PaymentRouteMaster/views/payment_route_master_view.dart';
 import 'package:bms_creditcontrol/app/modules/ReadytoBills/views/readyto_bills_view.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -74,6 +78,13 @@ class AuthGuard extends StatelessWidget {
             case Routes.READYTO_BILLS:
               currentWidget = ReadytoBillsView();
               break;
+            case Routes.ASRUN_VERIFICATION:
+              currentWidget = AsrunVerificationView();
+              break;
+            case Routes.EBILLS:
+              currentWidget = EbillsView();
+              break;
+
             case Routes.UNDO_CANCELATION:
               currentWidget = MovieUpdateView();
               break;
@@ -97,7 +108,7 @@ class AuthGuard extends StatelessWidget {
               currentWidget = ROAuditView();
               break;
             case Routes.DEAL_REPORT:
-              currentWidget =  DealReportView();
+              currentWidget = DealReportView();
               break;
             case Routes.AGENCY_MASTER:
               currentWidget = AgencyMasterView();
@@ -117,6 +128,13 @@ class AuthGuard extends StatelessWidget {
             case Routes.PLACE_TYPE_MASTER:
               currentWidget = PlaceTypeMasterView();
               break;
+            case Routes.PAYMENT_ROUTE_MASTER:
+              currentWidget = PaymentRouteMasterView();
+              break;
+            case Routes.AGENCY_EMBARGO:
+              currentWidget = AgencyEmbargoView();
+              break;
+
             case Routes.SPOTS_NOT_TELECASTED_REPORT:
               currentWidget = SpotsNotTelecastedReportView();
               break;
@@ -124,7 +142,7 @@ class AuthGuard extends StatelessWidget {
               currentWidget = ViewDealChangeHistoryView();
               break;
             case Routes.CLIENT_MASTER:
-              currentWidget =  ClientMasterView();
+              currentWidget = ClientMasterView();
               break;
             case Routes.STATION_MASTER:
               currentWidget = StationMasterView();

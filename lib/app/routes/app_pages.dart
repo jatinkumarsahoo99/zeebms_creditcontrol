@@ -2,12 +2,16 @@ import 'package:flutter/foundation.dart';
 
 import 'package:get/get.dart';
 
+import '../modules/AgencyEmbargo/bindings/agency_embargo_binding.dart';
+import '../modules/AgencyEmbargo/views/agency_embargo_view.dart';
 import '../modules/AgencyGroupMaster/bindings/agency_group_master_binding.dart';
 import '../modules/AgencyGroupMaster/views/agency_group_master_view.dart';
 import '../modules/AgencyMaster/bindings/agency_master_binding.dart';
 import '../modules/AgencyMaster/views/agency_master_view.dart';
 import '../modules/AsrunImportSecondaryEvents/bindings/asrun_import_secondary_events_binding.dart';
 import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
+import '../modules/AsrunVerification/bindings/asrun_verification_binding.dart';
+import '../modules/AsrunVerification/views/asrun_verification_view.dart';
 import '../modules/ClearSecondarySpots/bindings/clear_secondary_spots_binding.dart';
 import '../modules/ClearSecondarySpots/views/clear_secondary_spots_view.dart';
 import '../modules/ClientEmbargo/bindings/client_embargo_binding.dart';
@@ -28,6 +32,8 @@ import '../modules/DealReport/bindings/deal_report_binding.dart';
 import '../modules/DealReport/views/deal_report_view.dart';
 import '../modules/EBillsForBonusActivity/bindings/e_bills_for_bonus_activity_binding.dart';
 import '../modules/EBillsForBonusActivity/views/e_bills_for_bonus_activity_view.dart';
+import '../modules/Ebills/bindings/ebills_binding.dart';
+import '../modules/Ebills/views/ebills_view.dart';
 import '../modules/ExportBillingFPC/bindings/export_billing_f_p_c_binding.dart';
 import '../modules/ExportBillingFPC/views/export_billing_f_p_c_view.dart';
 import '../modules/GSTPlantInfo/bindings/g_s_t_plant_info_binding.dart';
@@ -36,6 +42,10 @@ import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
 import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
 import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
 import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
+import '../modules/PaymentRouteMaster/bindings/payment_route_master_binding.dart';
+import '../modules/PaymentRouteMaster/views/payment_route_master_view.dart';
+import '../modules/PayrouteCategoryMaster/bindings/payroute_category_master_binding.dart';
+import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
 import '../modules/PayrouteCategoryMaster/bindings/payroute_category_master_binding.dart';
 import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
 import '../modules/PlaceMaster/bindings/place_master_binding.dart';
@@ -50,6 +60,8 @@ import '../modules/ReadytoBills/views/readyto_bills_view.dart';
 import '../modules/ReadytoBills/views/readyto_bills_view.dart';
 import '../modules/SecondaryAsrunModification/bindings/secondary_asrun_modification_binding.dart';
 import '../modules/SecondaryAsrunModification/views/secondary_asrun_modification_view.dart';
+import '../modules/UndoCancelation/bindings/undo_cancelation_binding.dart';
+import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
 import '../modules/SpotsNotTelecastedReport/bindings/spots_not_telecasted_report_binding.dart';
 import '../modules/SpotsNotTelecastedReport/views/spots_not_telecasted_report_view.dart';
 import '../modules/StationMaster/bindings/station_master_binding.dart';
@@ -72,8 +84,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.R_O_AUDIT +
-          "?personalNo=R9vVPL7er1Os%2FusemWG%2FIw%3D%3D&loginCode=0iGe3vK5h2KGjfSKZTpmsQ%3D%3D&formName=0JUkJLseCJROuXQJxWn0tvQx2tD7hbegZhslvSOuxHotg9L%2FT284%2FQNIMZExXr81");
+      : (Routes.PAYMENT_ROUTE_MASTER +
+          "?personalNo=CX5CP1oS3%2FepJloRhT%2F7JQ%3D%3D&loginCode=GhNK0fgJ1lghoL8cGVvoKg%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
 
   static final routes = [
     GetPage(
@@ -148,6 +160,16 @@ class AppPages {
       page: () => AuthGuard(childName: _Paths.INVOICE_REVISION),
     ),
     GetPage(
+      name: _Paths.ASRUN_VERIFICATION,
+      page: () => AuthGuard(childName: _Paths.ASRUN_VERIFICATION),
+      // binding: AsrunVerificationBinding(),
+    ),
+    GetPage(
+      name: _Paths.EBILLS,
+      page: () => AuthGuard(childName: _Paths.EBILLS),
+      // binding: EbillsBinding(),
+    ),
+    GetPage(
       name: _Paths.UNDO_CANCELATION,
       page: () => AuthGuard(childName: _Paths.UNDO_CANCELATION),
     ),
@@ -190,6 +212,16 @@ class AppPages {
       page: () => AuthGuard(childName: _Paths.PLACE_TYPE_MASTER),
       binding: PlaceTypeMasterBinding(),
     ),
+    GetPage(
+        name: _Paths.PAYMENT_ROUTE_MASTER,
+        page: () => AuthGuard(childName: _Paths.PAYMENT_ROUTE_MASTER)
+        // binding: PaymentRouteMasterBinding(),
+        ),
+    GetPage(
+        name: _Paths.AGENCY_EMBARGO,
+        page: () => AuthGuard(childName: _Paths.AGENCY_EMBARGO)
+        // binding: AgencyEmbargoBinding(),
+        ),
     GetPage(
       name: _Paths.SPOTS_NOT_TELECASTED_REPORT,
       page: () => AuthGuard(childName: _Paths.SPOTS_NOT_TELECASTED_REPORT),

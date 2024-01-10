@@ -3481,6 +3481,7 @@ class DropDownField {
     GlobalKey? widgetKey,
     bool showtitle = true,
     bool titleInLeft = false,
+    double padLeft = 10,
   }) {
     isEnable ??= true;
     widgetKey ??= GlobalKey();
@@ -3517,7 +3518,7 @@ class DropDownField {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: padLeft),
               },
               InkWell(
                   // key: widgetKey,

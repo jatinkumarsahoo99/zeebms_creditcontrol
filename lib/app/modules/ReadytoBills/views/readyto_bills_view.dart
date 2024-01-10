@@ -135,7 +135,7 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                           'Clear',
                           'Exit',
                           'Search',
-                          'Docs',
+                          'Docs'
                         ],
                         (btnName) {
                           controller.formHandler(btnName);
