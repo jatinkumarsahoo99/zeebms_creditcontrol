@@ -14,6 +14,8 @@ import '../modules/AsrunVerification/bindings/asrun_verification_binding.dart';
 import '../modules/AsrunVerification/views/asrun_verification_view.dart';
 import '../modules/ClearSecondarySpots/bindings/clear_secondary_spots_binding.dart';
 import '../modules/ClearSecondarySpots/views/clear_secondary_spots_view.dart';
+import '../modules/ClientDeals/bindings/client_deals_binding.dart';
+import '../modules/ClientDeals/views/client_deals_view.dart';
 import '../modules/ClientEmbargo/bindings/client_embargo_binding.dart';
 import '../modules/ClientEmbargo/views/client_embargo_view.dart';
 import '../modules/ClientGroupMaster/bindings/client_group_master_binding.dart';
@@ -245,6 +247,10 @@ class AppPages {
     GetPage(
       name: _Paths.EXPORT_BILLING_F_P_C,
       page: () => AuthGuard(childName: _Paths.EXPORT_BILLING_F_P_C),
+    ),
+    GetPage(
+      name: _Paths.CLIENT_DEALS,
+      page: () => AuthGuard(childName: _Paths.CLIENT_DEALS),
     ),
   ];
 }
