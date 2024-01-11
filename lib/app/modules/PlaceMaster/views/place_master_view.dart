@@ -9,7 +9,10 @@ import '../../../routes/app_pages.dart';
 import '../controllers/place_master_controller.dart';
 
 class PlaceMasterView extends GetView<PlaceMasterController> {
-  const PlaceMasterView({Key? key}) : super(key: key);
+  PlaceMasterView({Key? key}) : super(key: key);
+
+  PlaceMasterController controller =
+      Get.put<PlaceMasterController>(PlaceMasterController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,69 +40,62 @@ class PlaceMasterView extends GetView<PlaceMasterController> {
                     children: [
                       InputFields.formFieldExpand2(
                         hintTxt: "Place Name",
-                        controller: TextEditingController(),
+                        controller: controller.placeName,
                         titleInLeft: true,
-                        titleSizeboxWidth: 90,
-                        // bottomPadding: false,
+                        titleSizeboxWidth: 100,
+                        autoFocus: true,
                       ),
                       DropDownField.formDropDown1WidthMapExpand(
                         [],
                         (value) {},
                         "Place type",
-                        // .23,
-                        // autoFocus: true,
                         titleInLeft: true,
-                        titleSizeBoxWidth: 85,
+                        titleSizeBoxWidth: 95,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       InputFields.formFieldExpand2(
                         hintTxt: "Place Short Name",
-                        controller: TextEditingController(),
+                        controller: controller.placeShortName,
                         titleInLeft: true,
-                        titleSizeboxWidth: 90,
-                        // bottomPadding: false,
+                        titleSizeboxWidth: 100,
                       ),
                       DropDownField.formDropDown1WidthMapExpand(
                         [],
                         (value) {},
                         "Parent Place Name",
-                        // .23,
-                        // autoFocus: true,
                         titleInLeft: true,
-                        titleSizeBoxWidth: 85,
+                        titleSizeBoxWidth: 95,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       DropDownField.formDropDown1WidthMapExpand(
                         [],
                         (value) {},
                         "Zone Name",
-                        // .23,
-                        // autoFocus: true,
                         titleInLeft: true,
-                        titleSizeBoxWidth: 85,
+                        titleSizeBoxWidth: 95,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       InputFields.formFieldExpand2(
                         hintTxt: "IBF Branch Code",
-                        controller: TextEditingController(),
+                        controller: controller.ibfBranchCode,
                         titleInLeft: true,
-                        titleSizeboxWidth: 90,
+                        titleSizeboxWidth: 100,
                         // bottomPadding: false,
                       ),
                       InputFields.formFieldExpand2(
                         hintTxt: "SAP Code",
-                        controller: TextEditingController(),
+                        controller: controller.sapCode,
                         titleInLeft: true,
-                        titleSizeboxWidth: 90,
+                        titleSizeboxWidth: 100,
                         // bottomPadding: false,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Get.find<HomeController>().getCommonButton(
