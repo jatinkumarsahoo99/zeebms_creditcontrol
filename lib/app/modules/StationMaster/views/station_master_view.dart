@@ -38,29 +38,16 @@ class StationMasterView extends GetView<StationMasterController> {
                       InputFields.formFieldExpand2(
                         hintTxt: "Station",
                         controller: TextEditingController(),
-                        titleInLeft: true,
                         titleSizeboxWidth: 90,
-                        // bottomPadding: false,
+                        autoFocus: true,
                       ),
-                      // DropDownField.formDropDownSearchAPI2Expand(
-                      //   GlobalKey(),
-                      //   context,
-                      //   title: "Related Zone",
-                      //   url: "",
-                      //   onchanged: (value) {},
-                      //   titleInLeft: true,
-                      //   textSizeboxWidth: 95,
-                      // ),
                       DropDownField.formDropDown1WidthMapExpand(
                         [],
                         (value) {},
                         "Related Zone",
-                        // .23,
-                        // autoFocus: true,
-                        titleInLeft: true,
                         titleSizeBoxWidth: 85,
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Get.find<HomeController>().getCommonButton(
