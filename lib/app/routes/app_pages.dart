@@ -10,6 +10,8 @@ import '../modules/AgencyMaster/bindings/agency_master_binding.dart';
 import '../modules/AgencyMaster/views/agency_master_view.dart';
 import '../modules/AsrunImportSecondaryEvents/bindings/asrun_import_secondary_events_binding.dart';
 import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
+import '../modules/AsrunSpecificationAdRevenue/bindings/asrun_specification_ad_revenue_binding.dart';
+import '../modules/AsrunSpecificationAdRevenue/views/asrun_specification_ad_revenue_view.dart';
 import '../modules/AsrunVerification/bindings/asrun_verification_binding.dart';
 import '../modules/AsrunVerification/views/asrun_verification_view.dart';
 import '../modules/ClearSecondarySpots/bindings/clear_secondary_spots_binding.dart';
@@ -32,6 +34,8 @@ import '../modules/CurrencyTypeMaster/bindings/currency_type_master_binding.dart
 import '../modules/CurrencyTypeMaster/views/currency_type_master_view.dart';
 import '../modules/DealReport/bindings/deal_report_binding.dart';
 import '../modules/DealReport/views/deal_report_view.dart';
+import '../modules/EBillAgencyGroupMaster/bindings/e_bill_agency_group_master_binding.dart';
+import '../modules/EBillAgencyGroupMaster/views/e_bill_agency_group_master_view.dart';
 import '../modules/EBillsForBonusActivity/bindings/e_bills_for_bonus_activity_binding.dart';
 import '../modules/EBillsForBonusActivity/views/e_bills_for_bonus_activity_view.dart';
 import '../modules/Ebills/bindings/ebills_binding.dart';
@@ -40,6 +44,8 @@ import '../modules/ExportBillingFPC/bindings/export_billing_f_p_c_binding.dart';
 import '../modules/ExportBillingFPC/views/export_billing_f_p_c_view.dart';
 import '../modules/GSTPlantInfo/bindings/g_s_t_plant_info_binding.dart';
 import '../modules/GSTPlantInfo/views/g_s_t_plant_info_view.dart';
+import '../modules/GenerateBookingReport/bindings/generate_booking_report_binding.dart';
+import '../modules/GenerateBookingReport/views/generate_booking_report_view.dart';
 import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
 import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
 import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
@@ -47,8 +53,8 @@ import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
 import '../modules/PaymentRouteMaster/bindings/payment_route_master_binding.dart';
 import '../modules/PaymentRouteMaster/views/payment_route_master_view.dart';
 import '../modules/PayrouteCategoryMaster/bindings/payroute_category_master_binding.dart';
-import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
 import '../modules/PayrouteCategoryMaster/bindings/payroute_category_master_binding.dart';
+import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
 import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
 import '../modules/PlaceMaster/bindings/place_master_binding.dart';
 import '../modules/PlaceMaster/views/place_master_view.dart';
@@ -60,15 +66,17 @@ import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
 import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
 import '../modules/ReadytoBills/views/readyto_bills_view.dart';
 import '../modules/ReadytoBills/views/readyto_bills_view.dart';
+import '../modules/SAPBIllCheckReport/bindings/s_a_p_b_ill_check_report_binding.dart';
+import '../modules/SAPBIllCheckReport/views/s_a_p_b_ill_check_report_view.dart';
 import '../modules/SecondaryAsrunModification/bindings/secondary_asrun_modification_binding.dart';
 import '../modules/SecondaryAsrunModification/views/secondary_asrun_modification_view.dart';
-import '../modules/UndoCancelation/bindings/undo_cancelation_binding.dart';
-import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
 import '../modules/SpotsNotTelecastedReport/bindings/spots_not_telecasted_report_binding.dart';
 import '../modules/SpotsNotTelecastedReport/views/spots_not_telecasted_report_view.dart';
 import '../modules/StationMaster/bindings/station_master_binding.dart';
 import '../modules/StationMaster/views/station_master_view.dart';
 import '../modules/UndoCancelation/bindings/undo_cancelation_binding.dart';
+import '../modules/UndoCancelation/bindings/undo_cancelation_binding.dart';
+import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
 import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
 import '../modules/ViewDealChangeHistory/bindings/view_deal_change_history_binding.dart';
 import '../modules/ViewDealChangeHistory/views/view_deal_change_history_view.dart';
@@ -86,7 +94,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.CLIENT_DEALS +
+      : (Routes.ASRUN_SPECIFICATION_AD_REVENUE +
           "?personalNo=R9vVPL7er1Os%2FusemWG%2FIw%3D%3D&loginCode=0iGe3vK5h2KGjfSKZTpmsQ%3D%3D&formName=0JUkJLseCJROuXQJxWn0tvQx2tD7hbegZhslvSOuxHotg9L%2FT284%2FQNIMZExXr81");
 
   static final routes = [
@@ -251,6 +259,30 @@ class AppPages {
     GetPage(
       name: _Paths.CLIENT_DEALS,
       page: () => AuthGuard(childName: _Paths.CLIENT_DEALS),
+    ),
+    GetPage(
+      name: _Paths.S_A_P_B_ILL_CHECK_REPORT,
+      // page: () =>  SAPBIllCheckReportView(),
+      page: () => AuthGuard(childName: _Paths.S_A_P_B_ILL_CHECK_REPORT),
+      binding: SAPBIllCheckReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.GENERATE_BOOKING_REPORT,
+      // page: () =>  GenerateBookingReportView(),
+      page: () => AuthGuard(childName: _Paths.GENERATE_BOOKING_REPORT),
+      binding: GenerateBookingReportBinding(),
+    ),
+    GetPage(
+      name: _Paths.E_BILL_AGENCY_GROUP_MASTER,
+      // page: () =>  EBillAgencyGroupMasterView(),
+      page: () => AuthGuard(childName: _Paths.E_BILL_AGENCY_GROUP_MASTER),
+      binding: EBillAgencyGroupMasterBinding(),
+    ),
+    GetPage(
+      name: _Paths.ASRUN_SPECIFICATION_AD_REVENUE,
+      // page: () => const AsrunSpecificationAdRevenueView(),
+      page: () => AuthGuard(childName: _Paths.ASRUN_SPECIFICATION_AD_REVENUE),
+      binding: AsrunSpecificationAdRevenueBinding(),
     ),
   ];
 }

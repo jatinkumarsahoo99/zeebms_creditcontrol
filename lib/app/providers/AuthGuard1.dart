@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
+import '../modules/AsrunSpecificationAdRevenue/views/asrun_specification_ad_revenue_view.dart';
 import '../modules/ClearSecondarySpots/views/clear_secondary_spots_view.dart';
 import '../modules/AgencyGroupMaster/views/agency_group_master_view.dart';
 import '../modules/AgencyMaster/views/agency_master_view.dart';
@@ -20,8 +21,11 @@ import '../modules/ClientEmbargo/views/client_embargo_view.dart';
 import '../modules/ClientMaster/views/client_master_view.dart';
 import '../modules/DealReport/views/deal_report_view.dart';
 import '../modules/CurrencyTypeMaster/views/currency_type_master_view.dart';
+import '../modules/EBillAgencyGroupMaster/views/e_bill_agency_group_master_view.dart';
 import '../modules/ExportBillingFPC/views/export_billing_f_p_c_view.dart';
 import '../modules/GSTPlantInfo/views/g_s_t_plant_info_view.dart';
+import '../modules/GenerateBookingReport/bindings/generate_booking_report_binding.dart';
+import '../modules/GenerateBookingReport/views/generate_booking_report_view.dart';
 import '../modules/MovieUpdate/views/movie_update_view.dart';
 import '../modules/PlaceMaster/views/place_master_view.dart';
 import '../modules/PlaceTypeMaster/views/place_type_master_view.dart';
@@ -30,6 +34,7 @@ import '../modules/CompanyMaster/views/company_master_view.dart';
 import '../modules/CreditRateMaster/views/credit_rate_master_view.dart';
 import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
 import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
+import '../modules/SAPBIllCheckReport/views/s_a_p_b_ill_check_report_view.dart';
 import '../modules/SpotsNotTelecastedReport/views/spots_not_telecasted_report_view.dart';
 import '../modules/StationMaster/views/station_master_view.dart';
 import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
@@ -159,6 +164,18 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.CLIENT_DEALS:
               currentWidget = ClientDealsView();
+              break;
+            case Routes.S_A_P_B_ILL_CHECK_REPORT:
+              currentWidget = SAPBIllCheckReportView();
+              break;
+            case Routes.GENERATE_BOOKING_REPORT:
+              currentWidget = GenerateBookingReportView();
+              break;
+            case Routes.E_BILL_AGENCY_GROUP_MASTER:
+              currentWidget = EBillAgencyGroupMasterView();
+              break;
+            case Routes.ASRUN_SPECIFICATION_AD_REVENUE:
+              currentWidget = AsrunSpecificationAdRevenueView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
