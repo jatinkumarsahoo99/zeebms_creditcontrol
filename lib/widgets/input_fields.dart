@@ -164,6 +164,144 @@ class InputFields {
     );
   }
 
+  static Widget formField5({
+    String? Function(String?)? validator,
+    required String hintTxt,
+    required TextEditingController controller,
+    Function(String)? onchanged,
+    double? padLeft,
+    double? contentPad,
+    FocusNode? focusNode,
+    Function()? onEditComplete,
+    List<TextInputFormatter> inputformatters = const [],
+    num? width = 0.12,
+    bool capital = false,
+    bool? isEnable,
+    int? maxLen,
+    bool margin = false,
+    bool autoFocus = false,
+    bool showTitle = true,
+    int maxLines = 1,
+    double? height,
+    void Function(String)? onFieldSubmitted,
+    String? prefixText,
+  }) {
+    // var data = 0.obs;
+
+    if (inputformatters.isNotEmpty) {
+      inputformatters.add(FilteringTextInputFormatter.deny("  "));
+      // inputformatters.add(
+      //   FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
+      // );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        if (showTitle) ...{
+          LabelText.style(
+            hint: hintTxt,
+            txtColor: (isEnable ?? true) ? Colors.black : Colors.grey,
+          ),
+        },
+        Container(
+          // padding: const EdgeInsets.only(
+          //     top: 6.0,
+          //     bottom: 6.0),
+
+          height: height ?? SizeDefine.heightInputField,
+          width: Get.width * width!,
+
+          child: TextFormField(
+            maxLines: maxLines,
+            focusNode: focusNode,
+            minLines: maxLines,
+            autofocus: autoFocus,
+            onEditingComplete: onEditComplete,
+            textCapitalization: capital
+                ? TextCapitalization.characters
+                : TextCapitalization.none,
+            validator: validator,
+            enabled: isEnable ?? true,
+            maxLength: maxLen ?? 25,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            onChanged: (onchanged != null) ? onchanged : null,
+            textAlignVertical: TextAlignVertical.center,
+            keyboardType: TextInputType.datetime,
+            textAlign: TextAlign.left,
+            onFieldSubmitted: onFieldSubmitted,
+            inputFormatters: inputformatters.isEmpty
+                ? [
+              LengthLimitingTextInputFormatter(
+                  (maxLen) ?? SizeDefine.maxcharlimit),
+              FilteringTextInputFormatter.deny("  "),
+              // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
+            ]
+                : inputformatters,
+            controller: controller,
+            style: TextStyle(
+                fontSize: 12,
+                color: (isEnable ?? true) ? Colors.black : Colors.grey),
+            decoration: InputDecoration(
+                enabled: isEnable ?? true,
+                // prefixText: prefixText,
+
+                prefixIcon: prefixText != null
+                    ? SizedBox(
+                  child: Center(
+                    widthFactor: 0.0,
+                    child: Text(
+                      " $prefixText ",
+                      style: TextStyle(
+                        backgroundColor: Colors.grey.shade500,
+                        color: Colors.white,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                )
+                    : null,
+                prefixStyle: TextStyle(
+                  backgroundColor: Colors.grey.shade500,
+                  color: Colors.white,
+                  fontSize: 12,
+                ),
+                errorBorder: InputBorder.none,
+                counterText: "",
+                // hintText: "dd/MM/yyyy",
+                contentPadding: EdgeInsets.only(
+                    left: prefixText == null ? 10 : 2,
+                    top: (contentPad != null) ? contentPad : 2),
+                // labelText: hintTxt,
+                labelStyle: TextStyle(
+                    fontSize: SizeDefine.labelSize,
+                    color: (isEnable ?? true) ? Colors.black : Colors.grey),
+                border: InputBorder.none,
+                // suffixIcon: Icon(
+                //   Icons.calendar_today,
+                //   size: 14,
+                //   color: Colors.deepPurpleAccent,
+                // ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always),
+          ),
+        ),
+      ],
+    );
+  }
+
   static Widget formField1({
     String? Function(String?)? validator,
     required String hintTxt,
@@ -835,6 +973,110 @@ class InputFields {
           padding: EdgeInsets.only(left: paddingLeft ?? 10),
           child: LabelText.style(hint: hintTxt),
         ),
+        Container(
+          // padding: const EdgeInsets.only(
+          //     top: 6.0,
+          //     bottom: 6.0),
+          margin: EdgeInsets.only(left: paddingLeft ?? 10),
+          height: height ?? SizeDefine.heightInputField,
+          width: Get.width * widthRatio,
+          alignment: Alignment.topLeft,
+          child: TextField(
+            inputFormatters: [
+              LengthLimitingTextInputFormatter(
+                  maxLen ?? SizeDefine.maxcharlimit),
+              capital
+                  ? UpperCaseTextFormatter()
+                  : FilteringTextInputFormatter.deny(RegExp(''))
+            ],
+            expands: true,
+            focusNode: focus,
+            textCapitalization: capital
+                ? TextCapitalization.characters
+                : TextCapitalization.none,
+            enabled: isEnable ?? true,
+            maxLength: maxLen ?? SizeDefine.maxcharlimit,
+            maxLines: null,
+            minLines: null,
+            textAlignVertical: TextAlignVertical.top,
+            keyboardType: TextInputType.multiline,
+            textAlign: TextAlign.left,
+            // minLines: 2,
+            controller: controller,
+            style: TextStyle(fontSize: 12),
+            onChanged: (val) {
+              if (onChange != null) {
+                onChange(val);
+              }
+            },
+            decoration: InputDecoration(
+                errorBorder: InputBorder.none,
+                // hintText: "dd/MM/yyyy",
+                contentPadding: const EdgeInsets.only(
+                  left: 10,
+                  top: 10,
+                ),
+                // labelText: hintTxt,
+                counterText: "",
+                labelStyle: TextStyle(
+                    fontSize: SizeDefine.labelSize, color: Colors.black),
+                border: InputBorder.none,
+
+                // suffixIcon: Icon(
+                //   Icons.calendar_today,
+                //   size: 14,
+                //   color: Colors.deepPurpleAccent,
+                // ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.deepPurpleAccent),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                disabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.grey),
+                  borderRadius: BorderRadius.circular(0),
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always),
+          ),
+        ),
+      ],
+    );
+  }
+
+  static Widget formField1WidthBox1(
+      {required String hintTxt,
+        required TextEditingController controller,
+        required double widthRatio,
+        double? height,
+        double? width,
+        double? paddingLeft,
+        bool capital = false,
+        bool showTitle = false,
+        bool? isEnable,
+        int? maxLen,
+        FocusNode? focus,
+        Function? onChange}) {
+    // var data = 0.obs;
+    return Row(
+      // mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        (showTitle == true)?
+          SizedBox(
+            width:width??Get.width*0.12 ,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: paddingLeft ?? 10,right: 1,top: 3),
+                  child: LabelText.style(hint: hintTxt),
+                ),
+              ],
+            ),
+          ):Container(),
         Container(
           // padding: const EdgeInsets.only(
           //     top: 6.0,

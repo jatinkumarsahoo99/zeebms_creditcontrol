@@ -3,6 +3,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 
+import 'Const.dart';
+
 // import '../modules/OperationalFPC/DailyFPCModel.dart';
 
 class ApiFactory {
@@ -47,7 +49,7 @@ class ApiFactory {
       "$BASE_URL_COMMON/api/MDI/GetAllFormDetailsAndPermission?Userid=";
   static String MS_PROFILE = "$BASE_URL_LOGIN/api/Login/PostUserProfile";
   static String MS_TOKEN_BACKEND = "$BASE_URL_LOGIN/api/Login/PostApiToken";
-
+  static String LOGIN_URL = Const.getWebLoginUrl();
   static String MS_TOKEN1 =
       "https://login.microsoftonline.com/56bd48cd-f312-49e8-b6c7-7b5b926c03d6/oauth2/v2.0/token";
   static String MS_AUTH =
@@ -711,4 +713,16 @@ class ApiFactory {
       "$BASE_URL/api/MovieUpdate/GetShow";
   static String get MOVIE_UPDATE_POST_UNDO_SPOT =>
       "$BASE_URL/api/MovieUpdate/PostUndoSpot";
+
+ /// //////////////////////////////// Client Deals ////////////////////////////////////
+
+  static String get Client_Deal_GET_LOAD => "$BASE_URL/api/ClientDeals/onload";
+  static String get Client_Deal_GET_CHANNEL => "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
+  static String get Client_Deal_GET_CLIENTS => "$BASE_URL/api/ClientDeals/GetClients";
+  static String get Client_Deal_GET_CLIENTS_LEAVE => "$BASE_URL/api/ClientDeals/ClientLeave";
+  static String get Client_Deal_GET_CHANNEL_LEAVE => "$BASE_URL/api/ClientDeals/ChannelLeave";
+  static String get Client_Deal_GET_SUBTYPE => "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
+  static String get Client_Deal_RETRIVE_RECORD => "$BASE_URL/api/ClientDeals/RetrieveRecord";
+
+
 }
