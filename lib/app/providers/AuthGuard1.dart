@@ -5,6 +5,7 @@ import 'package:bms_creditcontrol/app/modules/AsrunVerification/views/asrun_veri
 import 'package:bms_creditcontrol/app/modules/ClientGroupMaster/views/client_group_master_view.dart';
 import 'package:bms_creditcontrol/app/modules/ComboDealEntry/views/combo_deal_entry_view.dart';
 import 'package:bms_creditcontrol/app/modules/Ebills/views/ebills_view.dart';
+import 'package:bms_creditcontrol/app/modules/EmailBillDetails/views/email_bill_details_view.dart';
 import 'package:bms_creditcontrol/app/modules/PaymentRouteMaster/views/payment_route_master_view.dart';
 import 'package:bms_creditcontrol/app/modules/ReadytoBills/views/readyto_bills_view.dart';
 import 'package:flutter/foundation.dart';
@@ -38,6 +39,7 @@ import '../modules/CreditRateMaster/views/credit_rate_master_view.dart';
 import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
 import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
 import '../modules/SAPBIllCheckReport/views/s_a_p_b_ill_check_report_view.dart';
+import '../modules/SalesExecutiveMaster/views/sales_executive_master_view.dart';
 import '../modules/SpotsNotTelecastedReport/views/spots_not_telecasted_report_view.dart';
 import '../modules/StationMaster/views/station_master_view.dart';
 import '../modules/TrafficOrderCorrection/views/traffic_order_correction_view.dart';
@@ -251,6 +253,12 @@ class _AuthGuard1State extends State<AuthGuard> with WidgetsBindingObserver {
               break;
             case Routes.BILL_EXPORT:
               currentWidget = BillExportView();
+              break;
+            case Routes.SALES_EXECUTIVE_MASTER:
+              currentWidget = SalesExecutiveMasterView();
+              break;
+            case Routes.EMAIL_BILL_DETAILS:
+              currentWidget = EmailBillDetailsView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
