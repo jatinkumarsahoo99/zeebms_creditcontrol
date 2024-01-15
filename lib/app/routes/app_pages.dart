@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:get/get.dart';
 
+import '../../widgets/NoDataFoundPage.dart';
 import '../modules/AgencyEmbargo/bindings/agency_embargo_binding.dart';
 import '../modules/AgencyEmbargo/views/agency_embargo_view.dart';
 import '../modules/AgencyGroupMaster/bindings/agency_group_master_binding.dart';
@@ -91,8 +92,15 @@ class AppPages {
 
   static final routes = [
     GetPage(
+      name: _Paths.NO_FOUND,
+      page: () => NoDataFoundPage(),
+      // binding: OriginalRepeatMasterPageBinding(),
+    ),
+    GetPage(
       name: _Paths.HOME,
-      page: () => HomeView(),
+      page: () => AuthGuard(
+        childName: _Paths.HOME,
+      ),
       binding: HomeBinding(),
     ),
     GetPage(

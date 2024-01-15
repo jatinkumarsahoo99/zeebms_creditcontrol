@@ -34,11 +34,14 @@
     // The value below is injected by flutter build, do not touch.
     var serviceWorkerVersion = null;
 
+
+
+
     </script>
     <script type="text/javascript" src="azure_insight.js"></script>
     <!-- This script adds the flutter initialization JS code -->
-    <!--  <script src="flutter.js" defer></script>-->
-    <script id="flutterScript" defer></script>
+    <script src="flutter.js" defer></script>
+    <!--<script id="flutterScript" defer></script>
 
     <script defer>
     // Generate a random number
@@ -46,13 +49,18 @@
 
     // Set the script source with the random number
     document.getElementById("flutterScript").src = "flutter.js?version=" + randomNumber;
-    </script>
+
+
+    </script>-->
 </head>
 <body oncontextmenu="return false;">
 <style>
     body {
       background-color: #FFFFFF;
     }
+
+
+
 
 </style>
 
@@ -138,6 +146,9 @@
         text-align: center;
         line-height: 1.15;
       }
+
+
+
 
 
 
@@ -249,6 +260,9 @@
 
 
 
+
+
+
     </style>
     <img src="icons/logo_test2.gif" alt="Loading indicator..."/>
 </div>
@@ -267,11 +281,15 @@
         return 'working';
     }
 
+
+
+
 </script>
 <script>
     window.addEventListener('load', function(ev) {
       // Download main.dart.js
       _flutter.loader.loadEntrypoint({
+      entrypointUrl: "main.dart.js?v=" + serviceWorkerVersion,
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
         }
@@ -281,6 +299,9 @@
         return appRunner.runApp();
       });
     });
+
+
+
 
 </script>
 </body>
