@@ -48,6 +48,8 @@ abstract class Routes {
   static const COMPANY_CHANNEL_LINK = _Paths.COMPANY_CHANNEL_LINK;
   static const TRAFFIC_ORDER_CORRECTION = _Paths.TRAFFIC_ORDER_CORRECTION;
   static const BILL_EXPORT = _Paths.BILL_EXPORT;
+  static const SALES_EXECUTIVE_MASTER = _Paths.SALES_EXECUTIVE_MASTER;
+  static const EMAIL_BILL_DETAILS = _Paths.EMAIL_BILL_DETAILS;
 }
 
 abstract class RoutesList {
@@ -103,9 +105,10 @@ abstract class _Paths {
   static const S_A_P_B_ILL_CHECK_REPORT = '/frmSapBillcheckreport';
   static const GENERATE_BOOKING_REPORT = '/generate-booking-report';
   static const E_BILL_AGENCY_GROUP_MASTER = '/Skybreakpattern';
-  static const ASRUN_SPECIFICATION_AD_REVENUE =
-      '/frmAsrunSpecification';
+  static const ASRUN_SPECIFICATION_AD_REVENUE = '/frmAsrunSpecification';
   static const COMPANY_CHANNEL_LINK = '/frmCompanyChannelLink';
   static const TRAFFIC_ORDER_CORRECTION = '/frmTOCorrection';
   static const BILL_EXPORT = '/frmExportData';
+  static const SALES_EXECUTIVE_MASTER = '/frmExecutiveMaster';
+  static const EMAIL_BILL_DETAILS = '/frmBilling';
 }
