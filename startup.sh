@@ -17,6 +17,8 @@ app_salesco_url_local=$(cat /mnt/secrets-store/app-salesco-url)
 api_salesco_url_local=$(cat /mnt/secrets-store/api-salesco-url)
 app_insrtumentation_key_local=$(cat /mnt/secrets-store/app-insrtumentation-key)
 api_insrtumentation_key_local=$(cat /mnt/secrets-store/api-insrtumentation-key)
+app_creditcontrol_url_local=$(cat /mnt/secrets-store/app-creditcontrol-url)
+api_creditcontrol_url_local=$(cat /mnt/secrets-store/api-creditcontrol-url)
 
 sed -i "s#\"app-login-url\": \"\"#\"app-login-url\": \"$app_login_url_local\"#" /app/public-flutter/assets/assets/AppConfig.json
 sed -i "s#\"api-login-url\": \"\"#\"api-login-url\": \"$api_login_url_local\"#" /app/public-flutter/assets/assets/AppConfig.json
@@ -36,3 +38,5 @@ sed -i "s#\"app-operations-url\": \"\"#\"app-operations-url\": \"$app_operations
 sed -i "s#\"api-operations-url\": \"\"#\"api-operations-url\": \"$api_operations_url_local\"#" /app/public-flutter/assets/assets/AppConfig.json
 sed -i "s#\"app-insrtumentation-key\": \"\"#\"app-insrtumentation-key\": \"$app_insrtumentation_key_local\"#" /app/public-flutter/assets/assets/AppConfig.json
 sed -i "s#\"api-insrtumentation-key\": \"\"#\"api-insrtumentation-key\": \"$api_insrtumentation_key_local\"#" /app/public-flutter/assets/assets/AppConfig.json
+sed -i "s#\"app-creditcontrol-url\": \"\"#\"app-creditcontrol-url\": \"$app_creditcontrol_url_local\"#" /app/public-flutter/assets/assets/AppConfig.json
+sed -i "s#\"api-creditcontrol-url\": \"\"#\"api-creditcontrol-url\": \"$api_creditcontrol_url_local\"#" /app/public-flutter/assets/assets/AppConfig.json
