@@ -7,6 +7,7 @@ import 'package:bms_creditcontrol/app/modules/ComboDealEntry/views/combo_deal_en
 import 'package:bms_creditcontrol/app/modules/Ebills/views/ebills_view.dart';
 import 'package:bms_creditcontrol/app/modules/PaymentRouteMaster/views/payment_route_master_view.dart';
 import 'package:bms_creditcontrol/app/modules/ReadytoBills/views/readyto_bills_view.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
@@ -40,12 +41,74 @@ import '../modules/SecondaryAsrunModification/views/secondary_asrun_modification
 import '../modules/ViewDealChangeHistory/views/view_deal_change_history_view.dart';
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
-
-class AuthGuard extends StatelessWidget {
+import 'dart:html' as w;
+class AuthGuard extends StatefulWidget {
   final String childName;
 
   AuthGuard({required this.childName}) {
     assert(this.childName != null);
+  }
+
+  @override
+  State<AuthGuard> createState() => _AuthGuard1State();
+}
+
+class _AuthGuard1State extends State<AuthGuard> with WidgetsBindingObserver {
+  @override
+  void initState() {
+    print("Auth guard init");
+    super.initState();
+    if (kIsWeb) {
+      w.window.addEventListener('focus', onFocus);
+      w.window.addEventListener('blur', onBlur);
+    } else {
+      WidgetsBinding.instance.addObserver(this);
+    }
+  }
+
+  @override
+  void dispose() {
+    print("Auth guard dispose");
+    if (kIsWeb) {
+      w.window.removeEventListener('focus', onFocus);
+      w.window.removeEventListener('blur', onBlur);
+    } else {
+      WidgetsBinding.instance.removeObserver(this);
+    }
+    super.dispose();
+  }
+
+  void onFocus(w.Event e) {
+    didChangeAppLifecycleState(AppLifecycleState.resumed);
+  }
+
+  void onBlur(w.Event e) {
+    didChangeAppLifecycleState(AppLifecycleState.paused);
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    switch (state) {
+      case AppLifecycleState.resumed:
+      // --
+        print('Resumed');
+        FocusScope.of(Get.context!).unfocus();
+
+        break;
+      case AppLifecycleState.inactive:
+      // --
+        print('Inactive');
+        break;
+      case AppLifecycleState.paused:
+      // --
+        print('Paused');
+        FocusScope.of(Get.context!).unfocus();
+        break;
+      case AppLifecycleState.detached:
+      // --
+        print('Detached');
+        break;
+    }
   }
 
   Widget? currentWidget;
@@ -62,7 +125,7 @@ class AuthGuard extends StatelessWidget {
       builder: (controller) {
         print("Login value>>" + controller.loginVal.value.toString());
         if (controller.loginVal.value == 1) {
-          switch (childName) {
+          switch (widget.childName) {
             case Routes.HOME:
               currentWidget = HomeView();
               break;
@@ -186,3 +249,140 @@ class AuthGuard extends StatelessWidget {
     );
   }
 }
+//
+// class AuthGuard extends StatelessWidget {
+//   final String childName;
+//
+//   AuthGuard({required this.childName}) {
+//     assert(this.childName != null);
+//   }
+//
+//   Widget? currentWidget;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return GetX<MainController>(
+//       init: Get.find<MainController>(),
+//       // init: MainController(),
+//       initState: (c) {
+//         // Get.find<MainController>().checkSession2();
+//         Get.find<MainController>().checkSessionFromParams();
+//       },
+//       builder: (controller) {
+//         print("Login value>>" + controller.loginVal.value.toString());
+//         if (controller.loginVal.value == 1) {
+//           switch (childName) {
+//             case Routes.HOME:
+//               currentWidget = HomeView();
+//               break;
+//             case Routes.ASRUN_IMPORT_SECONDARY_EVENTS:
+//               currentWidget = AsrunImportSecondaryEventsView();
+//               break;
+//             case Routes.COMPANY_MASTER:
+//               currentWidget = CompanyMasterView();
+//               break;
+//             case Routes.INVOICE_REVISION:
+//               currentWidget = InvoiceRevisionView();
+//               break;
+//
+//             case Routes.COMBO_DEAL_ENTRY:
+//               currentWidget = ComboDealEntryView();
+//               break;
+//             case Routes.READYTO_BILLS:
+//               currentWidget = ReadytoBillsView();
+//               break;
+//             case Routes.ASRUN_VERIFICATION:
+//               currentWidget = AsrunVerificationView();
+//               break;
+//             case Routes.EBILLS:
+//               currentWidget = EbillsView();
+//               break;
+//
+//             case Routes.UNDO_CANCELATION:
+//               currentWidget = MovieUpdateView();
+//               break;
+//             case Routes.CLEAR_SECONDARY_SPOTS:
+//               currentWidget = ClearSecondarySpotsView();
+//               break;
+//             case Routes.CLIENT_GROUP_MASTER:
+//               currentWidget = ClientGroupMasterView();
+//               break;
+//             case Routes.CREDIT_RATE_MASTER:
+//               currentWidget = CreditRateMasterView();
+//               break;
+//             case Routes.PAYROUTE_CATEGORY_MASTER:
+//               currentWidget = PayrouteCategoryMasterView();
+//               break;
+//
+//             case Routes.ASRUN_IMPORT_SECONDARY_EVENTS:
+//               currentWidget = AsrunImportSecondaryEventsView();
+//               break;
+//             case Routes.R_O_AUDIT:
+//               currentWidget = ROAuditView();
+//               break;
+//             case Routes.DEAL_REPORT:
+//               currentWidget = DealReportView();
+//               break;
+//             case Routes.AGENCY_MASTER:
+//               currentWidget = AgencyMasterView();
+//               break;
+//             case Routes.CLIENT_EMBARGO:
+//               currentWidget = ClientEmbargoView();
+//               break;
+//             case Routes.SECONDARY_ASRUN_MODIFICATION:
+//               currentWidget = SecondaryAsrunModificationView();
+//               break;
+//             case Routes.AGENCY_GROUP_MASTER:
+//               currentWidget = AgencyGroupMasterView();
+//               break;
+//             case Routes.G_S_T_PLANT_INFO:
+//               currentWidget = GSTPlantInfoView();
+//               break;
+//             case Routes.PLACE_TYPE_MASTER:
+//               currentWidget = PlaceTypeMasterView();
+//               break;
+//             case Routes.PAYMENT_ROUTE_MASTER:
+//               currentWidget = PaymentRouteMasterView();
+//               break;
+//             case Routes.AGENCY_EMBARGO:
+//               currentWidget = AgencyEmbargoView();
+//               break;
+//
+//             case Routes.SPOTS_NOT_TELECASTED_REPORT:
+//               currentWidget = SpotsNotTelecastedReportView();
+//               break;
+//             case Routes.VIEW_DEAL_CHANGE_HISTORY:
+//               currentWidget = ViewDealChangeHistoryView();
+//               break;
+//             case Routes.CLIENT_MASTER:
+//               currentWidget = ClientMasterView();
+//               break;
+//             case Routes.STATION_MASTER:
+//               currentWidget = StationMasterView();
+//               break;
+//             case Routes.PLACE_MASTER:
+//               currentWidget = PlaceMasterView();
+//               break;
+//             case Routes.CURRENCY_TYPE_MASTER:
+//               currentWidget = CurrencyTypeMasterView();
+//               break;
+//             case Routes.EXPORT_BILLING_F_P_C:
+//               currentWidget = ExportBillingFPCView();
+//               break;
+//             case Routes.CLIENT_DEALS:
+//               currentWidget = ClientDealsView();
+//               break;
+//             default:
+//               currentWidget = const NoDataFoundPage();
+//           }
+//           // currentWidget = child;
+//         } else if (controller.loginVal.value == 2) {
+//           currentWidget = const NoDataFoundPage();
+//         } else {
+//           currentWidget = const LoadingScreen();
+//         }
+//         return currentWidget!;
+//       },
+//     );
+//   }
+// }

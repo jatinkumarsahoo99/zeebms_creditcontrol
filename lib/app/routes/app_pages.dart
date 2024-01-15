@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:get/get.dart';
 
+import '../../widgets/NoDataFoundPage.dart';
 import '../modules/AgencyEmbargo/bindings/agency_embargo_binding.dart';
 import '../modules/AgencyEmbargo/views/agency_embargo_view.dart';
 import '../modules/AgencyGroupMaster/bindings/agency_group_master_binding.dart';
@@ -12,8 +13,6 @@ import '../modules/AsrunImportSecondaryEvents/bindings/asrun_import_secondary_ev
 import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_events_view.dart';
 import '../modules/AsrunVerification/bindings/asrun_verification_binding.dart';
 import '../modules/AsrunVerification/views/asrun_verification_view.dart';
-import '../modules/BillExport/bindings/bill_export_binding.dart';
-import '../modules/BillExport/views/bill_export_view.dart';
 import '../modules/ClearSecondarySpots/bindings/clear_secondary_spots_binding.dart';
 import '../modules/ClearSecondarySpots/views/clear_secondary_spots_view.dart';
 import '../modules/ClientDeals/bindings/client_deals_binding.dart';
@@ -26,8 +25,6 @@ import '../modules/ClientMaster/bindings/client_master_binding.dart';
 import '../modules/ClientMaster/views/client_master_view.dart';
 import '../modules/ComboDealEntry/bindings/combo_deal_entry_binding.dart';
 import '../modules/ComboDealEntry/views/combo_deal_entry_view.dart';
-import '../modules/CompanyChannelLink/bindings/company_channel_link_binding.dart';
-import '../modules/CompanyChannelLink/views/company_channel_link_view.dart';
 import '../modules/CompanyMaster/bindings/company_master_binding.dart';
 import '../modules/CompanyMaster/views/company_master_view.dart';
 import '../modules/CreditRateMaster/bindings/credit_rate_master_binding.dart';
@@ -43,48 +40,12 @@ import '../modules/Ebills/views/ebills_view.dart';
 import '../modules/ExportBillingFPC/bindings/export_billing_f_p_c_binding.dart';
 import '../modules/ExportBillingFPC/views/export_billing_f_p_c_view.dart';
 import '../modules/GSTPlantInfo/bindings/g_s_t_plant_info_binding.dart';
-import '../modules/GSTPlantInfo/views/g_s_t_plant_info_view.dart';
-import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
-import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
-import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
-import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
-import '../modules/PaymentRouteMaster/bindings/payment_route_master_binding.dart';
-import '../modules/PaymentRouteMaster/views/payment_route_master_view.dart';
-import '../modules/PayrouteCategoryMaster/bindings/payroute_category_master_binding.dart';
-import '../modules/PayrouteCategoryMaster/bindings/payroute_category_master_binding.dart';
-import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
-import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
-import '../modules/PlaceMaster/bindings/place_master_binding.dart';
-import '../modules/PlaceMaster/views/place_master_view.dart';
+
 import '../modules/PlaceTypeMaster/bindings/place_type_master_binding.dart';
-import '../modules/PlaceTypeMaster/views/place_type_master_view.dart';
 import '../modules/ROAudit/bindings/r_o_audit_binding.dart';
-import '../modules/ROAudit/views/r_o_audit_view.dart';
-import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
-import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
-import '../modules/ReadytoBills/views/readyto_bills_view.dart';
-import '../modules/ReadytoBills/views/readyto_bills_view.dart';
 import '../modules/SecondaryAsrunModification/bindings/secondary_asrun_modification_binding.dart';
-import '../modules/SecondaryAsrunModification/views/secondary_asrun_modification_view.dart';
-import '../modules/SpotsNotTelecastedReport/bindings/spots_not_telecasted_report_binding.dart';
-import '../modules/SpotsNotTelecastedReport/views/spots_not_telecasted_report_view.dart';
-import '../modules/StationMaster/bindings/station_master_binding.dart';
-import '../modules/StationMaster/views/station_master_view.dart';
-import '../modules/TrafficOrderCorrection/bindings/traffic_order_correction_binding.dart';
-import '../modules/TrafficOrderCorrection/views/traffic_order_correction_view.dart';
-import '../modules/UndoCancelation/bindings/undo_cancelation_binding.dart';
-import '../modules/UndoCancelation/bindings/undo_cancelation_binding.dart';
-import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
-import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
-import '../modules/ViewDealChangeHistory/bindings/view_deal_change_history_binding.dart';
-import '../modules/ViewDealChangeHistory/views/view_deal_change_history_view.dart';
 import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
 import '../providers/AuthGuard1.dart';
-
-// import '../modules/ClientGroupMasterts/bindings/client_group_master_binding.dart';
-// import '../modules/ClientGroupMasterts/views/client_group_master_view.dart';
-
 part 'app_routes.dart';
 
 class AppPages {
@@ -92,13 +53,20 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.BILL_EXPORT +
-          "?personalNo=ces%2FeKicpwo5mz%2FYFOQDvw%3D%3D&loginCode=zWc5qlvs%2BXZUagqFBqBN0A%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
+      : (Routes.STATION_MASTER +
+          "?personalNo=CX5CP1oS3%2FepJloRhT%2F7JQ%3D%3D&loginCode=GhNK0fgJ1lghoL8cGVvoKg%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
 
   static final routes = [
     GetPage(
+      name: _Paths.NO_FOUND,
+      page: () => NoDataFoundPage(),
+      // binding: OriginalRepeatMasterPageBinding(),
+    ),
+    GetPage(
       name: _Paths.HOME,
-      page: () => HomeView(),
+      page: () => AuthGuard(
+        childName: _Paths.HOME,
+      ),
       binding: HomeBinding(),
     ),
     GetPage(
@@ -257,18 +225,6 @@ class AppPages {
     GetPage(
       name: _Paths.CLIENT_DEALS,
       page: () => AuthGuard(childName: _Paths.CLIENT_DEALS),
-    ),
-    GetPage(
-      name: _Paths.COMPANY_CHANNEL_LINK,
-      page: () => AuthGuard(childName: _Paths.COMPANY_CHANNEL_LINK),
-    ),
-    GetPage(
-      name: _Paths.TRAFFIC_ORDER_CORRECTION,
-      page: () => AuthGuard(childName: _Paths.TRAFFIC_ORDER_CORRECTION),
-    ),
-    GetPage(
-      name: _Paths.BILL_EXPORT,
-      page: () => AuthGuard(childName: _Paths.BILL_EXPORT),
     ),
   ];
 }

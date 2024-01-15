@@ -5,6 +5,7 @@ abstract class Routes {
   Routes._();
 
   static const HOME = _Paths.HOME;
+  static const NO_FOUND = _Paths.NO_FOUND;
   static List<String> listRoutes = [];
   static const ASRUN_IMPORT_SECONDARY_EVENTS =
       _Paths.ASRUN_IMPORT_SECONDARY_EVENTS;
@@ -60,6 +61,7 @@ abstract class _Paths {
   _Paths._();
 
   static const HOME = '/home';
+  static const NO_FOUND = '/NoDataFoundPage';
   static const ASRUN_IMPORT_SECONDARY_EVENTS = '/frmSecondaryAsRunImport';
   static const COMPANY_MASTER = '/frmCompanyMaster';
   static const COMBO_DEAL_ENTRY = '/frmLinkDeal';
