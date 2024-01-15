@@ -200,6 +200,11 @@ class ClientDealsView extends GetView<ClientDealsController> {
                       titleInLeft: true,
                     ),
                   ),
+                  sizedBoxWidth(5),
+                  FormButton1(
+                    btnText: "@",
+                    callback: () {},
+                  ),
                   sizedBoxWidth(10),
                   Expanded(
                     child: DropDownField.formDropDown1WidthMapExpand(
@@ -210,6 +215,11 @@ class ClientDealsView extends GetView<ClientDealsController> {
                       titleSizeBoxWidth: 50,
                       // .20,
                     ),
+                  ),
+                  sizedBoxWidth(5),
+                  FormButton1(
+                    btnText: "@",
+                    callback: () {},
                   ),
                   sizedBoxWidth(10),
                   SizedBox(
@@ -288,6 +298,11 @@ class ClientDealsView extends GetView<ClientDealsController> {
                       titleSizeBoxWidth: 50,
                       // .20,
                     ),
+                  ),
+                  sizedBoxWidth(5),
+                  FormButton1(
+                    btnText: "...",
+                    callback: () {},
                   ),
                   sizedBoxWidth(10),
                   SizedBox(
@@ -618,25 +633,47 @@ class ClientDealsView extends GetView<ClientDealsController> {
 
                   SizedBox(
                     width: Get.width * 0.15,
-                    child: InputFields.formFieldExpand2(
-                      hintTxt: "Start time",
-                      controller: TextEditingController(),
-                      titleInLeft: true,
-                      titleSizeboxWidth: 50,
-                      bottomPadding: false,
+                    child: InputFields.formFieldNumberMask(
+                      hintTxt: "Start Time",
+                      controller: controller.startTime,
+                      widthRatio: 0.15,
+
+                      // isEnable: controllerX.isEnable,
+                      onEditComplete: (val) {
+                        // controllerX.calculateDuration();
+                      },
+                      // isTime: true,
+                      // isEnable: controller.isEnable.value,
+                      paddingLeft: 0,
                     ),
                   ),
 
                   SizedBox(
                     width: Get.width * 0.15,
-                    child: InputFields.formFieldExpand2(
-                      hintTxt: "End time",
-                      controller: TextEditingController(),
-                      titleInLeft: true,
-                      titleSizeboxWidth: 50,
-                      bottomPadding: false,
+                    child: InputFields.formFieldNumberMask(
+                      hintTxt: "End Time",
+                      controller: controller.startTime,
+                      widthRatio: 0.15,
+                      // isEnable: controllerX.isEnable,
+                      onEditComplete: (val) {
+                        // controllerX.calculateDuration();
+                      },
+                      // isTime: true,
+                      // isEnable: controller.isEnable.value,
+                      paddingLeft: 0,
                     ),
                   ),
+
+                  // SizedBox(
+                  //   width: Get.width * 0.15,
+                  //   child: InputFields.formFieldExpand2(
+                  //     hintTxt: "End time",
+                  //     controller: TextEditingController(),
+                  //     titleInLeft: true,
+                  //     titleSizeboxWidth: 50,
+                  //     bottomPadding: false,
+                  //   ),
+                  // ),
 
                   // Spacer(),
 
