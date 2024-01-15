@@ -5,6 +5,7 @@ abstract class Routes {
   Routes._();
 
   static const HOME = _Paths.HOME;
+  static const NO_FOUND = _Paths.NO_FOUND;
   static List<String> listRoutes = [];
   static const ASRUN_IMPORT_SECONDARY_EVENTS =
       _Paths.ASRUN_IMPORT_SECONDARY_EVENTS;
@@ -44,6 +45,9 @@ abstract class Routes {
   static const E_BILL_AGENCY_GROUP_MASTER = _Paths.E_BILL_AGENCY_GROUP_MASTER;
   static const ASRUN_SPECIFICATION_AD_REVENUE =
       _Paths.ASRUN_SPECIFICATION_AD_REVENUE;
+  static const COMPANY_CHANNEL_LINK = _Paths.COMPANY_CHANNEL_LINK;
+  static const TRAFFIC_ORDER_CORRECTION = _Paths.TRAFFIC_ORDER_CORRECTION;
+  static const BILL_EXPORT = _Paths.BILL_EXPORT;
 }
 
 abstract class RoutesList {
@@ -62,6 +66,7 @@ abstract class _Paths {
   _Paths._();
 
   static const HOME = '/home';
+  static const NO_FOUND = '/NoDataFoundPage';
   static const ASRUN_IMPORT_SECONDARY_EVENTS = '/frmSecondaryAsRunImport';
   static const COMPANY_MASTER = '/frmCompanyMaster';
   static const COMBO_DEAL_ENTRY = '/frmLinkDeal';
@@ -100,4 +105,7 @@ abstract class _Paths {
   static const E_BILL_AGENCY_GROUP_MASTER = '/Skybreakpattern';
   static const ASRUN_SPECIFICATION_AD_REVENUE =
       '/frmAsrunSpecification';
+  static const COMPANY_CHANNEL_LINK = '/frmCompanyChannelLink';
+  static const TRAFFIC_ORDER_CORRECTION = '/frmTOCorrection';
+  static const BILL_EXPORT = '/frmExportData';
 }

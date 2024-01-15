@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:get/get.dart';
 
+import '../../widgets/NoDataFoundPage.dart';
 import '../modules/AgencyEmbargo/bindings/agency_embargo_binding.dart';
 import '../modules/AgencyEmbargo/views/agency_embargo_view.dart';
 import '../modules/AgencyGroupMaster/bindings/agency_group_master_binding.dart';
@@ -43,6 +44,7 @@ import '../modules/Ebills/views/ebills_view.dart';
 import '../modules/ExportBillingFPC/bindings/export_billing_f_p_c_binding.dart';
 import '../modules/ExportBillingFPC/views/export_billing_f_p_c_view.dart';
 import '../modules/GSTPlantInfo/bindings/g_s_t_plant_info_binding.dart';
+
 import '../modules/GSTPlantInfo/views/g_s_t_plant_info_view.dart';
 import '../modules/GenerateBookingReport/bindings/generate_booking_report_binding.dart';
 import '../modules/GenerateBookingReport/views/generate_booking_report_view.dart';
@@ -59,7 +61,6 @@ import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.da
 import '../modules/PlaceMaster/bindings/place_master_binding.dart';
 import '../modules/PlaceMaster/views/place_master_view.dart';
 import '../modules/PlaceTypeMaster/bindings/place_type_master_binding.dart';
-import '../modules/PlaceTypeMaster/views/place_type_master_view.dart';
 import '../modules/ROAudit/bindings/r_o_audit_binding.dart';
 import '../modules/ROAudit/views/r_o_audit_view.dart';
 import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
@@ -81,12 +82,7 @@ import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
 import '../modules/ViewDealChangeHistory/bindings/view_deal_change_history_binding.dart';
 import '../modules/ViewDealChangeHistory/views/view_deal_change_history_view.dart';
 import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
 import '../providers/AuthGuard1.dart';
-
-// import '../modules/ClientGroupMasterts/bindings/client_group_master_binding.dart';
-// import '../modules/ClientGroupMasterts/views/client_group_master_view.dart';
-
 part 'app_routes.dart';
 
 class AppPages {
@@ -99,8 +95,15 @@ class AppPages {
 
   static final routes = [
     GetPage(
+      name: _Paths.NO_FOUND,
+      page: () => NoDataFoundPage(),
+      // binding: OriginalRepeatMasterPageBinding(),
+    ),
+    GetPage(
       name: _Paths.HOME,
-      page: () => HomeView(),
+      page: () => AuthGuard(
+        childName: _Paths.HOME,
+      ),
       binding: HomeBinding(),
     ),
     GetPage(

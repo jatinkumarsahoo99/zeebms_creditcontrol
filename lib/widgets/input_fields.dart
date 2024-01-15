@@ -615,7 +615,7 @@ class InputFields {
           ],
         ),
         SizedBox(
-          height: bottomPadding ? 10 : 0,
+          height: bottomPadding ? 5 : 0,
         )
       ],
     );

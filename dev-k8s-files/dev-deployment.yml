@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bmsweb-creditcontrol-deployment-new
+  namespace: bms-ns
+  labels:
+    app: bms-creditcontrol-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bms-creditcontrol-web
+  template:
+    metadata:
+      labels:
+        app: bms-creditcontrol-web
+    spec:
+      containers:
+      - name: bms-creditcontrol-deployment-new
+        image: zeelakscontainer.azurecr.io/bms-web-creditcontrol:image_version
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: bms-secrets-store-vol
+          mountPath: "/mnt/secrets-store"
+          readOnly: true
+      volumes:
+      - name: bms-secrets-store-vol
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "bms-kvbmsdev-web"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bms-creditcontrol-web-new
+  namespace: bms-ns
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 80
+    targetPort: 3000
+  - name: https
+    port: 443
+    targetPort: 3000
+  selector:
+    app: bms-creditcontrol-web
