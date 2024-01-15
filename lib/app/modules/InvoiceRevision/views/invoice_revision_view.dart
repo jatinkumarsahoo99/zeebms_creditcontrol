@@ -38,7 +38,7 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                     "Location",
                     .23,
                     autoFocus: true,
-                    titleInLeft: true,
+                    // titleInLeft: true,
                   ),
                   SizedBox(
                     width: 5,
@@ -47,7 +47,7 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                     [],
                     (data) {},
                     "Channel",
-                    titleInLeft: true,
+                    // titleInLeft: true,
                     .23,
                   ),
                   SizedBox(
@@ -57,7 +57,7 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                     title: "From Date",
                     mainTextController: TextEditingController(),
                     widthRation: .135,
-                    titleInLeft: true,
+                    // titleInLeft: true,
                   ),
                   SizedBox(
                     width: 10,
@@ -99,7 +99,7 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                               child: InputFields.formFieldExpand2(
                                 hintTxt: "Location",
                                 controller: TextEditingController(),
-                                titleInLeft: true,
+                                // titleInLeft: true,
                               ),
                             ),
                             SizedBox(
@@ -110,7 +110,7 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                               child: InputFields.formFieldExpand2(
                                 hintTxt: "Channel",
                                 controller: TextEditingController(),
-                                titleInLeft: true,
+                                // titleInLeft: true,
                                 titleSizeboxWidth: 55,
                               ),
                             ),
@@ -123,7 +123,7 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                               child: InputFields.formFieldExpand2(
                                 hintTxt: "SAP Invoice No",
                                 controller: TextEditingController(),
-                                titleInLeft: true,
+                                // titleInLeft: true,
                               ),
                             ),
                             SizedBox(
@@ -135,14 +135,14 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                                 title: "Bill Date",
                                 mainTextController: TextEditingController(),
                                 widthRation: .135,
-                                titleInLeft: true,
+                                // titleInLeft: true,
                               ),
                             ),
                             // Expanded(
                             //   child: InputFields.formFieldExpand2(
                             //     hintTxt: "Channel",
                             //     controller: TextEditingController(),
-                            //     titleInLeft: true,
+                            // titleInLeft: true,
                             //   ),
                             // ),
                           ],
@@ -150,22 +150,22 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                         // InputFields.formFieldExpand2(
                         //   hintTxt: "Short Name",
                         //   controller: TextEditingController(),
-                        //   titleInLeft: true,
+                        // titleInLeft: true,
                         // ),
                         InputFields.formFieldExpand2(
                           hintTxt: "Client",
                           controller: TextEditingController(),
-                          titleInLeft: true,
+                          // titleInLeft: true,
                         ),
                         InputFields.formFieldExpand2(
                           hintTxt: "Agency",
                           controller: TextEditingController(),
-                          titleInLeft: true,
+                          // titleInLeft: true,
                         ),
                         InputFields.formFieldExpand2(
                           hintTxt: "Pay Route",
                           controller: TextEditingController(),
-                          titleInLeft: true,
+                          // titleInLeft: true,
                         ),
                       ],
                     ),
@@ -182,7 +182,7 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                               child: InputFields.formFieldExpand2(
                                 hintTxt: "Booking No",
                                 controller: TextEditingController(),
-                                titleInLeft: true,
+                                // titleInLeft: true,
                               ),
                             ),
                             SizedBox(
@@ -193,7 +193,7 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                               child: InputFields.formFieldExpand2(
                                 hintTxt: "Booking Amt",
                                 controller: TextEditingController(),
-                                titleInLeft: true,
+                                // titleInLeft: true,
                                 titleSizeboxWidth: 55,
                               ),
                             ),
@@ -205,11 +205,11 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                           "Brand",
                           // .23,
                           autoFocus: true,
-                          titleInLeft: true,
+                          // titleInLeft: true,
                           titleSizeBoxWidth: 75,
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
                         DropDownField.formDropDownSearchAPI2Expand(
                           GlobalKey(),
@@ -217,11 +217,11 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                           title: "New Client",
                           url: "",
                           onchanged: (value) {},
-                          titleInLeft: true,
+                          // titleInLeft: true,
                           textSizeboxWidth: 85,
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
                         DropDownField.formDropDown1WidthMapExpand(
                           [],
@@ -229,11 +229,11 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                           "New Agency",
                           // .23,
                           autoFocus: true,
-                          titleInLeft: true,
+                          // titleInLeft: true,
                           titleSizeBoxWidth: 75,
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 5,
                         ),
                         DropDownField.formDropDown1WidthMapExpand(
                           [],
@@ -241,7 +241,7 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                           "New Payroute",
                           // .23,
                           autoFocus: true,
-                          titleInLeft: true,
+                          // titleInLeft: true,
                           titleSizeBoxWidth: 75,
                         ),
                       ],

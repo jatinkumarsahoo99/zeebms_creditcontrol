@@ -70,6 +70,7 @@ class SpotsNotTelecastedReportView
                   ),
                 ],
               ),
+
               const SizedBox(height: 10),
               // Obx(
               //   () =>

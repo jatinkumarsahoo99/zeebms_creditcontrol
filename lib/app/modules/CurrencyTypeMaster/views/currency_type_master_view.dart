@@ -10,7 +10,12 @@ import '../../../routes/app_pages.dart';
 import '../controllers/currency_type_master_controller.dart';
 
 class CurrencyTypeMasterView extends GetView<CurrencyTypeMasterController> {
-  const CurrencyTypeMasterView({Key? key}) : super(key: key);
+  CurrencyTypeMasterView({Key? key}) : super(key: key);
+
+  // final controller = Get.put<CurrencyTypeMasterController>(
+  //   CurrencyTypeMasterController(),
+  // );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
