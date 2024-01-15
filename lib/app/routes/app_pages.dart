@@ -40,46 +40,12 @@ import '../modules/Ebills/views/ebills_view.dart';
 import '../modules/ExportBillingFPC/bindings/export_billing_f_p_c_binding.dart';
 import '../modules/ExportBillingFPC/views/export_billing_f_p_c_view.dart';
 import '../modules/GSTPlantInfo/bindings/g_s_t_plant_info_binding.dart';
-import '../modules/GSTPlantInfo/views/g_s_t_plant_info_view.dart';
-import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
-import '../modules/InvoiceRevision/bindings/invoice_revision_binding.dart';
-import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
-import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
-import '../modules/PaymentRouteMaster/bindings/payment_route_master_binding.dart';
-import '../modules/PaymentRouteMaster/views/payment_route_master_view.dart';
-import '../modules/PayrouteCategoryMaster/bindings/payroute_category_master_binding.dart';
-import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
-import '../modules/PayrouteCategoryMaster/bindings/payroute_category_master_binding.dart';
-import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
-import '../modules/PlaceMaster/bindings/place_master_binding.dart';
-import '../modules/PlaceMaster/views/place_master_view.dart';
+
 import '../modules/PlaceTypeMaster/bindings/place_type_master_binding.dart';
-import '../modules/PlaceTypeMaster/views/place_type_master_view.dart';
 import '../modules/ROAudit/bindings/r_o_audit_binding.dart';
-import '../modules/ROAudit/views/r_o_audit_view.dart';
-import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
-import '../modules/ReadytoBills/bindings/readyto_bills_binding.dart';
-import '../modules/ReadytoBills/views/readyto_bills_view.dart';
-import '../modules/ReadytoBills/views/readyto_bills_view.dart';
 import '../modules/SecondaryAsrunModification/bindings/secondary_asrun_modification_binding.dart';
-import '../modules/SecondaryAsrunModification/views/secondary_asrun_modification_view.dart';
-import '../modules/UndoCancelation/bindings/undo_cancelation_binding.dart';
-import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
-import '../modules/SpotsNotTelecastedReport/bindings/spots_not_telecasted_report_binding.dart';
-import '../modules/SpotsNotTelecastedReport/views/spots_not_telecasted_report_view.dart';
-import '../modules/StationMaster/bindings/station_master_binding.dart';
-import '../modules/StationMaster/views/station_master_view.dart';
-import '../modules/UndoCancelation/bindings/undo_cancelation_binding.dart';
-import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
-import '../modules/ViewDealChangeHistory/bindings/view_deal_change_history_binding.dart';
-import '../modules/ViewDealChangeHistory/views/view_deal_change_history_view.dart';
 import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
 import '../providers/AuthGuard1.dart';
-
-// import '../modules/ClientGroupMasterts/bindings/client_group_master_binding.dart';
-// import '../modules/ClientGroupMasterts/views/client_group_master_view.dart';
-
 part 'app_routes.dart';
 
 class AppPages {
