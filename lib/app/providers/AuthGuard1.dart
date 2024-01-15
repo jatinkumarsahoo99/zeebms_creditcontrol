@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
+import '../modules/BillExport/views/bill_export_view.dart';
 import '../modules/ClearSecondarySpots/views/clear_secondary_spots_view.dart';
 import '../modules/AgencyGroupMaster/views/agency_group_master_view.dart';
 import '../modules/AgencyMaster/views/agency_master_view.dart';
@@ -18,6 +19,7 @@ import '../modules/AsrunImportSecondaryEvents/views/asrun_import_secondary_event
 import '../modules/ClientDeals/views/client_deals_view.dart';
 import '../modules/ClientEmbargo/views/client_embargo_view.dart';
 import '../modules/ClientMaster/views/client_master_view.dart';
+import '../modules/CompanyChannelLink/views/company_channel_link_view.dart';
 import '../modules/DealReport/views/deal_report_view.dart';
 import '../modules/CurrencyTypeMaster/views/currency_type_master_view.dart';
 import '../modules/ExportBillingFPC/views/export_billing_f_p_c_view.dart';
@@ -32,6 +34,7 @@ import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
 import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
 import '../modules/SpotsNotTelecastedReport/views/spots_not_telecasted_report_view.dart';
 import '../modules/StationMaster/views/station_master_view.dart';
+import '../modules/TrafficOrderCorrection/views/traffic_order_correction_view.dart';
 import '../modules/UndoCancelation/views/undo_cancelation_view.dart';
 import '../modules/SecondaryAsrunModification/views/secondary_asrun_modification_view.dart';
 import '../modules/ViewDealChangeHistory/views/view_deal_change_history_view.dart';
@@ -159,6 +162,15 @@ class AuthGuard extends StatelessWidget {
               break;
             case Routes.CLIENT_DEALS:
               currentWidget = ClientDealsView();
+              break;
+            case Routes.COMPANY_CHANNEL_LINK:
+              currentWidget = CompanyChannelLinkView();
+              break;
+            case Routes.TRAFFIC_ORDER_CORRECTION:
+              currentWidget = TrafficOrderCorrectionView();
+              break;
+            case Routes.BILL_EXPORT:
+              currentWidget = BillExportView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

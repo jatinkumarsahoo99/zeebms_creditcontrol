@@ -39,6 +39,9 @@ abstract class Routes {
   static const CURRENCY_TYPE_MASTER = _Paths.CURRENCY_TYPE_MASTER;
   static const EXPORT_BILLING_F_P_C = _Paths.EXPORT_BILLING_F_P_C;
   static const CLIENT_DEALS = _Paths.CLIENT_DEALS;
+  static const COMPANY_CHANNEL_LINK = _Paths.COMPANY_CHANNEL_LINK;
+  static const TRAFFIC_ORDER_CORRECTION = _Paths.TRAFFIC_ORDER_CORRECTION;
+  static const BILL_EXPORT = _Paths.BILL_EXPORT;
 }
 
 abstract class RoutesList {
@@ -90,4 +93,7 @@ abstract class _Paths {
   static const CURRENCY_TYPE_MASTER = '/frmCurrencyTypeMaster';
   static const EXPORT_BILLING_F_P_C = '/Frmcarrtoonnetworkasrun';
   static const CLIENT_DEALS = '/frmDealMaster';
+  static const COMPANY_CHANNEL_LINK = '/frmCompanyChannelLink';
+  static const TRAFFIC_ORDER_CORRECTION = '/frmTOCorrection';
+  static const BILL_EXPORT = '/frmExportData';
 }

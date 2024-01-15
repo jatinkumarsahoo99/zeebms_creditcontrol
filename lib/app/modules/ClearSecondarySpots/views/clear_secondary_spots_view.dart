@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/input_fields.dart';
+import '../../../../widgets/sized_box_widget.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
@@ -41,111 +42,166 @@ class ClearSecondarySpotsView extends GetView<ClearSecondarySpotsController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: InputFields.formFieldExpand2(
-                              hintTxt: "YearMonth",
-                              controller: TextEditingController(),
-                              titleInLeft: true,
-                              titleSizeboxWidth: 90,
-                              bottomPadding: false,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          SizedBox(
-                            width: 200,
-                            child: FormButton(
-                              btnText: "Scroll/Aston",
-                              callback: () {},
-                              showIcon: false,
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: DropDownField.formDropDown1WidthMapExpand(
-                              [],
-                              (value) {},
-                              "Location",
-                              // .23,
-                              // autoFocus: true,
-                              titleInLeft: true,
-                              titleSizeBoxWidth: 85,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          SizedBox(
-                            width: 200,
-                            child: FormButton(
-                              btnText: "Astro",
-                              callback: () {},
-                              showIcon: false,
-                            ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: DropDownField.formDropDown1WidthMapExpand(
-                              [],
-                              (value) {},
-                              "Channel",
-                              // .23,
-                              // autoFocus: true,
-                              titleInLeft: true,
-                              titleSizeBoxWidth: 85,
-                            ),
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          SizedBox(
-                            width: 200,
-                            // child: FormButton(
-                            //   btnText: "Astro",
-                            //   callback: () {},
-                            //   showIcon: false,
-                            // ),
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: DateWithThreeTextFieldExpanded(
-                              title: "Telecast Date",
-                              mainTextController: TextEditingController(),
-                              // widthRation: .135,
-                              titleInLeft: true,
-                              titleInSizeBox: 85,
+                            child: Column(
+                              children: [
+                                InputFields.formFieldExpand2(
+                                  hintTxt: "YearMonth",
+                                  controller: TextEditingController(),
+                                  // titleInLeft: true,
+                                  titleSizeboxWidth: 90,
+                                  // bottomPadding: false,
+                                ),
+                                DropDownField.formDropDown1WidthMapExpand(
+                                  [],
+                                  (value) {},
+                                  "Location",
+                                  // .23,
+                                  // autoFocus: true,
+                                  // titleInLeft: true,
+                                  titleSizeBoxWidth: 85,
+                                ),
+                                sizedBoxHeight(5),
+                                DropDownField.formDropDown1WidthMapExpand(
+                                  [],
+                                  (value) {},
+                                  "Channel",
+                                  // .23,
+                                  // autoFocus: true,
+                                  // titleInLeft: true,
+                                  titleSizeBoxWidth: 85,
+                                ),
+                                sizedBoxHeight(5),
+                                DateWithThreeTextFieldExpanded(
+                                  title: "Telecast Date",
+                                  mainTextController: TextEditingController(),
+                                  // widthRation: .135,
+                                  // titleInLeft: true,
+                                  titleInSizeBox: 85,
 
-                              // isExpanded: true,
+                                  // isExpanded: true,
+                                ),
+                              ],
                             ),
                           ),
                           SizedBox(
                             width: 10,
                           ),
                           SizedBox(
-                            width: 200,
+                            // width: 200,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                sizedBoxHeight(18),
+                                SizedBox(
+                                  width: 200,
+                                  child: FormButton(
+                                    btnText: "Scroll/Aston",
+                                    callback: () {},
+                                    showIcon: false,
+                                  ),
+                                ),
+                                sizedBoxHeight(20),
+                                SizedBox(
+                                  width: 200,
+                                  child: FormButton(
+                                    btnText: "Astro",
+                                    callback: () {},
+                                    showIcon: false,
+                                  ),
+                                ),
+                              ],
+                            ),
                           )
                         ],
                       ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Row(
+                      //   crossAxisAlignment: CrossAxisAlignment.end,
+                      //   children: [
+                      //     Expanded(
+                      //       child: DropDownField.formDropDown1WidthMapExpand(
+                      //         [],
+                      //         (value) {},
+                      //         "Location",
+                      //         // .23,
+                      //         // autoFocus: true,
+                      //         // titleInLeft: true,
+                      //         titleSizeBoxWidth: 85,
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 10,
+                      //     ),
+                      //     SizedBox(
+                      //       width: 200,
+                      //       child: FormButton(
+                      //         btnText: "Astro",
+                      //         callback: () {},
+                      //         showIcon: false,
+                      //       ),
+                      //     )
+                      //   ],
+                      // ),
+
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: DropDownField.formDropDown1WidthMapExpand(
+                      //         [],
+                      //         (value) {},
+                      //         "Channel",
+                      //         // .23,
+                      //         // autoFocus: true,
+                      //         // titleInLeft: true,
+                      //         titleSizeBoxWidth: 85,
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 10,
+                      //     ),
+                      //     SizedBox(
+                      //       width: 200,
+                      //       // child: FormButton(
+                      //       //   btnText: "Astro",
+                      //       //   callback: () {},
+                      //       //   showIcon: false,
+                      //       // ),
+                      //     )
+                      //   ],
+                      // ),
+                      // SizedBox(
+                      //   height: 10,
+                      // ),
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: DateWithThreeTextFieldExpanded(
+                      //         title: "Telecast Date",
+                      //         mainTextController: TextEditingController(),
+                      //         // widthRation: .135,
+                      //         // titleInLeft: true,
+                      //         titleInSizeBox: 85,
+
+                      //         // isExpanded: true,
+                      //       ),
+                      //     ),
+                      //     SizedBox(
+                      //       width: 10,
+                      //     ),
+                      //     SizedBox(
+                      //       width: 200,
+                      //     )
+                      //   ],
+                      // ),
+
                       SizedBox(
                         height: 10,
                       ),
