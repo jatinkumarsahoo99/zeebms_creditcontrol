@@ -13,22 +13,13 @@ class ApiFactory {
   static String Enviroment =
       const String.fromEnvironment('ENV', defaultValue: 'dev');
   // static String SERVER_URL = "https://bmswebfrontend-uat.azurewebsites.net";
-  static String WEB_URL = Enviroment.toLowerCase() == "uat"
-      ? "https://app-admin-bms-uat.zeeconnect.in"
-      : "https://app-admin-bms-dev.zeeconnect.in";
-  static String WEB_URL_COMMON = Enviroment.toLowerCase() == "uat"
-      ? "https://app-common-bms-uat.zeeconnect.in"
-      : "https://app-common-bms-dev.zeeconnect.in";
+  static String WEB_URL = Const.getWebProgrammingUrl();
+  static String WEB_URL_COMMON = Const.getWebCommonUrl();
+  static String LOGIN_URL = Const.getWebLoginUrl();
 
-  static String BASE_URL = Enviroment.toLowerCase() == "uat"
-      ? "https://api-admin-bms-uat.zeeconnect.in"
-      : "https://api-admin-bms-dev.zeeconnect.in";
-  static String BASE_URL_COMMON = Enviroment.toLowerCase() == "uat"
-      ? "https://api-common-bms-uat.zeeconnect.in"
-      : "https://api-common-bms-dev.zeeconnect.in";
-  static String BASE_URL_LOGIN = Enviroment.toLowerCase() == "uat"
-      ? "https://api-login-bms-uat.zeeconnect.in"
-      : "https://api-login-bms-dev.zeeconnect.in";
+  static String BASE_URL = Const.getBaseCreditControlAPIUrl();
+  static String BASE_URL_COMMON = Const.getBaseCommonAPIUrl();
+  static String BASE_URL_LOGIN = Const.getBaseLoginAPIUrl();
 
   // api-login-bms-dev.zeeconnect.in
   // api-common-bms-dev.zeeconnect.in
@@ -49,7 +40,6 @@ class ApiFactory {
       "$BASE_URL_COMMON/api/MDI/GetAllFormDetailsAndPermission?Userid=";
   static String MS_PROFILE = "$BASE_URL_LOGIN/api/Login/PostUserProfile";
   static String MS_TOKEN_BACKEND = "$BASE_URL_LOGIN/api/Login/PostApiToken";
-  static String LOGIN_URL = Const.getWebLoginUrl();
   static String MS_TOKEN1 =
       "https://login.microsoftonline.com/56bd48cd-f312-49e8-b6c7-7b5b926c03d6/oauth2/v2.0/token";
   static String MS_AUTH =

@@ -8,6 +8,7 @@ import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
+import '../../../providers/SizeDefine.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/sales_executive_master_controller.dart';
 
@@ -50,36 +51,169 @@ class SalesExecutiveMasterView extends StatelessWidget {
                           DropDownField.formDropDownSearchAPI2(
                               GlobalKey(), context,
                               title: "SAP Name",
-                              autoFocus: false,
+                              autoFocus: true,
                               customInData: "empList",
                               url: "",
                               // inkwellFocus: controllerX.employeeFocus,
                               // parseKeyForTitle: "programName",
                               parseKeyForKey: "employeecode",
                               parseKeyForValue: "employeename",
-                              // selectedValue: controllerX.selectedEmployee.value,
-                              onchanged: (data) {},
-                              width: (Get.width * 0.18)),
+                              selectedValue: controllerX.selectSapName,
+                              onchanged: (data) {
+                            controllerX.selectSapName = data;
+                          }, width: (Get.width * controllerX.widthRatio)),
                           SizedBox(
-                            height: 4,
+                            height: 6,
                           ),
-
+                          InputFields.formFieldDisable(
+                              hintTxt: "SAP Code",
+                              value: controllerX.sapCode.value,
+                              widthRatio: controllerX.widthRatio),
                           SizedBox(
-                            height: 4,
+                            height: 6,
                           ),
-                          InputFields.formFieldDisable(hintTxt: "SAP Code", value: ""),
-                          InputFields.formFieldDisable(hintTxt: "Executive Name", value: ""),
-                          InputFields.formFieldDisable(hintTxt: "Department", value: ""),
-                          InputFields.formFieldDisable(hintTxt: "Designation", value: ""),
-                          DropDownField.formDropDown1WidthMap([], (value) {
-                            // controllerX.selectedBMSVersionList = value;
-                            // controllerX.getMatchDetails(programCode: value.key??"");
-                          }, "Company  ", .4,
-                              // isEnable: controllerX.isEnable.value,
-                              // selected: controllerX.selectedBMSVersionList,
-                              dialogHeight: Get.height * .35,
-                              autoFocus: true,
-                              titleInLeft: true),
+                          InputFields.formFieldDisable(
+                              hintTxt: "Executive Name",
+                              value: controllerX.executiveName.value,
+                              widthRatio: controllerX.widthRatio),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          InputFields.formFieldDisable(
+                              hintTxt: "Department",
+                              value: controllerX.department.value,
+                              widthRatio: controllerX.widthRatio),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          InputFields.formFieldDisable(
+                              hintTxt: "Designation",
+                              value: controllerX.designation.value,
+                              widthRatio: controllerX.widthRatio),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          DropDownField.formDropDown1WidthMap(
+                            [],
+                            (value) {
+                              // controllerX.selectedBMSVersionList = value;
+                              // controllerX.getMatchDetails(programCode: value.key??"");
+                              controllerX.selectCompany = value;
+                            },
+                            "Company",
+                            controllerX.widthRatio,
+                            dialogHeight: Get.height * controllerX.widthRatio,
+                            selected: controllerX.selectCompany,
+                          ),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              DropDownField.formDropDown1WidthMap(
+                                [],
+                                (value) {
+                                  // controllerX.selectedBMSVersionList = value;
+                                  // controllerX.getMatchDetails(programCode: value.key??"");
+                                  controllerX.selectLocation = value;
+                                },
+                                "Location",
+                                (controllerX.widthRatio / 2),
+                                // isEnable: controllerX.isEnable.value,
+                                selected: controllerX.selectLocation,
+                                dialogHeight:
+                                    Get.height * controllerX.widthRatio,
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              DropDownField.formDropDown1WidthMap(
+                                [],
+                                (value) {
+                                  controllerX.selectStation = value;
+                                },
+                                "Station",
+                                (controllerX.widthRatio / 2),
+                                // isEnable: controllerX.isEnable.value,
+                                selected: controllerX.selectStation,
+                                dialogHeight:
+                                    Get.height * controllerX.widthRatio,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              DropDownField.formDropDown1WidthMap(
+                                [],
+                                (value) {
+                                  controllerX.selectPlace = value;
+                                },
+                                "Place",
+                                (controllerX.widthRatio / 2),
+                                dialogHeight:
+                                    Get.height * controllerX.widthRatio,
+                                selected: controllerX.selectPlace,
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              InputFields.formFieldDisable(
+                                  hintTxt: "Mobile No",
+                                  widthRatio: controllerX.widthRatio / 2,
+                                  value: controllerX.mobileno.value),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          InputFields.formFieldDisable(
+                              hintTxt: "Email ID",
+                              widthRatio: controllerX.widthRatio,
+                              value: controllerX.email.value),
+                          Row(
+                            children: [
+                              SizedBox(
+                                width: Get.width * 0.022,
+                              ),
+                              SizedBox(
+                                width: Get.width * 0.079,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SizedBox(width: 5),
+                                    Obx(() => Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 5.0),
+                                          child: Checkbox(
+                                            value: controllerX.isActive.value,
+                                            onChanged: (val) {
+                                              controllerX.isActive.value = val!;
+                                            },
+                                            materialTapTargetSize:
+                                                MaterialTapTargetSize
+                                                    .shrinkWrap,
+                                          ),
+                                        )),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          top: 5.0, left: 5),
+                                      child: Text(
+                                        "Is Active",
+                                        style: TextStyle(
+                                            fontSize: SizeDefine.labelSize1,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
                         ],
                       ),
                     ),
@@ -87,67 +221,6 @@ class SalesExecutiveMasterView extends StatelessWidget {
                   SizedBox(
                     height: 6,
                   ),
-                  Row(
-                    children: [
-                      DropDownField.formDropDown1WidthMap([], (value) {
-                        // controllerX.selectedBMSVersionList = value;
-                        // controllerX.getMatchDetails(programCode: value.key??"");
-                      }, "Location", .4,
-                          // isEnable: controllerX.isEnable.value,
-                          // selected: controllerX.selectedBMSVersionList,
-                          dialogHeight: Get.height * .35,
-                          autoFocus: true,
-                          titleInLeft: true),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      DropDownField.formDropDown1WidthMap([], (value) {
-                        // controllerX.selectedBMSVersionList = value;
-                        // controllerX.getMatchDetails(programCode: value.key??"");
-                      }, "Station", .4,
-                          // isEnable: controllerX.isEnable.value,
-                          // selected: controllerX.selectedBMSVersionList,
-                          dialogHeight: Get.height * .35,
-                          autoFocus: true,
-                          titleInLeft: true),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-                  Row(
-                    children: [
-                      DropDownField.formDropDown1WidthMap([], (value) {
-                        // controllerX.selectedBMSVersionList = value;
-                        // controllerX.getMatchDetails(programCode: value.key??"");
-                      }, "Place", .4,
-                          // isEnable: controllerX.isEnable.value,
-                          // selected: controllerX.selectedBMSVersionList,
-                          dialogHeight: Get.height * .35,
-                          autoFocus: true,
-                          titleInLeft: true),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      InputFields.formFieldDisable(
-                          hintTxt: "Mobile No",
-                          widthRatio: 0.155,
-                          value: ""
-                          ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-                  InputFields.formFieldDisable(
-                      hintTxt: "Email ID",
-                      widthRatio: 0.155,
-                      value: ""
-                  ),
-                  SizedBox(
-                    height: 6,
-                  ),
-
                   Align(
                     alignment: Alignment.topLeft,
                     child: GetBuilder<HomeController>(
@@ -160,7 +233,7 @@ class SalesExecutiveMasterView extends StatelessWidget {
                                     .permissionList!
                                     .lastWhere((element) =>
                                         element.appFormName ==
-                                        "frmAsrunSpecification");
+                                        "frmExecutiveMaster");
                             if (controller.buttons != null) {
                               return Wrap(
                                 spacing: 5,

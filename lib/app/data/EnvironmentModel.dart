@@ -9,6 +9,8 @@ class EnvironmentModel {
   String? apiProgrammingUrl;
   String? appSchedulingUrl;
   String? apiSchedulingUrl;
+  String? appCreditControlUrl;
+  String? apiCreditControlUrl;
   String? appClientId;
   String? appTenantId;
   String? appInsrtumentationKey;
@@ -39,6 +41,8 @@ class EnvironmentModel {
     apiProgrammingUrl = json['api-programming-url'];
     appSchedulingUrl = json['app-scheduling-url'];
     apiSchedulingUrl = json['api-scheduling-url'];
+    appCreditControlUrl = json['app-creditcontrol-url'];
+    apiCreditControlUrl = json['api-creditcontrol-url'];
     appClientId = json['app-client-id'];
     appTenantId = json['app-tenant-id'];
     appInsrtumentationKey = json['app-insrtumentation-key'];
@@ -56,6 +60,8 @@ class EnvironmentModel {
     data['api-programming-url'] = this.apiProgrammingUrl;
     data['app-scheduling-url'] = this.appSchedulingUrl;
     data['api-scheduling-url'] = this.apiSchedulingUrl;
+    data['app-creditcontrol-url'] = this.appCreditControlUrl;
+    data['api-creditcontrol-url'] = this.apiCreditControlUrl;
     data['app-client-id'] = this.appClientId;
     data['app-tenant-id'] = this.appTenantId;
     data['app-insrtumentation-key'] = this.appInsrtumentationKey;

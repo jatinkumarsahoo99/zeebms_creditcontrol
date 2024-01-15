@@ -109,6 +109,6 @@ abstract class _Paths {
   static const COMPANY_CHANNEL_LINK = '/frmCompanyChannelLink';
   static const TRAFFIC_ORDER_CORRECTION = '/frmTOCorrection';
   static const BILL_EXPORT = '/frmExportData';
-  static const SALES_EXECUTIVE_MASTER = '/sales-executive-master';
-  static const EMAIL_BILL_DETAILS = '/email-bill-details';
+  static const SALES_EXECUTIVE_MASTER = '/frmExecutiveMaster';
+  static const EMAIL_BILL_DETAILS = '/frmBilling';
 }
