@@ -24,11 +24,11 @@ class ClientDealsController extends GetxController {
   RxList<DropDownValue> dealType = RxList([]);
   RxList<DropDownValue> channelList2 = RxList([]);
 
-  DropDownValue? selectedLocation;
-  DropDownValue? selectedChannel;
-  DropDownValue? selectedClient;
-  DropDownValue? selectPayMode;
-  DropDownValue? selectCurrency;
+  Rxn<DropDownValue>? selectedLocation;
+  Rxn<DropDownValue>? selectedChannel;
+  Rxn<DropDownValue>? selectedClient;
+  Rxn<DropDownValue>? selectPayMode;
+  Rxn<DropDownValue>? selectCurrency;
 
   TextEditingController dealNoController = TextEditingController();
   TextEditingController dateController = TextEditingController();
