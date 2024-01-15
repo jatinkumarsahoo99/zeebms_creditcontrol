@@ -1,9 +1,12 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class CurrencyTypeMasterController extends GetxController {
-  //TODO: Implement CurrencyTypeMasterController
-
-  final count = 0.obs;
+  TextEditingController currencyName = TextEditingController(),
+      shortName = TextEditingController(),
+      crrrencyCode = TextEditingController(),
+      lowerCurrencyName = TextEditingController(),
+      currency = TextEditingController();
   @override
   void onInit() {
     super.onInit();
@@ -19,5 +22,14 @@ class CurrencyTypeMasterController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  formHandler(btn) {
+    switch (btn) {
+      case "Save":
+        break;
+      case "Clear":
+        break;
+      case "Exit":
+        break;
+    }
+  }
 }

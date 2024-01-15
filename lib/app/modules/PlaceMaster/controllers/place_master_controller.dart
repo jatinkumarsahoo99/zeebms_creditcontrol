@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class PlaceMasterController extends GetxController {
-  //TODO: Implement PlaceMasterController
-
-  final count = 0.obs;
+  TextEditingController placeName = TextEditingController(),
+      placeShortName = TextEditingController(),
+      ibfBranchCode = TextEditingController(),
+      sapCode = TextEditingController();
   @override
   void onInit() {
     super.onInit();
@@ -18,6 +20,4 @@ class PlaceMasterController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
-  void increment() => count.value++;
 }
