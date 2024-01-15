@@ -312,7 +312,7 @@ class Const {
       case "dev":
         return "https://api-scheduling-bms-dev.zeeconnect.in";
       default:
-        return "https://api-scheduling-bms-dev.zeeconnect.in";
+        return "https://api-creditcontrol-bms-dev.zeeconnect.in";
     }
   }
 
