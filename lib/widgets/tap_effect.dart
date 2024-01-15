@@ -27,7 +27,7 @@ class _TapEffectState extends State<TapEffect>
     animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 800));
     animationController!.animateTo(1.0,
-        duration: const Duration(milliseconds: 0), curve: Curves.fastLinearToSlowEaseIn);
+        duration: const Duration(milliseconds: 0), curve: Curves.bounceInOut);
     super.initState();
   }
 
@@ -42,7 +42,7 @@ class _TapEffectState extends State<TapEffect>
       await _onDelayed();
       animationController!.animateTo(1.0,
           duration: const Duration(milliseconds: 240),
-          curve: Curves.fastLinearToSlowEaseIn);
+          curve: Curves.bounceInOut);
     }
     isProgress = false;
   }
@@ -78,7 +78,7 @@ class _TapEffectState extends State<TapEffect>
           tapTime = DateTime.now();
           animationController!.animateTo(0.9,
               duration: const Duration(milliseconds: 120),
-              curve: Curves.fastLinearToSlowEaseIn);
+              curve: Curves.bounceInOut);
         }
         isProgress = true;
       },

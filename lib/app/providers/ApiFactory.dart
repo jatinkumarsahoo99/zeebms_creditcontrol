@@ -713,4 +713,16 @@ class ApiFactory {
       "$BASE_URL/api/MovieUpdate/GetShow";
   static String get MOVIE_UPDATE_POST_UNDO_SPOT =>
       "$BASE_URL/api/MovieUpdate/PostUndoSpot";
+
+ /// //////////////////////////////// Client Deals ////////////////////////////////////
+
+  static String get Client_Deal_GET_LOAD => "$BASE_URL/api/ClientDeals/onload";
+  static String get Client_Deal_GET_CHANNEL => "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
+  static String get Client_Deal_GET_CLIENTS => "$BASE_URL/api/ClientDeals/GetClients";
+  static String get Client_Deal_GET_CLIENTS_LEAVE => "$BASE_URL/api/ClientDeals/ClientLeave";
+  static String get Client_Deal_GET_CHANNEL_LEAVE => "$BASE_URL/api/ClientDeals/ChannelLeave";
+  static String get Client_Deal_GET_SUBTYPE => "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
+  static String get Client_Deal_RETRIVE_RECORD => "$BASE_URL/api/ClientDeals/RetrieveRecord";
+
+
 }
