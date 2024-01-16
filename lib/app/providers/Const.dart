@@ -306,11 +306,11 @@ class Const {
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
-        return "https://api-scheduling-bms.zeeconnect.in";
+        return "https://api-creditcontrol-bms.zeeconnect.in";
       case "uat":
-        return "https://api-scheduling-bms-uat.zeeconnect.in";
+        return "https://api-creditcontrol-bms-uat.zeeconnect.in";
       case "dev":
-        return "https://api-scheduling-bms-dev.zeeconnect.in";
+        return "https://api-creditcontrol-bms-dev.zeeconnect.in";
       default:
         return "https://api-creditcontrol-bms-dev.zeeconnect.in";
     }
