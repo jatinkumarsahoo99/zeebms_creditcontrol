@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../app/providers/SizeDefine.dart';
+
 class CheckBoxWidget1 extends StatelessWidget {
   final String title;
   bool value;
@@ -74,8 +76,10 @@ class CheckBoxOnRight extends StatelessWidget {
   final void Function(bool?)? onChanged;
   final bool isEnable;
   final bool showIcon;
-  final double? horizontalPadding;
-  final double? verticalPadding;
+  final double? top;
+  final double? bottom;
+  final double? left;
+  final double? right;
   final IconData iconData;
   final FocusNode? fn;
   CheckBoxOnRight({
@@ -84,18 +88,20 @@ class CheckBoxOnRight extends StatelessWidget {
     this.value = false,
     this.onChanged,
     this.isEnable = true,
-    this.horizontalPadding,
-    this.verticalPadding,
+    this.top,
+    this.bottom,
     this.iconData = Icons.done,
     this.showIcon = false,
     this.fn,
+    this.right,
+    this.left
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
-          horizontal: horizontalPadding ?? 5, vertical: verticalPadding ?? 0),
+      padding: EdgeInsets.only(
+          top: top ?? 14, bottom: bottom ?? 0,left: left??0,right: right??0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -112,8 +118,9 @@ class CheckBoxOnRight extends StatelessWidget {
             Text(
               title,
               style: TextStyle(
-                color: isEnable ? Colors.black : Colors.grey,
-                fontSize: 13,
+                fontSize: SizeDefine.labelSize1,
+                color: Colors.black,
+                fontWeight: FontWeight.w500,
               ),
             )
           },
@@ -121,6 +128,7 @@ class CheckBoxOnRight extends StatelessWidget {
             return Checkbox(
               value: value,
               focusNode: fn,
+              // visualDensity: const VisualDensity(horizontal: -4),
               onChanged: (newVal) {
                 value = (newVal ?? false);
                 re(() {});

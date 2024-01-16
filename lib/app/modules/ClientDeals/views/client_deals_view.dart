@@ -535,16 +535,30 @@ class ClientDealsView extends GetView<ClientDealsController> {
                       color: Colors.green,
                     ),
                   ),
+
                   text_m_w700(
                     "Label44",
                     color: Colors.green,
                   ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  SizedBox(
+                      width: 150,
+                      child: LabelText3.style(hint: "AgencyGSTNumber")),
+                  text_m_w700(
+                    "Label42",
+                  ),
                 ],
               ),
+              Divider(
+                thickness: 1,
+                color: Colors.grey,
+              ),
 
-              sizedBoxHeight(5),
+              sizedBoxHeight(2),
 
-              Row(
+             /* Row(
                 children: [
                   SizedBox(
                       width: 150,
@@ -555,48 +569,39 @@ class ClientDealsView extends GetView<ClientDealsController> {
                 ],
               ),
 
-              const SizedBox(height: 5),
+              const SizedBox(height: 5),*/
 
-              Wrap(
-                runSpacing: 10,
-                spacing: 10,
+              Row(
+                // runSpacing: 10,
+                // spacing: 10,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   // LabelText2.style(hint: "Type")
-                  CheckBoxOnRight(title: "Type"),
+                  CheckBoxOnRight(title: "Type",top: 14),
 
                   DropDownField.formDropDown1WidthMap(
                     [],
                     (p0) => null,
                     "Account",
-                    .30,
-                    titleInLeft: true,
+                    .18,
+                    // titleInLeft: true,
                   ),
                   DropDownField.formDropDown1WidthMap(
                     [],
                     (p0) => null,
                     "Sub Type",
-                    .20,
-                    titleInLeft: true,
+                    .18,
+                    // titleInLeft: true,
                   ),
                   DropDownField.formDropDown1WidthMap(
                     [],
                     (p0) => null,
                     "Spot Type",
-                    .25,
-                    titleInLeft: true,
-                  )
-                ],
-              ),
-
-              // const SizedBox(height: 5),
-
-              Wrap(
-                runSpacing: 5,
-                spacing: 10,
-                children: [
-                  // LabelText2.style(hint: "Type")
+                    .18,
+                    // titleInLeft: true,
+                  ),
                   SizedBox(
-                    width: Get.width * .35,
+                    width: Get.width * .18,
                     child: DropDownField.formDropDownSearchAPI2Expand(
                       GlobalKey(),
                       context,
@@ -604,31 +609,42 @@ class ClientDealsView extends GetView<ClientDealsController> {
                       url: "",
                       onchanged: (value) {},
                       // width: Get.width * 0.3,
-                      titleInLeft: true,
+                      // titleInLeft: true,
                       textSizeboxWidth: 60,
                     ),
                   ),
                   DropDownField.formDropDown1WidthMap(
                     [],
-                    (p0) => null,
+                        (p0) => null,
                     "Band",
-                    .20,
-                    titleInLeft: true,
+                    .18,
+                    // titleInLeft: true,
                   ),
+                ],
+              ),
+
+              const SizedBox(height: 3),
+
+              Row(
+                // runSpacing: 5,
+                // spacing: 10,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  // LabelText2.style(hint: "Type")
+
                   DropDownField.formDropDown1WidthMap(
                     [],
                     (p0) => null,
                     "AddInfo",
-                    .30,
-                    titleInLeft: true,
+                    .18,
+                    // titleInLeft: true,
                   ),
                   // Spacer(),
 
-                  CheckBoxWidget1(title: "Week End"),
-
-                  sizedBoxWidth(100),
-                  CheckBoxWidget1(title: "Week Day"),
-                  sizedBoxWidth(50),
+                  CheckBoxOnRight(title: "Week End"),
+                  sizedBoxWidth(20),
+                  CheckBoxOnRight(title: "Week Day"),
+                  sizedBoxWidth(20),
                   CheckBoxOnRight(title: "Mon"),
                   CheckBoxOnRight(title: "Tue"),
                   CheckBoxOnRight(title: "Wed"),
@@ -636,39 +652,39 @@ class ClientDealsView extends GetView<ClientDealsController> {
                   CheckBoxOnRight(title: "Fri"),
                   CheckBoxOnRight(title: "Sat"),
                   CheckBoxOnRight(title: "Sun"),
+                  InputFields.formFieldNumberMask(
+                    hintTxt: "Start Time",
+                    controller: controller.startTime,
+                    widthRatio: 0.08,
 
-                  SizedBox(
-                    width: Get.width * 0.15,
-                    child: InputFields.formFieldNumberMask(
-                      hintTxt: "Start Time",
-                      controller: controller.startTime,
-                      widthRatio: 0.15,
-
-                      // isEnable: controllerX.isEnable,
-                      onEditComplete: (val) {
-                        // controllerX.calculateDuration();
-                      },
-                      // isTime: true,
-                      // isEnable: controller.isEnable.value,
-                      paddingLeft: 0,
-                    ),
+                    // isEnable: controllerX.isEnable,
+                    onEditComplete: (val) {
+                      // controllerX.calculateDuration();
+                    },
+                    // isTime: true,
+                    // isEnable: controller.isEnable.value,
+                    paddingLeft: 0,
                   ),
 
-                  SizedBox(
-                    width: Get.width * 0.15,
-                    child: InputFields.formFieldNumberMask(
-                      hintTxt: "End Time",
-                      controller: controller.startTime,
-                      widthRatio: 0.15,
-                      // isEnable: controllerX.isEnable,
-                      onEditComplete: (val) {
-                        // controllerX.calculateDuration();
-                      },
-                      // isTime: true,
-                      // isEnable: controller.isEnable.value,
-                      paddingLeft: 0,
-                    ),
+                  InputFields.formFieldNumberMask(
+                    hintTxt: "End Time",
+                    controller: controller.startTime,
+                    widthRatio: 0.08,
+                    // isEnable: controllerX.isEnable,
+                    onEditComplete: (val) {
+                      // controllerX.calculateDuration();
+                    },
+                    // isTime: true,
+                    // isEnable: controller.isEnable.value,
+                    paddingLeft: 0,
                   ),
+
+                ],
+              ),
+              Row(
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+
 
                   // SizedBox(
                   //   width: Get.width * 0.15,
@@ -684,48 +700,59 @@ class ClientDealsView extends GetView<ClientDealsController> {
                   // Spacer(),
 
                   SizedBox(
-                    width: Get.width * 0.20,
+                    width: Get.width * 0.18,
                     child: InputFields.numbers4(
                       hintTxt: "Seconds",
                       controller: TextEditingController(),
-                      titleInLeft: true,
+                      // titleInLeft: true,
                       // titleSizeboxWidth: 45,
-                      fieldWidth: 0.15,
+                      fieldWidth: 0.1,
+                      padLeft: 0
                     ),
+                  ),
+                  SizedBox(
+                    width: 5,
                   ),
 
                   SizedBox(
-                    width: Get.width * 0.25,
+                    width: Get.width * 0.18,
                     child: InputFields.numbers4(
                       hintTxt: "Rate per 100 seconds",
                       controller: TextEditingController(),
-                      titleInLeft: true,
+                      // titleInLeft: true,
                       // titleSizeboxWidth: 45,
                       fieldWidth: 0.15,
                     ),
                   ),
                   SizedBox(
-                    width: Get.width * 0.20,
+                    width: 5,
+                  ),
+                  SizedBox(
+                    width: Get.width * 0.18,
                     child: InputFields.numbers4(
                       hintTxt: "Amount",
                       controller: TextEditingController(),
-                      titleInLeft: true,
+                      // titleInLeft: true,
                       // titleSizeboxWidth: 45,
                       fieldWidth: 0.15,
                     ),
                   ),
                   SizedBox(
-                    width: Get.width * 0.20,
+                    width: 5,
+                  ),
+                  SizedBox(
+                    width: Get.width * 0.18,
                     child: InputFields.numbers4(
                       hintTxt: "Val Rate",
                       controller: TextEditingController(),
-                      titleInLeft: true,
+                      // titleInLeft: true,
                       // titleSizeboxWidth: 45,
                       fieldWidth: 0.15,
                     ),
                   ),
                 ],
               ),
+
 
               const SizedBox(height: 5),
               Wrap(
@@ -763,7 +790,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                 ],
               ),
 
-              const SizedBox(height: 5),
+              const SizedBox(height: 3),
               // Obx(
               //   () =>
               Expanded(
@@ -774,22 +801,57 @@ class ClientDealsView extends GetView<ClientDealsController> {
                 ),
               ),
 
-              SizedBox(
-                // width: 40,
-                height: 10,
-              ),
-
               // ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Get.find<HomeController>().getCommonButton(
-                  Routes.CLIENT_DEALS,
-                  // handleAutoClear: false,
-                  // disableBtns: ['Save', 'Refresh'],
-                  (btnName) {
-                    // controller.formHandler(btnName);
-                  },
-                ),
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(3.0),
+                    child: Get.find<HomeController>().getCommonButton(
+                      Routes.CLIENT_DEALS,
+                      // handleAutoClear: false,
+                      // disableBtns: ['Save', 'Refresh'],
+                      (btnName) {
+                        // controller.formHandler(btnName);
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0,left: 4),
+                    child: FormButtonWrapper(
+                      btnText: "Info",
+                      showIcon: false,
+                      // isEnabled: btn['isDisabled'],
+                      callback: (){
+                        // controller.gridStateManagerLeft?.setFilter((element) => true);
+                        // controller.gridStateManagerLeft?.notifyListeners();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0,left: 4),
+                    child: FormButtonWrapper(
+                      btnText: "Close Deal",
+                      showIcon: false,
+                      // isEnabled: btn['isDisabled'],
+                      callback: (){
+                        // controller.gridStateManagerLeft?.setFilter((element) => true);
+                        // controller.gridStateManagerLeft?.notifyListeners();
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 5.0,left: 4),
+                    child: FormButtonWrapper(
+                      btnText: "View Docs",
+                      showIcon: false,
+                      // isEnabled: btn['isDisabled'],
+                      callback: (){
+                        // controller.gridStateManagerLeft?.setFilter((element) => true);
+                        // controller.gridStateManagerLeft?.notifyListeners();
+                      },
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
