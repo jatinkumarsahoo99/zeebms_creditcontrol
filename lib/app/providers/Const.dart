@@ -1,7 +1,10 @@
 // import 'package:bms/providers/aad/model/config.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 
+import '../controller/MainController.dart';
 import '../data/system_envirtoment.dart';
 import 'ApiFactory.dart';
 
@@ -15,8 +18,6 @@ class Const {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static const instrumentationKey = 'b15b7ae4-ff42-4746-862c-d0c852787f55';
   static const appVersion = '1.0.4';
-
-
 
   static List<SystemEnviroment> systemEnviroments = [
     SystemEnviroment(value: "Data Migration", url: ""),
@@ -42,9 +43,7 @@ class Const {
   static double FIVE_MIN = 5;
   static double ONE_MIN = 7;
 
-
-
-
+/*
   static String getInstrumentKey() {
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -162,6 +161,19 @@ class Const {
     }
   }
 
+  static String getWebCreditControlUrl() {
+    switch (ApiFactory.Enviroment.toLowerCase()) {
+      case "prod":
+        return "https://programming-bms.zeeconnect.in";
+      case "uat":
+        return "https://app-programming-bms-uat.zeeconnect.in";
+      case "dev":
+        return "https://app-programming-bms-dev.zeeconnect.in";
+      default:
+        return "https://app-programming-bms-dev.zeeconnect.in";
+    }
+  }
+
   static String getWebAdminUrl() {
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -185,11 +197,14 @@ class Const {
       default:
         return "https://app-scheduling-bms-dev.zeeconnect.in";
     }
-  }
+  }*/
 
-/*static String getInstrumentKey() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.appInsrtumentationKey??"";
+  static String getInstrumentKey() {
+    if (!kDebugMode) {
+      return Get.find<MainController>()
+              .environmentModel
+              ?.appInsrtumentationKey ??
+          "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -203,10 +218,9 @@ class Const {
     }
   }
 
-
   static String getBaseLoginAPIUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.apiLoginUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.apiLoginUrl ?? "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -221,8 +235,8 @@ class Const {
   }
 
   static String getBaseCommonAPIUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.apiCommonUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.apiCommonUrl ?? "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -237,8 +251,9 @@ class Const {
   }
 
   static String getBaseProgrammingAPIUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.apiProgrammingUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.apiProgrammingUrl ??
+          "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -253,8 +268,8 @@ class Const {
   }
 
   static String getBaseAdminAPIUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.apiAdminUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.apiAdminUrl ?? "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -269,8 +284,9 @@ class Const {
   }
 
   static String getBaseSchedulingAPIUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.apiSchedulingUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.apiSchedulingUrl ??
+          "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -283,10 +299,26 @@ class Const {
         return "https://api-scheduling-bms-dev.zeeconnect.in";
     }
   }
+  static String getBaseCreditControlAPIUrl() {
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.apiCreditControlUrl ??
+          "";
+    }
+    switch (ApiFactory.Enviroment.toLowerCase()) {
+      case "prod":
+        return "https://api-scheduling-bms.zeeconnect.in";
+      case "uat":
+        return "https://api-scheduling-bms-uat.zeeconnect.in";
+      case "dev":
+        return "https://api-scheduling-bms-dev.zeeconnect.in";
+      default:
+        return "https://api-creditcontrol-bms-dev.zeeconnect.in";
+    }
+  }
 
   static String getWebLoginUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.appLoginUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.appLoginUrl ?? "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -301,8 +333,8 @@ class Const {
   }
 
   static String getWebCommonUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.appCommonUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.appCommonUrl ?? "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -317,8 +349,9 @@ class Const {
   }
 
   static String getWebProgrammingUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.appProgrammingUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.appProgrammingUrl ??
+          "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -333,8 +366,8 @@ class Const {
   }
 
   static String getWebAdminUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.appAdminUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.appAdminUrl ?? "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -347,9 +380,11 @@ class Const {
         return "https://app-admin-bms-dev.zeeconnect.in";
     }
   }
+
   static String getWebSchedulingUrl() {
-    if(!kDebugMode){
-      return Get.find<MainController>().environmentModel?.appSchedulingUrl??"";
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.appSchedulingUrl ??
+          "";
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
@@ -361,5 +396,22 @@ class Const {
       default:
         return "https://app-scheduling-bms-dev.zeeconnect.in";
     }
-  }*/
+  }
+
+  static String getWebCreditControlUrl() {
+    if (!kDebugMode) {
+      return Get.find<MainController>().environmentModel?.appCreditControlUrl ??
+          "";
+    }
+    switch (ApiFactory.Enviroment.toLowerCase()) {
+      case "prod":
+        return "https://scheduling-bms.zeeconnect.in";
+      case "uat":
+        return "https://app-scheduling-bms-uat.zeeconnect.in";
+      case "dev":
+        return "https://app-scheduling-bms-dev.zeeconnect.in";
+      default:
+        return "https://app-scheduling-bms-dev.zeeconnect.in";
+    }
+  }
 }

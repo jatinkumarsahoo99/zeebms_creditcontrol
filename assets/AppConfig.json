@@ -11,5 +11,7 @@
   "api-scheduling-url": "",
   "app-client-id": "",
   "app-tenant-id": "",
+  "app-creditcontrol-url": "",
+  "api-creditcontrol-url": "",
   "app-insrtumentation-key": ""
 }

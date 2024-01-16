@@ -8,12 +8,15 @@ class RadioRow1 extends StatefulWidget {
   final bool? isVertical;
   final Function? onchange;
   final List<String>? disabledRadios;
-  const RadioRow1({
+  final double? rightPad;
+
+  RadioRow1({
     Key? key,
     required this.items,
     required this.groupValue,
     this.onchange,
     this.isVertical,
+    this.rightPad,
     this.disabledRadios,
   }) : super(key: key);
 
@@ -39,7 +42,7 @@ class _RadioRow1State extends State<RadioRow1> {
     return widget.items
         .map(
           (e) => Padding(
-            padding: const EdgeInsets.only(left: 5),
+            padding: EdgeInsets.only(left: 5, right: (widget.rightPad ?? 0)),
             child: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
