@@ -35,7 +35,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.CLIENT_DEALS +
+      : (Routes.SALES_EXECUTIVE_MASTER +
           "?personalNo=%2F7i0zDr%2FLpXNOAIr8lUluw%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=a4Lfy%2FGb5Roxo9vLiBCqSQ%3D%3D");
 
   static final routes = [
@@ -54,6 +54,11 @@ class AppPages {
     GetPage(
       name: _Paths.ASRUN_IMPORT_SECONDARY_EVENTS,
       page: () => AuthGuard(childName: _Paths.ASRUN_IMPORT_SECONDARY_EVENTS),
+      // binding: AsrunImportSecondaryEventsBinding(),
+    ),
+    GetPage(
+      name: _Paths.COMPANY_CHANNEL_LINK,
+      page: () => AuthGuard(childName: _Paths.COMPANY_CHANNEL_LINK),
       // binding: AsrunImportSecondaryEventsBinding(),
     ),
     GetPage(
