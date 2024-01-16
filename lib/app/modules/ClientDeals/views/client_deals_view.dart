@@ -290,19 +290,25 @@ class ClientDealsView extends GetView<ClientDealsController> {
                   ),
                   sizedBoxWidth(10),
                   Expanded(
-                    child: DropDownField.formDropDown1WidthMapExpand(
-                      [],
-                      (data) {},
-                      "Brand",
-                      titleInLeft: true,
-                      titleSizeBoxWidth: 50,
-                      // .20,
+                    child: Row(
+                      children: [
+                        Expanded(
+                          child: DropDownField.formDropDown1WidthMapExpand(
+                            [],
+                            (data) {},
+                            "Brand",
+                            titleInLeft: true,
+                            titleSizeBoxWidth: 50,
+                            // .20,
+                          ),
+                        ),
+                        sizedBoxWidth(5),
+                        FormButton1(
+                          btnText: "...",
+                          callback: () {},
+                        ),
+                      ],
                     ),
-                  ),
-                  sizedBoxWidth(5),
-                  FormButton1(
-                    btnText: "...",
-                    callback: () {},
                   ),
                   sizedBoxWidth(10),
                   SizedBox(
