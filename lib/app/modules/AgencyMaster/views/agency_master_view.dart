@@ -11,7 +11,7 @@ import '../../../data/PermissionModel.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/agency_master_controller.dart';
 
-class AgencyMasterView extends GetView<AgencyMasterController> {
+class AgencyMasterView extends StatelessWidget {
   AgencyMasterView({Key? key}) : super(key: key);
 
   AgencyMasterController controllerX =
@@ -31,274 +31,270 @@ class AgencyMasterView extends GetView<AgencyMasterController> {
                   child: Row(
                     children: [
                       Expanded(
-                          flex: 5,
+                          flex: 10,
                           child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey)),
                             child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Column(
-                                children: [
-                                  SizedBox(
-                                    height:Get.height*0.73,
-                                    child: SingleChildScrollView(
-                                      child: Column(
-                                        children: [
-                                          DropDownField.formDropDownSearchAPI2(
-                                              GlobalKey(), context,
-                                              title: "Agency Name",
-                                              autoFocus: false,
-                                              customInData: "empList",
-                                              url: "",
-                                              // inkwellFocus: controllerX.employeeFocus,
-                                              // parseKeyForTitle: "programName",
-                                              parseKeyForKey: "employeecode",
-                                              parseKeyForValue: "employeename",
-                                              // selectedValue: controllerX.selectedEmployee.value,
-                                              onchanged: (data) {},
-                                              width: (Get.width * controllerX.fixedWidth)),
-                                          InputFields.formField1(
-                                            hintTxt: "Group Name",
-                                            // autoFocus: true,
-                                            // controller: controllerX.productLevel1Controller,
-                                            controller: TextEditingController(),
-                                            width: controllerX.fixedWidth,
-                                            // isEnable: controllerX.isEnable,
-                                            onchanged: (value) {},
-                                            autoFocus: false,
-                                            // focusNode: controllerX.productLevel1Focus
+                              padding: const EdgeInsets.only(left: 4.0,bottom: 4),
+                              child: SizedBox(
+                                height:Get.height*0.77,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    children:  [
+                                      DropDownField.formDropDownSearchAPI2(
+                                          GlobalKey(), context,
+                                          title: "Agency Name",
+                                          autoFocus: false,
+                                          customInData: "empList",
+                                          url: "",
+                                          // inkwellFocus: controllerX.employeeFocus,
+                                          // parseKeyForTitle: "programName",
+                                          parseKeyForKey: "employeecode",
+                                          parseKeyForValue: "employeename",
+                                          // selectedValue: controllerX.selectedEmployee.value,
+                                          onchanged: (data) {},
+                                          width: (Get.width * controllerX.fixedWidth)),
+                                      InputFields.formField1(
+                                        hintTxt: "Group Name",
+                                        // autoFocus: true,
+                                        // controller: controllerX.productLevel1Controller,
+                                        controller: TextEditingController(),
+                                        width: controllerX.fixedWidth,
+                                        // isEnable: controllerX.isEnable,
+                                        onchanged: (value) {},
+                                        autoFocus: false,
+                                        // focusNode: controllerX.productLevel1Focus
 
-                                            // autoFocus: true,
-                                          ),
-                                          InputFields.formField1(
-                                            hintTxt: "Contact Person",
-                                            // autoFocus: true,
-                                            // controller: controllerX.productLevel1Controller,
-                                            controller: TextEditingController(),
-                                            width: controllerX.fixedWidth,
-                                            // isEnable: controllerX.isEnable,
-                                            onchanged: (value) {},
-                                            autoFocus: false,
-                                            // focusNode: controllerX.productLevel1Focus
-
-                                            // autoFocus: true,
-                                          ),
-                                          InputFields.formField1(
-                                            hintTxt: "Address",
-                                            // autoFocus: true,
-                                            // controller: controllerX.productLevel1Controller,
-                                            controller: TextEditingController(),
-                                            width: controllerX.fixedWidth,
-                                            // isEnable: controllerX.isEnable,
-                                            onchanged: (value) {},
-                                            autoFocus: false,
-                                            // focusNode: controllerX.productLevel1Focus
-
-                                            // autoFocus: true,
-                                          ),
-                                          InputFields.formField1(
-                                            hintTxt: "",
-                                            // autoFocus: true,
-                                            // controller: controllerX.productLevel1Controller,
-                                            controller: TextEditingController(),
-                                            width: controllerX.fixedWidth,
-                                            // isEnable: controllerX.isEnable,
-                                            onchanged: (value) {},
-                                            autoFocus: false,
-                                            // focusNode: controllerX.productLevel1Focus
-
-                                            // autoFocus: true,
-                                          ),
-                                          SizedBox(
-                                            width: Get.width * controllerX.fixedWidth,
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                DropDownField.formDropDown1WidthMap(
-                                                  [],
-                                                  (value) {
-                                                    // controllerX.selectedCensorShipType = value;
-                                                  },
-                                                  "City",
-                                                  controllerX.fixedWidth1,
-                                                  // isEnable: controllerX.isEnable,
-                                                  autoFocus: false,
-                                                ),
-                                                InputFields.formField1(
-                                                  hintTxt: "Pin",
-                                                  // autoFocus: true,
-                                                  // controller: controllerX.productLevel1Controller,
-                                                  controller: TextEditingController(),
-                                                  width: controllerX.fixedWidth1,
-                                                  // isEnable: controllerX.isEnable,
-                                                  onchanged: (value) {},
-                                                  autoFocus: false,
-                                                  // focusNode: controllerX.productLevel1Focus
-
-                                                  // autoFocus: true,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: Get.width * controllerX.fixedWidth,
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                InputFields.formField1(
-                                                  hintTxt: "Tel",
-                                                  // autoFocus: true,
-                                                  // controller: controllerX.productLevel1Controller,
-                                                  controller: TextEditingController(),
-                                                  width: controllerX.fixedWidth1,
-                                                  // isEnable: controllerX.isEnable,
-                                                  onchanged: (value) {},
-                                                  autoFocus: false,
-                                                  // focusNode: controllerX.productLevel1Focus
-
-                                                  // autoFocus: true,
-                                                ),
-                                                InputFields.formField1(
-                                                  hintTxt: "Email",
-                                                  // autoFocus: true,
-                                                  // controller: controllerX.productLevel1Controller,
-                                                  controller: TextEditingController(),
-                                                  width: controllerX.fixedWidth1,
-                                                  // isEnable: controllerX.isEnable,
-                                                  onchanged: (value) {},
-                                                  autoFocus: false,
-                                                  // focusNode: controllerX.productLevel1Focus
-
-                                                  // autoFocus: true,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: Get.width * controllerX.fixedWidth,
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                InputFields.formField1(
-                                                  hintTxt: "SAP Code",
-                                                  // autoFocus: true,
-                                                  // controller: controllerX.productLevel1Controller,
-                                                  controller: TextEditingController(),
-                                                  width: controllerX.fixedWidth1,
-                                                  // isEnable: controllerX.isEnable,
-                                                  onchanged: (value) {},
-                                                  autoFocus: false,
-                                                  // focusNode: controllerX.productLevel1Focus
-
-                                                  // autoFocus: true,
-                                                ),
-                                                InputFields.formField1(
-                                                  hintTxt: "Cust Grp",
-                                                  // autoFocus: true,
-                                                  // controller: controllerX.productLevel1Controller,
-                                                  controller: TextEditingController(),
-                                                  width: controllerX.fixedWidth1,
-                                                  // isEnable: controllerX.isEnable,
-                                                  onchanged: (value) {},
-                                                  autoFocus: false,
-                                                  // focusNode: controllerX.productLevel1Focus
-
-                                                  // autoFocus: true,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: Get.width * controllerX.fixedWidth,
-                                            child: Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                InputFields.formField1(
-                                                  hintTxt: "Mobile",
-                                                  // autoFocus: true,
-                                                  // controller: controllerX.productLevel1Controller,
-                                                  controller: TextEditingController(),
-                                                  width: controllerX.fixedWidth1,
-                                                  // isEnable: controllerX.isEnable,
-                                                  onchanged: (value) {},
-                                                  autoFocus: false,
-                                                  // focusNode: controllerX.productLevel1Focus
-
-                                                  // autoFocus: true,
-                                                ),
-                                                InputFields.formField1(
-                                                  hintTxt: "IBF Desc",
-                                                  // autoFocus: true,
-                                                  // controller: controllerX.productLevel1Controller,
-                                                  controller: TextEditingController(),
-                                                  width: controllerX.fixedWidth1,
-                                                  // isEnable: controllerX.isEnable,
-                                                  onchanged: (value) {},
-                                                  autoFocus: false,
-                                                  // focusNode: controllerX.productLevel1Focus
-
-                                                  // autoFocus: true,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          InputFields.formField1(
-                                            hintTxt: "Print Name",
-                                            // autoFocus: true,
-                                            // controller: controllerX.productLevel1Controller,
-                                            controller: TextEditingController(),
-                                            width: controllerX.fixedWidth,
-                                            // isEnable: controllerX.isEnable,
-                                            onchanged: (value) {},
-                                            autoFocus: false,
-                                            // focusNode: controllerX.productLevel1Focus
-
-                                            // autoFocus: true,
-                                          ),
-                                          InputFields.formField1(
-                                            hintTxt: "Name 3",
-                                            // autoFocus: true,
-                                            // controller: controllerX.productLevel1Controller,
-                                            controller: TextEditingController(),
-                                            width: controllerX.fixedWidth,
-                                            // isEnable: controllerX.isEnable,
-                                            onchanged: (value) {},
-                                            autoFocus: false,
-                                            // focusNode: controllerX.productLevel1Focus
-
-                                            // autoFocus: true,
-                                          ),
-                                          InputFields.formField1(
-                                            hintTxt: "PAN No.",
-                                            // autoFocus: true,
-                                            // controller: controllerX.productLevel1Controller,
-                                            controller: TextEditingController(),
-                                            width: controllerX.fixedWidth,
-                                            // isEnable: controllerX.isEnable,
-                                            onchanged: (value) {},
-                                            autoFocus: false,
-                                            // focusNode: controllerX.productLevel1Focus
-
-                                            // autoFocus: true,
-                                          ),
-                                          InputFields.formField1(
-                                            hintTxt: "GST No.",
-                                            // autoFocus: true,
-                                            // controller: controllerX.productLevel1Controller,
-                                            controller: TextEditingController(),
-                                            width: controllerX.fixedWidth,
-                                            // isEnable: controllerX.isEnable,
-                                            onchanged: (value) {},
-                                            autoFocus: false,
-                                            // focusNode: controllerX.productLevel1Focus
-
-                                            // autoFocus: true,
-                                          ),
-                                        ],
+                                        // autoFocus: true,
                                       ),
-                                    ),
+                                      InputFields.formField1(
+                                        hintTxt: "Contact Person",
+                                        // autoFocus: true,
+                                        // controller: controllerX.productLevel1Controller,
+                                        controller: TextEditingController(),
+                                        width: controllerX.fixedWidth,
+                                        // isEnable: controllerX.isEnable,
+                                        onchanged: (value) {},
+                                        autoFocus: false,
+                                        // focusNode: controllerX.productLevel1Focus
+
+                                        // autoFocus: true,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "Address",
+                                        // autoFocus: true,
+                                        // controller: controllerX.productLevel1Controller,
+                                        controller: TextEditingController(),
+                                        width: controllerX.fixedWidth,
+                                        // isEnable: controllerX.isEnable,
+                                        onchanged: (value) {},
+                                        autoFocus: false,
+                                        // focusNode: controllerX.productLevel1Focus
+
+                                        // autoFocus: true,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "",
+                                        // autoFocus: true,
+                                        // controller: controllerX.productLevel1Controller,
+                                        controller: TextEditingController(),
+                                        width: controllerX.fixedWidth,
+                                        // isEnable: controllerX.isEnable,
+                                        onchanged: (value) {},
+                                        autoFocus: false,
+                                        // focusNode: controllerX.productLevel1Focus
+
+                                        // autoFocus: true,
+                                      ),
+                                      SizedBox(
+                                        width: Get.width * controllerX.fixedWidth,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            DropDownField.formDropDown1WidthMap(
+                                              [],
+                                                  (value) {
+                                                // controllerX.selectedCensorShipType = value;
+                                              },
+                                              "City",
+                                              controllerX.fixedWidth1,
+                                              // isEnable: controllerX.isEnable,
+                                              autoFocus: false,
+                                            ),
+                                            InputFields.formField1(
+                                              hintTxt: "Pin",
+                                              // autoFocus: true,
+                                              // controller: controllerX.productLevel1Controller,
+                                              controller: TextEditingController(),
+                                              width: controllerX.fixedWidth1,
+                                              // isEnable: controllerX.isEnable,
+                                              onchanged: (value) {},
+                                              autoFocus: false,
+                                              // focusNode: controllerX.productLevel1Focus
+
+                                              // autoFocus: true,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: Get.width * controllerX.fixedWidth,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InputFields.formField1(
+                                              hintTxt: "Tel",
+                                              // autoFocus: true,
+                                              // controller: controllerX.productLevel1Controller,
+                                              controller: TextEditingController(),
+                                              width: controllerX.fixedWidth1,
+                                              // isEnable: controllerX.isEnable,
+                                              onchanged: (value) {},
+                                              autoFocus: false,
+                                              // focusNode: controllerX.productLevel1Focus
+
+                                              // autoFocus: true,
+                                            ),
+                                            InputFields.formField1(
+                                              hintTxt: "Email",
+                                              // autoFocus: true,
+                                              // controller: controllerX.productLevel1Controller,
+                                              controller: TextEditingController(),
+                                              width: controllerX.fixedWidth1,
+                                              // isEnable: controllerX.isEnable,
+                                              onchanged: (value) {},
+                                              autoFocus: false,
+                                              // focusNode: controllerX.productLevel1Focus
+
+                                              // autoFocus: true,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: Get.width * controllerX.fixedWidth,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InputFields.formField1(
+                                              hintTxt: "SAP Code",
+                                              // autoFocus: true,
+                                              // controller: controllerX.productLevel1Controller,
+                                              controller: TextEditingController(),
+                                              width: controllerX.fixedWidth1,
+                                              // isEnable: controllerX.isEnable,
+                                              onchanged: (value) {},
+                                              autoFocus: false,
+                                              // focusNode: controllerX.productLevel1Focus
+
+                                              // autoFocus: true,
+                                            ),
+                                            InputFields.formField1(
+                                              hintTxt: "Cust Grp",
+                                              // autoFocus: true,
+                                              // controller: controllerX.productLevel1Controller,
+                                              controller: TextEditingController(),
+                                              width: controllerX.fixedWidth1,
+                                              // isEnable: controllerX.isEnable,
+                                              onchanged: (value) {},
+                                              autoFocus: false,
+                                              // focusNode: controllerX.productLevel1Focus
+
+                                              // autoFocus: true,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        width: Get.width * controllerX.fixedWidth,
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InputFields.formField1(
+                                              hintTxt: "Mobile",
+                                              // autoFocus: true,
+                                              // controller: controllerX.productLevel1Controller,
+                                              controller: TextEditingController(),
+                                              width: controllerX.fixedWidth1,
+                                              // isEnable: controllerX.isEnable,
+                                              onchanged: (value) {},
+                                              autoFocus: false,
+                                              // focusNode: controllerX.productLevel1Focus
+
+                                              // autoFocus: true,
+                                            ),
+                                            InputFields.formField1(
+                                              hintTxt: "IBF Desc",
+                                              // autoFocus: true,
+                                              // controller: controllerX.productLevel1Controller,
+                                              controller: TextEditingController(),
+                                              width: controllerX.fixedWidth1,
+                                              // isEnable: controllerX.isEnable,
+                                              onchanged: (value) {},
+                                              autoFocus: false,
+                                              // focusNode: controllerX.productLevel1Focus
+
+                                              // autoFocus: true,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "Print Name",
+                                        // autoFocus: true,
+                                        // controller: controllerX.productLevel1Controller,
+                                        controller: TextEditingController(),
+                                        width: controllerX.fixedWidth,
+                                        // isEnable: controllerX.isEnable,
+                                        onchanged: (value) {},
+                                        autoFocus: false,
+                                        // focusNode: controllerX.productLevel1Focus
+
+                                        // autoFocus: true,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "Name 3",
+                                        // autoFocus: true,
+                                        // controller: controllerX.productLevel1Controller,
+                                        controller: TextEditingController(),
+                                        width: controllerX.fixedWidth,
+                                        // isEnable: controllerX.isEnable,
+                                        onchanged: (value) {},
+                                        autoFocus: false,
+                                        // focusNode: controllerX.productLevel1Focus
+
+                                        // autoFocus: true,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "PAN No.",
+                                        // autoFocus: true,
+                                        // controller: controllerX.productLevel1Controller,
+                                        controller: TextEditingController(),
+                                        width: controllerX.fixedWidth,
+                                        // isEnable: controllerX.isEnable,
+                                        onchanged: (value) {},
+                                        autoFocus: false,
+                                        // focusNode: controllerX.productLevel1Focus
+
+                                        // autoFocus: true,
+                                      ),
+                                      InputFields.formField1(
+                                        hintTxt: "GST No.",
+                                        // autoFocus: true,
+                                        // controller: controllerX.productLevel1Controller,
+                                        controller: TextEditingController(),
+                                        width: controllerX.fixedWidth,
+                                        // isEnable: controllerX.isEnable,
+                                        onchanged: (value) {},
+                                        autoFocus: false,
+                                        // focusNode: controllerX.productLevel1Focus
+
+                                        // autoFocus: true,
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
                           )),
@@ -306,7 +302,7 @@ class AgencyMasterView extends GetView<AgencyMasterController> {
                         width: 5,
                       ),
                       Expanded(
-                          flex: 5,
+                          flex: 9,
                           child: Container(
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey)),
@@ -315,7 +311,7 @@ class AgencyMasterView extends GetView<AgencyMasterController> {
                   ),
                 ),
                 SizedBox(
-                  height: 4,
+                  height: 2,
                 ),
                 Column(
                   mainAxisSize: MainAxisSize.min,
@@ -352,7 +348,7 @@ class AgencyMasterView extends GetView<AgencyMasterController> {
                       children: [
                         Padding(
                           padding:
-                          const EdgeInsets.only(top: 14.0, left: 10, right: 10),
+                          const EdgeInsets.only(top: 8.0, left: 10, right: 10),
                           child: FormButtonWrapper(
                             btnText: "Block Agency",
                             callback: () {
@@ -366,7 +362,7 @@ class AgencyMasterView extends GetView<AgencyMasterController> {
                         ),
                         Padding(
                           padding:
-                          const EdgeInsets.only(top: 14.0, left: 10, right: 0),
+                          const EdgeInsets.only(top: 8.0, left: 10, right: 0),
                           child: FormButtonWrapper(
                             btnText: "Un-Block Agency",
                             callback: () {
@@ -380,7 +376,7 @@ class AgencyMasterView extends GetView<AgencyMasterController> {
                   ],
                 ),
                 SizedBox(
-                  height: 4,
+                  height: 2,
                 ),
                 Align(
                   alignment: Alignment.topLeft,

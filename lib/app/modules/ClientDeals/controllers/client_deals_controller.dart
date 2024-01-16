@@ -22,6 +22,7 @@ class ClientDealsController extends GetxController {
   RxList<DropDownValue> clientList = RxList([]);
   RxList<DropDownValue> agencyList = RxList([]);
   RxList<DropDownValue> brandList = RxList([]);
+  RxList<DropDownValue> bandList = RxList([]);
   RxList<DropDownValue> brandList2 = RxList([]);
   RxList<DropDownValue> accountList = RxList([]);
   RxList<DropDownValue> subTypeList = RxList([]);
@@ -35,23 +36,24 @@ class ClientDealsController extends GetxController {
   RxList<DropDownValue> dealType = RxList([]);
   RxList<DropDownValue> channelList2 = RxList([]);
 
-  Rxn<DropDownValue>? selectedLocation;
-  Rxn<DropDownValue>? selectedLocation2;
-  Rxn<DropDownValue>? selectedChannel;
-  Rxn<DropDownValue>? selectedChannel2;
-  Rxn<DropDownValue>? selectedClient;
-  Rxn<DropDownValue>? selectedClient2;
-  Rxn<DropDownValue>? selectPayMode;
-  Rxn<DropDownValue>? selectCurrency;
-  Rxn<DropDownValue>? selectBrand;
-  Rxn<DropDownValue>? selectBrand2;
-  Rxn<DropDownValue>? selectAgency;
-  Rxn<DropDownValue>? selectDealType;
-  Rxn<DropDownValue>? selectAccount;
-  Rxn<DropDownValue>? selectSubType;
-  Rxn<DropDownValue>? selectSpotType;
-  Rxn<DropDownValue>? selectProgram;
-  Rxn<DropDownValue>? selectAddInfo;
+  Rxn<DropDownValue>? selectedLocation = Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectedLocation2 =Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectedChannel=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectedChannel2=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectedClient=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectedClient2=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectPayMode=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectCurrency=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectBrand=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectBand=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectBrand2=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectAgency=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectDealType=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectAccount=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectSubType=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectSpotType=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectProgram=Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectAddInfo=Rxn<DropDownValue>(null);
 
   TextEditingController dealNoController = TextEditingController();
   TextEditingController dateController = TextEditingController();
@@ -84,20 +86,20 @@ class ClientDealsController extends GetxController {
   Rx<bool> sat = Rx<bool>(false);
   Rx<bool> sun = Rx<bool>(false);
 
-  getAllLoadData(){
+  getAllLoadData() {
     LoadingDialog.call();
-    try{
+    try {
       Get.find<ConnectorControl>().GETMETHODCALL(
           api: ApiFactory.Client_Deal_GET_LOAD,
           // "https://jsonkeeper.com/b/D537"
           fun: (map) {
             closeDialogIfOpen();
-            if(map is Map && map['onload'] != null){
-              if(map['onload']['location'] != null &&
-                  map['onload']['location'].length >0 ){
+            if (map is Map && map['onload'] != null) {
+              if (map['onload']['location'] != null &&
+                  map['onload']['location'].length > 0) {
                 locationList.clear();
                 RxList<DropDownValue> dataList = RxList([]);
-                map['onload']['location'].forEach((e){
+                map['onload']['location'].forEach((e) {
                   dataList.add(DropDownValue.fromJsonDynamic(
                       e, "locationCode", "locationName"));
                 });
@@ -105,11 +107,11 @@ class ClientDealsController extends GetxController {
                 locationList.refresh();
               }
 
-              if(map['onload']['dealTypeMaster'] != null &&
-                  map['onload']['dealTypeMaster'].length >0 ){
+              if (map['onload']['dealTypeMaster'] != null &&
+                  map['onload']['dealTypeMaster'].length > 0) {
                 dealType.clear();
                 RxList<DropDownValue> dataList = RxList([]);
-                map['onload']['dealTypeMaster'].forEach((e){
+                map['onload']['dealTypeMaster'].forEach((e) {
                   dataList.add(DropDownValue.fromJsonDynamic(
                       e, "dealtypecode", "dealtypename"));
                 });
@@ -117,11 +119,11 @@ class ClientDealsController extends GetxController {
                 dealType.refresh();
               }
 
-              if(map['onload']['currencyTypeMaster'] != null &&
-                  map['onload']['currencyTypeMaster'].length >0 ){
+              if (map['onload']['currencyTypeMaster'] != null &&
+                  map['onload']['currencyTypeMaster'].length > 0) {
                 currency.clear();
                 RxList<DropDownValue> dataList = RxList([]);
-                map['onload']['currencyTypeMaster'].forEach((e){
+                map['onload']['currencyTypeMaster'].forEach((e) {
                   dataList.add(DropDownValue.fromJsonDynamic(
                       e, "currencyTypeCode", "currencyTypeName"));
                 });
@@ -129,11 +131,11 @@ class ClientDealsController extends GetxController {
                 currency.refresh();
               }
 
-              if(map['onload']['searchLocation'] != null &&
-                  map['onload']['searchLocation'].length >0 ){
+              if (map['onload']['searchLocation'] != null &&
+                  map['onload']['searchLocation'].length > 0) {
                 locationList2.clear();
                 RxList<DropDownValue> dataList = RxList([]);
-                map['onload']['searchLocation'].forEach((e){
+                map['onload']['searchLocation'].forEach((e) {
                   dataList.add(DropDownValue.fromJsonDynamic(
                       e, "locationcode", "locationname"));
                 });
@@ -141,11 +143,11 @@ class ClientDealsController extends GetxController {
                 locationList2.refresh();
               }
 
-              if(map['onload']['searchChannel'] != null &&
-                  map['onload']['searchChannel'].length >0 ){
+              if (map['onload']['searchChannel'] != null &&
+                  map['onload']['searchChannel'].length > 0) {
                 channelList2.clear();
                 RxList<DropDownValue> dataList = RxList([]);
-                map['onload']['searchChannel'].forEach((e){
+                map['onload']['searchChannel'].forEach((e) {
                   dataList.add(DropDownValue.fromJsonDynamic(
                       e, "channelcode", "channelname"));
                 });
@@ -153,28 +155,169 @@ class ClientDealsController extends GetxController {
                 channelList2.refresh();
               }
 
-              if(map['onload']['sponsorTypeMaster'] != null &&
-                  map['onload']['sponsorTypeMaster'].length >0 ){
+              if (map['onload']['sponsorTypeMaster'] != null &&
+                  map['onload']['sponsorTypeMaster'].length > 0) {
                 spotTypeList.clear();
                 RxList<DropDownValue> dataList = RxList([]);
-                map['onload']['sponsorTypeMaster'].forEach((e){
+                map['onload']['sponsorTypeMaster'].forEach((e) {
                   dataList.add(DropDownValue.fromJsonDynamic(
                       e, "sponsorTypeCode", "sponsorTypeName"));
                 });
                 spotTypeList.addAll(dataList);
                 spotTypeList.refresh();
               }
+            }
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+          });
+    } catch (e) {
+      closeDialogIfOpen();
+    }
+  }
 
+  getChannel({String ? locationCode}){
+    print(">>>>locationCode"+locationCode.toString());
+    if(locationCode != null && locationCode != ""){
+      try{
+        LoadingDialog.call();
+        // Map<String,dynamic> postData = {};
+        Get.find<ConnectorControl>().GETMETHODCALL(
+            api: ApiFactory.Client_Deal_GET_CHANNEL+locationCode,
+            // "https://jsonkeeper.com/b/D537"
+            fun: (map) {
+              closeDialogIfOpen();
+              if(map is Map && map['channel'] != null && map['channel'].length > 0){
+                channelList.clear();
+                RxList<DropDownValue> dataList = RxList([]);
+                map['channel'].forEach((e) {
+                  dataList.add(DropDownValue.fromJsonDynamic(
+                      e, "channelcode", "channelName"));
+                });
+                channelList.addAll(dataList);
+                channelList.refresh();
+              }else{
+                channelList.clear();
+              }
 
+            },
+            failed: (map) {
+              closeDialogIfOpen();
+            });
+      }catch(e){
+        closeDialogIfOpen();
+      }
+    }
+  }
 
+  clientsLeave(){
+      try{
+        LoadingDialog.call();
+        Map<String,dynamic> postData = {
+          "clientCode":selectedClient?.value?.key??"",
+          "locationCode":selectedLocation?.value?.key??"",
+          "channelCode":selectedChannel?.value?.key??""
+        };
+        Get.find<ConnectorControl>().GET_METHOD_WITH_PARAM(
+            api: ApiFactory.Client_Deal_GET_CLIENTS_LEAVE,
+            json:postData,
+            // "https://jsonkeeper.com/b/D537"
+            fun: (map) {
+              closeDialogIfOpen();
+              if(map is Map){
+                if( map['clientLeaveModel'] != null &&
+                    map['clientLeaveModel']['agency'] != null && map['clientLeaveModel']['agency'].length >0){
+                  agencyList.clear();
+                  RxList<DropDownValue> dataList = RxList([]);
+                  map['clientLeaveModel']['agency'].forEach((e) {
+                    dataList.add(DropDownValue.fromJsonDynamic(
+                        e, "agencycode", "agencyName"));
+                  });
+                  agencyList.addAll(dataList);
+                  agencyList.refresh();
+
+                }
+                if( map['clientLeaveModel'] != null &&
+                    map['clientLeaveModel']['brand'] != null && map['clientLeaveModel']['brand'].length >0){
+                  brandList.clear();
+                  RxList<DropDownValue> dataList = RxList([]);
+                  map['clientLeaveModel']['brand'].forEach((e) {
+                    dataList.add(DropDownValue.fromJsonDynamic(
+                        e, "brandcode", "brandname"));
+                  });
+                  brandList.addAll(dataList);
+                  brandList.refresh();
+                }
+              }else{
+
+              }
+
+            },
+            failed: (map) {
+              closeDialogIfOpen();
+            });
+      }catch(e){
+        closeDialogIfOpen();
+      }
+  }
+
+  channelLeave(){
+    try{
+      LoadingDialog.call();
+      Map<String,dynamic> postData = {
+        "dealDate":selectedClient?.value?.key??"",
+        "locationCode":selectedLocation?.value?.key??"",
+        "channelCode":selectedChannel?.value?.key??""
+      };
+      Get.find<ConnectorControl>().GET_METHOD_WITH_PARAM(
+          api: ApiFactory.Client_Deal_GET_CHANNEL_LEAVE,
+          json:postData,
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            closeDialogIfOpen();
+            if(map is Map){
+              if(map['channelLeaveModel'] != null &&
+                  map['channelLeaveModel']['dealNumber'] != null && map['channelLeaveModel']['dealNumber'] != "" ){
+                dealNoController.text = map['channelLeaveModel']['dealNumber']??"";
+              }
+              if( map['channelLeaveModel'] != null &&
+                  map['channelLeaveModel']['timeBand'] != null && map['channelLeaveModel']['timeBand'].length >0){
+                bandList.clear();
+                RxList<DropDownValue> dataList = RxList([]);
+                map['channelLeaveModel']['timeBand'].forEach((e) {
+                  dataList.add(DropDownValue.fromJsonDynamic(
+                      e, "timeband", "description"));
+                });
+                bandList.addAll(dataList);
+                bandList.refresh();
+
+              }
+              if( map['channelLeaveModel'] != null &&
+                  map['channelLeaveModel']['addinfo'] != null && map['channelLeaveModel']['addinfo'].length >0){
+                addInfoList.clear();
+                RxList<DropDownValue> dataList = RxList([]);
+                map['channelLeaveModel']['addinfo'].forEach((e) {
+                  dataList.add(DropDownValue.fromJsonDynamic(
+                      e, "netcode", "networkname"));
+                });
+                addInfoList.addAll(dataList);
+                addInfoList.refresh();
+              }
+            }else{
 
             }
+
+          },
+          failed: (map) {
+            closeDialogIfOpen();
           });
     }catch(e){
       closeDialogIfOpen();
     }
-
   }
+
+
+
 
   closeDialogIfOpen() {
     if (Get.isDialogOpen ?? false) {
@@ -197,7 +340,6 @@ class ClientDealsController extends GetxController {
   void onClose() {
     super.onClose();
   }
-
 
   void increment() => count.value++;
 }

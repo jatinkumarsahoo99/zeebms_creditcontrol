@@ -13,6 +13,7 @@ import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/sized_box_widget.dart';
 import '../../../../widgets/texts.dart';
 import '../../../controller/HomeController.dart';
+import '../../../providers/ApiFactory.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/client_deals_controller.dart';
 
@@ -43,9 +44,16 @@ class ClientDealsView extends GetView<ClientDealsController> {
                       Expanded(
                         child: Obx(() {
                           return DropDownField.formDropDown1WidthMapExpand(
-                            controller.locationList.value ?? [], (value) {
-                            controller.selectedLocation?.value = value;
-                          }, "Location",
+                            controller.locationList.value ?? [],
+                                (value) {
+                              controller.selectedLocation?.value = value;
+                              controller.update(['client']);
+                              controller.getChannel(
+                                  locationCode:
+                                  value.key ??
+                                      "");
+                            },
+                            "Location",
                             // .20,
                             autoFocus: true,
                             titleInLeft: true,
@@ -57,11 +65,16 @@ class ClientDealsView extends GetView<ClientDealsController> {
                       sizedBoxWidth(10),
                       Expanded(
                         child: DropDownField.formDropDown1WidthMapExpand(
-                          [],
-                              (data) {},
-                          "",
-                          titleInLeft: true,
-                          titleSizeBoxWidth: 50,
+                            controller.channelList.value ?? [],
+                                (data) {
+                              controller.selectedChannel?.value = data;
+                              controller.update(['client']);
+                              print(">>>>>>>>>>>client"+(controller.selectedChannel?.value).toString());
+                            },
+                            "",
+                            titleInLeft: true,
+                            titleSizeBoxWidth: 50,
+                            selected: controller.selectedChannel?.value
                           // .20,
                         ),
                       ),
@@ -212,17 +225,30 @@ class ClientDealsView extends GetView<ClientDealsController> {
                   Row(
                     children: [
                       Expanded(
-                        child: DropDownField.formDropDownSearchAPI2Expand(
-                          GlobalKey(),
-                          context,
-                          title: "Client",
-                          url: "",
-                          onchanged: (value) {
-                            controller.selectedClient?.value = value;
+                        child: GetBuilder<ClientDealsController>(
+                          assignId: true,
+                          id: "client",
+                          builder: (controller) {
+                            return DropDownField.formDropDownSearchAPI2Expand(
+                              GlobalKey(),
+                              context,
+                              title: "Client",
+                              url: "${ApiFactory
+                                  .Client_Deal_GET_CLIENTS}?locationCode=${controller
+                                  .selectedLocation?.value
+                                  ?.key}&channelCode=${controller
+                                  .selectedChannel?.value?.key}&clientName=",
+                              onchanged: (value) {
+                                controller.selectedClient?.value = value;
+                              },
+                              selectedValue: controller.selectedClient?.value,
+                              textSizeboxWidth: 55,
+                              customInData: "clients",
+                              parseKeyForValue: "clientname",
+                              parseKeyForKey: "clientcode",
+                              titleInLeft: true,
+                            );
                           },
-                          selectedValue: controller.selectedClient?.value,
-                          textSizeboxWidth: 55,
-                          titleInLeft: true,
                         ),
                       ),
                       sizedBoxWidth(5),
@@ -309,8 +335,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
                             Expanded(
                               child: DateWithThreeTextFieldExpanded(
                                 title: "Reference Date",
-                                mainTextController: controller
-                                    .referenceDateController,
+                                mainTextController:
+                                controller.referenceDateController,
                                 // widthRation: .135,
                                 titleInLeft: true,
                                 titleInSizeBox: 50,
@@ -622,14 +648,13 @@ class ClientDealsView extends GetView<ClientDealsController> {
                     children: [
                       // LabelText2.style(hint: "Type")
                       Obx(() {
-                        return CheckBoxOnRight(title: "Type",
+                        return CheckBoxOnRight(
+                          title: "Type",
                           onChanged: (val) {
                             controller.type.value = !(controller.type.value);
                             controller.type.refresh();
                           },
                           value: controller.type.value,
-
-
                         );
                       }),
 
@@ -722,7 +747,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
                       // Spacer(),
 
                       Obx(() {
-                        return CheckBoxWidget1(title: "Week End",
+                        return CheckBoxWidget1(
+                          title: "Week End",
                           value: controller.weekEnd.value,
                           onChanged: (val) {
                             controller.weekEnd.value =
@@ -734,7 +760,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
 
                       sizedBoxWidth(100),
                       Obx(() {
-                        return CheckBoxWidget1(title: "Week Day",
+                        return CheckBoxWidget1(
+                          title: "Week Day",
                           value: controller.weekDay.value,
                           onChanged: (val) {
                             controller.weekDay.value = val!;
@@ -744,33 +771,48 @@ class ClientDealsView extends GetView<ClientDealsController> {
                       }),
                       sizedBoxWidth(50),
                       Obx(() {
-                        return CheckBoxOnRight(title: "Mon", onChanged: (val) {
-                          controller.mon.value = val!;
-                          controller.mon.refresh();
-                        }, value: controller.mon.value,);
+                        return CheckBoxOnRight(
+                          title: "Mon",
+                          onChanged: (val) {
+                            controller.mon.value = val!;
+                            controller.mon.refresh();
+                          },
+                          value: controller.mon.value,
+                        );
                       }),
                       Obx(() {
-                        return CheckBoxOnRight(title: "Tue", onChanged: (val) {
-                          controller.tue.value = val!;
-                          controller.tue.refresh();
-                        },value: controller.tue.value,);
+                        return CheckBoxOnRight(
+                          title: "Tue",
+                          onChanged: (val) {
+                            controller.tue.value = val!;
+                            controller.tue.refresh();
+                          },
+                          value: controller.tue.value,
+                        );
                       }),
                       Obx(() {
-                        return CheckBoxOnRight(title: "Wed",
+                        return CheckBoxOnRight(
+                          title: "Wed",
                           value: controller.wed.value,
                           onChanged: (val) {
                             controller.wed.value = val!;
                             controller.wed.refresh();
-                          },);
+                          },
+                        );
                       }),
                       Obx(() {
-                        return CheckBoxOnRight(title: "Thu", onChanged: (val) {
-                          controller.thu.value = val!;
-                          controller.thu.refresh();
-                        }, value: controller.thu.value,);
+                        return CheckBoxOnRight(
+                          title: "Thu",
+                          onChanged: (val) {
+                            controller.thu.value = val!;
+                            controller.thu.refresh();
+                          },
+                          value: controller.thu.value,
+                        );
                       }),
                       Obx(() {
-                        return CheckBoxOnRight(title: "Fri",
+                        return CheckBoxOnRight(
+                          title: "Fri",
                           value: controller.fri.value,
                           onChanged: (val) {
                             controller.fri.value = val!;
@@ -779,18 +821,24 @@ class ClientDealsView extends GetView<ClientDealsController> {
                         );
                       }),
                       Obx(() {
-                        return CheckBoxOnRight(title: "Sat", onChanged: (val) {
-                          controller.sat.value = val!;
-                          controller.sat.refresh();
-                        }, value: controller.sat.value,);
+                        return CheckBoxOnRight(
+                          title: "Sat",
+                          onChanged: (val) {
+                            controller.sat.value = val!;
+                            controller.sat.refresh();
+                          },
+                          value: controller.sat.value,
+                        );
                       }),
                       Obx(() {
-                        return CheckBoxOnRight(title: "Sun",
+                        return CheckBoxOnRight(
+                          title: "Sun",
                           value: controller.sun.value,
                           onChanged: (val) {
                             controller.sun.value = val!;
                             controller.sun.refresh();
-                          },);
+                          },
+                        );
                       }),
 
                       SizedBox(
@@ -874,7 +922,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                         width: Get.width * 0.20,
                         child: InputFields.numbers4(
                           hintTxt: "Val Rate",
-                          controller:controller.valueRateController,
+                          controller: controller.valueRateController,
                           titleInLeft: true,
                           // titleSizeboxWidth: 45,
                           fieldWidth: 0.15,
