@@ -679,17 +679,20 @@ class ApiFactory {
       "$BASE_URL/api/ModuleFormTransaction/GetModuleFormDetails?ModuleCode=$moduleCode";
   ///////////////////////// END MODULE FORM TRANSACTION API//////
 
-
 //////////////////////////// SECONDARY ASRUN MODIFICATION ////////////////////////////////
 
-  static String get SECONDARY_ASRUN_MODIFICATION_LOCATION => "$BASE_URL/api/SecondaryAsrunModi/GetLocations";
-  static String get SECONDARY_ASRUN_MODIFICATION_CHANNEL  => "$BASE_URL/api/SecondaryAsrunModi/GetChannels";
-  static String get SECONDARY_ASRUN_MODIFICATION_BIND_GRID  => "$BASE_URL/api/SecondaryAsrunModi/GetBindGrid";
-  static String get SECONDARY_ASRUN_MODIFICATION_GET_OK  => "$BASE_URL/api/SecondaryAsrunModi/GetOkClick";
-  static String get SECONDARY_ASRUN_MODIFICATION_GET_CLEAR_MISMATCH  => "$BASE_URL/api/SecondaryAsrunModi/GetClearmismatch";
-  static String get SECONDARY_ASRUN_MODIFICATION_SAVE  => "$BASE_URL/api/SecondaryAsrunModi/PostSave";
-
-
+  static String get SECONDARY_ASRUN_MODIFICATION_LOCATION =>
+      "$BASE_URL/api/SecondaryAsrunModi/GetLocations";
+  static String get SECONDARY_ASRUN_MODIFICATION_CHANNEL =>
+      "$BASE_URL/api/SecondaryAsrunModi/GetChannels";
+  static String get SECONDARY_ASRUN_MODIFICATION_BIND_GRID =>
+      "$BASE_URL/api/SecondaryAsrunModi/GetBindGrid";
+  static String get SECONDARY_ASRUN_MODIFICATION_GET_OK =>
+      "$BASE_URL/api/SecondaryAsrunModi/GetOkClick";
+  static String get SECONDARY_ASRUN_MODIFICATION_GET_CLEAR_MISMATCH =>
+      "$BASE_URL/api/SecondaryAsrunModi/GetClearmismatch";
+  static String get SECONDARY_ASRUN_MODIFICATION_SAVE =>
+      "$BASE_URL/api/SecondaryAsrunModi/PostSave";
 
   ///
   ///
@@ -704,15 +707,28 @@ class ApiFactory {
   static String get MOVIE_UPDATE_POST_UNDO_SPOT =>
       "$BASE_URL/api/MovieUpdate/PostUndoSpot";
 
- /// //////////////////////////////// Client Deals ////////////////////////////////////
+  /// //////////////////////////////// Client Deals ////////////////////////////////////
 
   static String get Client_Deal_GET_LOAD => "$BASE_URL/api/ClientDeals/onload";
-  static String get Client_Deal_GET_CHANNEL => "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
-  static String get Client_Deal_GET_CLIENTS => "$BASE_URL/api/ClientDeals/GetClients";
-  static String get Client_Deal_GET_CLIENTS_LEAVE => "$BASE_URL/api/ClientDeals/ClientLeave";
-  static String get Client_Deal_GET_CHANNEL_LEAVE => "$BASE_URL/api/ClientDeals/ChannelLeave";
-  static String get Client_Deal_GET_SUBTYPE => "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
-  static String get Client_Deal_RETRIVE_RECORD => "$BASE_URL/api/ClientDeals/RetrieveRecord";
+  static String get Client_Deal_GET_CHANNEL =>
+      "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
+  static String get Client_Deal_GET_CLIENTS =>
+      "$BASE_URL/api/ClientDeals/GetClients";
+  static String get Client_Deal_GET_CLIENTS_LEAVE =>
+      "$BASE_URL/api/ClientDeals/ClientLeave";
+  static String get Client_Deal_GET_CHANNEL_LEAVE =>
+      "$BASE_URL/api/ClientDeals/ChannelLeave";
+  static String get Client_Deal_GET_SUBTYPE =>
+      "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
+  static String get Client_Deal_RETRIVE_RECORD =>
+      "$BASE_URL/api/ClientDeals/RetrieveRecord";
 
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start Export Billing FPC Model////////////////////////////////
+  // static String get MOVIE_UPDATE_GET_LOAD =>
+  //     "$BASE_URL/api/MovieUpdate/GetLoad";
 
+  /// ////////////////////////// End Export Billing FPC Model////////////////////////////////
 }
