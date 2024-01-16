@@ -727,8 +727,12 @@ class ApiFactory {
   ///
   ///
   /// ////////////////////////// Start Export Billing FPC Model////////////////////////////////
-  // static String get MOVIE_UPDATE_GET_LOAD =>
-  //     "$BASE_URL/api/MovieUpdate/GetLoad";
+  static String get START_EXPORT_BILLING_FORM_LOAD =>
+      "$BASE_URL/api/ExportbillingfPC/GetFormLoad";
+  static String get START_EXPORT_BILLING_DATE_LEAVE =>
+      "$BASE_URL/api/ExportbillingfPC/GettodateLeave";
+  static String get START_EXPORT_BILLING_GET_GENERATE =>
+      "$BASE_URL/api/ExportbillingfPC/GetGenerate";
 
   /// ////////////////////////// End Export Billing FPC Model////////////////////////////////
 }
