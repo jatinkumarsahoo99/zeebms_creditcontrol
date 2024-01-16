@@ -103,9 +103,9 @@ abstract class _Paths {
   static const S_A_P_B_ILL_CHECK_REPORT = '/frmSapBillcheckreport';
   static const GENERATE_BOOKING_REPORT = '/generate-booking-report';
   static const E_BILL_AGENCY_GROUP_MASTER = '/Skybreakpattern';
-  static const ASRUN_SPECIFICATION_AD_REVENUE =
-      '/frmAsrunSpecification';
+  static const ASRUN_SPECIFICATION_AD_REVENUE = '/frmAsrunSpecification';
   static const COMPANY_CHANNEL_LINK = '/frmCompanyChannelLink';
   static const TRAFFIC_ORDER_CORRECTION = '/frmTOCorrection';
   static const BILL_EXPORT = '/frmExportData';
+  static const L_M_S_MASTER_REPORT_NEW = '/l-m-s-master-report-new';
 }

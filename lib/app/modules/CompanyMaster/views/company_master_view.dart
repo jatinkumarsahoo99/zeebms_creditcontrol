@@ -46,24 +46,31 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                           Expanded(
                             child: Column(
                               children: [
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "Company Name",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                ),
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "Short Name",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                ),
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "Corp Address",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                ),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "Company Name",
+                                    controller: controller.tecCompanyName.value,
+                                    // titleInLeft: true,
+                                  );
+                                }),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "Short Name",
+                                    controller: controller.tecShortName.value,
+                                    // titleInLeft: true,
+                                  );
+                                }),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "Corp Address",
+                                    controller: controller.tecCorpAddress.value,
+                                    // titleInLeft: true,
+                                  );
+                                }),
                                 InputFields.formFieldExpand2(
                                   hintTxt: "",
                                   controller: TextEditingController(),
+                                  showTitle: false,
                                   // titleInLeft: true,
                                 ),
                                 Row(
@@ -71,10 +78,13 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                     Expanded(
                                       child: DropDownField
                                           .formDropDown1WidthMapExpand(
-                                        [],
-                                        (p0) => null,
+                                        controller.cityList.value,
+                                        (value) {
+                                          controller.selectedCity = value;
+                                        },
                                         "City",
                                         // titleInLeft: true,
+                                        selected: controller.selectedCity,
                                         titleSizeBoxWidth: 75,
                                       ),
                                     ),
@@ -89,47 +99,64 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                       width: 10,
                                     ),
                                     Expanded(
-                                      child: InputFields.formFieldExpand2(
-                                        hintTxt: "Pin",
-                                        controller: TextEditingController(),
-                                        // titleInLeft: true,
-                                        titleSizeboxWidth: 50,
-                                      ),
+                                      child: Obx(() {
+                                        return InputFields.formFieldExpand2(
+                                          hintTxt: "Pin",
+                                          controller: controller.tecPin.value,
+                                          // titleInLeft: true,
+                                        );
+                                      }),
                                     ),
                                   ],
                                 ),
                                 Row(
                                   children: [
                                     Expanded(
-                                      child: InputFields.formFieldExpand2(
-                                        hintTxt: "Telephone",
-                                        controller: TextEditingController(),
-                                        // titleInLeft: true,
-                                      ),
+                                      child: Obx(() {
+                                        return InputFields.formFieldExpand2(
+                                          hintTxt: "TelePhone",
+                                          controller:
+                                              controller.tecTelephone.value,
+                                          // titleInLeft: true,
+                                        );
+                                      }),
                                     ),
                                     SizedBox(
                                       width: 10,
                                     ),
                                     Expanded(
-                                      child: InputFields.formFieldExpand2(
-                                        hintTxt: "Fax",
-                                        controller: TextEditingController(),
-                                        // titleInLeft: true,
-                                        titleSizeboxWidth: 50,
-                                      ),
+                                      child: Obx(() {
+                                        return InputFields.formFieldExpand2(
+                                          hintTxt: "Fax",
+                                          controller: controller.tecFax.value,
+                                          // titleInLeft: true,
+                                        );
+                                      }),
                                     ),
                                   ],
                                 ),
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "Regd. Address",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                ),
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "PAN Card No",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                ),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "Regd. Address",
+                                    controller: controller.tecRegdAddress.value,
+                                    // titleInLeft: true,
+                                  );
+                                }),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "",
+                                    controller: controller.tecBlank2.value,
+                                    showTitle: false,
+                                    // titleInLeft: true,
+                                  );
+                                }),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "Pan Card No",
+                                    controller: controller.tecPanCardNo.value,
+                                    // titleInLeft: true,
+                                  );
+                                }),
                               ],
                             ),
                           ),
@@ -139,48 +166,66 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                           Expanded(
                             child: Column(
                               children: [
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "STC No",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                ),
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "Former Company",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                ),
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "Email Address",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                ),
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "Website",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                ),
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "CIN Number",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                ),
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "Logo File",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                ),
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "SAP code",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                ),
-                                InputFields.formFieldExpand2(
-                                  hintTxt: "Remarks",
-                                  controller: TextEditingController(),
-                                  // titleInLeft: true,
-                                  // titleSizeboxWidth: 50,
-                                  height: 55,
-                                ),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "STC No",
+                                    controller: controller.tecSTC_No.value,
+                                    // titleInLeft: true,
+                                  );
+                                }),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "Former Company",
+                                    controller:
+                                        controller.tecFormerCompany.value,
+                                    // titleInLeft: true,
+                                  );
+                                }),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "Email Address",
+                                    controller:
+                                        controller.tecEmailAdreess.value,
+                                    // titleInLeft: true,
+                                  );
+                                }),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "Website",
+                                    controller: controller.tecWebSite.value,
+                                    // titleInLeft: true,
+                                  );
+                                }),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "CIN Number",
+                                    controller: controller.tecCIN_Number.value,
+                                    // titleInLeft: true,
+                                  );
+                                }),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "Logo File",
+                                    controller: controller.tecLogoFile.value,
+                                    // titleInLeft: true,
+                                  );
+                                }),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "SAP code",
+                                    controller: controller.tecSAP_Code.value,
+                                    // titleInLeft: true,
+                                  );
+                                }),
+                                Obx(() {
+                                  return InputFields.formFieldExpand2(
+                                    hintTxt: "Remarks",
+                                    controller: controller.tecRemarks.value,
+                                    // titleInLeft: true,
+                                    // titleSizeboxWidth: 50,
+                                    height: 55,
+                                  );
+                                }),
                               ],
                             ),
                           )
