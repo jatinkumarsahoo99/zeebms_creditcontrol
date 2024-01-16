@@ -3,10 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../../widgets/NoDataFoundPage.dart';
-import '../modules/AgencyEmbargo/bindings/agency_embargo_binding.dart';
-import '../modules/AgencyEmbargo/views/agency_embargo_view.dart';
 import '../modules/AgencyGroupMaster/bindings/agency_group_master_binding.dart';
-import '../modules/AgencyGroupMaster/views/agency_group_master_view.dart';
 import '../modules/AgencyMaster/bindings/agency_master_binding.dart';
 import '../modules/AsrunSpecificationAdRevenue/bindings/asrun_specification_ad_revenue_binding.dart';
 import '../modules/ClientEmbargo/bindings/client_embargo_binding.dart';
@@ -15,15 +12,11 @@ import '../modules/DealReport/bindings/deal_report_binding.dart';
 import '../modules/EBillAgencyGroupMaster/bindings/e_bill_agency_group_master_binding.dart';
 import '../modules/EBillsForBonusActivity/bindings/e_bills_for_bonus_activity_binding.dart';
 import '../modules/EBillsForBonusActivity/views/e_bills_for_bonus_activity_view.dart';
-import '../modules/EmailBillDetails/bindings/email_bill_details_binding.dart';
-import '../modules/EmailBillDetails/views/email_bill_details_view.dart';
 import '../modules/GSTPlantInfo/bindings/g_s_t_plant_info_binding.dart';
 import '../modules/GenerateBookingReport/bindings/generate_booking_report_binding.dart';
 import '../modules/PlaceTypeMaster/bindings/place_type_master_binding.dart';
 import '../modules/ROAudit/bindings/r_o_audit_binding.dart';
 import '../modules/SAPBIllCheckReport/bindings/s_a_p_b_ill_check_report_binding.dart';
-import '../modules/SalesExecutiveMaster/bindings/sales_executive_master_binding.dart';
-import '../modules/SalesExecutiveMaster/views/sales_executive_master_view.dart';
 import '../modules/SecondaryAsrunModification/bindings/secondary_asrun_modification_binding.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../providers/AuthGuard1.dart';
@@ -243,9 +236,12 @@ class AppPages {
       binding: AsrunSpecificationAdRevenueBinding(),
     ),
     GetPage(
+      name: _Paths.BILL_EXPORT,
+      page: () => AuthGuard(childName: _Paths.BILL_EXPORT),
+    ),
+    GetPage(
       name: _Paths.EMAIL_BILL_DETAILS,
       page: () => AuthGuard(childName: _Paths.EMAIL_BILL_DETAILS),
-      // binding: EmailBillDetailsBinding(),
     ),
   ];
 }
