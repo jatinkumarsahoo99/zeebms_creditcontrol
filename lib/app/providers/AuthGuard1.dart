@@ -49,6 +49,7 @@ import '../modules/ViewDealChangeHistory/views/view_deal_change_history_view.dar
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
 import 'dart:html' as w;
+
 class AuthGuard extends StatefulWidget {
   final String childName;
 
@@ -97,22 +98,22 @@ class _AuthGuard1State extends State<AuthGuard> with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     switch (state) {
       case AppLifecycleState.resumed:
-      // --
+        // --
         print('Resumed');
         FocusScope.of(Get.context!).unfocus();
 
         break;
       case AppLifecycleState.inactive:
-      // --
+        // --
         print('Inactive');
         break;
       case AppLifecycleState.paused:
-      // --
+        // --
         print('Paused');
         FocusScope.of(Get.context!).unfocus();
         break;
       case AppLifecycleState.detached:
-      // --
+        // --
         print('Detached');
         break;
     }
