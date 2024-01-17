@@ -1,3 +1,4 @@
+import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -53,7 +54,7 @@ class SalesExecutiveMasterView extends StatelessWidget {
                               title: "SAP Name",
                               autoFocus: true,
                               customInData: "empList",
-                              url: "",
+                              url: ApiFactory.SALES_EXECUTIVE_GET_SAPNAME,
                               // inkwellFocus: controllerX.employeeFocus,
                               // parseKeyForTitle: "programName",
                               parseKeyForKey: "employeecode",

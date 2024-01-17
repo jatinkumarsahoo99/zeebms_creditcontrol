@@ -764,4 +764,9 @@ class ApiFactory {
       "$BASE_URL/api/PaymentRouteMaster/GetSeriveRetrieve?LocationName=${Uri.encodeQueryComponent(locationName)}&ChannelName=${Uri.encodeQueryComponent(channelName)}";
 
   /// ////////////////////////// End Payment Route Master Model////////////////////////////////
+
+  /// //////////////////////////////// SALES EXECUTIVE MASTER ////////////////////////////////////
+
+  static String get SALES_EXECUTIVE_GET_SAPNAME =>
+      "$BASE_URL/api/SalesExecutiveMaster/GetSapName?SapName=";
 }
