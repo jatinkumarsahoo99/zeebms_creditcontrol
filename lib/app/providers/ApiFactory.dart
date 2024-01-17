@@ -715,4 +715,8 @@ class ApiFactory {
   static String get Client_Deal_RETRIVE_RECORD => "$BASE_URL/api/ClientDeals/RetrieveRecord";
 
 
+
+/// //////////////////////////////// SALES EXECUTIVE MASTER ////////////////////////////////////
+
+  static String get SALES_EXECUTIVE_GET_SAPNAME => "$BASE_URL/api/SalesExecutiveMaster/GetSapName?SapName=";
 }
