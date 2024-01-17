@@ -116,21 +116,60 @@ class ExportBillingFPCController extends GetxController {
       fun: (map) {
         Get.back();
         print(map);
-        if (map != null &&
-            map['loadData'] != null &&
-            map.containsKey('loadData') &&
-            (map['loadData'] as List<dynamic>).isNotEmpty) {
-        } else {
-          LoadingDialog.showErrorDialog('No data found.');
+        if (map != null && map['result'] != null && map.containsKey('result')) {
+          programType.clear();
+          orignalRepeat.clear();
+          listOfProgram.clear();
+
+          // Program Type
+          var i = 0;
+          if (map["result"]["lstprogramtypemaster"] != null) {
+            map["result"]["lstprogramtypemaster"].forEach((e) {
+              programType.add(MultiCheckBoxModel(
+                  DropDownValue(
+                      key: e["programtypeCode"], value: e["programtypeName"]),
+                  false,
+                  i));
+              i++;
+            });
+          }
+
+          //Original Repeat
+          i = 0;
+          if (map["result"]["lstFPCOriginalRepeat"] != null) {
+            map["result"]["lstFPCOriginalRepeat"].forEach((e) {
+              orignalRepeat.add(MultiCheckBoxModel(
+                  DropDownValue(
+                      key: e["originalRepeatCode"],
+                      value: e["originalRepeatName"]),
+                  false,
+                  i));
+              i++;
+            });
+          }
+
+          // List of Program
+          i = 0;
+          if (map["result"]["lstprogramgroup"] != null) {
+            map["result"]["lstprogramgroup"].forEach((e) {
+              listOfProgram.add(MultiCheckBoxModel(
+                  DropDownValue(
+                      key: e["programcode"].toString(),
+                      value: e["programname"]),
+                  false,
+                  i));
+              i++;
+            });
+          }
         }
       },
     );
   }
 
   generate() {
-    programType.clear();
-    orignalRepeat.clear();
-    listOfProgram.clear();
+    selectProgramType.clear();
+    selectOrignalRepeat.clear();
+    selectListOfProgram.clear();
 
     for (var element in programType) {
       if (element.isSelected ?? false) {
@@ -181,12 +220,8 @@ class ExportBillingFPCController extends GetxController {
         Get.back();
         print(map);
         if (map != null &&
-            map['loadData'] != null &&
-            map.containsKey('loadData') &&
-            (map['loadData'] as List<dynamic>).isNotEmpty) {
-        } else {
-          LoadingDialog.showErrorDialog('No data found.');
-        }
+            map['generate'] != null &&
+            map.containsKey('generate')) {}
       },
     );
   }

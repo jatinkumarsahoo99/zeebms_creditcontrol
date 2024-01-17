@@ -735,4 +735,33 @@ class ApiFactory {
       "$BASE_URL/api/ExportbillingfPC/GetGenerate";
 
   /// ////////////////////////// End Export Billing FPC Model////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start Payment Route Master Model////////////////////////////////
+  static String get PAYMENT_ROUTE_MASTER_FORM_LOAD =>
+      "$BASE_URL/api/PaymentRouteMaster/GetPaymentRouteMasterLoad";
+
+  static String get PAYMENT_ROUTE_MASTER_COMBO_BOXES =>
+      "$BASE_URL/api/PaymentRouteMaster/GetFillComboBoxes";
+
+  static String PAYMENT_ROUTE_MASTER_LOCATION_LEAVE(String locationCode) =>
+      "$BASE_URL/api/PaymentRouteMaster/GetLocationLeave?LocationCode=$locationCode";
+  static String PAYMENT_ROUTE_MASTER_CHANNEL_LEAVE(
+          String locationCode, String channelCode) =>
+      "$BASE_URL/api/PaymentRouteMaster/GetChannelNameLeave?LocationCode=$locationCode&ChannelCode=$channelCode";
+
+  static String get PAYMENT_ROUTE_MASTER_POST_SAVE_RECORD =>
+      "$BASE_URL/api/PaymentRouteMaster/PostSaveRecord";
+
+  static String get PAYMENT_ROUTE_MASTER_GET_SERVICE_LOCATION =>
+      "$BASE_URL/api/PaymentRouteMaster/GetServiceLocationList";
+  static String PAYMENT_ROUTE_MASTER_SERVICE_CHANNEL(String locationCode) =>
+      "$BASE_URL/api/PaymentRouteMaster/GetServicechannelList?LocationCode=$locationCode";
+
+  static String PAYMENT_ROUTE_MASTER_GET_SERVICE_RETRIEVE(
+          String locationName, String channelName) =>
+      "$BASE_URL/api/PaymentRouteMaster/GetSeriveRetrieve?LocationName=${Uri.encodeQueryComponent(locationName)}&ChannelName=${Uri.encodeQueryComponent(channelName)}";
+
+  /// ////////////////////////// End Payment Route Master Model////////////////////////////////
 }

@@ -3,8 +3,10 @@ import 'package:bms_creditcontrol/app/routes/app_pages.dart';
 import 'package:bms_creditcontrol/widgets/CheckBoxWidget.dart';
 import 'package:bms_creditcontrol/widgets/FormButton.dart';
 import 'package:bms_creditcontrol/widgets/dropdown.dart';
+import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:bms_creditcontrol/widgets/input_fields.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
@@ -51,6 +53,7 @@ class PaymentRouteMasterView extends GetView<PaymentRouteMasterController> {
                           width: .34,
                           titleInLeft: true,
                           padLeft: 35,
+                          inputformatters: [UpperCaseTextFormatter()],
                         ),
                         InputFields.formField1(
                           hintTxt: "Short Name",
@@ -58,29 +61,46 @@ class PaymentRouteMasterView extends GetView<PaymentRouteMasterController> {
                           width: .143,
                           titleInLeft: true,
                           padLeft: 58,
+                          inputformatters: [UpperCaseTextFormatter()],
                         ),
                         DropDownField.formDropDown1WidthMap(
-                          [],
-                          (data) {},
+                          controller.currency,
+                          (data) {
+                            controller.selectCurrency = data;
+                          },
                           "Currency",
                           .147,
                           titleInLeft: true,
+                          selected: controller.selectCurrency,
+                          dialogHeight: 300,
                         ),
                         DropDownField.formDropDown1WidthMap(
-                          [],
-                          (data) {},
+                          controller.loactions,
+                          (data) {
+                            controller.selectLocation = data;
+                            controller.locationLeave(data.key.toString());
+                          },
                           "Loaction Name",
                           .34,
                           titleInLeft: true,
                           padLeft: 42,
+                          selected: controller.selectLocation,
+                          dialogHeight: 280,
                         ),
                         DropDownField.formDropDown1WidthMap(
-                          [],
-                          (data) {},
+                          controller.channel,
+                          (data) {
+                            controller.selectChannel = data;
+                            controller.channelLeave(
+                                controller.selectLocation?.key.toString() ?? "",
+                                data.key.toString());
+                          },
                           "Channel Name",
                           .34,
                           titleInLeft: true,
                           padLeft: 45,
+                          selected: controller.selectChannel,
+                          dialogHeight: 280,
                         ),
                         InputFields.formField1(
                           hintTxt: "Main Company Share",
@@ -88,12 +108,18 @@ class PaymentRouteMasterView extends GetView<PaymentRouteMasterController> {
                           width: .34,
                           titleInLeft: true,
                           padLeft: 12,
+                          inputformatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                         ),
                         InputFields.formField1(
                           hintTxt: "Collection Agent Share",
                           controller: controller.collectionAgentShare,
                           width: .34,
                           titleInLeft: true,
+                          inputformatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                         ),
                         InputFields.formField1(
                           hintTxt: "Agency Share",
@@ -101,30 +127,45 @@ class PaymentRouteMasterView extends GetView<PaymentRouteMasterController> {
                           width: .34,
                           titleInLeft: true,
                           padLeft: 50,
+                          inputformatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                         ),
                         DropDownField.formDropDown1WidthMap(
-                          [],
-                          (data) {},
+                          controller.sapCustGrp,
+                          (data) {
+                            controller.selectSapCustGrp = data;
+                          },
                           "SAP Cust Grp",
                           .34,
                           titleInLeft: true,
                           padLeft: 51,
+                          selected: controller.selectSapCustGrp,
+                          dialogHeight: 280,
                         ),
                         DropDownField.formDropDown1WidthMap(
-                          [],
-                          (data) {},
+                          controller.billingPayRoute,
+                          (data) {
+                            controller.selectBillingPayRoute = data;
+                          },
                           "Billing Pay Route",
                           .34,
                           titleInLeft: true,
                           padLeft: 35,
+                          dialogHeight: 280,
+                          selected: controller.selectBillingPayRoute,
                         ),
                         DropDownField.formDropDown1WidthMap(
-                          [],
-                          (data) {},
+                          controller.payRouteCategory,
+                          (data) {
+                            controller.selectPayRouteCategory = data;
+                          },
                           "Pay Route Category",
                           .34,
                           titleInLeft: true,
                           padLeft: 21,
+                          selected: controller.selectPayRouteCategory,
+                          dialogHeight: 280,
                         ),
                         const SizedBox(
                           width: 150,
@@ -195,50 +236,58 @@ class PaymentRouteMasterView extends GetView<PaymentRouteMasterController> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   DropDownField.formDropDown1WidthMap(
-                    [],
-                    (data) {},
+                    controller.serviceLocation,
+                    (data) {
+                      controller.selectServiceLocation = data;
+                      controller.getServiceChannel(data.key.toString());
+                    },
                     "Loaction",
                     .39,
                     titleInLeft: true,
                     padLeft: 10,
+                    selected: controller.selectServiceLocation,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
                   DropDownField.formDropDown1WidthMap(
-                    [],
-                    (data) {},
+                    controller.serviceChannel,
+                    (data) {
+                      controller.selectServiceChannel = data;
+                      controller.getServiceRetrieve(
+                          controller.selectServiceLocation?.value.toString() ??
+                              "",
+                          data.value.toString());
+                    },
                     "Channel",
                     .39,
                     titleInLeft: true,
                     padLeft: 13,
+                    selected: controller.selectServiceChannel,
                   ),
                   const SizedBox(
                     height: 5,
                   ),
-                  // Obx(
-                  //   () =>
-                  Expanded(
-                      child:
-                          // controller.showList.isEmpty
-                          //     ?
-                          Container(
-                    decoration:
-                        BoxDecoration(border: Border.all(color: Colors.grey)),
-                  )
-                      // : DataGridFromMap3(
-                      //     mapData: [],
-                      //     onload: (value) {
-
-                      //     },
-                      //     exportFileName: "Mix Master Delivery Status",
-                      //     witdthSpecificColumn: Get.find<HomeController>()
-                      //         .getGridWidthByKey(
-                      //             userGridSettingList:
-                      //                 controller.userGridSetting1?.value),
-                      //   ),
-                      ),
-                  // ),
+                  Obx(
+                    () => Expanded(
+                      child: controller.serviceList.isEmpty
+                          ? Container(
+                              decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey)),
+                            )
+                          : DataGridFromMap3(
+                              mapData: controller.serviceList,
+                              onload: (value) {
+                                controller.serviceGrid = value.stateManager;
+                              },
+                              exportFileName: "Payment Route Master",
+                              widthSpecificColumn: Get.find<HomeController>()
+                                  .getGridWidthByKey(
+                                      userGridSettingList:
+                                          controller.userGridSetting1?.value),
+                            ),
+                    ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Get.find<HomeController>().getCommonButton(
