@@ -284,7 +284,7 @@ class ConnectorControl extends GetConnect {
     }
   }
 
-  POSTMETHOD({required String api, dynamic? json, required Function fun}) async {
+  POSTMETHOD({required String api, dynamic? json, required Function fun,Function? failed}) async {
     try {
       print("API NAME:>" + api);
       service.Response response = await dio.post(
@@ -304,6 +304,16 @@ class ConnectorControl extends GetConnect {
         }
       } else if (response.statusCode == 417) {
         fun(response.data);
+      }else if (response.statusCode == 500) {
+        print("MI II>>" + response.data);
+        if (failed != null) {
+          failed(response.data);
+        }
+      } else if (response.statusCode == 401) {
+        print("MI II>>" + response.data);
+        if (failed != null) {
+          failed(failedMap);
+        }
       } else {
         print("Message is: >>1");
         fun(failedMap);
@@ -343,10 +353,10 @@ class ConnectorControl extends GetConnect {
           case DioErrorType.sendTimeout:
           case DioErrorType.receiveTimeout:
           case DioErrorType.unknown:
-            fun(failedMap);
+            failed!(failedMap);
             break;
           case DioErrorType.badResponse:
-            fun(e.response?.data);
+            failed!(e.response?.data);
         }
       }
     }
