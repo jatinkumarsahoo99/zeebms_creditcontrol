@@ -3,13 +3,16 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
+import '../../../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../../providers/Utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../data/DropDownValue.dart';
+import '../ClientDealRetrieveModel.dart';
 
 class ClientDealsController extends GetxController {
   //TODO: Implement ClientDealsController
@@ -36,6 +39,7 @@ class ClientDealsController extends GetxController {
   RxList<DropDownValue> locationList2 = RxList([]);
   RxList<DropDownValue> dealType = RxList([]);
   RxList<DropDownValue> channelList2 = RxList([]);
+  RxList<dynamic> dealNoList = RxList([]);
 
   Rxn<DropDownValue>? selectedLocation = Rxn<DropDownValue>(null);
   Rxn<DropDownValue>? selectedLocation2 = Rxn<DropDownValue>(null);
@@ -94,6 +98,16 @@ class ClientDealsController extends GetxController {
   FocusNode toFocus = FocusNode();
   FocusNode clientFocus = FocusNode();
   FocusNode agencyFocus = FocusNode();
+
+  ScrollController scrollController = ScrollController();
+  Rx<int> selectedDealNo = Rx<int>(0);
+  PlutoGridStateManager? stateManager;
+  List<Map<String, Map<String, double>>>? userGridSetting1 = [];
+
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
 
   getAllLoadData() {
     LoadingDialog.call();
@@ -273,7 +287,8 @@ class ClientDealsController extends GetxController {
     try {
       LoadingDialog.call();
       Map<String, dynamic> postData = {
-        "dealDate":Utils.getMMDDYYYYFromDDMMYYYYInString(dateController.text ?? "") ,
+        "dealDate":
+            Utils.getMMDDYYYYFromDDMMYYYYInString(dateController.text ?? ""),
         "locationCode": selectedLocation?.value?.key ?? "",
         "channelCode": selectedChannel?.value?.key ?? ""
       };
@@ -328,7 +343,8 @@ class ClientDealsController extends GetxController {
     try {
       LoadingDialog.call();
       Map<String, dynamic> postData = {
-        "dealdate": Utils.getMMDDYYYYFromDDMMYYYYInString(dateController.text ?? "") ,
+        "dealdate":
+            Utils.getMMDDYYYYFromDDMMYYYYInString(dateController.text ?? ""),
         "locationCode": selectedLocation?.value?.key ?? "",
         "channelCode": selectedChannel?.value?.key ?? ""
       };
@@ -338,9 +354,7 @@ class ClientDealsController extends GetxController {
           // "https://jsonkeeper.com/b/D537"
           fun: (map) {
             closeDialogIfOpen();
-            if (map is Map) {
-
-            }
+            if (map is Map) {}
           },
           failed: (map) {
             closeDialogIfOpen();
@@ -372,17 +386,124 @@ class ClientDealsController extends GetxController {
     }
   }
 
+  getSearchClient() {
+    try {
+      LoadingDialog.call();
+      Map<String, dynamic> postData = {
+        "locationCode": selectedLocation2?.value?.key ?? "",
+        "channelCode": selectedChannel2?.value?.key ?? ""
+      };
+      Get.find<ConnectorControl>().GET_METHOD_WITH_PARAM(
+          api: ApiFactory.Client_Deal_GET_SEARCH_CLIENT,
+          json: postData,
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            closeDialogIfOpen();
+            if (map is Map) {
+              if (map['model'] != null && map['model'].length > 0) {
+                clientList2.clear();
+                RxList<DropDownValue> dataList = RxList([]);
+                map['model'].forEach((e) {
+                  dataList.add(DropDownValue.fromJsonDynamic(
+                      e, "clientcode", "clientname"));
+                });
+                clientList2.addAll(dataList);
+                clientList2.refresh();
+              }
+            } else {}
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+          });
+    } catch (e) {
+      closeDialogIfOpen();
+    }
+  }
+
+  getSearchDealNumber() {
+    try {
+      LoadingDialog.call();
+      Map<String, dynamic> postData = {
+        "locationCode": selectedLocation2?.value?.key ?? "",
+        "channelCode": selectedChannel2?.value?.key ?? "",
+        "clientCode": selectedClient2?.value?.key ?? ""
+      };
+      Get.find<ConnectorControl>().GET_METHOD_WITH_PARAM(
+          api: ApiFactory.Client_Deal_GET_SEARCH_DEAL_NUMBERS,
+          json: postData,
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            closeDialogIfOpen();
+            if (map is Map) {
+              if (map['model'] != null && map['model'].length > 0) {
+                dealNoList.clear();
+                RxList<dynamic> dataList = RxList([]);
+                map['model'].forEach((e) {
+                  dataList.add(e);
+                });
+                dealNoList.addAll(dataList);
+                dealNoList.refresh();
+              } else {
+                dealNoList.clear();
+                dealNoList.refresh();
+              }
+            } else {
+              dealNoList.clear();
+              dealNoList.refresh();
+            }
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+          });
+    } catch (e) {
+      closeDialogIfOpen();
+    }
+  }
+  ClientDealRetrieveModel ?clientDealRetrieveModel;
+  retrieveRecord({String? locationCode,String ? channelCode,String ?
+  dealNumber,String ? clientCode,String ? agencyCode}) {
+    try {
+      LoadingDialog.call();
+      Map<String, dynamic> postData = {
+        "locationCode": locationCode??"",
+        "channelCode": channelCode??"",
+        "dealNumber": dealNumber??"",
+        "clientcode": clientCode,
+        "agencyCode": agencyCode
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(api: ApiFactory.Client_Deal_RETRIVE_RECORD,
+          json: postData,
+          fun: (map){
+            closeDialogIfOpen();
+            if(map is Map){
+              clientDealRetrieveModel = ClientDealRetrieveModel.fromJson(map as Map<String,dynamic>);
+              update(["grid"]);
+            }else{
+              clientDealRetrieveModel = null;
+            }
+          });
+
+    }catch(e){
+      closeDialogIfOpen();
+    }
+  }
+
   @override
   void onInit() {
-    /* channelFocus = FocusNode(
+     dealNoFocus = FocusNode(
       onKeyEvent: (node, event) {
         if (event.logicalKey == LogicalKeyboardKey.tab) {
+          if(dealNoController.text != ""){
+            retrieveRecord(dealNumber: dealNoController.text,agencyCode: selectAgency?.value?.key,
+                clientCode: selectedClient?.value?.key,channelCode: selectedChannel?.value?.key,locationCode: selectedLocation?.value?.key);
+          }
 
           return KeyEventResult.ignored;
         }
         return KeyEventResult.ignored;
       },
-    );*/
+    );
+     fetchUserSetting1();
     super.onInit();
   }
 

@@ -61,6 +61,7 @@ abstract class RoutesList {
     _Paths.R_O_AUDIT,
     _Paths.AGENCY_MASTER,
     _Paths.CLIENT_EMBARGO,
+    _Paths.G_S_T_PLANT_INFO,
   ];
 }
 

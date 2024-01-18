@@ -11,7 +11,7 @@ import '../../../data/PermissionModel.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/g_s_t_plant_info_controller.dart';
 
-class GSTPlantInfoView extends GetView<GSTPlantInfoController> {
+class GSTPlantInfoView extends StatelessWidget {
   GSTPlantInfoView({Key? key}) : super(key: key);
 
   GSTPlantInfoController controllerX =
@@ -76,7 +76,7 @@ class GSTPlantInfoView extends GetView<GSTPlantInfoController> {
                   child: FormButtonWrapper(
                     btnText: "Add",
                     callback: () {
-                      // controllerX.showApiCall();
+                      controllerX.add();
                     },
                     showIcon: true,
                   ),
@@ -89,7 +89,7 @@ class GSTPlantInfoView extends GetView<GSTPlantInfoController> {
                   child: FormButtonWrapper(
                     btnText: "Remove",
                     callback: () {
-                      // controllerX.showApiCall();
+                      controllerX.remove();
                     },
                     showIcon: true,
                   ),
