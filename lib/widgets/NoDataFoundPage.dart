@@ -77,7 +77,7 @@ class NoDataFoundPage extends StatelessWidget {
                             }),
                       ),
                       TextSpan(
-                        text: ' to go back',
+                        text: ' to go home',
                       ),
                     ],
                   ),
