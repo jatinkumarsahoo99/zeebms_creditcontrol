@@ -25,9 +25,29 @@ class Utils {
     // log(">>>>>>"+formatter.toString());
     return (isStringRequired != null && isStringRequired) ? formatter.toString() : formatter;
   }
+  static toDateFormat4(String? date) {
+    String? formatter;
+    if (date != null && date != "") {
+      formatter = DateFormat("dd/MM/yyyy").format(
+          DateFormat("yyyy-MM-ddTHH:mm:ss")
+              .parse((date ?? DateTime.now()).toString()));
+    }
+
+    // log(">>>>>>"+formatter.toString());
+    return formatter;
+  }
+
+  static String getMMDDYYYYFromDDMMYYYYInString1(String? ddMMYYYY) {
+    if(ddMMYYYY != null && ddMMYYYY != ""){
+      return DateFormat("MM/dd/yyyy").format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
+    }else{
+      return "";
+    }
+
+  }
 
   static String getMMDDYYYYFromDDMMYYYYInString(String ddMMYYYY) {
-    return DateFormat("MM/dd/yyyy").format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
+    return DateFormat("yyyy-MM-dd").format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
   }
 
   static toDateFormat1(String date, {bool? isStringRequired}) {

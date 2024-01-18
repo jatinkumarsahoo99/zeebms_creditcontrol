@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 class AgencyMasterController extends GetxController {
@@ -7,6 +8,7 @@ class AgencyMasterController extends GetxController {
   double fixedWidth = 0.49;
   double fixedWidth1 = 0.23;
   double fixedWidth2 = 0.43;
+  ScrollController scrollController = ScrollController();
 
   formHandler(String string) {
 

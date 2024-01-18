@@ -18,6 +18,7 @@ class Const {
   static GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   static const instrumentationKey = 'b15b7ae4-ff42-4746-862c-d0c852787f55';
   static const appVersion = '1.0.4';
+  static const double plutoGridscrollBarPaddingHeight = 20;
 
   static List<SystemEnviroment> systemEnviroments = [
     SystemEnviroment(value: "Data Migration", url: ""),
@@ -306,11 +307,11 @@ class Const {
     }
     switch (ApiFactory.Enviroment.toLowerCase()) {
       case "prod":
-        return "https://api-scheduling-bms.zeeconnect.in";
+        return "https://api-creditcontrol-bms.zeeconnect.in";
       case "uat":
-        return "https://api-scheduling-bms-uat.zeeconnect.in";
+        return "https://api-creditcontrol-bms-uat.zeeconnect.in";
       case "dev":
-        return "https://api-scheduling-bms-dev.zeeconnect.in";
+        return "https://api-creditcontrol-bms-dev.zeeconnect.in";
       default:
         return "https://api-creditcontrol-bms-dev.zeeconnect.in";
     }
