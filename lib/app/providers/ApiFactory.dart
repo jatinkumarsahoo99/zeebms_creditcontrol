@@ -723,4 +723,8 @@ class ApiFactory {
   static String get GST_PLANT_INFO_SAVE => "$BASE_URL/api/GstPlantInfo/PostSave";
 
 
+
+/// //////////////////////////////// SALES EXECUTIVE MASTER ////////////////////////////////////
+
+  static String get SALES_EXECUTIVE_GET_SAPNAME => "$BASE_URL/api/SalesExecutiveMaster/GetSapName?SapName=";
 }

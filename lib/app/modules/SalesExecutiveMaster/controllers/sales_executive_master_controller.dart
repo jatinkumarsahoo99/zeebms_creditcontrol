@@ -1,7 +1,9 @@
 import 'package:get/get.dart';
 
+import '../../../controller/ConnectorControl.dart';
 import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
+import '../../../providers/ApiFactory.dart';
 
 class SalesExecutiveMasterController extends GetxController {
   double widthRatio = 0.4;
@@ -22,6 +24,15 @@ class SalesExecutiveMasterController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+  }
+
+  getLoad() {
+    /*Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.COMMERCIAL_CREATION_GET_LOAD(),
+        fun: (Map map) {
+
+          // update(["listUpdate"]);
+        });*/
   }
 
   formHandler(btn) {

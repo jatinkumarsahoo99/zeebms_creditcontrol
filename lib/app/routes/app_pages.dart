@@ -50,6 +50,11 @@ class AppPages {
       // binding: AsrunImportSecondaryEventsBinding(),
     ),
     GetPage(
+      name: _Paths.COMPANY_CHANNEL_LINK,
+      page: () => AuthGuard(childName: _Paths.COMPANY_CHANNEL_LINK),
+      // binding: AsrunImportSecondaryEventsBinding(),
+    ),
+    GetPage(
       name: _Paths.COMPANY_MASTER,
       page: () => AuthGuard(
         childName: _Paths.COMPANY_MASTER,
