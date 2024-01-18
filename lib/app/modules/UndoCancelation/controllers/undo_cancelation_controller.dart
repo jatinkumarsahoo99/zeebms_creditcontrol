@@ -21,13 +21,15 @@ class UndoCancelationController extends GetxController {
   // RxString? selectValue=RxString(null);
   Rxn<String> selectValue = Rxn<String>(null);
 
-  List<Map<String, dynamic>>? responseData;
+  // List<Map<String, dynamic>>? responseData;
+  var responseData = [].obs;
+
   PlutoGridStateManager? stateManager;
   bool booked = false;
   bool onHold = false;
   bool expsoureSpots = false;
 
-  getStatus({String? sel}) {
+  getStatus({required String sel}) {
     switch (sel) {
       case "Booked":
         booked = true;
@@ -142,6 +144,16 @@ class UndoCancelationController extends GetxController {
           fun: (map) {
             closeDialogIfOpen();
             print("map>>>>>" + map.toString());
+            if (map != null && map.containsKey("show")) {
+              if (map["show"]["lstHold"] != null) {
+                responseData.value = map["show"]["lstHold"];
+              } else if (map["show"]["lstBooked"] != null) {
+                responseData.value = map["show"]["lstBooked"];
+              } else if (map["show"]["lstExposureaudit"] != null) {
+                responseData.value = map["show"]["lstExposureaudit"];
+              }
+              update(["grid"]);
+            }
           });
     } catch (e) {
       closeDialogIfOpen();

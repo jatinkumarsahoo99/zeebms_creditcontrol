@@ -120,7 +120,7 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
                                     onchange: (String v) {
                                       controller.selectValue.value = v;
                                       controller.selectValue.refresh();
-                                      controller.getStatus();
+                                      controller.getStatus(sel: v);
                                     },
                                   ),
                                 ),
@@ -135,7 +135,7 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
                                     controller.getShow();
                                     // controller.getColorList();
                                   },
-                                  showIcon: true,
+                                  showIcon: false,
                                 ),
                               ),
 
@@ -167,7 +167,7 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
                             builder: (controller) {
                               return (controller.responseData != null)
                                   ? Container(
-                                      child: DataGridFromMap(
+                                      child: DataGridFromMap3(
                                         showSrNo: true,
                                         hideCode: false,
                                         formatDate: false,
@@ -178,10 +178,13 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
                                                     .stateManager?.currentCell))
                                             ? Colors.deepPurple.shade200
                                             : Colors.white,
+                                        checkBoxColumnKey: [
+                                          'selectItem',
+                                        ],
                                         // widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(key: controllerX.getTableNo(controllerX.selectValue.value)?? "tbl1",userGridSettingList: controllerX.userGridSetting1),
                                         exportFileName: "Amagi Spot Planning",
                                         mode: PlutoGridMode.normal,
-                                        mapData: controller.responseData!,
+                                        mapData: controller.responseData.value,
                                         // mapData: (controllerX.dataList)!,
                                         widthRatio: Get.width / 9 - 1,
                                         onload: (PlutoGridOnLoadedEvent load) {
@@ -211,7 +214,7 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
                       // controller.callRetrieve();
                       // controller.getColorList();
                     },
-                    showIcon: true,
+                    showIcon: false,
                   ),
                 ),
               ],
