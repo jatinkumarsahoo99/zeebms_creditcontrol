@@ -477,6 +477,29 @@ class ClientDealsController extends GetxController {
             closeDialogIfOpen();
             if(map is Map){
               clientDealRetrieveModel = ClientDealRetrieveModel.fromJson(map as Map<String,dynamic>);
+              if(clientDealRetrieveModel != null && clientDealRetrieveModel?.agencyLeaveModel != null
+                   ){
+                if(clientDealRetrieveModel?.agencyLeaveModel?.retrieve != null && (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?.length??0) >0){
+                  for (var element in locationList) {
+                    if(element.key.toString().trim() == clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].locationcode.toString().trim()){
+                      selectedLocation?.value = DropDownValue(value:element.value ,key:element.key ) ;
+                      selectedLocation?.refresh();
+                      break;
+                    }
+                  }
+                  for (var element in channelList) {
+                    if(element.key.toString().trim() == clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].channelCode.toString().trim()){
+                      selectedChannel?.value = DropDownValue(value:element.value ,key:element.key ) ;
+                      selectedChannel?.refresh();
+                      break;
+                    }
+                  }
+                }
+
+                dealNoController.text = clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].dealNumber??"";
+
+              }
+
               update(["grid"]);
             }else{
               clientDealRetrieveModel = null;
