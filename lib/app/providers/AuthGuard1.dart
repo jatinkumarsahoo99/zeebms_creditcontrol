@@ -161,7 +161,7 @@ class _AuthGuard1State extends State<AuthGuard> with WidgetsBindingObserver {
               break;
 
             case Routes.UNDO_CANCELATION:
-              currentWidget = MovieUpdateView();
+              currentWidget = UndoCancelationView();
               break;
             case Routes.CLEAR_SECONDARY_SPOTS:
               currentWidget = ClearSecondarySpotsView();

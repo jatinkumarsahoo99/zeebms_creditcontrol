@@ -14,7 +14,7 @@ class DateWithThreeTextFieldExpanded extends StatefulWidget {
   final double widthRation;
   final double? titleInSizeBox;
 
-  final void Function(String date)? onFocusChange;
+  final void Function(String date, bool focus)? onFocusChange;
   final DateTime? startDate, endDate, intailDate;
   final String formatting;
   final bool titleInLeft;
@@ -141,7 +141,7 @@ class _DateWithThreeTextFieldState
         Future.delayed(const Duration(milliseconds: 500)).then((value) async {
           if (!hasFocus && widget.onFocusChange != null && !isDialogOpen) {
             await assignValueToMainTextEditingController();
-            widget.onFocusChange!(widget.mainTextController.text);
+            widget.onFocusChange!(widget.mainTextController.text,hasFocus);
             print("onFocusChange called");
           }
         });

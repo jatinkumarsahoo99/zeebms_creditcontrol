@@ -698,18 +698,40 @@ class ApiFactory {
   ///
   ///
   /// ////////////////////////// Movie Update ////////////////////////////////
-  static String get MOVIE_UPDATE_GET_LOAD =>
+  // static String get MOVIE_UPDATE_GET_LOAD =>
+  //     "$BASE_URL/api/MovieUpdate/GetLoad";
+  // static String get MOVIE_UPDATE_GET_CHANNEL =>
+  //     "$BASE_URL/api/MovieUpdate/GetChannel?LocationCode=";
+  // static String get MOVIE_UPDATE_POST_SHOW =>
+  //     "$BASE_URL/api/MovieUpdate/GetShow";
+  // static String get MOVIE_UPDATE_POST_UNDO_SPOT =>
+  //     "$BASE_URL/api/MovieUpdate/PostUndoSpot";
+
+  /// ////////////////////////// Undo Cancelation ////////////////////////////////
+  static String get UNDO_CANCELATION_GET_LOAD =>
       "$BASE_URL/api/MovieUpdate/GetLoad";
-  static String get MOVIE_UPDATE_GET_CHANNEL =>
+  static String get UNDO_CANCELATION_GET_CHANNEL =>
       "$BASE_URL/api/MovieUpdate/GetChannel?LocationCode=";
-  static String get MOVIE_UPDATE_POST_SHOW =>
+  static String get UNDO_CANCELATION_POST_SHOW =>
       "$BASE_URL/api/MovieUpdate/GetShow";
-  static String get MOVIE_UPDATE_POST_UNDO_SPOT =>
+  static String get UNDO_CANCELATION_POST_UNDO_SPOT =>
       "$BASE_URL/api/MovieUpdate/PostUndoSpot";
 
   /// //////////////////////////////// Client Deals ////////////////////////////////////
 
   static String get Client_Deal_GET_LOAD => "$BASE_URL/api/ClientDeals/onload";
+  // static String get Client_Deal_GET_CHANNEL =>
+  //     "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
+  // static String get Client_Deal_GET_CLIENTS =>
+  //     "$BASE_URL/api/ClientDeals/GetClients";
+  // static String get Client_Deal_GET_CLIENTS_LEAVE =>
+  //     "$BASE_URL/api/ClientDeals/ClientLeave";
+  // static String get Client_Deal_GET_CHANNEL_LEAVE =>
+  //     "$BASE_URL/api/ClientDeals/ChannelLeave";
+  // static String get Client_Deal_GET_SUBTYPE =>
+  //     "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
+  // static String get Client_Deal_RETRIVE_RECORD =>
+  //     "$BASE_URL/api/ClientDeals/RetrieveRecord";
   static String get Client_Deal_GET_CHANNEL =>
       "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
   static String get Client_Deal_GET_CLIENTS =>
@@ -718,6 +740,8 @@ class ApiFactory {
       "$BASE_URL/api/ClientDeals/ClientLeave";
   static String get Client_Deal_GET_CHANNEL_LEAVE =>
       "$BASE_URL/api/ClientDeals/ChannelLeave";
+  static String get Client_Deal_GET_DEAL_DATE_LEAVE =>
+      "$BASE_URL/api/ClientDeals/dealDateLeave";
   static String get Client_Deal_GET_SUBTYPE =>
       "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
   static String get Client_Deal_RETRIVE_RECORD =>
@@ -764,6 +788,19 @@ class ApiFactory {
       "$BASE_URL/api/PaymentRouteMaster/GetSeriveRetrieve?LocationName=${Uri.encodeQueryComponent(locationName)}&ChannelName=${Uri.encodeQueryComponent(channelName)}";
 
   /// ////////////////////////// End Payment Route Master Model////////////////////////////////
+
+  /// //////////////////////////////// SALES EXECUTIVE MASTER ////////////////////////////////////
+
+  static String get Client_Deal_GET_SEARCH_CLIENT =>
+      "$BASE_URL/api/ClientDeals/GetSearchClient";
+  static String get Client_Deal_GET_SEARCH_DEAL_NUMBERS =>
+      "$BASE_URL/api/ClientDeals/GetSearchDealNumbers";
+
+  /// ////////////////////////// GST PLANT INFO //////////////////////////
+  static String get GST_PLANT_INFO_LOAD =>
+      "$BASE_URL/api/GstPlantInfo/GetGstPlantInfoLoad";
+  static String get GST_PLANT_INFO_SAVE =>
+      "$BASE_URL/api/GstPlantInfo/PostSave";
 
   /// //////////////////////////////// SALES EXECUTIVE MASTER ////////////////////////////////////
 
