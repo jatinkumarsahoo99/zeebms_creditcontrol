@@ -1,8 +1,10 @@
 import 'package:bms_creditcontrol/app/controller/ConnectorControl.dart';
+import 'package:bms_creditcontrol/app/controller/HomeController.dart';
 import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
 import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:bms_creditcontrol/widgets/CheckBox/multi_check_box.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
+import 'package:bms_creditcontrol/widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -23,11 +25,23 @@ class ExportBillingFPCController extends GetxController {
   List<DropDownValue> selectOrignalRepeat = [];
   List<DropDownValue> selectListOfProgram = [];
 
-  var loactionFN = FocusNode();
+  PlutoGridStateManager? exportBillingGrid;
+
+  var exportBillingList = [].obs;
+
+  var loactionFN = FocusNode(), toDateFN = FocusNode();
+
+  Rxn<List<Map<String, Map<String, double>>>>? userGridSetting1 = Rxn([]);
+  fetchUserSetting1() async {
+    userGridSetting1?.value =
+        await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
+  }
 
   @override
   void onInit() {
     super.onInit();
+    fetchUserSetting1();
   }
 
   @override
@@ -162,6 +176,9 @@ class ExportBillingFPCController extends GetxController {
             });
           }
         }
+
+        update(['update']);
+        toDateFN.requestFocus();
       },
     );
   }
@@ -221,7 +238,10 @@ class ExportBillingFPCController extends GetxController {
         print(map);
         if (map != null &&
             map['generate'] != null &&
-            map.containsKey('generate')) {}
+            map.containsKey('generate')) {
+          exportBillingList.clear();
+          exportBillingList.value = map['generate'];
+        }
       },
     );
   }

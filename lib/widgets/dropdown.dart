@@ -107,6 +107,7 @@ class DropDownField {
     GlobalKey? widgetKey,
     bool showtitle = true,
     bool titleInLeft = false,
+    String? isClear,
   }) {
     isEnable ??= true;
     widgetKey ??= GlobalKey();
