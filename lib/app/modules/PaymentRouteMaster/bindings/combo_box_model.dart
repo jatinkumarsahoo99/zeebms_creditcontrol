@@ -23,8 +23,6 @@ class PaymentRouteMasterComboBoxes {
 class Lstcombobox {
   List<LstLocation>? lstLocation;
   List<LstCurrency>? lstCurrency;
-  List<DropDownValue>? lstCurrency1;
-
   List<LstPayRouteCategory>? lstPayRouteCategory;
 
   Lstcombobox({this.lstLocation, this.lstCurrency, this.lstPayRouteCategory});

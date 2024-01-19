@@ -787,6 +787,10 @@ class ApiFactory {
           String locationName, String channelName) =>
       "$BASE_URL/api/PaymentRouteMaster/GetSeriveRetrieve?LocationName=${Uri.encodeQueryComponent(locationName)}&ChannelName=${Uri.encodeQueryComponent(channelName)}";
 
+  static String PAYMENT_ROUTE_MASTER_GET_RETRIEVE_RECORD(
+          String payRouteCode, String payRouteName) =>
+      "$BASE_URL/api/PaymentRouteMaster/GetRetrieveRecord?PayRouteCode=$payRouteCode&PayRouteName=${Uri.encodeQueryComponent(payRouteName)}";
+
   /// ////////////////////////// End Payment Route Master Model////////////////////////////////
 
   /// //////////////////////////////// SALES EXECUTIVE MASTER ////////////////////////////////////
@@ -806,4 +810,20 @@ class ApiFactory {
 
   static String get SALES_EXECUTIVE_GET_SAPNAME =>
       "$BASE_URL/api/SalesExecutiveMaster/GetSapName?SapName=";
+
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start Place Master Model////////////////////////////////
+  static String get PLACE_MASTER_ON_LOAD =>
+      "$BASE_URL/api/PlaceMaster/GetPlaceMasterOnLoad";
+  static String PLACE_MASTER_PLACE_NAME(String placeName) =>
+      "$BASE_URL/api/PlaceMaster/GetPlaceName?PlaceName=$placeName";
+  static String PLACE_MASTER_RETRIEVE_RECORD(
+          String placeCode, String placeName) =>
+      "$BASE_URL/api/PlaceMaster/GetRetrieveRecord?PlaceCode=$placeCode&PlaceName=$placeName";
+  static String get PLACE_MASTER_POST_SAVE =>
+      "$BASE_URL/api/PlaceMaster/PostSave";
+
+  /// ////////////////////////// End Place Master Model////////////////////////////////
 }

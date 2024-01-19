@@ -20,6 +20,7 @@ class FormButtonWrapper extends StatelessWidget {
   final IconData? iconDataM;
   final FocusNode? focusNode;
   final bool showIcon;
+  final bool exitButtonNotUsed;
 
   FormButtonWrapper({
     required this.btnText,
@@ -29,6 +30,7 @@ class FormButtonWrapper extends StatelessWidget {
     this.isEnabled,
     this.iconDataM,
     this.showIcon = true,
+    this.exitButtonNotUsed = true,
   });
 
   @override
@@ -42,6 +44,7 @@ class FormButtonWrapper extends StatelessWidget {
         isEnabled: isEnabled,
         iconDataM: iconDataM,
         showIcon: showIcon,
+        exitButtonNotUsed: exitButtonNotUsed,
       ),
     );
   }
@@ -92,16 +95,18 @@ class FormButton extends StatelessWidget {
   final FocusNode? focusNode;
   final IconData? iconDataM;
   final bool showIcon;
+  final bool exitButtonNotUsed;
 
-  const FormButton(
-      {Key? key,
-      required this.btnText,
-      this.callback,
-      this.isEnabled,
-      this.focusNode,
-      this.showIcon = true,
-      this.iconDataM})
-      : super(key: key);
+  const FormButton({
+    Key? key,
+    required this.btnText,
+    this.callback,
+    this.isEnabled,
+    this.focusNode,
+    this.showIcon = true,
+    this.iconDataM,
+    this.exitButtonNotUsed = true,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -186,7 +191,7 @@ class FormButton extends StatelessWidget {
       style: ButtonStyle(
           overlayColor: MaterialStateProperty.all(Colors.deepPurple[900])),
       onPressed: (isEnabled ?? true)
-          ? (btnText == "Exit")
+          ? (btnText == "Exit" && exitButtonNotUsed)
               ? () {
                   if (callback != null) {
                     callback!();
@@ -257,6 +262,7 @@ class FormButton extends StatelessWidget {
     // }
   }
 }
+
 class FormButton2 extends StatelessWidget {
   final String btnText;
   final VoidCallback? callback;
