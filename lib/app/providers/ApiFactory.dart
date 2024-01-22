@@ -710,6 +710,7 @@ class ApiFactory {
   static String get Client_Deal_GET_CHANNEL => "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
   static String get Client_Deal_GET_CLIENTS => "$BASE_URL/api/ClientDeals/GetClients";
   static String get Client_Deal_GET_CLIENTS_LEAVE => "$BASE_URL/api/ClientDeals/ClientLeave";
+  static String get Client_Deal_GET_AGENCY_LEAVE => "$BASE_URL/api/ClientDeals/AgencyLeave";
   static String get Client_Deal_GET_CHANNEL_LEAVE => "$BASE_URL/api/ClientDeals/ChannelLeave";
   static String get Client_Deal_GET_DEAL_DATE_LEAVE => "$BASE_URL/api/ClientDeals/dealDateLeave";
   static String get Client_Deal_GET_SUBTYPE => "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
