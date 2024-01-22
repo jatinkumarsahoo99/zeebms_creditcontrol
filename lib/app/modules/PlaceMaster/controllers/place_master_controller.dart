@@ -2,6 +2,7 @@ import 'package:bms_creditcontrol/app/controller/ConnectorControl.dart';
 import 'package:bms_creditcontrol/app/controller/HomeController.dart';
 import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
 import 'package:bms_creditcontrol/app/modules/CommonSearch/views/common_search_view.dart';
+import 'package:bms_creditcontrol/app/providers/Aes.dart';
 import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:flutter/material.dart';
@@ -24,9 +25,11 @@ class PlaceMasterController extends GetxController {
   DropDownValue? selectPlaceType;
   DropDownValue? selectParentPlaceName;
 
-  FocusNode placeNameFN = FocusNode();
+  FocusNode placeNameFN = FocusNode(), placeTypeFN = FocusNode();
 
   PlaceMasterOnLoadModel? placeMaster;
+
+  var placeCode = "";
   @override
   void onInit() {
     super.onInit();
@@ -111,8 +114,10 @@ class PlaceMasterController extends GetxController {
         fun: (Map map) {
           Get.back();
           if (map != null && map.containsKey('retrieveRecord')) {
+            //Place Code
+            placeCode = map['retrieveRecord'][0]['placeCode'] ?? "";
             //Place Name
-            placeName.text = map['retrieveRecord'][0]['placeName'];
+            placeName.text = map['retrieveRecord'][0]['placeName'] ?? "";
             //Place Type
             selectPlaceType = placeType.firstWhereOrNull((e) {
               var result = e.key.toString() ==
@@ -125,7 +130,7 @@ class PlaceMasterController extends GetxController {
             selectParentPlaceName = parentPlaceName.firstWhereOrNull((e) {
               var result = placeMaster!.placeMasterOnLoad!
                       .lstParentPlaceName![int.parse(e.key ?? '0')].placeCode ==
-                  map['retrieveRecord'][0]['placeCode'].toString();
+                  map['retrieveRecord'][0]['parentPlaceCode'].toString();
               return result;
             });
             //Zone Name
@@ -137,23 +142,49 @@ class PlaceMasterController extends GetxController {
             });
             //IBF Branch Code
             ibfBranchCode.text =
-                map['retrieveRecord'][0]['ibfBranchCode'].toUpperCase();
+                map['retrieveRecord'][0]['ibfBranchCode'] ?? "";
             //SAP Code
-            sapCode.text = map['retrieveRecord'][0]['sapCode'].toUpperCase();
-
+            sapCode.text = map['retrieveRecord'][0]['sapCode'] ?? "";
             update(['placeMasterUpdate']);
           }
         });
   }
 
   postSave() {
+    if (placeName.text.isEmpty) {
+      LoadingDialog.showErrorDialog("Place Name cannot be empty.");
+    } else if (selectPlaceType == null) {
+      LoadingDialog.showErrorDialog("Place Type cannot be empty.");
+    } else if (selectZoneName == null) {
+      LoadingDialog.showErrorDialog("Zone Name cannot be empty.");
+    } else {
+      if (placeCode.isNotEmpty) {
+        LoadingDialog.modify("Record Already exist!\nDo you want to modify it?",
+            () {
+          // yes
+          save();
+        }, () {
+          //no
+          Get.back();
+        }, cancelTitle: "No", deleteTitle: "Yes");
+      } else {
+        save();
+      }
+    }
+  }
+
+  save() {
     LoadingDialog.call();
+
     var payload = {
-      "placeCode": "<string>",
+      "placeCode": placeCode,
       "placeName": placeName.text,
       "placeShortName": placeShortName.text,
       "placeTypeCode": selectPlaceType?.key ?? "",
-      "parentPlaceCode": "<string>",
+      "parentPlaceCode": placeMaster!
+          .placeMasterOnLoad!
+          .lstParentPlaceName![int.parse(selectParentPlaceName?.key ?? '0')]
+          .placeCode,
       "zoneCode": placeMaster!.placeMasterOnLoad!
           .lstZonename![int.parse(selectZoneName?.key ?? '0')].zoneCode,
       "ibfBranchCode": ibfBranchCode.text,
@@ -164,13 +195,29 @@ class PlaceMasterController extends GetxController {
         json: payload,
         fun: (Map map) {
           Get.back();
-          if (map != null && map.containsKey('placeMasterOnLoad')) {}
+          if (map != null && map.containsKey('save')) {
+            LoadingDialog.callDataSaved(
+                msg: map['save'],
+                callback: () {
+                  Get.delete<PlaceMasterController>();
+                  Get.find<HomeController>().clearPage1();
+                });
+          }
         });
   }
+
+  // encode() {
+  //   var result = Aes.encrypt('99990147');
+  //   print(result);
+  //   var result1 = Aes.encrypt('APIXX00001');
+  //   print(result1);
+  // }
 
   formHandler(btn) {
     switch (btn) {
       case "Save":
+        // encode();
+        postSave();
         break;
       case "Clear":
         Get.delete<PlaceMasterController>();

@@ -48,6 +48,7 @@ class PlaceMasterView extends GetView<PlaceMasterController> {
                               titleInLeft: true,
                               titleSizeboxWidth: 100,
                               autoFocus: true,
+                              focusNode: controller.placeNameFN,
                               inputformatters: [
                                 UpperCaseTextFormatter(),
                               ],
@@ -62,7 +63,7 @@ class PlaceMasterView extends GetView<PlaceMasterController> {
                               titleSizeBoxWidth: 95,
                               selected: controller.selectPlaceType,
                               dialogHeight: 290,
-                              inkWellFocusNode: controller.placeNameFN,
+                              inkWellFocusNode: controller.placeTypeFN,
                             ),
                             const SizedBox(
                               height: 10,
@@ -80,6 +81,16 @@ class PlaceMasterView extends GetView<PlaceMasterController> {
                               controller.parentPlaceName,
                               (value) {
                                 controller.selectParentPlaceName = value;
+                                print("==============");
+                                print(controller.selectParentPlaceName?.key ??
+                                    '0');
+                                print(controller
+                                    .placeMaster!
+                                    .placeMasterOnLoad!
+                                    .lstParentPlaceName![int.parse(
+                                        controller.selectParentPlaceName?.key ??
+                                            '0')]
+                                    .parentPlaceCode);
                               },
                               "Parent Place Name",
                               titleInLeft: true,

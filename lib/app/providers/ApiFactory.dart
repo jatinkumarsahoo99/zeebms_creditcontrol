@@ -821,9 +821,22 @@ class ApiFactory {
       "$BASE_URL/api/PlaceMaster/GetPlaceName?PlaceName=$placeName";
   static String PLACE_MASTER_RETRIEVE_RECORD(
           String placeCode, String placeName) =>
-      "$BASE_URL/api/PlaceMaster/GetRetrieveRecord?PlaceCode=$placeCode&PlaceName=$placeName";
+      "$BASE_URL/api/PlaceMaster/GetRetrieveRecord?PlaceCode=$placeCode&PlaceName=${Uri.encodeQueryComponent(placeName)}";
   static String get PLACE_MASTER_POST_SAVE =>
       "$BASE_URL/api/PlaceMaster/PostSave";
 
   /// ////////////////////////// End Place Master Model////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start Station Master Model////////////////////////////////
+  static String get STATION_MASTER_ON_LOAD =>
+      "$BASE_URL/api/StationMaster/GetStationMasterOnLoad";
+  static String STATION_MASTER_RETRIEVE_RECORD(
+          String placeCode, String placeName) =>
+      "$BASE_URL/api/StationMaster/GetRetrieveRecord?PlaceCode=$placeCode&PlaceName=${Uri.encodeQueryComponent(placeName)}";
+  static String get STATION_MASTER_POST_SAVE =>
+      "$BASE_URL/api/StationMaster/PostSave";
+
+  /// ////////////////////////// End Station Master Model////////////////////////////////
 }

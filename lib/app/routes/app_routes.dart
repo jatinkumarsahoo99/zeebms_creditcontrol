@@ -64,6 +64,7 @@ abstract class RoutesList {
     _Paths.EXPORT_BILLING_F_P_C,
     _Paths.G_S_T_PLANT_INFO,
     _Paths.PLACE_MASTER,
+    _Paths.STATION_MASTER,
   ];
 }
 
