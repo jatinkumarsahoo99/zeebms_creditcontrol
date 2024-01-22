@@ -3,9 +3,11 @@ import 'dart:convert';
 import 'dart:html' as html;
 
 // import 'package:bms_programming/app/providers/ApiFactory.dart';
+import 'package:bms_creditcontrol/app/controller/ConnectorControl.dart';
 import 'package:bms_creditcontrol/app/data/PermissionModel.dart';
 import 'package:bms_creditcontrol/app/providers/Utils.dart';
 import 'package:bms_creditcontrol/widgets/FormButton.dart';
+import 'package:bms_creditcontrol/widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -46,7 +48,7 @@ class HomeController extends GetxController {
         html.window.location.href); //converts string to a uri
     Map<String, String> params = uri.queryParameters;
     print("Params are>>>>" + params.toString());
-    if (Routes.listRoutes.contains("/" + extractName)) {
+    if (RoutesList.listRoutes.contains("/" + extractName)) {
       if (extractName == "frmDailyFPC") {
         html.window.location.reload();
       } else {
@@ -67,10 +69,9 @@ class HomeController extends GetxController {
     }
   }
 
-
   void postUserGridSetting1(
       {required List<PlutoGridStateManager?>? listStateManager,
-        List<String?>? tableNamesList}) {
+      List<String?>? tableNamesList}) {
     if (listStateManager == null || listStateManager.isEmpty) return;
 
     if (tableNamesList != null && tableNamesList.isNotEmpty) {
@@ -90,9 +91,9 @@ class HomeController extends GetxController {
         String? mapData = jsonEncode(singleMap);
         data.add({
           "formName":
-          Get.find<MainController>().formName.replaceAll(" ", "") ?? "",
+              Get.find<MainController>().formName.replaceAll(" ", "") ?? "",
           "controlName":
-          tableNamesList == null ? "${i + 1}_table" : tableNamesList[i],
+              tableNamesList == null ? "${i + 1}_table" : tableNamesList[i],
           "userSettings": mapData
         });
       } else {
@@ -108,12 +109,12 @@ class HomeController extends GetxController {
 
   Future<List<Map<String, Map<String, double>>>>? fetchUserSetting1() {
     Completer<List<Map<String, Map<String, double>>>> completer =
-    Completer<List<Map<String, Map<String, double>>>>();
+        Completer<List<Map<String, Map<String, double>>>>();
     List<Map<String, Map<String, double>>> data = [];
     try {
       Get.find<ConnectorControl>().GETMETHODCALL(
           api:
-          "${ApiFactory.FETCH_USER_SETTING}?formName=${Get.find<MainController>().formName.replaceAll(" ", "")}",
+              "${ApiFactory.FETCH_USER_SETTING}?formName=${Get.find<MainController>().formName.replaceAll(" ", "")}",
           fun: (map) {
             if (map is Map &&
                 map.containsKey("userSetting") &&
@@ -143,7 +144,7 @@ class HomeController extends GetxController {
 
   Map<String, double> getGridWidthByKey(
       {String? key,
-        required List<Map<String, Map<String, double>>>? userGridSettingList}) {
+      required List<Map<String, Map<String, double>>>? userGridSettingList}) {
     Map<String, double> gridWidths = {};
     try {
       if (key != null && key != "") {
@@ -153,7 +154,7 @@ class HomeController extends GetxController {
               if (((userGridSettingList?[i].keys.toList()) ?? [])
                   .contains(key ?? "")) {
                 gridWidths =
-                userGridSettingList?[i][key] as Map<String, double>;
+                    userGridSettingList?[i][key] as Map<String, double>;
                 break;
               } else {
                 continue;
@@ -174,7 +175,7 @@ class HomeController extends GetxController {
               if (((userGridSettingList?[i].keys.toList()) ?? [])
                   .contains("1_table")) {
                 gridWidths =
-                userGridSettingList?[i]["1_table"] as Map<String, double>;
+                    userGridSettingList?[i]["1_table"] as Map<String, double>;
                 break;
               } else {
                 continue;
@@ -217,7 +218,7 @@ class HomeController extends GetxController {
       String? mapData = jsonEncode(singleMap);
       data.add({
         "formName":
-        Get.find<MainController>().formName.replaceAll(" ", "") ?? "",
+            Get.find<MainController>().formName.replaceAll(" ", "") ?? "",
         "controlName": (i + 1).toString() + "_table",
         "userSettings": mapData
       });
@@ -256,15 +257,11 @@ class HomeController extends GetxController {
         });
   }
 
-
-
-
-
-
   Widget getCommonButton<T>(
     String frmName,
     void Function(String btnName) btnName, {
     bool handleAutoClear = true,
+    bool exitButtonNotUsed = true,
     List<String>? disableBtns,
     List<String>? buttonNameList,
   }) {
@@ -347,6 +344,7 @@ class HomeController extends GetxController {
                                   }
                                 }
                               },
+                    exitButtonNotUsed: exitButtonNotUsed,
                   )
                 }
               }
@@ -356,6 +354,4 @@ class HomeController extends GetxController {
       },
     );
   }
-
-
 }
