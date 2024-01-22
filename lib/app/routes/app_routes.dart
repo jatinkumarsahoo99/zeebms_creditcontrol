@@ -6,7 +6,7 @@ abstract class Routes {
 
   static const HOME = _Paths.HOME;
   static const NO_FOUND = _Paths.NO_FOUND;
-  static List<String> listRoutes = [];
+  static List<String> listRoutes = [_Paths.PAYROUTE_CATEGORY_MASTER];
   static const ASRUN_IMPORT_SECONDARY_EVENTS =
       _Paths.ASRUN_IMPORT_SECONDARY_EVENTS;
   static const CLIENT_MASTER = _Paths.CLIENT_MASTER;
@@ -50,6 +50,7 @@ abstract class Routes {
   static const BILL_EXPORT = _Paths.BILL_EXPORT;
   static const SALES_EXECUTIVE_MASTER = _Paths.SALES_EXECUTIVE_MASTER;
   static const EMAIL_BILL_DETAILS = _Paths.EMAIL_BILL_DETAILS;
+  // static const PAYROUTE_CATEGORY_MASTER = _Paths.PAYROUTE_CATEGORY_MASTER;
 }
 
 abstract class RoutesList {

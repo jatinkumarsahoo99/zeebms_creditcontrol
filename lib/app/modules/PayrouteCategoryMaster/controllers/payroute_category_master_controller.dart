@@ -1,9 +1,12 @@
+import 'package:bms_creditcontrol/app/controller/HomeController.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/ConnectorControl.dart';
 import '../../../providers/ApiFactory.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 
 class PayrouteCategoryMasterController extends GetxController {
   //TODO: Implement PayrouteCategoryMasterController
@@ -12,7 +15,7 @@ class PayrouteCategoryMasterController extends GetxController {
 
   final tecPayRouteCategory = TextEditingController().obs;
   var checkBoxSelected = false.obs;
-  FocusNode payRouteFocus = FocusNode();
+  FocusNode payRouteFocus = FocusNode(canRequestFocus: false);
   var checkBoxStringValue = "";
   var payrouteCategoryCode = "";
 
@@ -25,8 +28,28 @@ class PayrouteCategoryMasterController extends GetxController {
         }
       }
     });
+    // payRouteFocus = FocusNode(
+    //   onKeyEvent: (node, event) {
+    //     if (event.logicalKey == LogicalKeyboardKey.tab) {
+    //       // getRetrieveRecord(payRouteName.text);
+    //       getRecord();
+    //       return KeyEventResult.ignored;
+    //     }
+    //     return KeyEventResult.ignored;
+    //   },
+    // );
     super.onInit();
   }
+
+  //  payRouteNameFN = FocusNode(
+  //     onKeyEvent: (node, event) {
+  //       if (event.logicalKey == LogicalKeyboardKey.tab) {
+  //         // getRetrieveRecord(payRouteName.text);
+  //         return KeyEventResult.ignored;
+  //       }
+  //       return KeyEventResult.ignored;
+  //     },
+  //   );
 
   @override
   void onReady() {
@@ -80,6 +103,7 @@ class PayrouteCategoryMasterController extends GetxController {
 
   saveRecord() {
     print("Save button tapped");
+    print(" code" + payrouteCategoryCode);
     if (tecPayRouteCategory.value.text.isEmpty) {
       LoadingDialog.showErrorDialog("Pay Route Category Name cannot be empty.");
     } else if (payrouteCategoryCode != "") {
@@ -114,17 +138,30 @@ class PayrouteCategoryMasterController extends GetxController {
         if (resp != null &&
             resp is Map<String, dynamic> &&
             resp.toString().contains("successfully")) {
-          LoadingDialog.callDataSaved(msg: resp["message"]);
+          LoadingDialog.callDataSaved(
+            msg: resp["message"],
+            callback: () {
+              callClear();
+            },
+          );
         }
       },
     );
   }
 
+  callClear() {
+    Get.delete<PayrouteCategoryMasterController>();
+    Get.find<HomeController>().clearPage1();
+  }
+
   formHandler(btn) {
     switch (btn) {
       case "Clear":
+        callClear();
+
         break;
       case "Save":
+        payRouteFocus.unfocus();
         // UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
         saveRecord();
         break;
@@ -135,6 +172,17 @@ class PayrouteCategoryMasterController extends GetxController {
       case "Exit":
         break;
       case "Docs":
+        break;
+      case "Search":
+        Get.to(
+          const SearchPage(
+            key: Key("Payroute category Master"),
+            screenName: "Payroute category Master",
+            appBarName: "Payroute category Master",
+            strViewName: "vTesting",
+            isAppBarReq: true,
+          ),
+        );
         break;
     }
   }

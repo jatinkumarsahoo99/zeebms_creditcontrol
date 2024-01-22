@@ -75,7 +75,7 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
                                   0.15,
                                   isEnable: controller.isEnable.value,
                                   selected: controller.selectChannel,
-                                  autoFocus: true,
+                                  // autoFocus: true,
                                   // dialogWidth: 330,
                                   dialogHeight: Get.height * .7,
                                 ),
@@ -224,8 +224,7 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
                   child: FormButtonWrapper(
                     btnText: "Undo Spot",
                     callback: () {
-                      // controller.callRetrieve();
-                      // controller.getColorList();
+                      controller.OnUndoSpot();
                     },
                     showIcon: false,
                   ),
