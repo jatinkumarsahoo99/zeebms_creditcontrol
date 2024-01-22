@@ -814,6 +814,13 @@ class ApiFactory {
   static String get SALES_EXECUTIVE_GET_SAPNAME =>
       "$BASE_URL/api/SalesExecutiveMaster/GetSapName?SapName=";
 
+  /// //////////////////////////////// Payroute category Master ////////////////////////////////////
+  static String PAYROUTE_CATEGORY_MASTER_GET_RECORD(String categoryName) =>
+      "$BASE_URL/api/PayRouteCategoryMaster/GetRetrieveRecord?PayrouteCategoryCode=&PayrouteCategoryName=$categoryName";
+
+  static String get PAYROUTE_CATEGORY_MASTER_SAVE_RECORD =>
+      "$BASE_URL/api/PayRouteCategoryMaster/PostSaveRecord";
+
   /// //////////////////////////////// END EXECUTIVE MASTER ////////////////////////////////////
   ///
   ///

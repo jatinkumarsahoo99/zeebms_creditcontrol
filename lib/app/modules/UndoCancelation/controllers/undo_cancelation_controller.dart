@@ -20,6 +20,7 @@ class UndoCancelationController extends GetxController {
   TextEditingController bookingNumber = TextEditingController();
   // RxString? selectValue=RxString(null);
   Rxn<String> selectValue = Rxn<String>(null);
+  var selectAllValue = false.obs;
 
   // List<Map<String, dynamic>>? responseData;
   var responseData = [].obs;
@@ -53,32 +54,49 @@ class UndoCancelationController extends GetxController {
     }
   }
 
+  checkAll(bool sta) {
+    if (sta) {
+      for (int i = 0; i < (stateManager?.rows.length ?? 0); i++) {
+        stateManager?.rows[i].cells['selectItem']?.value = "true";
+      }
+    } else {
+      for (int i = 0; i < (stateManager?.rows.length ?? 0); i++) {
+        stateManager?.rows[i].cells['selectItem']?.value = "false";
+      }
+    }
+    stateManager?.notifyListeners();
+    // responseData.refresh();
+  }
+
   getAllLoadData() {
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.UNDO_CANCELATION_GET_LOAD,
-        // "https://jsonkeeper.com/b/D537"
-        fun: (map) {
-          closeDialogIfOpen();
-          if (map is Map &&
-              map.containsKey("loadData") &&
-              map['loadData'] != null &&
-              map['loadData'].length > 0) {
-            locations.clear();
-            RxList<DropDownValue> dataList = RxList<DropDownValue>([]);
-            map['loadData'].forEach((element) {
-              dataList.add(DropDownValue.fromJsonDynamic(
-                  element as Map<String, dynamic>,
-                  "locationCode",
-                  "locationName"));
-            });
-            locations.addAll(dataList);
-            locations.refresh();
-          } else {
-            locations.clear();
-            locations.refresh();
-          }
-        });
+      api: ApiFactory.UNDO_CANCELATION_GET_LOAD,
+      // "https://jsonkeeper.com/b/D537"
+      fun: (map) {
+        closeDialogIfOpen();
+        if (map is Map &&
+            map.containsKey("loadData") &&
+            map['loadData'] != null &&
+            map['loadData'].length > 0) {
+          locations.clear();
+          RxList<DropDownValue> dataList = RxList<DropDownValue>([]);
+          map['loadData'].forEach((element) {
+            dataList.add(DropDownValue.fromJsonDynamic(
+                element as Map<String, dynamic>,
+                "locationCode",
+                "locationName"));
+          });
+          locations.addAll(dataList);
+          selectLocation = locations.first;
+          getChannelList(selectLocation?.key ?? "");
+          locations.refresh();
+        } else {
+          locations.clear();
+          locations.refresh();
+        }
+      },
+    );
   }
 
   getChannelList(String? locationCode) {
@@ -124,8 +142,42 @@ class UndoCancelationController extends GetxController {
     }
   }
 
+  OnUndoSpot() {
+    var undoSpotList = [];
+    for (var i = 0; i < responseData.length; i++) {
+      if (responseData[i]["selectItem"]) {
+        undoSpotList.add({
+          "hold": onHold,
+          "booked": booked,
+          "exposureaudit": expsoureSpots,
+          "locationcode": selectLocation?.key ?? "",
+          "channelcode": selectChannel?.key ?? "",
+          "bookingnumber": responseData[i]["bookingnumber"],
+          "bookingdetailcode": responseData[i]["bookingdetailcode"]
+        });
+      }
+    }
+    var payLoad = {"lstUndoSpot": undoSpotList};
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.UNDO_CANCELATION_POST_UNDO_SPOT,
+        json: payLoad,
+        fun: (Map map) {
+          Get.back();
+          // if (map != null && map.containsKey('save')) {
+          //   var msg = map['save']['message'];
+          //   LoadingDialog.callDataSaved(
+          //       msg: msg,
+          //       callback: () {
+          //         // getFormLoad();
+          //       });
+          // }
+        });
+  }
+
   getShow() {
     try {
+      responseData.value = [];
       Map<String, dynamic> postData = {
         "hold": onHold,
         "booked": booked,

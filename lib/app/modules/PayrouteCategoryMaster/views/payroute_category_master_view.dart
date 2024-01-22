@@ -10,7 +10,11 @@ import '../controllers/payroute_category_master_controller.dart';
 
 class PayrouteCategoryMasterView
     extends GetView<PayrouteCategoryMasterController> {
-  const PayrouteCategoryMasterView({Key? key}) : super(key: key);
+  PayrouteCategoryMasterView({Key? key}) : super(key: key);
+
+  final controller = Get.put<PayrouteCategoryMasterController>(
+      PayrouteCategoryMasterController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,28 +36,43 @@ class PayrouteCategoryMasterView
                 ),
                 const SizedBox(height: 20),
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      InputFields.formFieldExpand2(
-                        hintTxt: "Pay Route Category Name",
-                        controller: TextEditingController(),
-                        titleInLeft: true,
-                        titleSizeboxWidth: null,
-                        // bottomPadding: false,
-                      ),
-                      CheckBoxWidget1(title: "Is R4 Yes/No"),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Get.find<HomeController>().getCommonButton(
-                        Routes.PAYROUTE_CATEGORY_MASTER,
-                        (btnName) {},
-                      ),
-                    ],
-                  ),
-                ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: GetBuilder(
+                        init: controller,
+                        builder: (builder) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Obx(() => InputFields.formFieldExpand2(
+                                  hintTxt: "Pay Route Category Name",
+                                  controller:
+                                      controller.tecPayRouteCategory.value,
+                                  // titleInLeft: true,
+                                  titleSizeboxWidth: null,
+                                  focusNode: controller.payRouteFocus
+                                  // bottomPadding: false,
+                                  )),
+                              Obx(() => CheckBoxWidget1(
+                                    title: "Is R4 Yes/No",
+                                    value: controller.checkBoxSelected.value,
+                                    onChanged: (val) {
+                                      controller.checkBoxSelected.value =
+                                          val ?? false;
+                                    },
+                                  )),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Get.find<HomeController>().getCommonButton(
+                                Routes.PAYROUTE_CATEGORY_MASTER,
+                                (btnName) {
+                                  // UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil);
+                                  controller.formHandler(btnName);
+                                },
+                              ),
+                            ],
+                          );
+                        })),
               ],
             ),
           ),
