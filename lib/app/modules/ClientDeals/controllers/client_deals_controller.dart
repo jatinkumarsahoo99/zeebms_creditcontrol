@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'package:excel/excel.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -12,6 +15,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../data/DropDownValue.dart';
+import '../AgencyLeaveModel.dart';
 import '../ClientDealRetrieveModel.dart';
 
 class ClientDealsController extends GetxController {
@@ -27,7 +31,7 @@ class ClientDealsController extends GetxController {
   RxList<DropDownValue> agencyList = RxList([]);
   RxList<DropDownValue> brandList = RxList([]);
   RxList<DropDownValue> bandList = RxList([]);
-  RxList<DropDownValue> brandList2 = RxList([]);
+  // RxList<DropDownValue> brandList2 = RxList([]);
   RxList<DropDownValue> accountList = RxList([]);
   RxList<DropDownValue> subTypeList = RxList([]);
   RxList<DropDownValue> spotTypeList = RxList([]);
@@ -39,7 +43,9 @@ class ClientDealsController extends GetxController {
   RxList<DropDownValue> locationList2 = RxList([]);
   RxList<DropDownValue> dealType = RxList([]);
   RxList<DropDownValue> channelList2 = RxList([]);
+  RxList<AddInfo> infoDiaLogList = RxList([]);
   RxList<dynamic> dealNoList = RxList([]);
+  RxList<dynamic> remarkList = RxList([]);
 
   Rxn<DropDownValue>? selectedLocation = Rxn<DropDownValue>(null);
   Rxn<DropDownValue>? selectedLocation2 = Rxn<DropDownValue>(null);
@@ -78,6 +84,7 @@ class ClientDealsController extends GetxController {
   TextEditingController ratePerTenSecondsController = TextEditingController();
   TextEditingController amountController2 = TextEditingController();
   TextEditingController valueRateController = TextEditingController();
+  TextEditingController remarkDiaController = TextEditingController();
 
   Rx<bool> effectiveRate = Rx<bool>(false);
   Rx<bool> type = Rx<bool>(false);
@@ -91,7 +98,10 @@ class ClientDealsController extends GetxController {
   Rx<bool> sat = Rx<bool>(false);
   Rx<bool> sun = Rx<bool>(false);
 
+  Rx<bool> accountEnaSta = Rx<bool>(false);
+
   FocusNode channelFocus = FocusNode();
+  FocusNode locationFocus = FocusNode();
   FocusNode dealNoFocus = FocusNode();
   FocusNode dateFocus = FocusNode();
   FocusNode fromFocus = FocusNode();
@@ -102,7 +112,22 @@ class ClientDealsController extends GetxController {
   ScrollController scrollController = ScrollController();
   Rx<int> selectedDealNo = Rx<int>(0);
   PlutoGridStateManager? stateManager;
+  PlutoGridStateManager? remarkStateManager;
+  PlutoGridStateManager? addInfoStateManager;
   List<Map<String, Map<String, double>>>? userGridSetting1 = [];
+  Rx<String> agencyGstNumber = Rx<String>("");
+  Rx<String> agencyPanNumber = Rx<String>("");
+  Rx<String> clientEmbargo = Rx<String>("");
+  Rx<String> executive = Rx<String>("");
+  Rx<String> payroute = Rx<String>("");
+  Rx<String> zone = Rx<String>("");
+  Rx<String> gstPlantName = Rx<String>("");
+
+  var canDialogShow = false.obs;
+  Widget? dialogWidget;
+  Rxn<int> initialOffset = Rxn<int>(null);
+  Completer<bool>? completerDialog;
+  AgencyLeaveDataModel? agencyLeaveDataModel;
 
   fetchUserSetting1() async {
     userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
@@ -189,6 +214,19 @@ class ClientDealsController extends GetxController {
                 spotTypeList.addAll(dataList);
                 spotTypeList.refresh();
               }
+
+              if (map['onload']['accountDetails'] != null &&
+                  map['onload']['accountDetails'].length > 0) {
+                accountList.clear();
+                RxList<DropDownValue> dataList = RxList([]);
+                map['onload']['accountDetails'].forEach((e) {
+                  dataList.add(DropDownValue.fromJsonDynamic(
+                      e, "accountcode", "accountname"));
+                });
+                accountList.addAll(dataList);
+                accountList.refresh();
+              }
+
             }
           },
           failed: (map) {
@@ -234,7 +272,8 @@ class ClientDealsController extends GetxController {
     }
   }
 
-  clientsLeave() {
+  Future<String>clientsLeave() {
+    Completer<String> completer = Completer<String>();
     try {
       LoadingDialog.call();
       Map<String, dynamic> postData = {
@@ -273,14 +312,101 @@ class ClientDealsController extends GetxController {
                 brandList.addAll(dataList);
                 brandList.refresh();
               }
+              clientEmbargo.value = map['clientLeaveModel']['clientEmbargo'];
             } else {}
+            completer.complete("");
           },
           failed: (map) {
             closeDialogIfOpen();
+            completer.complete("");
           });
     } catch (e) {
       closeDialogIfOpen();
+      completer.complete("");
     }
+    return completer.future;
+  }
+
+  Future <String> agencyLeave() {
+    Completer<String> completer = Completer<String>();
+    try {
+      if(selectAgency?.value?.key != null && selectAgency?.value?.key != ""){
+        LoadingDialog.call();
+        Map<String, dynamic> postData = {
+          "clientCode": selectedClient?.value?.key ?? "",
+          "locationCode": selectedLocation?.value?.key ?? "",
+          "channelCode": selectedChannel?.value?.key ?? "",
+          "dealNumber":dealNoController.text?? "",
+          "agencyCode":selectAgency?.value?.key?? "",
+          "intNewEntry": (  clientDealRetrieveModel?.agencyLeaveModel != null &&
+              clientDealRetrieveModel?.agencyLeaveModel?.retrieve != null
+          )?"1":"0",
+          "currencyTypeCode": selectCurrency?.value?.key??""
+        };
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.Client_Deal_GET_AGENCY_LEAVE,
+            json: postData,
+            // "https://jsonkeeper.com/b/D537"
+            fun: (map) {
+              closeDialogIfOpen();
+              if (map is Map && map['agencyLeaveModel'] != null) {
+                agencyLeaveDataModel = AgencyLeaveDataModel.fromJson(map as Map<String,dynamic>);
+                if(map['agencyLeaveModel']['paymentModels'] != null &&
+                    map['agencyLeaveModel']['paymentModels'].length >0){
+                  RxList<DropDownValue> dataList = RxList([]);
+                  payMode.clear();
+                  map['agencyLeaveModel']['paymentModels'].forEach((e){
+                    dataList.add(DropDownValue.fromJsonDynamic(
+                        e, "paymentmodecode", "paymentmodecaption"));
+                  });
+                  payMode.addAll(dataList);
+                  if(payMode.length >0){
+                    selectPayMode?.value = DropDownValue(key:payMode[0].key ,value:payMode[0].value);
+                  }
+                  payMode.refresh();
+                }
+                executive.value = agencyLeaveDataModel?.agencyLeaveModel?.personnelname??"";
+                zone.value = agencyLeaveDataModel?.agencyLeaveModel?.zonename??"";
+                payroute.value = agencyLeaveDataModel?.agencyLeaveModel?.payroutename??"";
+                gstPlantName.value =  agencyLeaveDataModel?.agencyLeaveModel?.plantname??"";
+                agencyGstNumber.value = agencyLeaveDataModel?.agencyLeaveModel?.gst??"";
+                agencyPanNumber.value = agencyLeaveDataModel?.agencyLeaveModel?.pan??"";
+                for(int i=0;i<currency.length;i++){
+                  if(currency[i].key.toString().trim() ==
+                      agencyLeaveDataModel?.agencyLeaveModel?.currencyTypeCode.toString().trim()){
+                    selectCurrency?.value = DropDownValue(value: currency[i].value,key: currency[i].key);
+                    selectCurrency?.refresh();
+                    break;
+                  }
+                }
+
+                if(agencyLeaveDataModel?.agencyLeaveModel?.remark != null &&
+                    agencyLeaveDataModel?.agencyLeaveModel?.remark != ""){
+                  remarkList.clear();
+                  remarkList.add({"remark":agencyLeaveDataModel?.agencyLeaveModel?.remark??""});
+                  remarkList.refresh();
+                }
+
+              }
+              else {
+                agencyLeaveDataModel = null;
+              }
+              completer.complete("");
+            },
+            failed: (map) {
+              closeDialogIfOpen();
+              completer.complete("");
+            });
+      }
+      else{
+        completer.complete("");
+      }
+
+    } catch (e) {
+      closeDialogIfOpen();
+      completer.complete("");
+    }
+    return  completer.future;
   }
 
   channelLeave() {
@@ -362,6 +488,12 @@ class ClientDealsController extends GetxController {
     } catch (e) {
       closeDialogIfOpen();
     }
+  }
+
+  remarkAdd(){
+    remarkList.add({"remark":remarkDiaController.text});
+    remarkDiaController.text = "";
+    remarkList.refresh();
   }
 
   weekend(bool sta) {
@@ -459,66 +591,252 @@ class ClientDealsController extends GetxController {
       closeDialogIfOpen();
     }
   }
-  ClientDealRetrieveModel ?clientDealRetrieveModel;
-  retrieveRecord({String? locationCode,String ? channelCode,String ?
-  dealNumber,String ? clientCode,String ? agencyCode}) {
+
+  ClientDealRetrieveModel? clientDealRetrieveModel;
+  retrieveRecord(
+      {String? locationCode,
+      String? channelCode,
+      String? dealNumber,
+      String? clientCode,
+      String? agencyCode}) {
     try {
       LoadingDialog.call();
       Map<String, dynamic> postData = {
-        "locationCode": locationCode??"",
-        "channelCode": channelCode??"",
-        "dealNumber": dealNumber??"",
+        "locationCode": locationCode ?? "",
+        "channelCode": channelCode ?? "",
+        "dealNumber": dealNumber ?? "",
         "clientcode": clientCode,
         "agencyCode": agencyCode
       };
-      Get.find<ConnectorControl>().POSTMETHOD(api: ApiFactory.Client_Deal_RETRIVE_RECORD,
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.Client_Deal_RETRIVE_RECORD,
           json: postData,
-          fun: (map){
+          fun: (map) {
             closeDialogIfOpen();
-            if(map is Map){
-              clientDealRetrieveModel = ClientDealRetrieveModel.fromJson(map as Map<String,dynamic>);
-              if(clientDealRetrieveModel != null && clientDealRetrieveModel?.agencyLeaveModel != null
-                   ){
-                if(clientDealRetrieveModel?.agencyLeaveModel?.retrieve != null && (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?.length??0) >0){
-                  for (var element in locationList) {
-                    if(element.key.toString().trim() == clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].locationcode.toString().trim()){
-                      selectedLocation?.value = DropDownValue(value:element.value ,key:element.key ) ;
-                      selectedLocation?.refresh();
-                      break;
+            if (map is Map) {
+              clientDealRetrieveModel =
+                  ClientDealRetrieveModel.fromJson(map as Map<String, dynamic>);
+              if (clientDealRetrieveModel != null &&
+                  clientDealRetrieveModel?.agencyLeaveModel != null) {
+                try {
+                  if (clientDealRetrieveModel?.agencyLeaveModel?.retrieve !=
+                          null &&
+                      (clientDealRetrieveModel
+                                  ?.agencyLeaveModel?.retrieve?.length ??
+                              0) >
+                          0) {
+                    for (var element in locationList) {
+                      if (element.key.toString().trim() ==
+                          clientDealRetrieveModel
+                              ?.agencyLeaveModel?.retrieve?[0].locationcode
+                              .toString()
+                              .trim()) {
+                        selectedLocation?.value = DropDownValue(
+                            value: element.value, key: element.key);
+                        selectedLocation?.refresh();
+                        break;
+                      }
                     }
-                  }
-                  for (var element in channelList) {
-                    if(element.key.toString().trim() == clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].channelCode.toString().trim()){
-                      selectedChannel?.value = DropDownValue(value:element.value ,key:element.key ) ;
+
+                    if (channelList.length > 0) {
+                      for (var element in channelList.value) {
+                        if (element.key.toString().trim() ==
+                            clientDealRetrieveModel
+                                ?.agencyLeaveModel?.retrieve?[0].channelCode
+                                .toString()
+                                .trim()) {
+                          selectedChannel?.value = DropDownValue(
+                              value: element.value, key: element.key);
+                          selectedChannel?.refresh();
+                          break;
+                        }
+                      }
+                    }
+                    else {
+                      selectedChannel?.value = DropDownValue(
+                          value: selectedChannel2?.value?.value ?? "",
+                          key: selectedChannel2?.value?.key ?? "");
                       selectedChannel?.refresh();
-                      break;
                     }
+
+                    for (var element in currency) {
+                      if (element.key.toString().trim() ==
+                          clientDealRetrieveModel
+                              ?.agencyLeaveModel?.retrieve?[0].currencytypecode
+                              .toString()
+                              .trim()) {
+                        selectCurrency?.value = DropDownValue(
+                            value: element.value, key: element.key);
+                        selectCurrency?.refresh();
+                        break;
+                      }
+                    }
+                    for (var element in dealType) {
+                      if (element.key.toString().trim() ==
+                          clientDealRetrieveModel
+                              ?.agencyLeaveModel?.retrieve?[0].dealTypeCode
+                              .toString()
+                              .trim()) {
+                        selectDealType?.value = DropDownValue(
+                            value: element.value, key: element.key);
+                        selectDealType?.refresh();
+                        break;
+                      }
+                    }
+                    selectedClient = selectedClient2;
+                    selectedClient?.refresh();
+
+                    clientsLeave().then((value) {
+                      agencyGstNumber.value = (clientDealRetrieveModel
+                          ?.agencyLeaveModel?.retrieve?[0].gstNumber ??
+                          "")
+                          .toString();
+                      agencyPanNumber.value = (clientDealRetrieveModel
+                          ?.agencyLeaveModel
+                          ?.retrieve?[0]
+                          .agencyshortname ??
+                          "")
+                          .toString();
+                      if (agencyList.length > 0) {
+                        for (var element in agencyList) {
+                          if (element.key.toString().trim() ==
+                              clientDealRetrieveModel
+                                  ?.agencyLeaveModel?.retrieve?[0].agencyCode
+                                  .toString()
+                                  .trim()) {
+                            selectAgency?.value = DropDownValue(
+                                value: element.value, key: element.key);
+                            selectAgency?.refresh();
+                            break;
+                          }
+                        }
+                      }
+                      else {
+                        selectAgency?.value = DropDownValue(
+                            key: clientDealRetrieveModel
+                                ?.agencyLeaveModel?.retrieve?[0].agencyCode,
+                            value: clientDealRetrieveModel
+                                ?.agencyLeaveModel?.retrieve?[0].agencyName);
+                        selectAgency?.refresh();
+                      }
+
+                      agencyLeave().then((value) {
+
+                        dealNoController.text = clientDealRetrieveModel
+                            ?.agencyLeaveModel?.retrieve?[0].dealNumber ??
+                            "";
+                        dateController.text = Utils.toDateFormat4(
+                            clientDealRetrieveModel
+                                ?.agencyLeaveModel?.retrieve?[0].dealDate);
+                        referenceController.text = clientDealRetrieveModel
+                            ?.agencyLeaveModel?.retrieve?[0].referenceNumber ??
+                            "";
+                        referenceDateController.text = Utils.toDateFormat4(
+                            clientDealRetrieveModel
+                                ?.agencyLeaveModel?.retrieve?[0].referenceDate);
+                        fromDateController.text = Utils.toDateFormat4(
+                            clientDealRetrieveModel
+                                ?.agencyLeaveModel?.retrieve?[0].fromDate);
+                        toDateController.text = Utils.toDateFormat4(
+                            clientDealRetrieveModel
+                                ?.agencyLeaveModel?.retrieve?[0].todate);
+                        secondsController.text = (clientDealRetrieveModel
+                            ?.agencyLeaveModel?.retrieve?[0].seconds ??
+                            "0")
+                            .toString();
+                        amountController.text = (clientDealRetrieveModel
+                            ?.agencyLeaveModel?.retrieve?[0].dealAmount ??
+                            "0")
+                            .toString();
+                        maxSpeedController.text = (clientDealRetrieveModel
+                            ?.agencyLeaveModel?.retrieve?[0].maxspend ??
+                            "0")
+                            .toString();
+
+                        agencyPanNumber.refresh();
+                        agencyGstNumber.refresh();
+
+
+                        if (brandList.length > 0) {
+                          for (var element in brandList) {
+                            if (element.key.toString().trim() ==
+                                clientDealRetrieveModel
+                                    ?.agencyLeaveModel?.retrieve?[0].brandCode
+                                    .toString()
+                                    .trim()) {
+                              selectBrand?.value = DropDownValue(
+                                  value: element.value, key: element.key);
+                              selectBrand?.refresh();
+                              break;
+                            }
+                          }
+                        }
+                        else {
+                          selectBrand?.value = DropDownValue(
+                              key: clientDealRetrieveModel
+                                  ?.agencyLeaveModel?.retrieve?[0].brandCode,
+                              value: "");
+                          selectBrand?.refresh();
+                        }
+
+
+                        effectiveRate.value = (clientDealRetrieveModel
+                            ?.agencyLeaveModel
+                            ?.retrieve?[0]
+                            .effectiveRateYN ==
+                            1)
+                            ? true
+                            : false;
+                        effectiveRate.refresh();
+
+                      });
+
+                    });
+
                   }
-                }
-
-                dealNoController.text = clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].dealNumber??"";
-
+                } catch (e) {}
               }
 
               update(["grid"]);
-            }else{
+            } else {
               clientDealRetrieveModel = null;
             }
           });
-
-    }catch(e){
+    } catch (e) {
       closeDialogIfOpen();
     }
   }
 
+  Offset? getOffSetValue(BoxConstraints constraints) {
+    switch (initialOffset.value) {
+      case 1:
+        return Offset(
+            (constraints.maxWidth / 3) + 30, constraints.maxHeight / 3);
+      case 2:
+        return Offset(Get.width * 0.09, Get.height * 0.12);
+      case 3:
+        return const Offset(20, 20);
+      default:
+        return null;
+    }
+  }
+
+  remarkDialog(){
+
+  }
+
   @override
   void onInit() {
-     dealNoFocus = FocusNode(
+    dealNoFocus = FocusNode(
       onKeyEvent: (node, event) {
         if (event.logicalKey == LogicalKeyboardKey.tab) {
-          if(dealNoController.text != ""){
-            retrieveRecord(dealNumber: dealNoController.text,agencyCode: selectAgency?.value?.key,
-                clientCode: selectedClient?.value?.key,channelCode: selectedChannel?.value?.key,locationCode: selectedLocation?.value?.key);
+          if (dealNoController.text != "") {
+            retrieveRecord(
+                dealNumber: dealNoController.text,
+                agencyCode: selectAgency?.value?.key,
+                clientCode: selectedClient?.value?.key,
+                channelCode: selectedChannel?.value?.key,
+                locationCode: selectedLocation?.value?.key);
           }
 
           return KeyEventResult.ignored;
@@ -526,9 +844,109 @@ class ClientDealsController extends GetxController {
         return KeyEventResult.ignored;
       },
     );
-     fetchUserSetting1();
+    fetchUserSetting1();
     super.onInit();
   }
+
+  pickFile() async {
+    LoadingDialog.call();
+    FilePickerResult? result = await FilePicker.platform.pickFiles(
+      allowedExtensions: ['xlsx', 'xls'],
+      type: FileType.custom,
+    );
+    closeDialogIfOpen();
+    if (result != null && result.files.single != null) {
+      // print(">>>>>>filename"+(result.files[0].name.toString()));
+      // pathController.text = result.files[0].name.toString();
+
+      loadBtn(result);
+    } else {
+      LoadingDialog.showErrorDialog("Please try again");
+      // User canceled the pic5ker
+      print(">>>>dataCancel");
+    }
+  }
+
+  loadBtn(FilePickerResult result) {
+    LoadingDialog.call();
+    var jsonData = <String, dynamic>{};
+    try {
+      Uint8List? fileBytes = result.files.first.bytes;
+      var excel = Excel.decodeBytes(result.files.first.bytes as List<int>);
+
+      int sheet = 0;
+      for (var table in excel.tables.keys) {
+        var tableData = <Map<String, dynamic>>[];
+        sheet = sheet + 1;
+        // Extract headers from the first row
+        var headers = excel.tables[table]!
+            .row(0)
+            .map((cell) => cell?.value.toString())
+            .toList();
+
+        print(">>>>>" + headers.toString());
+
+        for (var rowIdx = 1; rowIdx <= excel.tables[table]!.maxRows; rowIdx++) {
+          var rowData = <String, dynamic>{};
+          var row = excel.tables[table]!.row(rowIdx);
+          for (var colIdx = 0; colIdx < row.length; colIdx++) {
+            var header = headers[colIdx];
+            var cellValue = row[colIdx]?.value.toString();
+            rowData[header ?? ""] = cellValue;
+          }
+          if (rowData.isNotEmpty) {
+            tableData.add(rowData);
+          }
+        }
+        jsonData['S${sheet}'] = tableData;
+        print(">>>>jsonData " + jsonData.toString());
+        closeDialogIfOpen();
+      }
+      List<String> sourceList = ["jks", "ku"];
+      // List<String> list2 = [ "ku","jks"];
+
+
+    } catch (e) {
+      print(">>>>" + e.toString());
+      // gridData = RateCardFromDealWorkFlowModel(export: []);
+      closeDialogIfOpen();
+      update(['grid']);
+      LoadingDialog.showErrorDialog(e.toString());
+    }
+  }
+
+  listCompare({required List<dynamic> sourceList,required List<dynamic> compareList}){
+    bool sta = false;
+    if(sourceList.isNotEmpty && compareList.isNotEmpty){
+      if(sourceList.length > compareList.length){
+        return !sta;
+      }
+
+      for(int i=0;i<sourceList.length;i++){
+        if(sta){
+          break;
+        }
+        for(int j=0;j<compareList.length;j++){
+          if(sourceList[i].toString().toLowerCase().trim() == compareList[j].toString().toLowerCase().trim()){
+            break;
+          }else if((j == compareList.length-1) && (sourceList[i].toString().toLowerCase().trim() !=
+              compareList[j].toString().toLowerCase().trim())){
+            sta = true;
+            break;
+          }else{
+            continue;
+          }
+        }
+      }
+      return !sta;
+    }else{
+      return !sta;
+    }
+  }
+
+
+
+
 
   @override
   void onReady() {
