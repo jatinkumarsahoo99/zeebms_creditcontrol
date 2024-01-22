@@ -717,7 +717,7 @@ class ApiFactory {
   static String get UNDO_CANCELATION_POST_UNDO_SPOT =>
       "$BASE_URL/api/MovieUpdate/PostUndoSpot";
 
-  /// //////////////////////////////// Client Deals ////////////////////////////////////
+  /// ////////////////////////////////Start Client Deals ////////////////////////////////////
 
   static String get Client_Deal_GET_LOAD => "$BASE_URL/api/ClientDeals/onload";
   // static String get Client_Deal_GET_CHANNEL =>
@@ -746,7 +746,14 @@ class ApiFactory {
       "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
   static String get Client_Deal_RETRIVE_RECORD =>
       "$BASE_URL/api/ClientDeals/RetrieveRecord";
+  static String get Client_Deal_GET_SEARCH_CLIENT =>
+      "$BASE_URL/api/ClientDeals/GetSearchClient";
+  static String get Client_Deal_GET_SEARCH_DEAL_NUMBERS =>
+      "$BASE_URL/api/ClientDeals/GetSearchDealNumbers";
+  static String get Client_Deal_GET_AGENCY_LEAVE =>
+      "$BASE_URL/api/ClientDeals/AgencyLeave";
 
+  /// ////////////////////////////////End Client Deals ////////////////////////////////////
   ///
   ///
   ///
@@ -793,24 +800,21 @@ class ApiFactory {
 
   /// ////////////////////////// End Payment Route Master Model////////////////////////////////
 
-  /// //////////////////////////////// SALES EXECUTIVE MASTER ////////////////////////////////////
-
-  static String get Client_Deal_GET_SEARCH_CLIENT =>
-      "$BASE_URL/api/ClientDeals/GetSearchClient";
-  static String get Client_Deal_GET_SEARCH_DEAL_NUMBERS =>
-      "$BASE_URL/api/ClientDeals/GetSearchDealNumbers";
-
-  /// ////////////////////////// GST PLANT INFO //////////////////////////
+  /// //////////////////////////START GST PLANT INFO //////////////////////////
   static String get GST_PLANT_INFO_LOAD =>
       "$BASE_URL/api/GstPlantInfo/GetGstPlantInfoLoad";
   static String get GST_PLANT_INFO_SAVE =>
       "$BASE_URL/api/GstPlantInfo/PostSave";
 
+  /// //////////////////////////END GST PLANT INFO //////////////////////////
+  ///
+  ///
+  ///
   /// //////////////////////////////// SALES EXECUTIVE MASTER ////////////////////////////////////
-
   static String get SALES_EXECUTIVE_GET_SAPNAME =>
       "$BASE_URL/api/SalesExecutiveMaster/GetSapName?SapName=";
 
+  /// //////////////////////////////// END EXECUTIVE MASTER ////////////////////////////////////
   ///
   ///
   ///
