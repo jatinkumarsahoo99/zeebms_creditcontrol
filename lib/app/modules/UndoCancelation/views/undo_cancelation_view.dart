@@ -141,7 +141,18 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
 
                               Row(
                                 children: [
-                                  Checkbox(value: false, onChanged: (val) {}),
+                                  Obx(() {
+                                    return Checkbox(
+                                      value: controller.selectAllValue.value,
+                                      onChanged: (val) {
+                                        controller.selectAllValue.value =
+                                            val ?? false;
+                                        // controller.selectAllValue.refresh();
+                                        controller.checkAll(val ?? false);
+                                        // controller.checkAll(val ?? false);
+                                      },
+                                    );
+                                  }),
                                   SizedBox(
                                     width: 5,
                                   ),
@@ -181,8 +192,10 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
                                         checkBoxColumnKey: [
                                           'selectItem',
                                         ],
+                                        checkBoxStrComparison: "true",
+                                        uncheckCheckBoxStr: "false",
                                         // widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(key: controllerX.getTableNo(controllerX.selectValue.value)?? "tbl1",userGridSettingList: controllerX.userGridSetting1),
-                                        exportFileName: "Amagi Spot Planning",
+                                        exportFileName: "Undo Cancelation",
                                         mode: PlutoGridMode.normal,
                                         mapData: controller.responseData.value,
                                         // mapData: (controllerX.dataList)!,
