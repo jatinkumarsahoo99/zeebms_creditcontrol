@@ -107,6 +107,7 @@ class DropDownField {
     GlobalKey? widgetKey,
     bool showtitle = true,
     bool titleInLeft = false,
+    String? isClear,
   }) {
     isEnable ??= true;
     widgetKey ??= GlobalKey();
@@ -3910,6 +3911,10 @@ class DropDownField {
                                                   tempList.add(items[i]);
                                                 }
                                               }
+                                            } else {
+                                              tempList.clear();
+                                              tempList.addAll(items);
+                                              tempList.refresh();
                                             }
                                           }),
                                           inputFormatters: [
@@ -3950,7 +3955,8 @@ class DropDownField {
                                                             selected = element;
                                                             re(() {});
                                                             callback(element);
-                                                            FocusScope.of(context)
+                                                            FocusScope.of(
+                                                                    context)
                                                                 .requestFocus(
                                                                     inkWellFocusNode);
                                                           },
@@ -3958,7 +3964,8 @@ class DropDownField {
                                                             padding:
                                                                 const EdgeInsets
                                                                         .symmetric(
-                                                                    vertical: 8),
+                                                                    vertical:
+                                                                        8),
                                                             child: Text(
                                                               element.value ??
                                                                   "null",

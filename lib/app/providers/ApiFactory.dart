@@ -717,36 +717,139 @@ class ApiFactory {
   static String get UNDO_CANCELATION_POST_UNDO_SPOT =>
       "$BASE_URL/api/MovieUpdate/PostUndoSpot";
 
-  /// //////////////////////////////// Client Deals ////////////////////////////////////
+  /// ////////////////////////////////Start Client Deals ////////////////////////////////////
 
   static String get Client_Deal_GET_LOAD => "$BASE_URL/api/ClientDeals/onload";
-  static String get Client_Deal_GET_CHANNEL => "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
-  static String get Client_Deal_GET_CLIENTS => "$BASE_URL/api/ClientDeals/GetClients";
-  static String get Client_Deal_GET_CLIENTS_LEAVE => "$BASE_URL/api/ClientDeals/ClientLeave";
-  static String get Client_Deal_GET_AGENCY_LEAVE => "$BASE_URL/api/ClientDeals/AgencyLeave";
-  static String get Client_Deal_GET_CHANNEL_LEAVE => "$BASE_URL/api/ClientDeals/ChannelLeave";
-  static String get Client_Deal_GET_DEAL_DATE_LEAVE => "$BASE_URL/api/ClientDeals/dealDateLeave";
-  static String get Client_Deal_GET_SUBTYPE => "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
-  static String get Client_Deal_RETRIVE_RECORD => "$BASE_URL/api/ClientDeals/RetrieveRecord";
-  static String get Client_Deal_GET_SEARCH_CLIENT => "$BASE_URL/api/ClientDeals/GetSearchClient";
-  static String get Client_Deal_GET_SEARCH_DEAL_NUMBERS => "$BASE_URL/api/ClientDeals/GetSearchDealNumbers";
+  // static String get Client_Deal_GET_CHANNEL =>
+  //     "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
+  // static String get Client_Deal_GET_CLIENTS =>
+  //     "$BASE_URL/api/ClientDeals/GetClients";
+  // static String get Client_Deal_GET_CLIENTS_LEAVE =>
+  //     "$BASE_URL/api/ClientDeals/ClientLeave";
+  // static String get Client_Deal_GET_CHANNEL_LEAVE =>
+  //     "$BASE_URL/api/ClientDeals/ChannelLeave";
+  // static String get Client_Deal_GET_SUBTYPE =>
+  //     "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
+  // static String get Client_Deal_RETRIVE_RECORD =>
+  //     "$BASE_URL/api/ClientDeals/RetrieveRecord";
+  static String get Client_Deal_GET_CHANNEL =>
+      "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
+  static String get Client_Deal_GET_CLIENTS =>
+      "$BASE_URL/api/ClientDeals/GetClients";
+  static String get Client_Deal_GET_CLIENTS_LEAVE =>
+      "$BASE_URL/api/ClientDeals/ClientLeave";
+  static String get Client_Deal_GET_CHANNEL_LEAVE =>
+      "$BASE_URL/api/ClientDeals/ChannelLeave";
+  static String get Client_Deal_GET_DEAL_DATE_LEAVE =>
+      "$BASE_URL/api/ClientDeals/dealDateLeave";
+  static String get Client_Deal_GET_SUBTYPE =>
+      "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
+  static String get Client_Deal_RETRIVE_RECORD =>
+      "$BASE_URL/api/ClientDeals/RetrieveRecord";
+  static String get Client_Deal_GET_SEARCH_CLIENT =>
+      "$BASE_URL/api/ClientDeals/GetSearchClient";
+  static String get Client_Deal_GET_SEARCH_DEAL_NUMBERS =>
+      "$BASE_URL/api/ClientDeals/GetSearchDealNumbers";
+  static String get Client_Deal_GET_AGENCY_LEAVE =>
+      "$BASE_URL/api/ClientDeals/AgencyLeave";
 
+  /// ////////////////////////////////End Client Deals ////////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start Export Billing FPC Model////////////////////////////////
+  static String get START_EXPORT_BILLING_FORM_LOAD =>
+      "$BASE_URL/api/ExportbillingfPC/GetFormLoad";
+  static String get START_EXPORT_BILLING_DATE_LEAVE =>
+      "$BASE_URL/api/ExportbillingfPC/GettodateLeave";
+  static String get START_EXPORT_BILLING_GET_GENERATE =>
+      "$BASE_URL/api/ExportbillingfPC/GetGenerate";
 
-  /// ////////////////////////// GST PLANT INFO //////////////////////////
+  /// ////////////////////////// End Export Billing FPC Model////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start Payment Route Master Model////////////////////////////////
+  static String get PAYMENT_ROUTE_MASTER_FORM_LOAD =>
+      "$BASE_URL/api/PaymentRouteMaster/GetPaymentRouteMasterLoad";
+
+  static String get PAYMENT_ROUTE_MASTER_COMBO_BOXES =>
+      "$BASE_URL/api/PaymentRouteMaster/GetFillComboBoxes";
+
+  static String PAYMENT_ROUTE_MASTER_LOCATION_LEAVE(String locationCode) =>
+      "$BASE_URL/api/PaymentRouteMaster/GetLocationLeave?LocationCode=$locationCode";
+  static String PAYMENT_ROUTE_MASTER_CHANNEL_LEAVE(
+          String locationCode, String channelCode) =>
+      "$BASE_URL/api/PaymentRouteMaster/GetChannelNameLeave?LocationCode=$locationCode&ChannelCode=$channelCode";
+
+  static String get PAYMENT_ROUTE_MASTER_POST_SAVE_RECORD =>
+      "$BASE_URL/api/PaymentRouteMaster/PostSaveRecord";
+
+  static String get PAYMENT_ROUTE_MASTER_GET_SERVICE_LOCATION =>
+      "$BASE_URL/api/PaymentRouteMaster/GetServiceLocationList";
+  static String PAYMENT_ROUTE_MASTER_SERVICE_CHANNEL(String locationCode) =>
+      "$BASE_URL/api/PaymentRouteMaster/GetServicechannelList?LocationCode=$locationCode";
+
+  static String PAYMENT_ROUTE_MASTER_GET_SERVICE_RETRIEVE(
+          String locationName, String channelName) =>
+      "$BASE_URL/api/PaymentRouteMaster/GetSeriveRetrieve?LocationName=${Uri.encodeQueryComponent(locationName)}&ChannelName=${Uri.encodeQueryComponent(channelName)}";
+
+  static String PAYMENT_ROUTE_MASTER_GET_RETRIEVE_RECORD(
+          String payRouteCode, String payRouteName) =>
+      "$BASE_URL/api/PaymentRouteMaster/GetRetrieveRecord?PayRouteCode=$payRouteCode&PayRouteName=${Uri.encodeQueryComponent(payRouteName)}";
+
+  /// ////////////////////////// End Payment Route Master Model////////////////////////////////
+
+  /// //////////////////////////START GST PLANT INFO //////////////////////////
   static String get GST_PLANT_INFO_LOAD =>
       "$BASE_URL/api/GstPlantInfo/GetGstPlantInfoLoad";
   static String get GST_PLANT_INFO_SAVE =>
       "$BASE_URL/api/GstPlantInfo/PostSave";
 
+  /// //////////////////////////END GST PLANT INFO //////////////////////////
+  ///
+  ///
+  ///
   /// //////////////////////////////// SALES EXECUTIVE MASTER ////////////////////////////////////
-
   static String get SALES_EXECUTIVE_GET_SAPNAME =>
       "$BASE_URL/api/SalesExecutiveMaster/GetSapName?SapName=";
 
+<<<<<<< HEAD
   /// //////////////////////////////// Payroute category Master ////////////////////////////////////
   static String PAYROUTE_CATEGORY_MASTER_GET_RECORD(String categoryName) =>
       "$BASE_URL/api/PayRouteCategoryMaster/GetRetrieveRecord?PayrouteCategoryCode=&PayrouteCategoryName=$categoryName";
 
   static String get PAYROUTE_CATEGORY_MASTER_SAVE_RECORD =>
       "$BASE_URL/api/PayRouteCategoryMaster/PostSaveRecord";
+=======
+  /// //////////////////////////////// END EXECUTIVE MASTER ////////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start Place Master Model////////////////////////////////
+  static String get PLACE_MASTER_ON_LOAD =>
+      "$BASE_URL/api/PlaceMaster/GetPlaceMasterOnLoad";
+  static String PLACE_MASTER_PLACE_NAME(String placeName) =>
+      "$BASE_URL/api/PlaceMaster/GetPlaceName?PlaceName=$placeName";
+  static String PLACE_MASTER_RETRIEVE_RECORD(
+          String placeCode, String placeName) =>
+      "$BASE_URL/api/PlaceMaster/GetRetrieveRecord?PlaceCode=$placeCode&PlaceName=${Uri.encodeQueryComponent(placeName)}";
+  static String get PLACE_MASTER_POST_SAVE =>
+      "$BASE_URL/api/PlaceMaster/PostSave";
+
+  /// ////////////////////////// End Place Master Model////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start Station Master Model////////////////////////////////
+  static String get STATION_MASTER_ON_LOAD =>
+      "$BASE_URL/api/StationMaster/GetStationMasterOnLoad";
+  static String STATION_MASTER_RETRIEVE_RECORD(
+          String placeCode, String placeName) =>
+      "$BASE_URL/api/StationMaster/GetRetrieveRecord?PlaceCode=$placeCode&PlaceName=${Uri.encodeQueryComponent(placeName)}";
+  static String get STATION_MASTER_POST_SAVE =>
+      "$BASE_URL/api/StationMaster/PostSave";
+
+  /// ////////////////////////// End Station Master Model////////////////////////////////
+>>>>>>> 35aba483845e6a84b3b0a10b986fae46834fd0ec
 }
