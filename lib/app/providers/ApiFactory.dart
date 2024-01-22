@@ -720,36 +720,17 @@ class ApiFactory {
   /// //////////////////////////////// Client Deals ////////////////////////////////////
 
   static String get Client_Deal_GET_LOAD => "$BASE_URL/api/ClientDeals/onload";
-  // static String get Client_Deal_GET_CHANNEL =>
-  //     "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
-  // static String get Client_Deal_GET_CLIENTS =>
-  //     "$BASE_URL/api/ClientDeals/GetClients";
-  // static String get Client_Deal_GET_CLIENTS_LEAVE =>
-  //     "$BASE_URL/api/ClientDeals/ClientLeave";
-  // static String get Client_Deal_GET_CHANNEL_LEAVE =>
-  //     "$BASE_URL/api/ClientDeals/ChannelLeave";
-  // static String get Client_Deal_GET_SUBTYPE =>
-  //     "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
-  // static String get Client_Deal_RETRIVE_RECORD =>
-  //     "$BASE_URL/api/ClientDeals/RetrieveRecord";
-  static String get Client_Deal_GET_CHANNEL =>
-      "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
-  static String get Client_Deal_GET_CLIENTS =>
-      "$BASE_URL/api/ClientDeals/GetClients";
-  static String get Client_Deal_GET_CLIENTS_LEAVE =>
-      "$BASE_URL/api/ClientDeals/ClientLeave";
-  static String get Client_Deal_GET_CHANNEL_LEAVE =>
-      "$BASE_URL/api/ClientDeals/ChannelLeave";
-  static String get Client_Deal_GET_DEAL_DATE_LEAVE =>
-      "$BASE_URL/api/ClientDeals/dealDateLeave";
-  static String get Client_Deal_GET_SUBTYPE =>
-      "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
-  static String get Client_Deal_RETRIVE_RECORD =>
-      "$BASE_URL/api/ClientDeals/RetrieveRecord";
-  static String get Client_Deal_GET_SEARCH_CLIENT =>
-      "$BASE_URL/api/ClientDeals/GetSearchClient";
-  static String get Client_Deal_GET_SEARCH_DEAL_NUMBERS =>
-      "$BASE_URL/api/ClientDeals/GetSearchDealNumbers";
+  static String get Client_Deal_GET_CHANNEL => "$BASE_URL/api/ClientDeals/GetChannel?locationCode=";
+  static String get Client_Deal_GET_CLIENTS => "$BASE_URL/api/ClientDeals/GetClients";
+  static String get Client_Deal_GET_CLIENTS_LEAVE => "$BASE_URL/api/ClientDeals/ClientLeave";
+  static String get Client_Deal_GET_AGENCY_LEAVE => "$BASE_URL/api/ClientDeals/AgencyLeave";
+  static String get Client_Deal_GET_CHANNEL_LEAVE => "$BASE_URL/api/ClientDeals/ChannelLeave";
+  static String get Client_Deal_GET_DEAL_DATE_LEAVE => "$BASE_URL/api/ClientDeals/dealDateLeave";
+  static String get Client_Deal_GET_SUBTYPE => "$BASE_URL/api/ClientDeals/GetSubType?accountCode=";
+  static String get Client_Deal_RETRIVE_RECORD => "$BASE_URL/api/ClientDeals/RetrieveRecord";
+  static String get Client_Deal_GET_SEARCH_CLIENT => "$BASE_URL/api/ClientDeals/GetSearchClient";
+  static String get Client_Deal_GET_SEARCH_DEAL_NUMBERS => "$BASE_URL/api/ClientDeals/GetSearchDealNumbers";
+
 
   /// ////////////////////////// GST PLANT INFO //////////////////////////
   static String get GST_PLANT_INFO_LOAD =>

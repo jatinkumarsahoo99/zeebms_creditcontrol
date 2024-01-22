@@ -122,12 +122,12 @@ class NewDetails {
   String? starttime;
   String? endTime;
   int? seconds;
-  int? rate;
-  int? amount;
-  int? valuationRate;
+  double? rate;
+  double? amount;
+  double? valuationRate;
   int? bookedSeconds;
   int? balanceSeconds;
-  int? balanceAmount;
+  double? balanceAmount;
   String? bandCode;
   String? timeBand;
   int? netCode;
