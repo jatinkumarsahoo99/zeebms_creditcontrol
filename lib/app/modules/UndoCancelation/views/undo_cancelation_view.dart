@@ -147,9 +147,30 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
                                       onChanged: (val) {
                                         controller.selectAllValue.value =
                                             val ?? false;
-                                        // controller.selectAllValue.refresh();
-                                        controller.checkAll(val ?? false);
                                         // controller.checkAll(val ?? false);
+                                        for (var i = 0;
+                                            i < controller.responseData.length;
+                                            i++) {
+                                          controller.responseData.value[
+                                                  controller
+                                                      .stateManager!
+                                                      .refRows[i]
+                                                      .sortIdx]['selectItem'] =
+                                              controller.selectAllValue.value;
+                                          controller.stateManager!
+                                              .changeCellValue(
+                                            controller.stateManager!
+                                                .getRowByIdx(i)!
+                                                .cells['selectItem']!,
+                                            controller.selectAllValue.value
+                                                .toString(),
+                                            callOnChangedEvent: false,
+                                            force: true,
+                                            notify: true,
+                                          );
+                                          // print(controller.responseData);
+                                          controller.responseData.refresh();
+                                        }
                                       },
                                     );
                                   }),
@@ -194,18 +215,22 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
                                         ],
                                         checkBoxStrComparison: "true",
                                         uncheckCheckBoxStr: "false",
-                                        onEdit: (event) {
+                                        actionIconKey: ["selectItem"],
+                                        actionOnPress:
+                                            (position, isSpaceCalled) {
                                           controller
-                                              .responseData[event.row.sortIdx]
-                                              .copyTo = event.row
-                                                  .cells['selectItem']!.value
-                                                  .toString() ==
-                                              "true";
-                                          print(
-                                            controller
-                                                .responseData[event.row.sortIdx]
-                                                .copyTo,
+                                              .handleactionOnPressChangeInward(
+                                            position,
+                                            isSpaceCalled,
                                           );
+                                        },
+                                        onEdit: (event) {
+                                          controller.inwardLastSelectedIdx =
+                                              event.rowIdx;
+                                          controller.responseData[event.rowIdx]
+                                                  ['selectItem'] =
+                                              (event.value.toString()) ==
+                                                  "true";
                                         },
                                         // widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(key: controllerX.getTableNo(controllerX.selectValue.value)?? "tbl1",userGridSettingList: controllerX.userGridSetting1),
                                         exportFileName: "Undo Cancelation",

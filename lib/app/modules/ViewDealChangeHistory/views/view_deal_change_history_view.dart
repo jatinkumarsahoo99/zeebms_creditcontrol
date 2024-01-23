@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
@@ -21,9 +22,9 @@ class ViewDealChangeHistoryView
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: GetBuilder(
+        body: GetBuilder<ViewDealChangeHistoryController>(
       init: controller,
-      builder: (controller) {
+      builder: (builder) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -41,7 +42,7 @@ class ViewDealChangeHistoryView
                         },
                         "Location",
                         .20,
-                        autoFocus: true,
+                        // autoFocus: true,
                         titleInLeft: true,
                         selected: controller.selectedLocation,
                       )),
@@ -49,21 +50,41 @@ class ViewDealChangeHistoryView
                         controller.channelList.value,
                         (data) {
                           controller.selectedChannel = data;
+                          // if (controller.selectedChannel != null) {
+                          controller.onChannelLeave();
+                          // }
                         },
                         "Channel",
                         titleInLeft: true,
                         .20,
                         selected: controller.selectedChannel,
+                        // node
+                        // onFocusChange: (value) {
+                        //   // controller.onChannelLeave();
+                        //   if (!value) {
+                        //     if (controller.selectedChannel != null) {
+                        //       controller.onChannelLeave();
+                        //     }
+                        //   }
+                        // },
                       )),
                   Obx(() => DropDownField.formDropDown1WidthMap(
                         controller.clientList.value,
                         (data) {
                           controller.selectedClient = data;
+                          controller.onClientLeave();
                         },
                         "Client",
                         titleInLeft: true,
                         .23,
                         selected: controller.selectedClient,
+                        // onFocusChange: (value) {
+                        //   if (!value) {
+                        //     if (controller.selectedClient != null) {
+                        //       controller.onClientLeave();
+                        //     }
+                        //   }
+                        // },
                       )),
                   Obx(() => DropDownField.formDropDown1WidthMap(
                           controller.dealNoList.value, (data) {
@@ -83,7 +104,7 @@ class ViewDealChangeHistoryView
                   FormButtonWrapper(
                     btnText: "Show Deal History",
                     callback: () {
-                      // controller.pickFile();
+                      controller.getDealHistory();
                     },
                     showIcon: false,
                   ),
@@ -102,30 +123,19 @@ class ViewDealChangeHistoryView
               Expanded(
                 child: Obx(() {
                   return DataGridFromMap3(
-                    // colorCallback: (row) {
-                    //   if (row == controller.sm?.currentRow) {
-                    //     return Colors.deepPurple.shade100;
-                    //   } else {
-                    //     return Colors.white;
-                    //   }
-                    // },
                     exportFileName: "View Deal Change History",
-                    mapData: controller.gridData.value
-                        .map((e) => e.toJson())
-                        .toList(),
-                    // formatDate: false,
-                    // onRowDoubleTap: (event) {
-                    //   controller.sm?.setCurrentCell(event.cell,
-                    //       event.rowIdx); // to give focus to selected row
-                    //   controller.onRowDounleTap(event);
-                    // },
+                    mapData: controller.gridData.value.map((e) {
+                      if (e["changedon"] != null) {
+                        e['changedon'] = DateFormat('dd-MM-yyyy hh:mm a')
+                            .format(DateFormat('yyyy-MM-ddThh:mm:ss')
+                                .parse(e['changedon']));
+                      }
+                      return e;
+                    }).toList(),
                     onload: (event) {
-                      // // controller.sm =  event.stateManager;
-                      // var smNew = event.stateManager;
                       controller.sm = event.stateManager;
                     },
-                    // mode: PlutoGridMode.selectWithOneTap,
-                    witdthSpecificColumn:
+                    widthSpecificColumn:
                         Get.find<HomeController>().getGridWidthByKey(
                       userGridSettingList: controller.userGridSetting1?.value,
                     ),
@@ -146,7 +156,7 @@ class ViewDealChangeHistoryView
                   // handleAutoClear: false,
                   // disableBtns: ['Save', 'Refresh'],
                   (btnName) {
-                    // controller.formHandler(btnName);
+                    controller.formHandler(btnName);
                   },
                 ),
               ),
