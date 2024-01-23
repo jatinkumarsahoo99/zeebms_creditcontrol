@@ -850,4 +850,21 @@ class ApiFactory {
       "$BASE_URL/api/StationMaster/PostSave";
 
   /// ////////////////////////// End Station Master Model////////////////////////////////
+
+  /// ////////////////////////// View deal change History////////////////////////////////
+  static String get VIEW_DEAL_CHANGE_HISTORY_ON_LOAD =>
+      "$BASE_URL/api/ViewDealChangeHistory/GetDealChangeHistoryOnLoad";
+
+  static String VIEW_DEAL_CHANGE_HISTORY_ON_CHANNEL_LEAVE(
+          {required String locationCode, required String channelCode}) =>
+      "$BASE_URL/api/ViewDealChangeHistory/GetChannelLeave?locationcode=$locationCode&channelcode=$channelCode";
+
+  static String VIEW_DEAL_CHANGE_HISTORY_ON_CLIENT_LEAVE(
+          {required String locationCode,
+          required String channelCode,
+          required String clientCode}) =>
+      "$BASE_URL/api/ViewDealChangeHistory/GetclientLeave?locationcode=$locationCode&channelcode=$channelCode&clientcode=$clientCode";
+
+  static String get VIEW_DEAL_CHANGE_HISTORY_GET_HISTORY =>
+      "$BASE_URL/api/ViewDealChangeHistory/GetShowDealHistory";
 }

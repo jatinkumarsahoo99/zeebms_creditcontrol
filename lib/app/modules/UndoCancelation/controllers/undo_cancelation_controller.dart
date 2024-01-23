@@ -21,6 +21,7 @@ class UndoCancelationController extends GetxController {
   // RxString? selectValue=RxString(null);
   Rxn<String> selectValue = Rxn<String>(null);
   var selectAllValue = false.obs;
+  int inwardLastSelectedIdx = 0;
 
   // List<Map<String, dynamic>>? responseData;
   var responseData = [].obs;
@@ -66,6 +67,7 @@ class UndoCancelationController extends GetxController {
     }
     stateManager?.notifyListeners();
     // responseData.refresh();
+    print(responseData);
   }
 
   getAllLoadData() {
@@ -142,6 +144,23 @@ class UndoCancelationController extends GetxController {
     }
   }
 
+  handleactionOnPressChangeInward(
+      PlutoGridCellPosition position, bool isSpaceCalled) {
+    inwardLastSelectedIdx =
+        stateManager?.refRows[position.rowIdx ?? 0].sortIdx ?? 0;
+    if (isSpaceCalled) {
+      if (stateManager != null) {
+        stateManager?.changeCellValue(
+          stateManager!.currentCell!,
+          stateManager!.currentCell!.value == "true" ? "false" : "true",
+          force: true,
+          callOnChangedEvent: true,
+          notify: true,
+        );
+      }
+    }
+  }
+
   OnUndoSpot() {
     var undoSpotList = [];
     for (var i = 0; i < responseData.length; i++) {
@@ -164,14 +183,14 @@ class UndoCancelationController extends GetxController {
         json: payLoad,
         fun: (Map map) {
           Get.back();
-          // if (map != null && map.containsKey('save')) {
-          //   var msg = map['save']['message'];
-          //   LoadingDialog.callDataSaved(
-          //       msg: msg,
-          //       callback: () {
-          //         // getFormLoad();
-          //       });
-          // }
+          if (map != null && map.toString().contains('successfully')) {
+            // var msg = map['save']['message'];
+            LoadingDialog.callDataSaved(
+                msg: map["undoSpot"],
+                callback: () {
+                  // getFormLoad();
+                });
+          }
         });
   }
 

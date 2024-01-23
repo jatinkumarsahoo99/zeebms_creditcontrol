@@ -66,6 +66,7 @@ abstract class RoutesList {
     _Paths.G_S_T_PLANT_INFO,
     _Paths.PLACE_MASTER,
     _Paths.STATION_MASTER,
+    _Paths.VIEW_DEAL_CHANGE_HISTORY,
   ];
 }
 
