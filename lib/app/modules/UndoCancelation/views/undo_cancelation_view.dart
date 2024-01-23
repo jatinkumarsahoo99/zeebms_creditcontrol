@@ -194,6 +194,19 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
                                         ],
                                         checkBoxStrComparison: "true",
                                         uncheckCheckBoxStr: "false",
+                                        onEdit: (event) {
+                                          controller
+                                              .responseData[event.row.sortIdx]
+                                              .copyTo = event.row
+                                                  .cells['selectItem']!.value
+                                                  .toString() ==
+                                              "true";
+                                          print(
+                                            controller
+                                                .responseData[event.row.sortIdx]
+                                                .copyTo,
+                                          );
+                                        },
                                         // widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(key: controllerX.getTableNo(controllerX.selectValue.value)?? "tbl1",userGridSettingList: controllerX.userGridSetting1),
                                         exportFileName: "Undo Cancelation",
                                         mode: PlutoGridMode.normal,

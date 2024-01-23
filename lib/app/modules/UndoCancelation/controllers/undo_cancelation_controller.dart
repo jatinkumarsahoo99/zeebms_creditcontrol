@@ -146,15 +146,15 @@ class UndoCancelationController extends GetxController {
     var undoSpotList = [];
     for (var i = 0; i < responseData.length; i++) {
       if (responseData[i]["selectItem"]) {
-        undoSpotList.add({
-          "hold": onHold,
-          "booked": booked,
-          "exposureaudit": expsoureSpots,
-          "locationcode": selectLocation?.key ?? "",
-          "channelcode": selectChannel?.key ?? "",
-          "bookingnumber": responseData[i]["bookingnumber"],
-          "bookingdetailcode": responseData[i]["bookingdetailcode"]
-        });
+        // undoSpotList.add({
+        //   "hold": onHold,
+        //   "booked": booked,
+        //   "exposureaudit": expsoureSpots,
+        //   "locationcode": selectLocation?.key ?? "",
+        //   "channelcode": selectChannel?.key ?? "",
+        //   "bookingnumber": responseData[i]["bookingnumber"],
+        //   "bookingdetailcode": responseData[i]["bokingdetailcode"]
+        // });
       }
     }
     var payLoad = {"lstUndoSpot": undoSpotList};
