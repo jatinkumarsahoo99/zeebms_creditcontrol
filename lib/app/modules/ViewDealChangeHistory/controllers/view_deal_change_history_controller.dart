@@ -60,8 +60,8 @@ class ViewDealChangeHistoryController extends GetxController {
       api: ApiFactory.VIEW_DEAL_CHANGE_HISTORY_ON_LOAD,
       fun: (map) {
         Get.back();
-        locationList.clear();
-        channelList.clear();
+        // locationList.clear();
+        // channelList.clear();
         if (map != null && map.containsKey('dealChangeHistoryOnLoad')) {
           // //Year
           if (map["dealChangeHistoryOnLoad"]['lstLocation'] != null) {

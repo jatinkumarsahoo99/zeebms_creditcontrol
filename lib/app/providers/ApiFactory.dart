@@ -867,4 +867,36 @@ class ApiFactory {
 
   static String get VIEW_DEAL_CHANGE_HISTORY_GET_HISTORY =>
       "$BASE_URL/api/ViewDealChangeHistory/GetShowDealHistory";
+
+  /// ////////////////////////// Credit rate Master ////////////////////////////////
+  static String CREDIT_RATE_MASTER_RETRIEVE_RECORD(String Cr_name) =>
+      "$BASE_URL/api/CreditRateMaster/GetRetrieveRecord?CRCode=&CRName=$Cr_name";
+
+  static String get CREDIT_RATE_MASTER_SAVE_RECORD =>
+      "$BASE_URL/api/CreditRateMaster/PostSaveRecord";
+
+  /// ////////////////////////// spots not telecasted report ////////////////////////////////
+  ///
+  static String get SPOT_NOT_TELECASTED_REPORT_ONLOAD =>
+      "$BASE_URL/api/SNTReport/GetSpotsNotTelecastedLoad";
+
+  static String SPOT_NOT_TELECASTED_REPORT_GET_REPORT({
+    required String locationCode,
+    required String channelCode,
+    required String fromDate,
+    required String toDate,
+  }) =>
+      "$BASE_URL/api/SNTReport/GetGenrate?locationcode=$locationCode&channelcode=$channelCode&fromdate=$fromDate&todate=$toDate";
+
+  /// ////////////////////////// client group master ////////////////////////////////
+
+  static String get CLIENT_GROUP_MASTER_GET_CLIENT_NAME =>
+      "$BASE_URL/api/ClientGroupMaster/GetClientpageload?BmsClientName=";
+
+  static String CLIENT_GROUP_MASTER_GET_RECORD(
+          {required String groupCode, required String groupName}) =>
+      "$BASE_URL/api/ClientGroupMaster/GetRetrieveRecord?GroupCode=$groupCode&GroupName=$groupName";
+
+  static String get CLIENT_GROUP_MASTER_SAVE_RECORD =>
+      "$BASE_URL/api/ClientGroupMaster/PostSaveRecord";
 }

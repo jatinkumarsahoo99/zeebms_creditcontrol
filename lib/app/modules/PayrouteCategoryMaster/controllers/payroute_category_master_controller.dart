@@ -15,12 +15,13 @@ class PayrouteCategoryMasterController extends GetxController {
 
   final tecPayRouteCategory = TextEditingController().obs;
   var checkBoxSelected = false.obs;
-  FocusNode payRouteFocus = FocusNode(canRequestFocus: false);
+  FocusNode payRouteFocus = FocusNode();
   var checkBoxStringValue = "";
   var payrouteCategoryCode = "";
 
   @override
   void onInit() {
+    super.onInit();
     payRouteFocus.addListener(() {
       if (!payRouteFocus.hasFocus) {
         if (tecPayRouteCategory.value.text.isNotEmpty) {
@@ -28,17 +29,6 @@ class PayrouteCategoryMasterController extends GetxController {
         }
       }
     });
-    // payRouteFocus = FocusNode(
-    //   onKeyEvent: (node, event) {
-    //     if (event.logicalKey == LogicalKeyboardKey.tab) {
-    //       // getRetrieveRecord(payRouteName.text);
-    //       getRecord();
-    //       return KeyEventResult.ignored;
-    //     }
-    //     return KeyEventResult.ignored;
-    //   },
-    // );
-    super.onInit();
   }
 
   //  payRouteNameFN = FocusNode(
