@@ -67,6 +67,8 @@ abstract class RoutesList {
     _Paths.PLACE_MASTER,
     _Paths.STATION_MASTER,
     _Paths.VIEW_DEAL_CHANGE_HISTORY,
+    _Paths.CREDIT_RATE_MASTER,
+    _Paths.SPOTS_NOT_TELECASTED_REPORT,
   ];
 }
 

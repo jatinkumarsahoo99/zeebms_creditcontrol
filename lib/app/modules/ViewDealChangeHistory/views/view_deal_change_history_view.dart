@@ -43,7 +43,7 @@ class ViewDealChangeHistoryView
                         "Location",
                         .20,
                         // autoFocus: true,
-                        titleInLeft: true,
+                        // titleInLeft: true,
                         selected: controller.selectedLocation,
                       )),
                   Obx(() => DropDownField.formDropDown1WidthMap(
@@ -55,7 +55,7 @@ class ViewDealChangeHistoryView
                           // }
                         },
                         "Channel",
-                        titleInLeft: true,
+                        // titleInLeft: true,
                         .20,
                         selected: controller.selectedChannel,
                         // node
@@ -75,8 +75,8 @@ class ViewDealChangeHistoryView
                           controller.onClientLeave();
                         },
                         "Client",
-                        titleInLeft: true,
-                        .23,
+                        // titleInLeft: true,
+                        .30,
                         selected: controller.selectedClient,
                         // onFocusChange: (value) {
                         //   if (!value) {
@@ -91,7 +91,7 @@ class ViewDealChangeHistoryView
                         controller.selectedDealNo = data;
                       },
                           "Deal No",
-                          titleInLeft: true,
+                          // titleInLeft: true,
                           .15,
                           selected: controller.selectedDealNo)),
                 ],
