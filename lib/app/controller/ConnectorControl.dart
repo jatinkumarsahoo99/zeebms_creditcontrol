@@ -304,16 +304,6 @@ class ConnectorControl extends GetConnect {
         }
       } else if (response.statusCode == 417) {
         fun(response.data);
-      }else if (response.statusCode == 500) {
-        print("MI II>>" + response.data);
-        if (failed != null) {
-          failed(response.data);
-        }
-      } else if (response.statusCode == 401) {
-        print("MI II>>" + response.data);
-        if (failed != null) {
-          failed(failedMap);
-        }
       } else {
         print("Message is: >>1");
         fun(failedMap);
@@ -332,7 +322,14 @@ class ConnectorControl extends GetConnect {
         updateToken(() {
           POSTMETHOD(api: api, json: json, fun: fun);
         });
-      }else if ([400, 403].contains(e.response?.statusCode)) {
+      } else if (e.response?.statusCode == 500) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+          LoadingDialog.callErrorMessage1(msg: "500Internal Server Error");
+        }else{
+          LoadingDialog.callErrorMessage1(msg: "Internal Server Error");
+        }
+      } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
           Get.back();
         }
@@ -386,17 +383,7 @@ class ConnectorControl extends GetConnect {
         }
       } else if (response.statusCode == 417) {
         fun(response.data);
-      } else if (response.statusCode == 500) {
-        print("MI II>>" + response.data);
-        if (failed != null) {
-          failed(response.data);
-        }
-      } else if (response.statusCode == 401) {
-        print("MI II>>" + response.data);
-        if (failed != null) {
-          failed(failedMap);
-        }
-      }else {
+      } else {
         print("Message is: >>1");
         fun(failedMap);
       }
@@ -414,7 +401,14 @@ class ConnectorControl extends GetConnect {
         updateToken(() {
           POSTMETHOD(api: api, json: json, fun: fun);
         });
-      }else if ([400, 403].contains(e.response?.statusCode)) {
+      }else if (e.response?.statusCode == 500) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+          LoadingDialog.callErrorMessage1(msg: "500Internal Server Error");
+        }else{
+          LoadingDialog.callErrorMessage1(msg: "Internal Server Error");
+        }
+      } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
           Get.back();
         }
@@ -428,9 +422,11 @@ class ConnectorControl extends GetConnect {
           case DioErrorType.sendTimeout:
           case DioErrorType.receiveTimeout:
           case DioErrorType.unknown:
+            if(failed!=null)
             failed!(failedMap);
             break;
           case DioErrorType.badResponse:
+            if(failed!=null)
             failed!(e.response?.data ?? "");
         }
       }
