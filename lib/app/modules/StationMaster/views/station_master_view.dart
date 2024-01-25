@@ -9,7 +9,10 @@ import '../../../routes/app_pages.dart';
 import '../controllers/station_master_controller.dart';
 
 class StationMasterView extends GetView<StationMasterController> {
-  const StationMasterView({Key? key}) : super(key: key);
+  StationMasterView({Key? key}) : super(key: key);
+
+  StationMasterController controller =
+      Get.put<StationMasterController>(StationMasterController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,22 +40,31 @@ class StationMasterView extends GetView<StationMasterController> {
                     children: [
                       InputFields.formFieldExpand2(
                         hintTxt: "Station",
-                        controller: TextEditingController(),
+                        controller: controller.stationName,
                         titleSizeboxWidth: 90,
                         autoFocus: true,
+                        focusNode: controller.stationNameFN,
                       ),
-                      DropDownField.formDropDown1WidthMapExpand(
-                        [],
-                        (value) {},
-                        "Related Zone",
-                        titleSizeBoxWidth: 85,
+                      Obx(
+                        () => DropDownField.formDropDown1WidthMapExpand(
+                          controller.relatedZone.value,
+                          (value) {
+                            controller.selectRelatedZone.value = value;
+                          },
+                          "Related Zone",
+                          titleSizeBoxWidth: 85,
+                          selected: controller.selectRelatedZone.value,
+                          inkWellFocusNode: controller.relatedZoneFN,
+                        ),
                       ),
                       const SizedBox(
                         height: 10,
                       ),
                       Get.find<HomeController>().getCommonButton(
                         Routes.STATION_MASTER,
-                        (btnName) {},
+                        (btnName) {
+                          controller.formHandler(btnName);
+                        },
                       ),
                     ],
                   ),
