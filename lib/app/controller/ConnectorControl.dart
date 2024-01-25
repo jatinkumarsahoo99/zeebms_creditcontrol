@@ -284,7 +284,7 @@ class ConnectorControl extends GetConnect {
     }
   }
 
-  POSTMETHOD({required String api, dynamic? json, required Function fun}) async {
+  POSTMETHOD({required String api, dynamic? json, required Function fun,Function? failed}) async {
     try {
       print("API NAME:>" + api);
       service.Response response = await dio.post(
@@ -359,7 +359,7 @@ class ConnectorControl extends GetConnect {
     }
   }
 
-  GET_METHOD_WITH_PARAM({required String api, Map<String,dynamic>? json, required Function fun}) async {
+  GET_METHOD_WITH_PARAM({required String api, Map<String,dynamic>? json, required Function fun,Function? failed}) async {
     try {
       print("API NAME:>" + api);
       service.Response response = await dio.get(
@@ -422,9 +422,11 @@ class ConnectorControl extends GetConnect {
           case DioErrorType.sendTimeout:
           case DioErrorType.receiveTimeout:
           case DioErrorType.unknown:
+            if(failed!=null)
             failed!(failedMap);
             break;
           case DioErrorType.badResponse:
+            if(failed!=null)
             failed!(e.response?.data ?? "");
         }
       }

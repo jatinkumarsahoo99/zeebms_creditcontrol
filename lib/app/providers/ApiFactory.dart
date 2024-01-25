@@ -810,9 +810,6 @@ class ApiFactory {
   ///
   ///
   ///
-  /// //////////////////////////////// SALES EXECUTIVE MASTER ////////////////////////////////////
-  static String get SALES_EXECUTIVE_GET_SAPNAME =>
-      "$BASE_URL/api/SalesExecutiveMaster/GetSapName?SapName=";
 
   /// //////////////////////////////// Payroute category Master ////////////////////////////////////
   static String PAYROUTE_CATEGORY_MASTER_GET_RECORD(String categoryName) =>
@@ -899,4 +896,63 @@ class ApiFactory {
 
   static String get CLIENT_GROUP_MASTER_SAVE_RECORD =>
       "$BASE_URL/api/ClientGroupMaster/PostSaveRecord";
+
+  /// //////////////////////////////// SALES EXECUTIVE MASTER ////////////////////////////////////
+
+  static String get SALES_EXECUTIVE_GET_SAPNAME =>
+      "$BASE_URL/api/SalesExecutiveMaster/GetSapName?SapName=";
+
+  static String get SALES_EXECUTIVE_MASTER_DATA =>
+      "$BASE_URL/api/SalesExecutiveMaster/GetSalesExecutiveMasterLoad";
+
+  static String SALES_EXECUTIVE_DETAILS(String personalNo, String sapCode) =>
+      "$BASE_URL/api/SalesExecutiveMaster/GetRetrieveRecord?personnelcode=$personalNo&sapcode=$sapCode";
+
+  static String get SALES_EXECUTIVE_SAVE =>
+      "$BASE_URL/api/SalesExecutiveMaster/PostSaveRecord";
+
+  /// //////////////////////////////// CLIENT MASTER ////////////////////////////////////
+
+  static String get CLIENT_MASTER_MAIN_DATA =>
+      "$BASE_URL/api/ClientMaster/GetClientMasterLoad";
+
+  static String get CLIENT_MASTER_SEARCH_CLIENT =>
+      "$BASE_URL/api/ClientMaster/GetClientMaster?SearchText=";
+
+  static String get CLIENT_MASTER_SEARCH_EXECUTIVE =>
+      "$BASE_URL/api/ClientMaster/GetExecutiveCode?SearchText=";
+
+  static String get CLIENT_MASTER_SEARCH_AGENCY =>
+      "$BASE_URL/api/ClientMaster/GetAgency?SearchText=";
+
+  static String get CLIENT_MASTER_CHANNEL_LEAVE =>
+      "$BASE_URL/api/ClientMaster/GetLocationLeave?locationcode=";
+
+  static String CLIENT_MASTER_RETRIVE_DATA(
+      String clientId,
+      String clientName,
+      ) =>
+      "$BASE_URL/api/ClientMaster/GetRetrieveRecord?ClientCode=$clientId&ClientName=$clientName&FormName=frmClientMaster";
+
+  static String CLIENT_MASTER_SEARCH_PAYROUTE(
+      String locId,
+      String chlId,
+      ) =>
+      "$BASE_URL/api/ClientMaster/GetPayRoute?Locationcode=$locId&channelcode=$chlId&SearchText=";
+
+  static String CLIENT_MASTER_GET_PAYROUTE_CODE(
+      String locId,
+      String chlId,
+      String routeId,
+      ) =>
+      "$BASE_URL/api/ClientMaster/GetPayRouteCodeSelect?locationcode=$locId&ChannelCode=$chlId&PayRouteCode=$routeId";
+
+  static String get CLIENT_MASTER_UNBLOCK_CLIENT =>
+      "$BASE_URL/api/ClientMaster/PostUnblockclient";
+
+  static String get CLIENT_MASTER_BLOCK_CLIENT =>
+      "$BASE_URL/api/ClientMaster/Postblockclient";
+
+
+
 }
