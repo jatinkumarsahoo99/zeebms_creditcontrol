@@ -66,6 +66,8 @@ abstract class RoutesList {
     _Paths.G_S_T_PLANT_INFO,
     _Paths.PLACE_MASTER,
     _Paths.STATION_MASTER,
+    _Paths.CURRENCY_TYPE_MASTER,
+    _Paths.COMBO_DEAL_ENTRY,
     _Paths.VIEW_DEAL_CHANGE_HISTORY,
     _Paths.CREDIT_RATE_MASTER,
     _Paths.SPOTS_NOT_TELECASTED_REPORT,

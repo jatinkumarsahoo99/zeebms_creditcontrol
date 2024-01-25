@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
@@ -48,35 +49,67 @@ class CurrencyTypeMasterView extends GetView<CurrencyTypeMasterController> {
                               hintTxt: "Currency Name",
                               controller: controller.currencyName,
                               autoFocus: true,
+                              inputformatters: [
+                                UpperCaseTextFormatter(),
+                              ],
+                              focusNode: controller.currencyNameFN,
                             ),
                             InputFields.formFieldExpand2(
                               hintTxt: "Short Name",
                               controller: controller.shortName,
-                              // width: .24, // bottomPadding: false,
-                              // bottomPadding: false,
+                              focusNode: controller.shortNameFN,
                             ),
-                            InputFields.formField1(
-                              hintTxt: "Currency Code",
-                              controller: controller.crrrencyCode,
-                              width: .24, // bottomPadding: false,
+                            Obx(
+                              () => InputFields.formField1(
+                                hintTxt: "Currency Code",
+                                controller: controller.currencyCode,
+                                width: .24,
+                                maxLen: 10,
+                                focusNode: controller.currencyCodeFN,
+                                isEnable: controller.isCurrencyCode.value,
+                                inputformatters: [
+                                  FilteringTextInputFormatter.deny(
+                                      RegExp(r'\d')),
+                                ],
+                              ),
                             ),
-                            DropDownField.formDropDown1WidthMap(
-                              [],
-                              (value) {},
-                              "Location",
-                              .24,
+                            Obx(
+                              () => DropDownField.formDropDown1WidthMap(
+                                controller.location.value,
+                                (value) {
+                                  controller.selectLocation.value = value;
+                                },
+                                "Location",
+                                .24,
+                                selected: controller.selectLocation.value,
+                                dialogHeight: 250,
+                                inkWellFocusNode: controller.locationFN,
+                              ),
                             ),
                             InputFields.formField1(
                               hintTxt: "Lower Currency Name",
                               controller: controller.lowerCurrencyName,
-                              width: .24, // bottomPadding: false,
+                              width: .24,
+                              maxLen: 10,
+                              focusNode: controller.lowerCurrencyCodeFN,
                             ),
                             InputFields.formField1(
                               hintTxt: "Currency",
                               controller: controller.currency,
-                              width: .24, // bottomPadding: false,
+                              width: .24,
+                              maxLen: 3,
+                              focusNode: controller.currencyFN,
                             ),
-                            CheckBoxWidget1(title: "Default Currency"),
+                            Obx(() {
+                              return CheckBoxWidget1(
+                                title: "Default Currency",
+                                value: controller.isDefultCurrency.value,
+                                onChanged: (val) {
+                                  controller.isDefultCurrency.value =
+                                      !(controller.isDefultCurrency.value);
+                                },
+                              );
+                            }),
                           ],
                         ),
                       ),

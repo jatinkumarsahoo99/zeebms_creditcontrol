@@ -141,7 +141,7 @@ class StationMasterController extends GetxController {
             key: Key("Station Master"),
             screenName: "Station Master",
             appBarName: "Station Master",
-            strViewName: "Bms_view_payroutemaster",
+            strViewName: "vTesting",
             isAppBarReq: true,
           ),
         );
