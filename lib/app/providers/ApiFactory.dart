@@ -893,9 +893,8 @@ class ApiFactory {
   static String get CLIENT_GROUP_MASTER_GET_CLIENT_NAME =>
       "$BASE_URL/api/ClientGroupMaster/GetClientpageload?BmsClientName=";
 
-  static String CLIENT_GROUP_MASTER_GET_RECORD(
-          {required String groupCode, required String groupName}) =>
-      "$BASE_URL/api/ClientGroupMaster/GetRetrieveRecord?GroupCode=$groupCode&GroupName=$groupName";
+  static String CLIENT_GROUP_MASTER_GET_RECORD({required String groupName}) =>
+      "$BASE_URL/api/ClientGroupMaster/GetRetrieveRecord?GroupCode=&GroupName=$groupName";
 
   static String get CLIENT_GROUP_MASTER_SAVE_RECORD =>
       "$BASE_URL/api/ClientGroupMaster/PostSaveRecord";

@@ -1,3 +1,4 @@
+import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -50,29 +51,36 @@ class ClientGroupMasterView extends GetView<ClientGroupMasterController> {
                                   controller: controller.tecGroupName.value,
                                   // titleInLeft: true,
                                   titleSizeboxWidth: 90,
+                                  inputformatters: [UpperCaseTextFormatter()],
+                                  focusNode: controller.groupNameFN,
                                   // bottomPadding: false,
+                                  // capital: true,
                                 ),
                               ),
                               Obx(
                                 () => InputFields.formFieldExpand2(
-                                  hintTxt: "Short Name",
-                                  controller: controller.tecShortName.value,
-                                  // titleInLeft: true,
-                                  titleSizeboxWidth: 90,
-                                  // bottomPadding: false,
-                                ),
+                                    hintTxt: "Short Name",
+                                    controller: controller.tecShortName.value,
+                                    // titleInLeft: true,
+                                    titleSizeboxWidth: 90,
+                                    inputformatters: [UpperCaseTextFormatter()]
+                                    // bottomPadding: false,
+                                    ),
                               ),
                               DropDownField.formDropDownSearchAPI2Expand(
                                 GlobalKey(),
                                 context,
                                 title: "Client Name",
-                                url: "",
+                                url: ApiFactory
+                                    .CLIENT_GROUP_MASTER_GET_CLIENT_NAME,
                                 onchanged: (value) {
                                   controller.selectedClientName = value;
                                 },
                                 // titleInLeft: true,
                                 textSizeboxWidth: 95,
                                 selectedValue: controller.selectedClientName,
+                                parseKeyForKey: "ClientCode",
+                                parseKeyForValue: "ClientName",
                               ),
                               SizedBox(
                                 height: 10,
@@ -104,6 +112,7 @@ class ClientGroupMasterView extends GetView<ClientGroupMasterController> {
                                         height: Get.height * 0.35,
                                         child: DataGridFromMap3(
                                           mapData: controller.gridData.value,
+                                          // showSrNo: false,
                                           //     .map((e) {
                                           //   if (e["changedon"] != null) {
                                           //     e['changedon'] = DateFormat(
@@ -138,7 +147,9 @@ class ClientGroupMasterView extends GetView<ClientGroupMasterController> {
                                         width: 80,
                                         child: FormButton(
                                           btnText: "Add",
-                                          callback: () {},
+                                          callback: () {
+                                            controller.onAdd();
+                                          },
                                           showIcon: false,
                                         ),
                                       ),
@@ -162,7 +173,9 @@ class ClientGroupMasterView extends GetView<ClientGroupMasterController> {
                               ),
                               Get.find<HomeController>().getCommonButton(
                                 Routes.CLIENT_GROUP_MASTER,
-                                (btnName) {},
+                                (btnName) {
+                                  controller.formHandler(btnName);
+                                },
                               ),
                             ],
                           ),
