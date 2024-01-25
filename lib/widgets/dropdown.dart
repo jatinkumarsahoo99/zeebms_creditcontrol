@@ -2513,6 +2513,8 @@ class DropDownField {
     }
 
     inkwellFocus ??= FocusNode();
+    final _scrollController = ScrollController();
+
     return Column(
       key: widgetKey,
       mainAxisSize: MainAxisSize.min,
@@ -2622,49 +2624,56 @@ class DropDownField {
                                             ? Center(
                                                 child: Text(msg.value!),
                                               )
-                                            : ListView(
-                                                shrinkWrap: true,
-                                                children: items
-                                                    .map(
-                                                      (element) => InkWell(
-                                                        onTap: () {
-                                                          Navigator.pop(
-                                                              context);
-                                                          selectedValue =
-                                                              DropDownValue(
-                                                            key: element[
-                                                                    parseKeyForKey]
-                                                                .toString(),
-                                                            value: element[
-                                                                    parseKeyForValue]
-                                                                .toString(),
-                                                          );
-                                                          re(() {});
-                                                          FocusScope.of(context)
-                                                              .requestFocus(
-                                                                  inkwellFocus);
-                                                          onchanged(
-                                                              selectedValue!);
-                                                        },
-                                                        child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  vertical: 8),
-                                                          child: Text(
-                                                            (element[parseKeyForValue] ??
-                                                                    "null")
-                                                                .toString(),
-                                                            style: TextStyle(
-                                                              fontSize: SizeDefine
-                                                                      .dropDownFontSize -
-                                                                  1,
+                                            : Scrollbar(
+                                                thumbVisibility: true,
+                                                controller: _scrollController,
+                                                child: ListView(
+                                                  controller: _scrollController,
+                                                  shrinkWrap: true,
+                                                  children: items
+                                                      .map(
+                                                        (element) => InkWell(
+                                                          onTap: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                            selectedValue =
+                                                                DropDownValue(
+                                                              key: element[
+                                                                      parseKeyForKey]
+                                                                  .toString(),
+                                                              value: element[
+                                                                      parseKeyForValue]
+                                                                  .toString(),
+                                                            );
+                                                            re(() {});
+                                                            FocusScope.of(
+                                                                    context)
+                                                                .requestFocus(
+                                                                    inkwellFocus);
+                                                            onchanged(
+                                                                selectedValue!);
+                                                          },
+                                                          child: Padding(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        8),
+                                                            child: Text(
+                                                              (element[parseKeyForValue] ??
+                                                                      "null")
+                                                                  .toString(),
+                                                              style: TextStyle(
+                                                                fontSize: SizeDefine
+                                                                        .dropDownFontSize -
+                                                                    1,
+                                                              ),
                                                             ),
                                                           ),
                                                         ),
-                                                      ),
-                                                    )
-                                                    .toList(),
+                                                      )
+                                                      .toList(),
+                                                ),
                                               );
                                       },
                                     ),

@@ -229,7 +229,7 @@ class PlaceMasterController extends GetxController {
             key: Key("Place Master"),
             screenName: "Place Master",
             appBarName: "Place Master",
-            strViewName: "Bms_view_payroutemaster",
+            strViewName: "vTesting",
             isAppBarReq: true,
           ),
         );

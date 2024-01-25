@@ -21,10 +21,14 @@ class Utils {
   static String twoDigitsString(String n) => n.padLeft(2, "0");
 
   static toDateFormat(String? date, {bool? isStringRequired}) {
-    final DateTime formatter = DateFormat("yyyy-MM-dd\'T\'HH:mm:ss").parse(date!);
+    final DateTime formatter =
+        DateFormat("yyyy-MM-dd\'T\'HH:mm:ss").parse(date!);
     // log(">>>>>>"+formatter.toString());
-    return (isStringRequired != null && isStringRequired) ? formatter.toString() : formatter;
+    return (isStringRequired != null && isStringRequired)
+        ? formatter.toString()
+        : formatter;
   }
+
   static toDateFormat4(String? date) {
     String? formatter;
     if (date != null && date != "") {
@@ -38,55 +42,63 @@ class Utils {
   }
 
   static String getMMDDYYYYFromDDMMYYYYInString1(String? ddMMYYYY) {
-    if(ddMMYYYY != null && ddMMYYYY != ""){
-      return DateFormat("MM/dd/yyyy").format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
-    }else{
+    if (ddMMYYYY != null && ddMMYYYY != "") {
+      return DateFormat("MM/dd/yyyy")
+          .format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
+    } else {
       return "";
     }
-
   }
 
   static String getMMDDYYYYFromDDMMYYYYInString(String ddMMYYYY) {
-    return DateFormat("yyyy-MM-dd").format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
+    return DateFormat("yyyy-MM-dd")
+        .format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
   }
 
   static toDateFormat1(String date, {bool? isStringRequired}) {
-    final DateTime formatter = DateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS").parse(date);
+    final DateTime formatter =
+        DateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS").parse(date);
     // log(">>>>>>"+formatter.toString());
-    return (isStringRequired != null && isStringRequired) ? formatter.toString() : formatter;
+    return (isStringRequired != null && isStringRequired)
+        ? formatter.toString()
+        : formatter;
   }
 
   static toDateFormat3(DateTime? date) {
-    final String formatter = DateFormat("dd-MMM-yyyy").format(date ?? DateTime.now());
+    final String formatter =
+        DateFormat("dd-MMM-yyyy").format(date ?? DateTime.now());
     // log(">>>>>>"+formatter.toString());
     return formatter;
   }
 
-  static bool listCompare({required List<dynamic> sourceList,required List<dynamic> compareList}){
+  static bool listCompare(
+      {required List<dynamic> sourceList, required List<dynamic> compareList}) {
     bool sta = false;
-    if(sourceList.isNotEmpty && compareList.isNotEmpty){
-      if(sourceList.length > compareList.length){
+    if (sourceList.isNotEmpty && compareList.isNotEmpty) {
+      if (sourceList.length > compareList.length) {
         return !sta;
       }
 
-      for(int i=0;i<sourceList.length;i++){
-        if(sta){
+      for (int i = 0; i < sourceList.length; i++) {
+        if (sta) {
           break;
         }
-        for(int j=0;j<compareList.length;j++){
-          if(sourceList[i].toString().toLowerCase().trim() == compareList[j].toString().toLowerCase().trim()){
+        for (int j = 0; j < compareList.length; j++) {
+          if (sourceList[i].toString().toLowerCase().trim() ==
+              compareList[j].toString().toLowerCase().trim()) {
             break;
-          }else if((j == compareList.length-1) && (sourceList[i].toString().toLowerCase().trim() !=
-              compareList[j].toString().toLowerCase().trim())){
+          } else if ((j == compareList.length - 1) &&
+              (sourceList[i].toString().toLowerCase().trim() !=
+                  compareList[j].toString().toLowerCase().trim())) {
             sta = true;
             break;
-          }else{
+          } else {
             continue;
           }
         }
       }
       return !sta;
-    }else{
+    } else {
       return !sta;
     }
   }
@@ -100,15 +112,23 @@ class Utils {
 
   static int calculateDifference(DateTime date) {
     DateTime now = DateTime.now();
-    return DateTime(date.year, date.month, date.day).difference(DateTime(now.year, now.month, now.day)).inDays;
+    return DateTime(date.year, date.month, date.day)
+        .difference(DateTime(now.year, now.month, now.day))
+        .inDays;
   }
 
   static DateTime dateJoin(DateTime date, TimeOfDay time) {
-    return new DateTime(date.year, date.month, date.day, time.hour, time.minute);
+    return new DateTime(
+        date.year, date.month, date.day, time.hour, time.minute);
   }
 
-  static List<T> modelBuilder<M, T>(List<M> models, T Function(int index, M model) builder) =>
-      models.asMap().map<int, T>((index, model) => MapEntry(index, builder(index, model))).values.toList();
+  static List<T> modelBuilder<M, T>(
+          List<M> models, T Function(int index, M model) builder) =>
+      models
+          .asMap()
+          .map<int, T>((index, model) => MapEntry(index, builder(index, model)))
+          .values
+          .toList();
 
   static String getDuration({required int minute}) {
     if (minute == null || minute == 0) return "00:00:00:00";
@@ -118,20 +138,23 @@ class Utils {
     String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
     String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
 
-    String val = "${twoDigits(duration.inDays)}:${twoDigits(duration.inHours.remainder(24))}:$twoDigitMinutes:$twoDigitSeconds";
+    String val =
+        "${twoDigits(duration.inDays)}:${twoDigits(duration.inHours.remainder(24))}:$twoDigitMinutes:$twoDigitSeconds";
     log(":Result>>>>>" + val);
     return val;
   }
-  static String getPageRouteName(){
-    try{
+
+  static String getPageRouteName() {
+    try {
       String extractName = (html.window.location.href.split("?")[0])
           .split(ApiFactory.SPLIT_CLEAR_PAGE)[1];
       print(">>>>>>>formName$extractName");
       return extractName;
-    }catch(e){
+    } catch (e) {
       return "";
     }
   }
+
   static String normalCaseToPascalCase(String input) {
     List<String> words = input.split(' ');
     List<String> pascalCaseWords = [];
@@ -178,9 +201,11 @@ class Utils {
     String twoDigitFrame = twoDigits(duration.inSeconds.remainder(25));
     String val;
     if (second < 1200000) {
-      val = "${twoDigits(duration.inHours.remainder(24))}:$twoDigitMinutes:$twoDigitSeconds:$twoDigitFrame";
+      val =
+          "${twoDigits(duration.inHours.remainder(24))}:$twoDigitMinutes:$twoDigitSeconds:$twoDigitFrame";
     } else {
-      val = "${duration.inHours}:$twoDigitMinutes:$twoDigitSeconds:$twoDigitFrame";
+      val =
+          "${duration.inHours}:$twoDigitMinutes:$twoDigitSeconds:$twoDigitFrame";
     }
     log(":Result>>>>>" + val);
     return val;
@@ -197,7 +222,8 @@ class Utils {
     // String twoDigitFrame = twoDigits(duration.inSeconds.remainder(25));
     String val;
     if (second < 1200000) {
-      val = "${twoDigits(duration.inHours.remainder(24))}:$twoDigitMinutes:$twoDigitSeconds";
+      val =
+          "${twoDigits(duration.inHours.remainder(24))}:$twoDigitMinutes:$twoDigitSeconds";
     } else {
       val = "${duration.inHours}:$twoDigitMinutes:$twoDigitSeconds";
     }
@@ -213,12 +239,14 @@ class Utils {
     String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
     String twoDigitFrame = twoDigits(duration.inSeconds.remainder(24));
 
-    String val = "${twoDigits(duration.inHours.remainder(24))}:$twoDigitMinutes:$twoDigitSeconds:$twoDigitFrame";
+    String val =
+        "${twoDigits(duration.inHours.remainder(24))}:$twoDigitMinutes:$twoDigitSeconds:$twoDigitFrame";
     log(":Result>>>>>" + val);
     return val;
   }
 
-  static List<DateTime> getDiffDates({required DateTime startDt, required DateTime endDt}) {
+  static List<DateTime> getDiffDates(
+      {required DateTime startDt, required DateTime endDt}) {
     int daysToGenerate = endDt.difference(startDt).inDays;
     if (daysToGenerate == 0) {
       daysToGenerate = 1;
@@ -226,7 +254,8 @@ class Utils {
       daysToGenerate = daysToGenerate + 2;
     }
     print("Days count>>>" + daysToGenerate.toString());
-    List<DateTime> days = List.generate(daysToGenerate, (i) => startDt.add(Duration(days: i)));
+    List<DateTime> days =
+        List.generate(daysToGenerate, (i) => startDt.add(Duration(days: i)));
     return days;
   }
 
@@ -307,14 +336,20 @@ class Utils {
           Duration duration = Duration(
               hours: int.tryParse(list[0])!,
               minutes: int.tryParse(list[1])!,
-              seconds: int.tryParse(list[2])! + (((int.tryParse(list[3])!) == 0) ? 0 : ((int.tryParse(list[3])! / 24).round())));
+              seconds: int.tryParse(list[2])! +
+                  (((int.tryParse(list[3])!) == 0)
+                      ? 0
+                      : ((int.tryParse(list[3])! / 24).round())));
           return duration.inSeconds;
         } catch (e) {
           return 0;
         }
       } else if (list.length == 3) {
         try {
-          Duration duration = Duration(hours: int.tryParse(list[0])!, minutes: int.tryParse(list[1])!, seconds: int.tryParse(list[2])!);
+          Duration duration = Duration(
+              hours: int.tryParse(list[0])!,
+              minutes: int.tryParse(list[1])!,
+              seconds: int.tryParse(list[2])!);
           return duration.inSeconds;
         } catch (e) {
           return 0;
@@ -335,14 +370,20 @@ class Utils {
           Duration duration = Duration(
               hours: int.tryParse(list[0])!,
               minutes: int.tryParse(list[1])!,
-              seconds: int.tryParse(list[2])! + (((int.tryParse(list[3])!) == 0) ? 0 : ((int.tryParse(list[3])! / 24).round())));
+              seconds: int.tryParse(list[2])! +
+                  (((int.tryParse(list[3])!) == 0)
+                      ? 0
+                      : ((int.tryParse(list[3])! / 24).round())));
           return duration.inMinutes;
         } catch (e) {
           return 0;
         }
       } else if (list.length == 3) {
         try {
-          Duration duration = Duration(hours: int.tryParse(list[0])!, minutes: int.tryParse(list[1])!, seconds: int.tryParse(list[2])!);
+          Duration duration = Duration(
+              hours: int.tryParse(list[0])!,
+              minutes: int.tryParse(list[1])!,
+              seconds: int.tryParse(list[2])!);
           return duration.inMinutes;
         } catch (e) {
           return 0;
@@ -358,7 +399,8 @@ class Utils {
   static captionName(String programName, int i, int seg) {
     return ((programName.length > 5)
         ? programName.substring(0, 5)
-        : programName.substring(0, programName.length) + (" # S" + (i.toString() + ("/" + seg.toString()))));
+        : programName.substring(0, programName.length) +
+            (" # S" + (i.toString() + ("/" + seg.toString()))));
   }
 
   static removeLastChar(String data, int howManyDigit) {
@@ -382,7 +424,8 @@ class Utils {
     }
   }
 
-  static String dateFormatChange(String date, String existFormat, String reqFormat) {
+  static String dateFormatChange(
+      String date, String existFormat, String reqFormat) {
     if (date != "") {
       //try {
       DateTime currentFormat = DateFormat(existFormat).parse(date);
@@ -400,7 +443,8 @@ class Utils {
       return null;
     }
     List<String> listRgb = colorString.split(",");
-    return Color.fromRGBO(int.tryParse(listRgb[0])!, int.tryParse(listRgb[1])!, int.tryParse(listRgb[2])!, 1);
+    return Color.fromRGBO(int.tryParse(listRgb[0])!, int.tryParse(listRgb[1])!,
+        int.tryParse(listRgb[2])!, 1);
   }
 
   static timeCallback(controller, context) async {
@@ -448,16 +492,21 @@ class Utils {
 
   static checkPermission() {
     if (Get.find<HomeController>().selectChild != null) {
-      print("Resposss>>>" + jsonEncode(Get.find<HomeController>().selectChild?.toJson()));
-      PermissionModel? permissionModel =
-      Get.find<MainController>().permissionList?.lastWhere((element) => element.appFormName == Get.find<HomeController>().selectChild?.key);
+      print("Resposss>>>" +
+          jsonEncode(Get.find<HomeController>().selectChild?.toJson()));
+      PermissionModel? permissionModel = Get.find<MainController>()
+          .permissionList
+          ?.lastWhere((element) =>
+              element.appFormName ==
+              Get.find<HomeController>().selectChild?.key);
       return permissionModel;
     } else {
       return null;
     }
   }
 
-  static double getColumnSize({required String key, dynamic value, double? widthRatio = 120}) {
+  static double getColumnSize(
+      {required String key, dynamic value, double? widthRatio = 120}) {
     value ??= "";
     // print(key);
     try {
@@ -465,11 +514,14 @@ class Utils {
         return 45;
       } else if (key.toLowerCase().contains("locationname")) {
         return 80;
-      } else if (key.toLowerCase().contains("segment") || key.toLowerCase().contains("client")) {
+      } else if (key.toLowerCase().contains("segment") ||
+          key.toLowerCase().contains("client")) {
         return 220;
-      } else if (key.toLowerCase().contains("name") || key.toLowerCase().contains("program")) {
+      } else if (key.toLowerCase().contains("name") ||
+          key.toLowerCase().contains("program")) {
         return 280;
-      } else if (value is num || (value is String && num.tryParse(value) != null)) {
+      } else if (value is num ||
+          (value is String && num.tryParse(value) != null)) {
         return 45;
       } else if (key.toLowerCase().contains("date")) {
         return 45;
@@ -481,7 +533,8 @@ class Utils {
     return 120;
   }
 
-  static double getColumnSize1({required String key, dynamic value, double? widthRatio = 120}) {
+  static double getColumnSize1(
+      {required String key, dynamic value, double? widthRatio = 120}) {
     value ??= "";
 
     try {
@@ -489,9 +542,11 @@ class Utils {
         return 30;
       } else if (key.toLowerCase().contains("locationname")) {
         return 80;
-      } else if (key.toLowerCase().contains("time") || key.toLowerCase().contains("program")) {
+      } else if (key.toLowerCase().contains("time") ||
+          key.toLowerCase().contains("program")) {
         return 120;
-      } else if (value is num || (value is String && num.tryParse(value) != null)) {
+      } else if (value is num ||
+          (value is String && num.tryParse(value) != null)) {
         return 45;
       } else if (key.toLowerCase().contains("date")) {
         return 100;
@@ -520,8 +575,11 @@ class Utils {
     var formName = dashboardController.selectChild1.value!.name!;
 
     print('formmmm =======================>>>> $formName');
-    formPermissions =
-        Get.find<MainController>().permissionList!.where((element) => (element.displayName == formName || element.formName! == formName)).toList();
+    formPermissions = Get.find<MainController>()
+        .permissionList!
+        .where((element) =>
+            (element.displayName == formName || element.formName! == formName))
+        .toList();
     print(formPermissions.length.toString() + " Permissions Found");
 
     return formPermissions;
@@ -530,7 +588,10 @@ class Utils {
   static List<PermissionModel> fetchPermissions1(String formName) {
     List<PermissionModel> formPermissions;
     print('formmmm =======================>>>> $formName');
-    formPermissions = Get.find<MainController>().permissionList!.where((element) => (element.appFormName == formName)).toList();
+    formPermissions = Get.find<MainController>()
+        .permissionList!
+        .where((element) => (element.appFormName == formName))
+        .toList();
     print(formPermissions.length.toString() + " Permissions Found");
 
     return formPermissions;
@@ -557,7 +618,8 @@ class Utils {
     return value;
   }
 
-  static btnAccessHandler2(btn, HomeController controller, PermissionModel formPermissions) {
+  static btnAccessHandler2(
+      btn, HomeController controller, PermissionModel formPermissions) {
     print('Here= ================?????');
     print('permission ===> ${jsonEncode(formPermissions)}');
     //default btns
@@ -599,11 +661,13 @@ class Utils {
   }
 
   static callJSToExit({String? param}) {
-    js.context.callMethod('fromFlutter', [param ?? "exit", ApiFactory.NOTIFY_URL]);
+    js.context
+        .callMethod('fromFlutter', [param ?? "exit", ApiFactory.NOTIFY_URL]);
   }
 
   static String getFormName() {
-    return (html.window.location.href.split("?")[0]).split(ApiFactory.SPLIT_CLEAR_PAGE)[1];
+    return (html.window.location.href.split("?")[0])
+        .split(ApiFactory.SPLIT_CLEAR_PAGE)[1];
   }
 
   static String convertToTimeFromDouble({required num value}) {
@@ -659,9 +723,12 @@ class Utils {
     num second = 0;
     List<String> str = value.split(":");
     if ((str.length == 3)) {
-      second = ((int.tryParse(str[0])! * (60 * 60)) + ((int.tryParse(str[1])! * 60) + int.tryParse(str[2])!));
+      second = ((int.tryParse(str[0])! * (60 * 60)) +
+          ((int.tryParse(str[1])! * 60) + int.tryParse(str[2])!));
     } else if ((str.length == 4)) {
-      second = ((int.tryParse(str[0])! * (60 * 60)) + ((int.tryParse(str[1])! * 60) + (int.tryParse(str[2])! + (int.tryParse(str[3])! / 25))));
+      second = ((int.tryParse(str[0])! * (60 * 60)) +
+          ((int.tryParse(str[1])! * 60) +
+              (int.tryParse(str[2])! + (int.tryParse(str[3])! / 25))));
     }
     return second;
   }
@@ -675,14 +742,16 @@ class Utils {
         var splitString = dateString.split("/");
         if (splitString.length == 3) {
           if (!splitString.any((element) => int.tryParse(element) == null)) {
-            _date = DateTime(int.parse(splitString[2]), int.parse(splitString[1]), int.parse(splitString[0]));
+            _date = DateTime(int.parse(splitString[2]),
+                int.parse(splitString[1]), int.parse(splitString[0]));
           }
         }
       } else if (dateString.contains("-")) {
         var splitString = dateString.split("-");
         if (splitString.length == 3) {
           if (!splitString.any((element) => int.tryParse(element) == null)) {
-            _date = DateTime(int.parse(splitString[2]), int.parse(splitString[1]), int.parse(splitString[0]));
+            _date = DateTime(int.parse(splitString[2]),
+                int.parse(splitString[1]), int.parse(splitString[0]));
           }
         }
       }
@@ -709,5 +778,15 @@ class Utils {
       data = "Sunday";
     }
     return data;
+  }
+
+  static String capitalizeWords(String input) {
+    List<String> words = input.split(' ');
+
+    for (int i = 0; i < words.length; i++) {
+      words[i] = words[i][0].toUpperCase() + words[i].substring(1);
+    }
+
+    return words.join(' ');
   }
 }

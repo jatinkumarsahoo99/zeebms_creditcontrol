@@ -843,4 +843,40 @@ class ApiFactory {
       "$BASE_URL/api/StationMaster/PostSave";
 
   /// ////////////////////////// End Station Master Model////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start Currency Type Master Model////////////////////////////////
+  static String get CURRENCY_TYPE_MASTER_INITIAL_LOAD =>
+      "$BASE_URL/api/CurrencyTypeMaster/Initialload";
+  static String CURRENCY_TYPE_MASTER_LEAVE_CURRENCY_NAME(String currencyName) =>
+      "$BASE_URL/api/CurrencyTypeMaster/CurrencyTypeLeave?CurrencyName=$currencyName";
+  static String CURRENCY_TYPE_MASTER_FEATCH_CURRENCY(String currencyName) =>
+      "$BASE_URL/api/CurrencyTypeMaster/FetchCurrency?CurrencyName=$currencyName";
+  static String get CURRENCY_TYPE_MASTER_SAVE_DATA =>
+      "$BASE_URL/api/CurrencyTypeMaster/SaveData";
+
+  /// ////////////////////////// End Currency Type Master Model////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start Combo Deal Entry Model////////////////////////////////
+  static String get COMBO_DEAL_ENTRY_SEARCH_CLIENT =>
+      "$BASE_URL/api/ComboDealEntry/GetClient?SearchText=";
+  static String COMBO_DEAL_ENTRY_SEARCH_CLIENT1(String searchText) =>
+      "$BASE_URL/api/ComboDealEntry/GetClient?SearchText=${Uri.encodeQueryComponent(searchText)}";
+  static String COMBO_DEAL_ENTRY_GET_AGENCY(String clientCode) =>
+      "$BASE_URL/api/ComboDealEntry/GetClientLeave?ClientCode=$clientCode";
+  static String COMBO_DEAL_ENTRY_GET_AGENCY_LEAVE(
+          String clientCode, String agencyCode, String groupdate) =>
+      "$BASE_URL/api/ComboDealEntry/GetAgencyLeave?ClientCode=$clientCode&AgencyCode=$agencyCode&Groupdate=$groupdate";
+  static String COMBO_DEAL_ENTRY_GET_DEALS_CONTENT_CLICK(String dealcode,
+          String locationcode, String channelcode, String dealnumber) =>
+      "$BASE_URL/api/ComboDealEntry/GetDealsContentClick?dealcode=$dealcode&locationcode=$locationcode&channelcode=$channelcode&dealnumber=$dealnumber";
+  static String COMBO_DEAL_ENTRY_GROUP_NUMBER_LEAVE(String groupNumber) =>
+      "$BASE_URL/api/ComboDealEntry/GetGroupNumberLeave?GroupNumber=$groupNumber";
+  static String get COMBO_DEAL_ENTRY_SAVE_RECORD =>
+      "$BASE_URL/api/ComboDealEntry/PostSaveRecord";
+
+  /// ////////////////////////// End Combo Deal Entry Model////////////////////////////////
 }
