@@ -45,10 +45,20 @@ class Utils {
     }
 
   }
+  static String getMMDDYYYYFromDDMMYYYYInString2(String? ddMMYYYY) {
+    if(ddMMYYYY != null && ddMMYYYY != ""){
+      return DateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS").format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
+    }else{
+      return "";
+    }
+
+  }
 
   static String getMMDDYYYYFromDDMMYYYYInString(String ddMMYYYY) {
     return DateFormat("yyyy-MM-dd").format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
   }
+
+
 
   static toDateFormat1(String date, {bool? isStringRequired}) {
     final DateTime formatter = DateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS").parse(date);
@@ -62,33 +72,43 @@ class Utils {
     return formatter;
   }
 
-  static bool listCompare({required List<dynamic> sourceList,required List<dynamic> compareList}){
+  static List<dynamic> listCompare({required List<dynamic> sourceList,required List<dynamic> compareLst}){
     bool sta = false;
-    if(sourceList.isNotEmpty && compareList.isNotEmpty){
-      if(sourceList.length > compareList.length){
-        return !sta;
-      }
-
-      for(int i=0;i<sourceList.length;i++){
-        if(sta){
-          break;
+    List<dynamic> compareList  = (compareLst.where((element) => element.toString().toLowerCase().trim() != "null").toList());
+    try{
+      if(sourceList.isNotEmpty && compareList != null && compareList.isNotEmpty){
+        if(sourceList.length > compareList.length){
+          return [sta,"No of columns not found as we excepted"];
         }
-        for(int j=0;j<compareList.length;j++){
-          if(sourceList[i].toString().toLowerCase().trim() == compareList[j].toString().toLowerCase().trim()){
+
+        for(int i=0;i<sourceList.length;i++){
+          if(sta){
             break;
-          }else if((j == compareList.length-1) && (sourceList[i].toString().toLowerCase().trim() !=
-              compareList[j].toString().toLowerCase().trim())){
-            sta = true;
-            break;
-          }else{
+          }
+          for(int j=0;j<(compareList).length;j++){
+            /*if(compareList[j].toString().toLowerCase().trim() == "null"){
             continue;
+          }*/
+            if(sourceList[i].toString().toLowerCase().trim() == compareList[j].toString().toLowerCase().trim()){
+              break;
+            }else if((j == compareList.length-1) && (sourceList[i].toString().toLowerCase().trim() !=
+                compareList[j].toString().toLowerCase().trim())){
+              sta = true;
+              break;
+            }else{
+              continue;
+            }
           }
         }
+        return [!sta,(sta)?"Invalid excel format\nHeader name not found as we excepted":"Valid"];
       }
-      return !sta;
-    }else{
-      return !sta;
+      else{
+        return [!sta,"Invalid excel format"];
+      }
+    }catch(e){
+      return [!sta,"Invalid excel format"];
     }
+
   }
 
   static bool isNumeric(String s) {

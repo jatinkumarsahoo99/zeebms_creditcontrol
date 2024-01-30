@@ -738,6 +738,16 @@ class ApiFactory {
   static String get GST_PLANT_INFO_SAVE =>
       "$BASE_URL/api/GstPlantInfo/PostSave";
 
+  /// //////////////////// Place Type Master //////////////////////////
+  static String get PLACE_TYPE_MASTER_GET_RETRIEVE_RECORD => "$BASE_URL/api/PlaceTypeMaster/GetRetrieveRecord";
+  static String get PLACE_TYPE_MASTER_POST_SAVE => "$BASE_URL/api/PlaceTypeMaster/PostSave";
+
+  /// //////////////// Deal Report //////////////////////
+  static String get DEAL_REPORT_LOAD => "$BASE_URL/api/DealReport/GetDealReportOnLoad";
+  static String get DEAL_REPORT_CHANNEL_LEAVE => "$BASE_URL/api/DealReport/GetChannelLeave";
+  static String get DEAL_REPORT_CLIENT_LEAVE => "$BASE_URL/api/DealReport/GetClientLeave";
+  static String get DEAL_REPORT_CLIENT_GENERATE => "$BASE_URL/api/DealReport/GetGenrate";
+
   /// //////////////////////////////// SALES EXECUTIVE MASTER ////////////////////////////////////
 
   static String get SALES_EXECUTIVE_GET_SAPNAME =>

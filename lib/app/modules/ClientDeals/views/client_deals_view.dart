@@ -1448,16 +1448,9 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                   decoration: BoxDecoration(
                                     border: Border.all(color: Colors.grey),
                                   ),
-                                  child: (controller.clientDealRetrieveModel !=
+                                  child: (controller.importGridList !=
                                       null &&
-                                      controller.clientDealRetrieveModel?.
-                                      agencyLeaveModel != null &&
-                                      controller.clientDealRetrieveModel
-                                          ?.agencyLeaveModel?.newDetails !=
-                                          null &&
-                                      (controller.clientDealRetrieveModel
-                                          ?.agencyLeaveModel?.newDetails
-                                          ?.length ??
+                                      (controller.importGridList?.length ??
                                           0) > 0) ?
                                   DataGridFromMap(
                                     showSrNo: true,
@@ -1490,7 +1483,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       controller.stateManager =
                                           load.stateManager;
                                     },
-                                  ) : Container(),
+                                  ):Container(),
                                 );
                               },
                             ),

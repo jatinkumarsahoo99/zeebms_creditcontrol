@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
@@ -28,32 +29,23 @@ class PlaceTypeMasterView extends GetView<PlaceTypeMasterController> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 AppBar(
-                  title: Text('Client Embargo'),
+                  title: Text('Place Type Master'),
                   centerTitle: true,
                   backgroundColor: Colors.deepPurple,
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    // mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children:[
-                        DropDownField.formDropDownSearchAPI2(
-                            GlobalKey(), context,
-                            title: "Place Type",
-                            autoFocus: false,
-                            customInData: "empList",
-                            url: "",
-                            // inkwellFocus: controllerX.employeeFocus,
-                            // parseKeyForTitle: "programName",
-                            parseKeyForKey: "employeecode",
-                            parseKeyForValue: "employeename",
-                            // selectedValue: controllerX.selectedEmployee.value,
-                            onchanged: (data) {},
-                            width: (Get.width * 0.4)),
-                      ]
-                  ),
+                SizedBox(
+                  height: 5,
                 ),
+                InputFields.formField1WidthBox(
+                    hintTxt: "Place Type",
+                    controller: controllerX.placeTypeMasterController,
+                    // width: 0.4,
+                    // titleInLeft: true,
+                    // titleSizeboxWidth: 45,
+                    // fieldWidth: 0.1,
+                     focus: controllerX.placeTypeFocus,
+                     capital: true,
+                     widthRatio: 0.4),
                 SizedBox(height: 6),
 
                 /// bottom common buttons

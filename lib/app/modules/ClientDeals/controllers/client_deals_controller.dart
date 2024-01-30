@@ -226,7 +226,6 @@ class ClientDealsController extends GetxController {
                 accountList.addAll(dataList);
                 accountList.refresh();
               }
-
             }
           },
           failed: (map) {
@@ -272,7 +271,7 @@ class ClientDealsController extends GetxController {
     }
   }
 
-  Future<String>clientsLeave() {
+  Future<String> clientsLeave() {
     Completer<String> completer = Completer<String>();
     try {
       LoadingDialog.call();
@@ -327,21 +326,22 @@ class ClientDealsController extends GetxController {
     return completer.future;
   }
 
-  Future <String> agencyLeave() {
+  Future<String> agencyLeave() {
     Completer<String> completer = Completer<String>();
     try {
-      if(selectAgency?.value?.key != null && selectAgency?.value?.key != ""){
+      if (selectAgency?.value?.key != null && selectAgency?.value?.key != "") {
         LoadingDialog.call();
         Map<String, dynamic> postData = {
           "clientCode": selectedClient?.value?.key ?? "",
           "locationCode": selectedLocation?.value?.key ?? "",
           "channelCode": selectedChannel?.value?.key ?? "",
-          "dealNumber":dealNoController.text?? "",
-          "agencyCode":selectAgency?.value?.key?? "",
-          "intNewEntry": (  clientDealRetrieveModel?.agencyLeaveModel != null &&
-              clientDealRetrieveModel?.agencyLeaveModel?.retrieve != null
-          )?"1":"0",
-          "currencyTypeCode": selectCurrency?.value?.key??""
+          "dealNumber": dealNoController.text ?? "",
+          "agencyCode": selectAgency?.value?.key ?? "",
+          "intNewEntry": (clientDealRetrieveModel?.agencyLeaveModel != null &&
+                  clientDealRetrieveModel?.agencyLeaveModel?.retrieve != null)
+              ? "1"
+              : "0",
+          "currencyTypeCode": selectCurrency?.value?.key ?? ""
         };
         Get.find<ConnectorControl>().POSTMETHOD(
             api: ApiFactory.Client_Deal_GET_AGENCY_LEAVE,
@@ -350,45 +350,57 @@ class ClientDealsController extends GetxController {
             fun: (map) {
               closeDialogIfOpen();
               if (map is Map && map['agencyLeaveModel'] != null) {
-                agencyLeaveDataModel = AgencyLeaveDataModel.fromJson(map as Map<String,dynamic>);
-                if(map['agencyLeaveModel']['paymentModels'] != null &&
-                    map['agencyLeaveModel']['paymentModels'].length >0){
+                agencyLeaveDataModel =
+                    AgencyLeaveDataModel.fromJson(map as Map<String, dynamic>);
+                if (map['agencyLeaveModel']['paymentModels'] != null &&
+                    map['agencyLeaveModel']['paymentModels'].length > 0) {
                   RxList<DropDownValue> dataList = RxList([]);
                   payMode.clear();
-                  map['agencyLeaveModel']['paymentModels'].forEach((e){
+                  map['agencyLeaveModel']['paymentModels'].forEach((e) {
                     dataList.add(DropDownValue.fromJsonDynamic(
                         e, "paymentmodecode", "paymentmodecaption"));
                   });
                   payMode.addAll(dataList);
-                  if(payMode.length >0){
-                    selectPayMode?.value = DropDownValue(key:payMode[0].key ,value:payMode[0].value);
+                  if (payMode.length > 0) {
+                    selectPayMode?.value = DropDownValue(
+                        key: payMode[0].key, value: payMode[0].value);
                   }
                   payMode.refresh();
                 }
-                executive.value = agencyLeaveDataModel?.agencyLeaveModel?.personnelname??"";
-                zone.value = agencyLeaveDataModel?.agencyLeaveModel?.zonename??"";
-                payroute.value = agencyLeaveDataModel?.agencyLeaveModel?.payroutename??"";
-                gstPlantName.value =  agencyLeaveDataModel?.agencyLeaveModel?.plantname??"";
-                agencyGstNumber.value = agencyLeaveDataModel?.agencyLeaveModel?.gst??"";
-                agencyPanNumber.value = agencyLeaveDataModel?.agencyLeaveModel?.pan??"";
-                for(int i=0;i<currency.length;i++){
-                  if(currency[i].key.toString().trim() ==
-                      agencyLeaveDataModel?.agencyLeaveModel?.currencyTypeCode.toString().trim()){
-                    selectCurrency?.value = DropDownValue(value: currency[i].value,key: currency[i].key);
+                executive.value =
+                    agencyLeaveDataModel?.agencyLeaveModel?.personnelname ?? "";
+                zone.value =
+                    agencyLeaveDataModel?.agencyLeaveModel?.zonename ?? "";
+                payroute.value =
+                    agencyLeaveDataModel?.agencyLeaveModel?.payroutename ?? "";
+                gstPlantName.value =
+                    agencyLeaveDataModel?.agencyLeaveModel?.plantname ?? "";
+                agencyGstNumber.value =
+                    agencyLeaveDataModel?.agencyLeaveModel?.gst ?? "";
+                agencyPanNumber.value =
+                    agencyLeaveDataModel?.agencyLeaveModel?.pan ?? "";
+                for (int i = 0; i < currency.length; i++) {
+                  if (currency[i].key.toString().trim() ==
+                      agencyLeaveDataModel?.agencyLeaveModel?.currencyTypeCode
+                          .toString()
+                          .trim()) {
+                    selectCurrency?.value = DropDownValue(
+                        value: currency[i].value, key: currency[i].key);
                     selectCurrency?.refresh();
                     break;
                   }
                 }
 
-                if(agencyLeaveDataModel?.agencyLeaveModel?.remark != null &&
-                    agencyLeaveDataModel?.agencyLeaveModel?.remark != ""){
+                if (agencyLeaveDataModel?.agencyLeaveModel?.remark != null &&
+                    agencyLeaveDataModel?.agencyLeaveModel?.remark != "") {
                   remarkList.clear();
-                  remarkList.add({"remark":agencyLeaveDataModel?.agencyLeaveModel?.remark??""});
+                  remarkList.add({
+                    "remark":
+                        agencyLeaveDataModel?.agencyLeaveModel?.remark ?? ""
+                  });
                   remarkList.refresh();
                 }
-
-              }
-              else {
+              } else {
                 agencyLeaveDataModel = null;
               }
               completer.complete("");
@@ -397,16 +409,14 @@ class ClientDealsController extends GetxController {
               closeDialogIfOpen();
               completer.complete("");
             });
-      }
-      else{
+      } else {
         completer.complete("");
       }
-
     } catch (e) {
       closeDialogIfOpen();
       completer.complete("");
     }
-    return  completer.future;
+    return completer.future;
   }
 
   channelLeave() {
@@ -490,8 +500,8 @@ class ClientDealsController extends GetxController {
     }
   }
 
-  remarkAdd(){
-    remarkList.add({"remark":remarkDiaController.text});
+  remarkAdd() {
+    remarkList.add({"remark": remarkDiaController.text});
     remarkDiaController.text = "";
     remarkList.refresh();
   }
@@ -616,6 +626,19 @@ class ClientDealsController extends GetxController {
             if (map is Map) {
               clientDealRetrieveModel =
                   ClientDealRetrieveModel.fromJson(map as Map<String, dynamic>);
+              importGridList?.clear();
+              if (clientDealRetrieveModel != null &&
+                  clientDealRetrieveModel?.agencyLeaveModel != null &&
+                  clientDealRetrieveModel?.agencyLeaveModel?.newDetails !=
+                      null &&
+                  (clientDealRetrieveModel
+                              ?.agencyLeaveModel?.newDetails?.length ??
+                          0) >
+                      0) {
+                importGridList =
+                    clientDealRetrieveModel?.agencyLeaveModel?.newDetails;
+              }
+
               if (clientDealRetrieveModel != null &&
                   clientDealRetrieveModel?.agencyLeaveModel != null) {
                 try {
@@ -651,8 +674,7 @@ class ClientDealsController extends GetxController {
                           break;
                         }
                       }
-                    }
-                    else {
+                    } else {
                       selectedChannel?.value = DropDownValue(
                           value: selectedChannel2?.value?.value ?? "",
                           key: selectedChannel2?.value?.key ?? "");
@@ -688,14 +710,14 @@ class ClientDealsController extends GetxController {
 
                     clientsLeave().then((value) {
                       agencyGstNumber.value = (clientDealRetrieveModel
-                          ?.agencyLeaveModel?.retrieve?[0].gstNumber ??
-                          "")
+                                  ?.agencyLeaveModel?.retrieve?[0].gstNumber ??
+                              "")
                           .toString();
                       agencyPanNumber.value = (clientDealRetrieveModel
-                          ?.agencyLeaveModel
-                          ?.retrieve?[0]
-                          .agencyshortname ??
-                          "")
+                                  ?.agencyLeaveModel
+                                  ?.retrieve?[0]
+                                  .agencyshortname ??
+                              "")
                           .toString();
                       if (agencyList.length > 0) {
                         for (var element in agencyList) {
@@ -710,8 +732,7 @@ class ClientDealsController extends GetxController {
                             break;
                           }
                         }
-                      }
-                      else {
+                      } else {
                         selectAgency?.value = DropDownValue(
                             key: clientDealRetrieveModel
                                 ?.agencyLeaveModel?.retrieve?[0].agencyCode,
@@ -721,15 +742,16 @@ class ClientDealsController extends GetxController {
                       }
 
                       agencyLeave().then((value) {
-
                         dealNoController.text = clientDealRetrieveModel
-                            ?.agencyLeaveModel?.retrieve?[0].dealNumber ??
+                                ?.agencyLeaveModel?.retrieve?[0].dealNumber ??
                             "";
                         dateController.text = Utils.toDateFormat4(
                             clientDealRetrieveModel
                                 ?.agencyLeaveModel?.retrieve?[0].dealDate);
                         referenceController.text = clientDealRetrieveModel
-                            ?.agencyLeaveModel?.retrieve?[0].referenceNumber ??
+                                ?.agencyLeaveModel
+                                ?.retrieve?[0]
+                                .referenceNumber ??
                             "";
                         referenceDateController.text = Utils.toDateFormat4(
                             clientDealRetrieveModel
@@ -741,21 +763,22 @@ class ClientDealsController extends GetxController {
                             clientDealRetrieveModel
                                 ?.agencyLeaveModel?.retrieve?[0].todate);
                         secondsController.text = (clientDealRetrieveModel
-                            ?.agencyLeaveModel?.retrieve?[0].seconds ??
-                            "0")
+                                    ?.agencyLeaveModel?.retrieve?[0].seconds ??
+                                "0")
                             .toString();
                         amountController.text = (clientDealRetrieveModel
-                            ?.agencyLeaveModel?.retrieve?[0].dealAmount ??
-                            "0")
+                                    ?.agencyLeaveModel
+                                    ?.retrieve?[0]
+                                    .dealAmount ??
+                                "0")
                             .toString();
                         maxSpeedController.text = (clientDealRetrieveModel
-                            ?.agencyLeaveModel?.retrieve?[0].maxspend ??
-                            "0")
+                                    ?.agencyLeaveModel?.retrieve?[0].maxspend ??
+                                "0")
                             .toString();
 
                         agencyPanNumber.refresh();
                         agencyGstNumber.refresh();
-
 
                         if (brandList.length > 0) {
                           for (var element in brandList) {
@@ -770,8 +793,7 @@ class ClientDealsController extends GetxController {
                               break;
                             }
                           }
-                        }
-                        else {
+                        } else {
                           selectBrand?.value = DropDownValue(
                               key: clientDealRetrieveModel
                                   ?.agencyLeaveModel?.retrieve?[0].brandCode,
@@ -779,20 +801,16 @@ class ClientDealsController extends GetxController {
                           selectBrand?.refresh();
                         }
 
-
                         effectiveRate.value = (clientDealRetrieveModel
-                            ?.agencyLeaveModel
-                            ?.retrieve?[0]
-                            .effectiveRateYN ==
-                            1)
+                                    ?.agencyLeaveModel
+                                    ?.retrieve?[0]
+                                    .effectiveRateYN ==
+                                1)
                             ? true
                             : false;
                         effectiveRate.refresh();
-
                       });
-
                     });
-
                   }
                 } catch (e) {}
               }
@@ -821,9 +839,7 @@ class ClientDealsController extends GetxController {
     }
   }
 
-  remarkDialog(){
-
-  }
+  remarkDialog() {}
 
   @override
   void onInit() {
@@ -873,13 +889,14 @@ class ClientDealsController extends GetxController {
     try {
       Uint8List? fileBytes = result.files.first.bytes;
       var excel = Excel.decodeBytes(result.files.first.bytes as List<int>);
-
+      List<dynamic> headers = [];
       int sheet = 0;
+      var excelDataList = <Map<String, dynamic>>[];
       for (var table in excel.tables.keys) {
         var tableData = <Map<String, dynamic>>[];
         sheet = sheet + 1;
         // Extract headers from the first row
-        var headers = excel.tables[table]!
+        headers = excel.tables[table]!
             .row(0)
             .map((cell) => cell?.value.toString())
             .toList();
@@ -899,13 +916,50 @@ class ClientDealsController extends GetxController {
           }
         }
         jsonData['S${sheet}'] = tableData;
-        print(">>>>jsonData " + jsonData.toString());
+        excelDataList = tableData;
+        print(">>>>jsonData $jsonData");
         closeDialogIfOpen();
       }
-      List<String> sourceList = ["jks", "ku"];
+      List<String> sourceList = [
+        "Recordnumber",
+        "SponsorTypeName",
+        "ProgramName",
+        "Starttime",
+        "EndTime",
+        "Seconds",
+        "Rate",
+        "Amount",
+        "ValuationRate",
+        "BookedSeconds",
+        "BalanceSeconds",
+        "BalanceAmount",
+        "TimeBand",
+        "NetWorkName",
+        "Sun",
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri",
+        "Sat",
+        "Accountname",
+        "Eventname",
+        "Spots",
+        "Paymentmodecaption",
+        "RevenueTypeName",
+        "SubRevenueTypeName",
+        "CountBased",
+        "BaseDuration"
+      ];
       // List<String> list2 = [ "ku","jks"];
-
-
+      List<dynamic> sta =
+          Utils.listCompare(sourceList: sourceList, compareLst: headers);
+      print(">>>>>>>>>sta$sta");
+      if (!sta[0]) {
+        LoadingDialog.showErrorDialog(sta[1] ?? "");
+      } else {
+        callValidationFun(excelData: excelDataList);
+      }
     } catch (e) {
       print(">>>>" + e.toString());
       // gridData = RateCardFromDealWorkFlowModel(export: []);
@@ -915,38 +969,149 @@ class ClientDealsController extends GetxController {
     }
   }
 
-  listCompare({required List<dynamic> sourceList,required List<dynamic> compareList}){
-    bool sta = false;
-    if(sourceList.isNotEmpty && compareList.isNotEmpty){
-      if(sourceList.length > compareList.length){
-        return !sta;
-      }
+  bool checkImport = false;
+  List<NewDetails>? importGridList = [];
 
-      for(int i=0;i<sourceList.length;i++){
-        if(sta){
-          break;
+  callValidationFun({List<Map<String, dynamic>>? excelData}) {
+    LoadingDialog.modify("Do you wish to import file ?", () {}, () {
+      btnImportClickWithCondition(excelDataNew: excelData);
+    }, cancelTitle: "Yes", deleteTitle: "No");
+  }
+
+  List<NewDetails>? importGridListNew = [];
+  btnImportClickWithCondition({List<Map<String, dynamic>>? excelDataNew}) {
+    checkImport = false;
+    importGridListNew?.clear();
+    if (dealNoController.text.trim() == "") {
+      LoadingDialog.showErrorDialog("Deal Number Can't be blank");
+      return;
+    }
+    if (excelDataNew != null && excelDataNew.isNotEmpty) {
+      for (int i = 0; i < (excelDataNew.length); i++) {
+        if (excelDataNew[i]['SponsorTypeName'].toString().trim() == "") {
+          continue;
         }
-        for(int j=0;j<compareList.length;j++){
-          if(sourceList[i].toString().toLowerCase().trim() == compareList[j].toString().toLowerCase().trim()){
-            break;
-          }else if((j == compareList.length-1) && (sourceList[i].toString().toLowerCase().trim() !=
-              compareList[j].toString().toLowerCase().trim())){
-            sta = true;
-            break;
-          }else{
-            continue;
+        if (excelDataNew[i]['Rate'] == 0 &&
+            excelDataNew[i]['Seconds'] == 0 &&
+            excelDataNew[i]['Amount'] == 0 &&
+            excelDataNew[i]['ValuationRate'] == 0) {
+          return;
+        }
+
+        NewDetails newDetails = NewDetails(
+          primaryEventCode: (excelDataNew[i]['Amount'] != "") ? "1" : "0",
+          recordnumber: "",
+          sponsorTypeName: excelDataNew[i]['SponsorTypeName'],
+          programName: excelDataNew[i]['ProgramName'],
+          programCategoryCode: "",
+          starttime: "we need to check",
+          endTime: "we need to check",
+          seconds: excelDataNew[i]['Seconds'],
+          rate: excelDataNew[i]['Rate'],
+          amount: excelDataNew[i]['Amount'],
+          valuationRate: excelDataNew[i]['ValuationRate'],
+          bookedSeconds: excelDataNew[i]['BookedSeconds'],
+          programCode: "",
+          sponsorTypeCode: "",
+          balanceSeconds: excelDataNew[i]['BalanceSeconds'],
+          balanceAmount: excelDataNew[i]['BalanceAmount'],
+          timeBand: excelDataNew[i]['TimeBand'],
+          bandCode: "",
+          netWorkName: excelDataNew[i]['NetWorkName'],
+          sun: excelDataNew[i]['Sun'],
+          mon: excelDataNew[i]['Mon'],
+          tue: excelDataNew[i]['Tue'],
+          wed: excelDataNew[i]['Wed'],
+          thu: excelDataNew[i]['Thu'],
+          fri: excelDataNew[i]['Fri'],
+          sat: excelDataNew[i]['Sat'],
+          revflag: "",
+          spots: excelDataNew[i]['Spots'],
+          paymentmodecaption: excelDataNew[i]['Paymentmodecaption'],
+          revenueTypeCode: "",
+          revenueTypeName: excelDataNew[i]['RevenueTypeName'],
+          subRevenueTypeName: excelDataNew[i]['SubRevenueTypeName'],
+          subRevenueTypeCode: "",
+          countBased: excelDataNew[i]['CountBased'],
+          baseDuration: excelDataNew[i]['BaseDuration'],
+        );
+
+        if ((newDetails.sponsorTypeCode).toString().trim() == "") {
+          checkImport = true;
+        }
+
+        if ((newDetails.programName).toString().trim() != "") {
+          if ((newDetails.programCode).toString().trim() == "") {
+            checkImport = true;
           }
         }
+
+        if (newDetails.primaryEventCode == "1") {
+          newDetails.accountname = excelDataNew[i]['Accountname'];
+          newDetails.accountCode = "";
+          if ((newDetails.accountCode).toString().trim() == "") {
+            checkImport = true;
+          }
+          newDetails.eventname = excelDataNew[i]['Eventname'];
+          newDetails.eventcode = "";
+          if ((newDetails.eventcode).toString().trim() == "") {
+            checkImport = true;
+          }
+        } else {
+          newDetails.accountname = "";
+          newDetails.accountCode = "";
+          newDetails.eventcode = "";
+          newDetails.eventname = "";
+        }
+        importGridListNew?.add(newDetails);
       }
-      return !sta;
-    }else{
-      return !sta;
     }
   }
 
+  ignoreBlankRow() {
+    if (checkImport) {
+      // Goto DataNotAdded
+    }
+    // importGridList
+
+    for (int i = 0; i < (importGridListNew?.length ?? 0); i++) {
+      for (int k = 0; k < (importGridList?.length ?? 0); k++) {
+        if((importGridList?.length??0) > 0)
+        {
+          /*if(importGridListNew?[i].primaryEventCode ==
+              importGridList?[k].primaryEventCode &&
+              importGridListNew?[i].sponsorTypeCode ==
+              importGridList?[k].sponsorTypeCode &&
+              importGridListNew?[i].programCode ==
+              importGridList?[k].programCode &&
+              importGridListNew?[i].starttime ==
+              importGridList?[k].starttime &&
+              importGridListNew?[i].endTime ==
+              importGridList?[k].endTime &&
+              importGridListNew?[i].rate ==
+              importGridList?[k].rate &&
+              importGridListNew?[i].valuationRate ==
+              importGridList?[k].valuationRate &&
+              importGridListNew?[i].sun ==
+              importGridList?[k].sun && importGridListNew?[i].mon ==
+              importGridList?[k].mon && importGridListNew?[i].tue ==
+              importGridList?[k].tue && importGridListNew?[i].wed ==
+              importGridList?[k].wed  && importGridListNew?[i].thu ==
+              importGridList?[k].thu && importGridListNew?[i].fri ==
+              importGridList?[k].fri && importGridListNew?[i].sat ==
+              importGridList?[k].sat  && importGridListNew?[i].accountCode ==
+              importGridList?[k].accountCode &&
+              importGridListNew?[i].eventcode ==
+              importGridList?[k].eventcode ){
 
 
+          }*/
 
+
+        }
+      }
+    }
+  }
 
   @override
   void onReady() {

@@ -4,7 +4,9 @@ import 'package:get/get.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
+import '../../../../widgets/PlutoGrid/src/pluto_grid.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
@@ -12,9 +14,9 @@ import '../../../providers/Utils.dart';
 import '../controllers/deal_report_controller.dart';
 
 class DealReportView extends GetView<DealReportController> {
-   DealReportView({Key? key}) : super(key: key);
+  DealReportView({Key? key}) : super(key: key);
 
-   DealReportController controllerX =
+  DealReportController controllerX =
   Get.put<DealReportController>(DealReportController());
 
   @override
@@ -27,36 +29,55 @@ class DealReportView extends GetView<DealReportController> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                DropDownField.formDropDown1WidthMap(
-                  [],
-                      (value) {
-                    // controllerX.selectedCensorShipType = value;
+                Obx(() {
+                  return DropDownField.formDropDown1WidthMap(
+                    controllerX.locationList.value ?? [],
+                        (value) {
+                      controllerX.selectedLocation.value = value;
+                    },
+                    "Location",
+                    0.16,
+                    selected: controllerX.selectedLocation.value,
+                    // isEnable: controllerX.isEnable,
+                    autoFocus: false,
+                  );
+                }),
+                Focus(
+                  focusNode: controllerX.channelFocus,
+                  onFocusChange: (val) {
+                    if (!val) {
+                      controllerX.channelLeave();
+                    }
                   },
-                  "Location",
-                  0.16,
-                  // isEnable: controllerX.isEnable,
-                  autoFocus: false,
+                  child: DropDownField().formDropDownCheckBoxMap(
+                    controllerX.channelsList,
+                        (value) {
+                      print(value);
+                    },
+                    "Channel",
+                    0.16,
+                    onChanged: (index, selectValue) {},
+                  ),
+                ),
+                Focus(
+                  focusNode: controllerX.clientFocus,
+                  onFocusChange: (val) {
+                    if (!val) {
+                      controllerX.clientLeave();
+                    }
+                  },
+                  child: DropDownField().formDropDownCheckBoxMap(
+                    controllerX.clientList,
+                        (value) {
+                      print(value);
+                    },
+                    "Client",
+                    0.16,
+                    onChanged: (index, selectValue) {},
+                  ),
                 ),
                 DropDownField().formDropDownCheckBoxMap(
-                  controllerX.channels,
-                      (value) {
-                    print(value);
-                  },
-                  "Channel",
-                  0.16,
-                  onChanged: (index, selectValue) {},
-                ),
-                DropDownField().formDropDownCheckBoxMap(
-                  controllerX.channels,
-                      (value) {
-                    print(value);
-                  },
-                  "Client",
-                  0.16,
-                  onChanged: (index, selectValue) {},
-                ),
-                DropDownField().formDropDownCheckBoxMap(
-                  controllerX.channels,
+                  controllerX.agencyList,
                       (value) {
                     print(value);
                   },
@@ -66,13 +87,13 @@ class DealReportView extends GetView<DealReportController> {
                 ),
                 DateWithThreeTextField(
                   title: "From Date",
-                  mainTextController:TextEditingController(),
+                  mainTextController: controllerX.formDateController,
                   widthRation: 0.1,
                   isEnable: true,
                 ),
                 DateWithThreeTextField(
                   title: "To Date",
-                  mainTextController:TextEditingController(),
+                  mainTextController: controllerX.toDateController,
                   widthRation: 0.1,
                   isEnable: true,
                 ),
@@ -82,7 +103,7 @@ class DealReportView extends GetView<DealReportController> {
                   child: FormButtonWrapper(
                     btnText: "Generate",
                     callback: () {
-                      // controllerX.showApiCall();
+                      controllerX.generateCall();
                     },
                     showIcon: true,
                   ),
@@ -92,10 +113,51 @@ class DealReportView extends GetView<DealReportController> {
             SizedBox(
               height: 5,
             ),
-            Expanded(child: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey)),
-              child: Container(),
+            Expanded(child: GetBuilder<DealReportController>(
+              assignId: true,
+              id: "grid",
+              builder: (controllerX) {
+                return Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.grey)),
+                  child: (controllerX.dealReportModel != null &&
+                      controllerX.dealReportModel?.genrate != null &&
+                      (controllerX.dealReportModel?.genrate?.length ?? 0) > 0)
+                      ? DataGridFromMap(
+                    showSrNo: true,
+                    hideCode: false,
+                    formatDate: false,
+                    columnAutoResize: false,
+                    doPasccal: true,
+                    colorCallback: (row) =>
+                    (row.row.cells
+                        .containsValue(
+                        controller.stateManager?.currentCell))
+                        ? Colors.deepPurple.shade200
+                        : Colors.white,
+                    widthSpecificColumn: Get.find<
+                        HomeController>()
+                        .getGridWidthByKey(
+                        key: "tbl1",
+                        userGridSettingList:
+                        controller.userGridSetting1),
+                    exportFileName: "Client Deals",
+                    mode: PlutoGridMode.normal,
+                    mapData: (controller
+                        .dealReportModel!
+                        .genrate!
+                        .map((e) => e.toJson())
+                        .toList()),
+                    // mapData: (controllerX.dataList)!,
+                    widthRatio: Get.width / 9 - 1,
+                    onload: (PlutoGridOnLoadedEvent load) {
+                      controller.stateManager =
+                          load.stateManager;
+                    },
+                  )
+                      : Container(),
+                );
+              },
             )),
             SizedBox(height: 5),
             // const SizedBox(height: 8),
