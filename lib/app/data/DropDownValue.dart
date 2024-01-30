@@ -4,7 +4,7 @@ class DropDownValue {
   String? key;
   int? selectedIndex = 0;
 
-  DropDownValue({this.value, this.key});
+  DropDownValue({this.value, this.key,this.selectedIndex});
 
   DropDownValue.fromJson(Map<String, dynamic> json) {
     value = json['value'];
