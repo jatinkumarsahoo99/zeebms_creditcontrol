@@ -987,4 +987,33 @@ class ApiFactory {
 
   static String get CLIENT_MASTER_BLOCK_CLIENT =>
       "$BASE_URL/api/ClientMaster/Postblockclient";
+
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start READY TO BILLS Model////////////////////////////////
+  static String get READY_TO_BILLS_ON_LOAD =>
+      "$BASE_URL/api/ReadyToBills/onload";
+  static String READY_TO_BILLS_GET_CHANNEL(String location) =>
+      "$BASE_URL/api/ReadyToBills/GetChannel?location=$location";
+  static String get READY_TO_BILLS_GET_AGENCIES =>
+      "$BASE_URL/api/ReadyToBills/GetAgencies?agencyname=";
+  static String get READY_TO_BILLS_GET_BILLING_STATUS =>
+      "$BASE_URL/api/ReadyToBills/GetBillingStatus";
+  static String get READY_TO_BILLS_MARK => "$BASE_URL/api/ReadyToBills/Mark";
+  static String get READY_TO_BILLS_CHECK_DUPLICATE =>
+      "$BASE_URL/api/ReadyToBills/CheckDuplicate";
+  static String get READY_TO_BILLS_VERIFY =>
+      "$BASE_URL/api/ReadyToBills/verify";
+  static String get READY_TO_BILLS_BILLING_VALUE =>
+      "$BASE_URL/api/ReadyToBills/BillingValue";
+  static String get READY_TO_BILLS_RESEND_TO_SAP =>
+      "$BASE_URL/api/ReadyToBills/ResendToSAP";
+  static String get READY_TO_BILLS_SEND_TO_SAP =>
+      "$BASE_URL/api/ReadyToBills/sendToSAP";
+  static String get READY_TO_BILLS_EXPORT =>
+      "$BASE_URL/api/ReadyToBills/Export";
+  static String get READY_TO_BILLS_SAVE => "$BASE_URL/api/ReadyToBills/save";
+
+  /// ////////////////////////// End READY TO BILLS Model////////////////////////////////
 }

@@ -1,9 +1,11 @@
 import 'package:bms_creditcontrol/app/controller/HomeController.dart';
+import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:bms_creditcontrol/app/routes/app_pages.dart';
 import 'package:bms_creditcontrol/widgets/CheckBoxWidget.dart';
 import 'package:bms_creditcontrol/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_creditcontrol/widgets/FormButton.dart';
 import 'package:bms_creditcontrol/widgets/dropdown.dart';
+import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -31,16 +33,24 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                 spacing: 5,
                 children: [
                   DropDownField.formDropDown1WidthMap(
-                    [],
-                    (data) {},
+                    controller.location,
+                    (data) {
+                      controller.selectLocation.value = data;
+                      controller.getChannel(data.key);
+                    },
                     "Loaction",
                     .18,
+                    selected: controller.selectLocation.value,
+                    autoFocus: true,
                   ),
                   DropDownField.formDropDown1WidthMap(
-                    [],
-                    (data) {},
+                    controller.channel,
+                    (data) {
+                      controller.selectChannel.value = data;
+                    },
                     "Channel",
                     .18,
+                    selected: controller.selectChannel.value,
                   ),
                   DateWithThreeTextField(
                     title: "From Date",
@@ -51,10 +61,15 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                     title: "To Date",
                     mainTextController: controller.toDate,
                     widthRation: .100,
+                    onFocusChange: (date) {
+                      controller.getBillingStatus();
+                    },
                   ),
                   FormButtonWrapper(
                     btnText: "Mark For Billing",
-                    callback: () {},
+                    callback: () {
+                      controller.mark();
+                    },
                     showIcon: false,
                   ),
                   Obx(() {
@@ -70,18 +85,19 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                     GlobalKey(),
                     context,
                     title: "Agency",
-                    parseKeyForKey: "programCode",
-                    parseKeyForValue: "programName",
-                    url: "",
-                    onchanged: (data) {},
+                    parseKeyForKey: "agencycode",
+                    parseKeyForValue: "agencyname",
+                    url: ApiFactory.READY_TO_BILLS_GET_AGENCIES,
+                    onchanged: (data) {
+                      controller.selectAgency.value = data;
+                    },
                     width: Get.width * 0.19,
                   ),
-                  // SizedBox(
-                  //   width: Get.width * .550,
-                  // ),
                   FormButtonWrapper(
                     btnText: "Check Duplocate",
-                    callback: () {},
+                    callback: () {
+                      controller.duplicateCheck();
+                    },
                     showIcon: false,
                   ),
                 ],
@@ -90,29 +106,50 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
               Expanded(
                 child: Row(
                   children: [
-                    // Obx(
-                    //   () =>
-                    Expanded(
-                        child:
-                            // controller.showList.isEmpty
-                            //     ?
-                            Container(
-                      decoration:
-                          BoxDecoration(border: Border.all(color: Colors.grey)),
-                    )
-                        // : DataGridFromMap3(
-                        //     mapData: [],
-                        //     onload: (value) {
-                        //     },
-                        //     exportFileName: "Mix Master Delivery Status",
-                        //     witdthSpecificColumn: Get.find<HomeController>()
-                        //         .getGridWidthByKey(
-                        //             userGridSettingList:
-                        //                 controller.userGridSetting1?.value),
-                        //   ),
-                        ),
+                    Obx(
+                      () => Expanded(
+                        child: controller.billingsList.isEmpty
+                            ? Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey)),
+                              )
+                            : DataGridFromMap3(
+                                mapData: controller.billingsList.value
+                                        .map((e) => e.toJson())
+                                        .toList() ??
+                                    [],
+                                onload: (value) {
+                                  controller.billingGrid = value.stateManager;
+                                },
+                                exportFileName: "Ready to Bills",
+                                noEditcheckBoxColumnKey: const [
+                                  'asRunImport',
+                                  'asRunVerification',
+                                  'schedulingVerification',
+                                  'schedulingClearance',
+                                  'finalCheck',
+                                  'readyToBill',
+                                ],
+                                checkBoxColumnKey: const [
+                                  'asRunImport',
+                                  'asRunVerification',
+                                  'schedulingVerification',
+                                  'schedulingClearance',
+                                  'finalCheck',
+                                  'readyToBill',
+                                ],
+                                checkBoxStrComparison: "true",
+                                uncheckCheckBoxStr: "false",
+                                columnAutoResize: false,
+                                widthSpecificColumn: Get.find<HomeController>()
+                                    .getGridWidthByKey(
+                                        userGridSettingList:
+                                            controller.userGridSetting1?.value,
+                                        key: 'key1'),
+                              ),
+                      ),
+                    ),
                     const SizedBox(width: 8),
-
                     Container(
                       width: 350,
                       decoration:
