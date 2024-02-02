@@ -987,4 +987,15 @@ class ApiFactory {
 
   static String get CLIENT_MASTER_BLOCK_CLIENT =>
       "$BASE_URL/api/ClientMaster/Postblockclient";
+
+  /// //////////////////////////////// clear secondary spots ////////////////////////////////////
+  ///
+  static String get CLEAR_SECONDARY_SPOTS_GETLOAD =>
+      "$BASE_URL/api/ClearSecondarySpot/GetLoad";
+
+  static String get CLEAR_SECONDARY_SPOTS_GET_SCROLL =>
+      "$BASE_URL/api/ClearSecondarySpot/GetScroll";
+
+  static String get CLEAR_SECONDARY_SPOTS_GET_ASTRO =>
+      "$BASE_URL/api/ClearSecondarySpot/GetAstro";
 }
