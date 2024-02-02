@@ -223,7 +223,7 @@ class NewDetails {
     thu = (json['thu']??"").toString();
     fri = (json['fri']??"").toString();
     sat = (json['sat']??"").toString();
-    revflag = json['revflag'];
+    revflag = (json['revflag']??"").toString();
     accountCode = json['accountCode'];
     accountname = json['accountname'];
     eventcode = (json['eventcode']??"").toString();

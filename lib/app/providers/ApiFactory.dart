@@ -753,6 +753,15 @@ class ApiFactory {
   static String get Client_Deal_GET_AGENCY_LEAVE =>
       "$BASE_URL/api/ClientDeals/AgencyLeave";
 
+  static String get Client_Deal_GET_EACH_VALUE_IMPORT =>
+      "$BASE_URL/api/ClientDeals/GetEachValueImport";
+
+  static String get Client_Deal_GET_CLIENT_ADDRESS =>
+      "$BASE_URL/api/ClientDeals/GetClientAddress";
+
+  static String get Client_Deal_GET_AGENCY_ADDRESS =>
+      "$BASE_URL/api/ClientDeals/GetAgencyAddress";
+
   /// ////////////////////////////////End Client Deals ////////////////////////////////////
   ///
   ///

@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
+import '../../../../widgets/LoadingDialog.dart';
 import '../../../../widgets/PlutoGrid/src/pluto_grid.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/floating_dialog.dart';
@@ -571,7 +572,10 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                 descendantsAreFocusable: false,
                                 child: FormButton1(
                                   btnText: "@",
-                                  callback: () {},
+                                  callback: () {
+                                    controller.getClientAddress(
+                                        code: controller.selectedClient?.value?.key ?? "");
+                                  },
                                 ),
                               ),
                               sizedBoxWidth(10),
@@ -604,7 +608,10 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                 skipTraversal: true,
                                 child: FormButton1(
                                   btnText: "@",
-                                  callback: () {},
+                                  callback: () {
+                                    controller.getAgencyAddress(
+                                        code: controller.selectAgency?.value?.key ?? "");
+                                  },
                                 ),
                               ),
                               sizedBoxWidth(10),
@@ -737,7 +744,10 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       descendantsAreFocusable: false,
                                       child: FormButton1(
                                         btnText: "...",
-                                        callback: () {},
+                                        callback: () {
+                                          controller.selectBrand?.value = null;
+                                          controller.selectBrand?.refresh();
+                                        },
                                       ),
                                     ),
                                   ],
@@ -807,7 +817,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                 child: FocusTraversalOrder(
                                                   order: NumericFocusOrder(11),
                                                   child: InputFields.numbers4(
-                                                    hintTxt: "Max Speed",
+                                                    hintTxt: "Max Spend",
                                                     controller:
                                                     controller
                                                         .maxSpeedController,
@@ -1170,6 +1180,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                 return DropDownField.formDropDown1WidthMap(
                                     controller.accountList.value ?? [], (data) {
                                   controller.selectAccount?.value = data;
+                                  controller.getSubType(accountCode:controller.selectAccount?.value?.key??"" );
                                 }, "Account", .18,
                                     selected: controller.selectAccount?.value,
                                     isEnable: controller.accountEnaSta.value
@@ -1428,11 +1439,27 @@ class ClientDealsView extends GetView<ClientDealsController> {
                               sizedBoxWidth(100),
                               FormButton1(
                                 btnText: "Import",
-                                callback: () {
+                                callback: () async {
                                   controller.pickFile();
+                                  /*int siz = 6;
+                                  for(int i=0;i<siz;i++){
+                                    if(i == 2 || i== 4){
+                                     bool sta =  await LoadingDialog.modifyWithAsync(
+                                          "Similar entry already exists!\nDo you want to modify it?",
+                                          cancelTitle: "Yes", deleteTitle: "No");
+                                    }else{
+
+                                    }
+
+                                  }*/
+
                                 },
+
                               ),
-                              text_m_w700("xxx", color: Colors.blue)
+                              Obx(() {
+                                return text_m_w700(
+                                    controller.address.value ?? "xxx", color: Colors.blue);
+                              })
                             ],
                           ),
 
@@ -1483,7 +1510,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       controller.stateManager =
                                           load.stateManager;
                                     },
-                                  ):Container(),
+                                  ) : Container(),
                                 );
                               },
                             ),

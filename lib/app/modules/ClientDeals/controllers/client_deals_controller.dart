@@ -143,13 +143,11 @@ class ClientDealsController extends GetxController {
           fun: (map) {
             closeDialogIfOpen();
             if (map is Map && map['onload'] != null) {
-              if (map['onload']['location'] != null &&
-                  map['onload']['location'].length > 0) {
+              if (map['onload']['location'] != null && map['onload']['location'].length > 0) {
                 locationList.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['onload']['location'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "locationCode", "locationName"));
+                  dataList.add(DropDownValue.fromJsonDynamic(e, "locationCode", "locationName"));
                 });
                 locationList.addAll(dataList);
                 locationList.refresh();
@@ -160,8 +158,7 @@ class ClientDealsController extends GetxController {
                 dealType.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['onload']['dealTypeMaster'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "dealtypecode", "dealtypename"));
+                  dataList.add(DropDownValue.fromJsonDynamic(e, "dealtypecode", "dealtypename"));
                 });
                 dealType.addAll(dataList);
                 dealType.refresh();
@@ -172,8 +169,8 @@ class ClientDealsController extends GetxController {
                 currency.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['onload']['currencyTypeMaster'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "currencyTypeCode", "currencyTypeName"));
+                  dataList.add(
+                      DropDownValue.fromJsonDynamic(e, "currencyTypeCode", "currencyTypeName"));
                 });
                 currency.addAll(dataList);
                 currency.refresh();
@@ -184,8 +181,7 @@ class ClientDealsController extends GetxController {
                 locationList2.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['onload']['searchLocation'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "locationcode", "locationname"));
+                  dataList.add(DropDownValue.fromJsonDynamic(e, "locationcode", "locationname"));
                 });
                 locationList2.addAll(dataList);
                 locationList2.refresh();
@@ -196,8 +192,7 @@ class ClientDealsController extends GetxController {
                 channelList2.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['onload']['searchChannel'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "channelcode", "channelname"));
+                  dataList.add(DropDownValue.fromJsonDynamic(e, "channelcode", "channelname"));
                 });
                 channelList2.addAll(dataList);
                 channelList2.refresh();
@@ -208,8 +203,8 @@ class ClientDealsController extends GetxController {
                 spotTypeList.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['onload']['sponsorTypeMaster'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "sponsorTypeCode", "sponsorTypeName"));
+                  dataList
+                      .add(DropDownValue.fromJsonDynamic(e, "sponsorTypeCode", "sponsorTypeName"));
                 });
                 spotTypeList.addAll(dataList);
                 spotTypeList.refresh();
@@ -220,8 +215,7 @@ class ClientDealsController extends GetxController {
                 accountList.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['onload']['accountDetails'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "accountcode", "accountname"));
+                  dataList.add(DropDownValue.fromJsonDynamic(e, "accountcode", "accountname"));
                 });
                 accountList.addAll(dataList);
                 accountList.refresh();
@@ -247,19 +241,47 @@ class ClientDealsController extends GetxController {
             // "https://jsonkeeper.com/b/D537"
             fun: (map) {
               closeDialogIfOpen();
-              if (map is Map &&
-                  map['channel'] != null &&
-                  map['channel'].length > 0) {
+              if (map is Map && map['channel'] != null && map['channel'].length > 0) {
                 channelList.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['channel'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "channelcode", "channelName"));
+                  dataList.add(DropDownValue.fromJsonDynamic(e, "channelcode", "channelName"));
                 });
                 channelList.addAll(dataList);
                 channelList.refresh();
               } else {
                 channelList.clear();
+              }
+            },
+            failed: (map) {
+              closeDialogIfOpen();
+            });
+      } catch (e) {
+        closeDialogIfOpen();
+      }
+    }
+  }
+
+  getSubType({String ? accountCode}){
+    if (accountCode != null && accountCode != "") {
+      try {
+        LoadingDialog.call();
+        // Map<String,dynamic> postData = {};
+        Get.find<ConnectorControl>().GETMETHODCALL(
+            api: ApiFactory.Client_Deal_GET_SUBTYPE + accountCode,
+            // "https://jsonkeeper.com/b/D537"
+            fun: (map) {
+              closeDialogIfOpen();
+              if (map is Map && map['subType'] != null && map['subType'].length > 0) {
+                subTypeList.clear();
+                RxList<DropDownValue> dataList = RxList([]);
+                map['subType'].forEach((e) {
+                  dataList.add(DropDownValue.fromJsonDynamic(e, "eventcode", "eventname"));
+                });
+                subTypeList.addAll(dataList);
+                subTypeList.refresh();
+              } else {
+                subTypeList.clear();
               }
             },
             failed: (map) {
@@ -293,11 +315,12 @@ class ClientDealsController extends GetxController {
                 agencyList.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['clientLeaveModel']['agency'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "agencycode", "agencyName"));
+                  dataList.add(DropDownValue.fromJsonDynamic(e, "agencycode", "agencyName"));
                 });
+                selectAgency?.value = null;
                 agencyList.addAll(dataList);
                 agencyList.refresh();
+                selectAgency?.refresh();
               }
               if (map['clientLeaveModel'] != null &&
                   map['clientLeaveModel']['brand'] != null &&
@@ -305,8 +328,7 @@ class ClientDealsController extends GetxController {
                 brandList.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['clientLeaveModel']['brand'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "brandcode", "brandname"));
+                  dataList.add(DropDownValue.fromJsonDynamic(e, "brandcode", "brandname"));
                 });
                 brandList.addAll(dataList);
                 brandList.refresh();
@@ -350,42 +372,33 @@ class ClientDealsController extends GetxController {
             fun: (map) {
               closeDialogIfOpen();
               if (map is Map && map['agencyLeaveModel'] != null) {
-                agencyLeaveDataModel =
-                    AgencyLeaveDataModel.fromJson(map as Map<String, dynamic>);
+                agencyLeaveDataModel = AgencyLeaveDataModel.fromJson(map as Map<String, dynamic>);
                 if (map['agencyLeaveModel']['paymentModels'] != null &&
                     map['agencyLeaveModel']['paymentModels'].length > 0) {
                   RxList<DropDownValue> dataList = RxList([]);
                   payMode.clear();
                   map['agencyLeaveModel']['paymentModels'].forEach((e) {
-                    dataList.add(DropDownValue.fromJsonDynamic(
-                        e, "paymentmodecode", "paymentmodecaption"));
+                    dataList.add(
+                        DropDownValue.fromJsonDynamic(e, "paymentmodecode", "paymentmodecaption"));
                   });
                   payMode.addAll(dataList);
                   if (payMode.length > 0) {
-                    selectPayMode?.value = DropDownValue(
-                        key: payMode[0].key, value: payMode[0].value);
+                    selectPayMode?.value =
+                        DropDownValue(key: payMode[0].key, value: payMode[0].value);
                   }
                   payMode.refresh();
                 }
-                executive.value =
-                    agencyLeaveDataModel?.agencyLeaveModel?.personnelname ?? "";
-                zone.value =
-                    agencyLeaveDataModel?.agencyLeaveModel?.zonename ?? "";
-                payroute.value =
-                    agencyLeaveDataModel?.agencyLeaveModel?.payroutename ?? "";
-                gstPlantName.value =
-                    agencyLeaveDataModel?.agencyLeaveModel?.plantname ?? "";
-                agencyGstNumber.value =
-                    agencyLeaveDataModel?.agencyLeaveModel?.gst ?? "";
-                agencyPanNumber.value =
-                    agencyLeaveDataModel?.agencyLeaveModel?.pan ?? "";
+                executive.value = agencyLeaveDataModel?.agencyLeaveModel?.personnelname ?? "";
+                zone.value = agencyLeaveDataModel?.agencyLeaveModel?.zonename ?? "";
+                payroute.value = agencyLeaveDataModel?.agencyLeaveModel?.payroutename ?? "";
+                gstPlantName.value = agencyLeaveDataModel?.agencyLeaveModel?.plantname ?? "";
+                agencyGstNumber.value = agencyLeaveDataModel?.agencyLeaveModel?.gst ?? "";
+                agencyPanNumber.value = agencyLeaveDataModel?.agencyLeaveModel?.pan ?? "";
                 for (int i = 0; i < currency.length; i++) {
                   if (currency[i].key.toString().trim() ==
-                      agencyLeaveDataModel?.agencyLeaveModel?.currencyTypeCode
-                          .toString()
-                          .trim()) {
-                    selectCurrency?.value = DropDownValue(
-                        value: currency[i].value, key: currency[i].key);
+                      agencyLeaveDataModel?.agencyLeaveModel?.currencyTypeCode.toString().trim()) {
+                    selectCurrency?.value =
+                        DropDownValue(value: currency[i].value, key: currency[i].key);
                     selectCurrency?.refresh();
                     break;
                   }
@@ -394,10 +407,7 @@ class ClientDealsController extends GetxController {
                 if (agencyLeaveDataModel?.agencyLeaveModel?.remark != null &&
                     agencyLeaveDataModel?.agencyLeaveModel?.remark != "") {
                   remarkList.clear();
-                  remarkList.add({
-                    "remark":
-                        agencyLeaveDataModel?.agencyLeaveModel?.remark ?? ""
-                  });
+                  remarkList.add({"remark": agencyLeaveDataModel?.agencyLeaveModel?.remark ?? ""});
                   remarkList.refresh();
                 }
               } else {
@@ -423,8 +433,7 @@ class ClientDealsController extends GetxController {
     try {
       LoadingDialog.call();
       Map<String, dynamic> postData = {
-        "dealDate":
-            Utils.getMMDDYYYYFromDDMMYYYYInString(dateController.text ?? ""),
+        "dealDate": Utils.getMMDDYYYYFromDDMMYYYYInString(dateController.text ?? ""),
         "locationCode": selectedLocation?.value?.key ?? "",
         "channelCode": selectedChannel?.value?.key ?? ""
       };
@@ -438,8 +447,7 @@ class ClientDealsController extends GetxController {
               if (map['channelLeaveModel'] != null &&
                   map['channelLeaveModel']['dealNumber'] != null &&
                   map['channelLeaveModel']['dealNumber'] != "") {
-                dealNoController.text =
-                    map['channelLeaveModel']['dealNumber'] ?? "";
+                dealNoController.text = map['channelLeaveModel']['dealNumber'] ?? "";
               }
               if (map['channelLeaveModel'] != null &&
                   map['channelLeaveModel']['timeBand'] != null &&
@@ -447,8 +455,7 @@ class ClientDealsController extends GetxController {
                 bandList.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['channelLeaveModel']['timeBand'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "timeband", "description"));
+                  dataList.add(DropDownValue.fromJsonDynamic(e, "timeband", "description"));
                 });
                 bandList.addAll(dataList);
                 bandList.refresh();
@@ -459,8 +466,7 @@ class ClientDealsController extends GetxController {
                 addInfoList.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['channelLeaveModel']['addinfo'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "netcode", "networkname"));
+                  dataList.add(DropDownValue.fromJsonDynamic(e, "netcode", "networkname"));
                 });
                 addInfoList.addAll(dataList);
                 addInfoList.refresh();
@@ -479,8 +485,7 @@ class ClientDealsController extends GetxController {
     try {
       LoadingDialog.call();
       Map<String, dynamic> postData = {
-        "dealdate":
-            Utils.getMMDDYYYYFromDDMMYYYYInString(dateController.text ?? ""),
+        "dealdate": Utils.getMMDDYYYYFromDDMMYYYYInString(dateController.text ?? ""),
         "locationCode": selectedLocation?.value?.key ?? "",
         "channelCode": selectedChannel?.value?.key ?? ""
       };
@@ -546,8 +551,7 @@ class ClientDealsController extends GetxController {
                 clientList2.clear();
                 RxList<DropDownValue> dataList = RxList([]);
                 map['model'].forEach((e) {
-                  dataList.add(DropDownValue.fromJsonDynamic(
-                      e, "clientcode", "clientname"));
+                  dataList.add(DropDownValue.fromJsonDynamic(e, "clientcode", "clientname"));
                 });
                 clientList2.addAll(dataList);
                 clientList2.refresh();
@@ -629,33 +633,23 @@ class ClientDealsController extends GetxController {
               importGridList?.clear();
               if (clientDealRetrieveModel != null &&
                   clientDealRetrieveModel?.agencyLeaveModel != null &&
-                  clientDealRetrieveModel?.agencyLeaveModel?.newDetails !=
-                      null &&
-                  (clientDealRetrieveModel
-                              ?.agencyLeaveModel?.newDetails?.length ??
-                          0) >
-                      0) {
-                importGridList =
-                    clientDealRetrieveModel?.agencyLeaveModel?.newDetails;
+                  clientDealRetrieveModel?.agencyLeaveModel?.newDetails != null &&
+                  (clientDealRetrieveModel?.agencyLeaveModel?.newDetails?.length ?? 0) > 0) {
+                importGridList = clientDealRetrieveModel?.agencyLeaveModel?.newDetails;
               }
 
               if (clientDealRetrieveModel != null &&
                   clientDealRetrieveModel?.agencyLeaveModel != null) {
                 try {
-                  if (clientDealRetrieveModel?.agencyLeaveModel?.retrieve !=
-                          null &&
-                      (clientDealRetrieveModel
-                                  ?.agencyLeaveModel?.retrieve?.length ??
-                              0) >
-                          0) {
+                  if (clientDealRetrieveModel?.agencyLeaveModel?.retrieve != null &&
+                      (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?.length ?? 0) > 0) {
                     for (var element in locationList) {
                       if (element.key.toString().trim() ==
-                          clientDealRetrieveModel
-                              ?.agencyLeaveModel?.retrieve?[0].locationcode
+                          clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].locationcode
                               .toString()
                               .trim()) {
-                        selectedLocation?.value = DropDownValue(
-                            value: element.value, key: element.key);
+                        selectedLocation?.value =
+                            DropDownValue(value: element.value, key: element.key);
                         selectedLocation?.refresh();
                         break;
                       }
@@ -664,12 +658,11 @@ class ClientDealsController extends GetxController {
                     if (channelList.length > 0) {
                       for (var element in channelList.value) {
                         if (element.key.toString().trim() ==
-                            clientDealRetrieveModel
-                                ?.agencyLeaveModel?.retrieve?[0].channelCode
+                            clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].channelCode
                                 .toString()
                                 .trim()) {
-                          selectedChannel?.value = DropDownValue(
-                              value: element.value, key: element.key);
+                          selectedChannel?.value =
+                              DropDownValue(value: element.value, key: element.key);
                           selectedChannel?.refresh();
                           break;
                         }
@@ -683,24 +676,22 @@ class ClientDealsController extends GetxController {
 
                     for (var element in currency) {
                       if (element.key.toString().trim() ==
-                          clientDealRetrieveModel
-                              ?.agencyLeaveModel?.retrieve?[0].currencytypecode
+                          clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].currencytypecode
                               .toString()
                               .trim()) {
-                        selectCurrency?.value = DropDownValue(
-                            value: element.value, key: element.key);
+                        selectCurrency?.value =
+                            DropDownValue(value: element.value, key: element.key);
                         selectCurrency?.refresh();
                         break;
                       }
                     }
                     for (var element in dealType) {
                       if (element.key.toString().trim() ==
-                          clientDealRetrieveModel
-                              ?.agencyLeaveModel?.retrieve?[0].dealTypeCode
+                          clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].dealTypeCode
                               .toString()
                               .trim()) {
-                        selectDealType?.value = DropDownValue(
-                            value: element.value, key: element.key);
+                        selectDealType?.value =
+                            DropDownValue(value: element.value, key: element.key);
                         selectDealType?.refresh();
                         break;
                       }
@@ -709,73 +700,59 @@ class ClientDealsController extends GetxController {
                     selectedClient?.refresh();
 
                     clientsLeave().then((value) {
-                      agencyGstNumber.value = (clientDealRetrieveModel
-                                  ?.agencyLeaveModel?.retrieve?[0].gstNumber ??
-                              "")
-                          .toString();
+                      agencyGstNumber.value =
+                          (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].gstNumber ?? "")
+                              .toString();
                       agencyPanNumber.value = (clientDealRetrieveModel
-                                  ?.agencyLeaveModel
-                                  ?.retrieve?[0]
-                                  .agencyshortname ??
+                                  ?.agencyLeaveModel?.retrieve?[0].agencyshortname ??
                               "")
                           .toString();
                       if (agencyList.length > 0) {
                         for (var element in agencyList) {
                           if (element.key.toString().trim() ==
-                              clientDealRetrieveModel
-                                  ?.agencyLeaveModel?.retrieve?[0].agencyCode
+                              clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].agencyCode
                                   .toString()
                                   .trim()) {
-                            selectAgency?.value = DropDownValue(
-                                value: element.value, key: element.key);
+                            selectAgency?.value =
+                                DropDownValue(value: element.value, key: element.key);
                             selectAgency?.refresh();
                             break;
                           }
                         }
                       } else {
                         selectAgency?.value = DropDownValue(
-                            key: clientDealRetrieveModel
-                                ?.agencyLeaveModel?.retrieve?[0].agencyCode,
-                            value: clientDealRetrieveModel
-                                ?.agencyLeaveModel?.retrieve?[0].agencyName);
+                            key: clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].agencyCode,
+                            value:
+                                clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].agencyName);
                         selectAgency?.refresh();
                       }
 
                       agencyLeave().then((value) {
-                        dealNoController.text = clientDealRetrieveModel
-                                ?.agencyLeaveModel?.retrieve?[0].dealNumber ??
-                            "";
+                        dealNoController.text =
+                            clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].dealNumber ??
+                                "";
                         dateController.text = Utils.toDateFormat4(
-                            clientDealRetrieveModel
-                                ?.agencyLeaveModel?.retrieve?[0].dealDate);
+                            clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].dealDate);
                         referenceController.text = clientDealRetrieveModel
-                                ?.agencyLeaveModel
-                                ?.retrieve?[0]
-                                .referenceNumber ??
+                                ?.agencyLeaveModel?.retrieve?[0].referenceNumber ??
                             "";
                         referenceDateController.text = Utils.toDateFormat4(
-                            clientDealRetrieveModel
-                                ?.agencyLeaveModel?.retrieve?[0].referenceDate);
+                            clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].referenceDate);
                         fromDateController.text = Utils.toDateFormat4(
-                            clientDealRetrieveModel
-                                ?.agencyLeaveModel?.retrieve?[0].fromDate);
+                            clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].fromDate);
                         toDateController.text = Utils.toDateFormat4(
-                            clientDealRetrieveModel
-                                ?.agencyLeaveModel?.retrieve?[0].todate);
-                        secondsController.text = (clientDealRetrieveModel
-                                    ?.agencyLeaveModel?.retrieve?[0].seconds ??
-                                "0")
-                            .toString();
-                        amountController.text = (clientDealRetrieveModel
-                                    ?.agencyLeaveModel
-                                    ?.retrieve?[0]
-                                    .dealAmount ??
-                                "0")
-                            .toString();
-                        maxSpeedController.text = (clientDealRetrieveModel
-                                    ?.agencyLeaveModel?.retrieve?[0].maxspend ??
-                                "0")
-                            .toString();
+                            clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].todate);
+                        secondsController.text =
+                            (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].seconds ?? "0")
+                                .toString();
+                        amountController.text =
+                            (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].dealAmount ??
+                                    "0")
+                                .toString();
+                        maxSpeedController.text =
+                            (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].maxspend ??
+                                    "0")
+                                .toString();
 
                         agencyPanNumber.refresh();
                         agencyGstNumber.refresh();
@@ -783,28 +760,25 @@ class ClientDealsController extends GetxController {
                         if (brandList.length > 0) {
                           for (var element in brandList) {
                             if (element.key.toString().trim() ==
-                                clientDealRetrieveModel
-                                    ?.agencyLeaveModel?.retrieve?[0].brandCode
+                                clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].brandCode
                                     .toString()
                                     .trim()) {
-                              selectBrand?.value = DropDownValue(
-                                  value: element.value, key: element.key);
+                              selectBrand?.value =
+                                  DropDownValue(value: element.value, key: element.key);
                               selectBrand?.refresh();
                               break;
                             }
                           }
                         } else {
                           selectBrand?.value = DropDownValue(
-                              key: clientDealRetrieveModel
-                                  ?.agencyLeaveModel?.retrieve?[0].brandCode,
+                              key:
+                                  clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].brandCode,
                               value: "");
                           selectBrand?.refresh();
                         }
 
                         effectiveRate.value = (clientDealRetrieveModel
-                                    ?.agencyLeaveModel
-                                    ?.retrieve?[0]
-                                    .effectiveRateYN ==
+                                    ?.agencyLeaveModel?.retrieve?[0].effectiveRateYN ==
                                 1)
                             ? true
                             : false;
@@ -828,8 +802,7 @@ class ClientDealsController extends GetxController {
   Offset? getOffSetValue(BoxConstraints constraints) {
     switch (initialOffset.value) {
       case 1:
-        return Offset(
-            (constraints.maxWidth / 3) + 30, constraints.maxHeight / 3);
+        return Offset((constraints.maxWidth / 3) + 30, constraints.maxHeight / 3);
       case 2:
         return Offset(Get.width * 0.09, Get.height * 0.12);
       case 3:
@@ -864,6 +837,48 @@ class ClientDealsController extends GetxController {
     super.onInit();
   }
 
+  Rx<String> address = Rx<String>("");
+
+  getAgencyAddress({String? code}) {
+    LoadingDialog.call();
+    try {
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: "${ApiFactory.Client_Deal_GET_AGENCY_ADDRESS}?AgencyCode=$code",
+          fun: (map) {
+            closeDialogIfOpen();
+            if (map is Map && map['model'] != null) {
+              address.value = map['model'];
+              address.refresh();
+            }
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+          });
+    } catch (e) {
+      closeDialogIfOpen();
+    }
+  }
+
+  getClientAddress({String? code}) {
+    LoadingDialog.call();
+    try {
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: "${ApiFactory.Client_Deal_GET_CLIENT_ADDRESS}?clientCode=$code",
+          fun: (map) {
+            closeDialogIfOpen();
+            if (map is Map && map['model'] != null) {
+              address.value = map['model'];
+              address.refresh();
+            }
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+          });
+    } catch (e) {
+      closeDialogIfOpen();
+    }
+  }
+
   pickFile() async {
     LoadingDialog.call();
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -896,10 +911,7 @@ class ClientDealsController extends GetxController {
         var tableData = <Map<String, dynamic>>[];
         sheet = sheet + 1;
         // Extract headers from the first row
-        headers = excel.tables[table]!
-            .row(0)
-            .map((cell) => cell?.value.toString())
-            .toList();
+        headers = excel.tables[table]!.row(0).map((cell) => cell?.value.toString()).toList();
 
         print(">>>>>" + headers.toString());
 
@@ -952,8 +964,7 @@ class ClientDealsController extends GetxController {
         "BaseDuration"
       ];
       // List<String> list2 = [ "ku","jks"];
-      List<dynamic> sta =
-          Utils.listCompare(sourceList: sourceList, compareLst: headers);
+      List<dynamic> sta = Utils.listCompare(sourceList: sourceList, compareLst: headers);
       print(">>>>>>>>>sta$sta");
       if (!sta[0]) {
         LoadingDialog.showErrorDialog(sta[1] ?? "");
@@ -978,8 +989,69 @@ class ClientDealsController extends GetxController {
     }, cancelTitle: "Yes", deleteTitle: "No");
   }
 
+  Future<Map<String, dynamic>> getAllCode(
+      {String? sponsorTypeName,
+      String? programName,
+      String? timeBandName,
+      String? networkName,
+      String? accountName,
+      String? eventName}) {
+    Completer<Map<String, dynamic>> completer = Completer<Map<String, dynamic>>();
+    LoadingDialog.call();
+    try {
+      Map<String, dynamic> postData = {
+        "sponsorTypeName": sponsorTypeName,
+        "programName": programName,
+        "timeBand": timeBandName,
+        "netWorkName": networkName,
+        "accountname": accountName,
+        "eventname": eventName
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.Client_Deal_GET_EACH_VALUE_IMPORT,
+          json: postData,
+          fun: (map) {
+            closeDialogIfOpen();
+            if (map is Map && map['model'] != null) {
+              completer.complete(map as FutureOr<Map<String, dynamic>>?);
+            } else {
+              completer.complete({
+                "sponsorTypeCode": "",
+                "programCode": "",
+                "bandCode": "",
+                "netCode": "",
+                "accountCode": "",
+                "eventcode": ""
+              });
+            }
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+            completer.complete({
+              "sponsorTypeCode": "",
+              "programCode": "",
+              "bandCode": "",
+              "netCode": "",
+              "accountCode": "",
+              "eventcode": ""
+            });
+          });
+    } catch (e) {
+      closeDialogIfOpen();
+      completer.complete({
+        "sponsorTypeCode": "",
+        "programCode": "",
+        "bandCode": "",
+        "netCode": "",
+        "accountCode": "",
+        "eventcode": ""
+      });
+    }
+    return completer.future;
+  }
+
   List<NewDetails>? importGridListNew = [];
-  btnImportClickWithCondition({List<Map<String, dynamic>>? excelDataNew}) {
+  btnImportClickWithCondition({List<Map<String, dynamic>>? excelDataNew}) async {
     checkImport = false;
     importGridListNew?.clear();
     if (dealNoController.text.trim() == "") {
@@ -989,7 +1061,11 @@ class ClientDealsController extends GetxController {
     if (excelDataNew != null && excelDataNew.isNotEmpty) {
       for (int i = 0; i < (excelDataNew.length); i++) {
         if (excelDataNew[i]['SponsorTypeName'].toString().trim() == "") {
-          continue;
+          bool sta = await ignoreBlankRow();
+          if (sta == false) {
+            return;
+          }
+          // continue;
         }
         if (excelDataNew[i]['Rate'] == 0 &&
             excelDataNew[i]['Seconds'] == 0 &&
@@ -997,6 +1073,14 @@ class ClientDealsController extends GetxController {
             excelDataNew[i]['ValuationRate'] == 0) {
           return;
         }
+
+        Map<String, dynamic> allCode = await getAllCode(
+            programName: excelDataNew[i]['ProgramName'],
+            accountName: excelDataNew[i]['Accountname'],
+            eventName: excelDataNew[i]['Eventname'],
+            networkName: excelDataNew[i]['NetWorkName'],
+            sponsorTypeName: excelDataNew[i]['SponsorTypeName'],
+            timeBandName: excelDataNew[i]['TimeBand']);
 
         NewDetails newDetails = NewDetails(
           primaryEventCode: (excelDataNew[i]['Amount'] != "") ? "1" : "0",
@@ -1011,12 +1095,12 @@ class ClientDealsController extends GetxController {
           amount: excelDataNew[i]['Amount'],
           valuationRate: excelDataNew[i]['ValuationRate'],
           bookedSeconds: excelDataNew[i]['BookedSeconds'],
-          programCode: "",
-          sponsorTypeCode: "",
+          programCode: allCode['programCode'],
+          sponsorTypeCode: allCode['sponsorTypeCode'],
           balanceSeconds: excelDataNew[i]['BalanceSeconds'],
           balanceAmount: excelDataNew[i]['BalanceAmount'],
           timeBand: excelDataNew[i]['TimeBand'],
-          bandCode: "",
+          bandCode: allCode['bandCode'],
           netWorkName: excelDataNew[i]['NetWorkName'],
           sun: excelDataNew[i]['Sun'],
           mon: excelDataNew[i]['Mon'],
@@ -1046,14 +1130,14 @@ class ClientDealsController extends GetxController {
           }
         }
 
-        if (newDetails.primaryEventCode == "1") {
+        if (newDetails.primaryEventCode.toString().trim() == "1") {
           newDetails.accountname = excelDataNew[i]['Accountname'];
-          newDetails.accountCode = "";
+          newDetails.accountCode = allCode['accountCode'];
           if ((newDetails.accountCode).toString().trim() == "") {
             checkImport = true;
           }
           newDetails.eventname = excelDataNew[i]['Eventname'];
-          newDetails.eventcode = "";
+          newDetails.eventcode = allCode['eventcode'];
           if ((newDetails.eventcode).toString().trim() == "") {
             checkImport = true;
           }
@@ -1068,49 +1152,174 @@ class ClientDealsController extends GetxController {
     }
   }
 
-  ignoreBlankRow() {
+  Future<bool> ignoreBlankRow() async {
+    Completer<bool> completer = Completer<bool>();
     if (checkImport) {
       // Goto DataNotAdded
+      completer.complete(false);
+      return completer.future;
     }
     // importGridList
-
     for (int i = 0; i < (importGridListNew?.length ?? 0); i++) {
       for (int k = 0; k < (importGridList?.length ?? 0); k++) {
-        if((importGridList?.length??0) > 0)
-        {
-          /*if(importGridListNew?[i].primaryEventCode ==
-              importGridList?[k].primaryEventCode &&
-              importGridListNew?[i].sponsorTypeCode ==
-              importGridList?[k].sponsorTypeCode &&
-              importGridListNew?[i].programCode ==
-              importGridList?[k].programCode &&
-              importGridListNew?[i].starttime ==
-              importGridList?[k].starttime &&
-              importGridListNew?[i].endTime ==
-              importGridList?[k].endTime &&
-              importGridListNew?[i].rate ==
-              importGridList?[k].rate &&
-              importGridListNew?[i].valuationRate ==
-              importGridList?[k].valuationRate &&
-              importGridListNew?[i].sun ==
-              importGridList?[k].sun && importGridListNew?[i].mon ==
-              importGridList?[k].mon && importGridListNew?[i].tue ==
-              importGridList?[k].tue && importGridListNew?[i].wed ==
-              importGridList?[k].wed  && importGridListNew?[i].thu ==
-              importGridList?[k].thu && importGridListNew?[i].fri ==
-              importGridList?[k].fri && importGridListNew?[i].sat ==
-              importGridList?[k].sat  && importGridListNew?[i].accountCode ==
-              importGridList?[k].accountCode &&
-              importGridListNew?[i].eventcode ==
-              importGridList?[k].eventcode ){
-
-
-          }*/
-
-
+        if ((importGridList?.length ?? 0) > 0) {
+          if ((importGridListNew?[i].primaryEventCode == importGridList?[k].primaryEventCode) &&
+              (importGridListNew?[i].sponsorTypeCode == importGridList?[k].sponsorTypeCode) &&
+              (importGridListNew?[i].programCode == importGridList?[k].programCode) &&
+              (importGridListNew?[i].starttime == importGridList?[k].starttime) &&
+              (importGridListNew?[i].endTime == importGridList?[k].endTime) &&
+              (importGridListNew?[i].rate == importGridList?[k].rate) &&
+              (importGridListNew?[i].valuationRate == importGridList?[k].valuationRate) &&
+              (importGridListNew?[i].sun == importGridList?[k].sun) &&
+              (importGridListNew?[i].mon == importGridList?[k].mon) &&
+              (importGridListNew?[i].tue == importGridList?[k].tue) &&
+              (importGridListNew?[i].wed == importGridList?[k].wed) &&
+              (importGridListNew?[i].thu == importGridList?[k].thu) &&
+              (importGridListNew?[i].fri == importGridList?[k].fri) &&
+              (importGridListNew?[i].sat == importGridList?[k].sat) &&
+              (importGridListNew?[i].accountCode == importGridList?[k].accountCode) &&
+              (importGridListNew?[i].eventcode == importGridList?[k].eventcode)) {
+            bool sta = await LoadingDialog.modifyWithAsync(
+                "Similar entry already exists!\nDo you want to modify it?",
+                cancelTitle: "Yes",
+                deleteTitle: "No");
+            if (sta) {
+              bool reSta = await editRows(selectedOldIndex: 0, selectNewIndex: 0);
+            } else {
+              continue;
+            }
+          }
         }
       }
     }
+    completer.complete(true);
+    return completer.future;
+  }
+
+  Future<bool> editRows({required int selectedOldIndex, required int selectNewIndex}) {
+    Completer<bool> completer = Completer<bool>();
+    try {
+      importGridList?[selectedOldIndex].primaryEventCode =
+          importGridListNew?[selectNewIndex].primaryEventCode;
+      importGridList?[selectedOldIndex].recordnumber = "${selectedOldIndex + 1}";
+      importGridList?[selectedOldIndex].sponsorTypeCode =
+          importGridListNew?[selectNewIndex].sponsorTypeCode;
+      importGridList?[selectedOldIndex].sponsorTypeName =
+          importGridListNew?[selectNewIndex].sponsorTypeName;
+      importGridList?[selectedOldIndex].programCode =
+          importGridListNew?[selectNewIndex].programCode;
+      importGridList?[selectedOldIndex].programName =
+          importGridListNew?[selectNewIndex].programName;
+      importGridList?[selectedOldIndex].programCategoryCode =
+          importGridListNew?[selectNewIndex].programCategoryCode;
+      importGridList?[selectedOldIndex].starttime = importGridListNew?[selectNewIndex].starttime;
+      importGridList?[selectedOldIndex].endTime = importGridListNew?[selectNewIndex].endTime;
+      importGridList?[selectedOldIndex].seconds = importGridListNew?[selectNewIndex].seconds;
+      importGridList?[selectedOldIndex].rate = importGridListNew?[selectNewIndex].rate;
+      importGridList?[selectedOldIndex].amount = importGridListNew?[selectNewIndex].amount;
+      importGridList?[selectedOldIndex].valuationRate =
+          importGridListNew?[selectNewIndex].valuationRate;
+      importGridList?[selectedOldIndex].bookedSeconds =
+          importGridListNew?[selectNewIndex].bookedSeconds;
+      importGridList?[selectedOldIndex].balanceSeconds =
+          importGridListNew?[selectNewIndex].balanceSeconds;
+      importGridList?[selectedOldIndex].balanceAmount =
+          importGridListNew?[selectNewIndex].balanceAmount;
+      importGridList?[selectedOldIndex].bandCode = importGridListNew?[selectNewIndex].bandCode;
+      importGridList?[selectedOldIndex].timeBand = importGridListNew?[selectNewIndex].timeBand;
+      importGridList?[selectedOldIndex].netCode = importGridListNew?[selectNewIndex].netCode;
+      importGridList?[selectedOldIndex].netWorkName =
+          importGridListNew?[selectNewIndex].netWorkName;
+      importGridList?[selectedOldIndex].sun = importGridListNew?[selectNewIndex].sun;
+      importGridList?[selectedOldIndex].mon = importGridListNew?[selectNewIndex].mon;
+      importGridList?[selectedOldIndex].tue = importGridListNew?[selectNewIndex].tue;
+      importGridList?[selectedOldIndex].wed = importGridListNew?[selectNewIndex].wed;
+      importGridList?[selectedOldIndex].thu = importGridListNew?[selectNewIndex].thu;
+      importGridList?[selectedOldIndex].fri = importGridListNew?[selectNewIndex].fri;
+      importGridList?[selectedOldIndex].sat = importGridListNew?[selectNewIndex].sat;
+      importGridList?[selectedOldIndex].revflag = importGridListNew?[selectNewIndex].revflag;
+      importGridList?[selectedOldIndex].accountCode =
+          importGridListNew?[selectNewIndex].accountCode;
+      importGridList?[selectedOldIndex].accountname =
+          importGridListNew?[selectNewIndex].accountname;
+      importGridList?[selectedOldIndex].eventcode = importGridListNew?[selectNewIndex].eventcode;
+      importGridList?[selectedOldIndex].eventname = importGridListNew?[selectNewIndex].eventname;
+      importGridList?[selectedOldIndex].spots = importGridListNew?[selectNewIndex].spots;
+      importGridList?[selectedOldIndex].paymentmodecaption =
+          importGridListNew?[selectNewIndex].paymentmodecaption;
+      importGridList?[selectedOldIndex].revenueTypeName =
+          importGridListNew?[selectNewIndex].revenueTypeName;
+      importGridList?[selectedOldIndex].revenueTypeCode =
+          importGridListNew?[selectNewIndex].revenueTypeCode;
+      importGridList?[selectedOldIndex].subRevenueTypeCode =
+          importGridListNew?[selectNewIndex].subRevenueTypeCode;
+      importGridList?[selectedOldIndex].subRevenueTypeName =
+          importGridListNew?[selectNewIndex].subRevenueTypeName;
+      importGridList?[selectedOldIndex].countBased = importGridListNew?[selectNewIndex].countBased;
+      importGridList?[selectedOldIndex].baseDuration =
+          importGridListNew?[selectNewIndex].baseDuration;
+
+      secondsController.text = colTotal("seconds");
+      amountController.text = colTotal("amount");
+
+      if (double.parse(amountController.text ?? "0") > 0) {
+        maxSpeedController.text = amountController.text;
+      }
+
+      completer.complete(true);
+    } catch (e) {
+      completer.complete(false);
+    }
+    return completer.future;
+  }
+
+  String colTotal(String col) {
+    double amt = 0;
+    try {
+      if (col == "amount") {
+        for (int i = 0; i < (importGridList?.length ?? 0); i++) {
+          amt = amt + double.parse(importGridList?[i].amount ?? "0");
+        }
+      } else {
+        for (int i = 0; i < (importGridList?.length ?? 0); i++) {
+          amt = amt + double.parse(importGridList?[i].seconds ?? "0");
+        }
+      }
+
+      return amt.toStringAsFixed(3);
+    } catch (e) {
+      return amt.toStringAsFixed(3);
+    }
+  }
+
+  primarySecondaryEvent(bool sta){
+    if(sta == true){
+      accountEnaSta.value = true;
+      accountEnaSta.refresh();
+    }else{
+      accountEnaSta.value = false;
+      selectAccount?.value = null;
+      selectSubType?.value = null;
+      accountEnaSta.refresh();
+    }
+
+  }
+
+  doubleTap({required int selectedIndex}) {
+    if(stateManager != null && selectedIndex != -1){
+      if(stateManager?.rows[selectedIndex].cells['Accountcode']?.value ==  "" ||
+          stateManager?.rows[selectedIndex].cells['Accountcode']?.value == null ){
+        if(stateManager?.rows[selectedIndex].cells['Seconds']?.value.toString() != "0"){
+
+        }
+      }
+
+    }else{
+      return ;
+    }
+  }
+  addBtn() {
+
   }
 
   @override
