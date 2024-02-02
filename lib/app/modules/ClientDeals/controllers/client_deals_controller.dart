@@ -1305,17 +1305,70 @@ class ClientDealsController extends GetxController {
 
   }
 
+  String? sponsorTypeCode = "";
+
   doubleTap({required int selectedIndex}) {
+
+
     if(stateManager != null && selectedIndex != -1){
       if(stateManager?.rows[selectedIndex].cells['Accountcode']?.value ==  "" ||
           stateManager?.rows[selectedIndex].cells['Accountcode']?.value == null ){
         if(stateManager?.rows[selectedIndex].cells['Seconds']?.value.toString() != "0"){
-
+          type.value = false;
+          type.refresh();
+          primarySecondaryEvent(type.value);
+        }else{
+          type.value = true;
+          type.refresh();
+          primarySecondaryEvent(type.value);
         }
+
+        // cboDbandcode.Enabled = True
+        // cboDnetcode.Enabled = True
       }
+
+      print("I am from controller");
+
+      sponsorTypeCode = (stateManager?.rows[selectedIndex].cells['SponsorTypeCode']?.value??"").toString();
+      selectProgram?.value = DropDownValue(key:(stateManager?.rows[selectedIndex].cells['ProgramCode']?.value??"").toString() ,
+          value:(stateManager?.rows[selectedIndex].cells['ProgramName']?.value??"").toString() );
+      startTime.text = (stateManager?.rows[selectedIndex].cells['Starttime']?.value??"").toString();
+      endTime.text = (stateManager?.rows[selectedIndex].cells['EndTime']?.value??"").toString();
+      secondsController2.text = (stateManager?.rows[selectedIndex].cells['Seconds']?.value??"").toString();
+      ratePerTenSecondsController.text = (stateManager?.rows[selectedIndex].cells['Rate']?.value??"").toString();
+      valueRateController.text = (stateManager?.rows[selectedIndex].cells['ValuationRate']?.value??"").toString();
+      amountController2.text = (stateManager?.rows[selectedIndex].cells['Amount']?.value??"").toString();
+      selectBand?.value = DropDownValue(value:(stateManager?.rows[selectedIndex].cells['TimeBand']?.value??"").toString() ,
+          key:(stateManager?.rows[selectedIndex].cells['bandcode']?.value??"").toString() );
+
+      sun.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Sun']?.value);
+      mon.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Mon']?.value);
+      tue.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Tue']?.value);
+      wed.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Wed']?.value);
+      thu.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Thu']?.value);
+      fri.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Fri']?.value);
+      sat.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Sat']?.value);
+
+      sun.refresh();
+      mon.refresh();
+      tue.refresh();
+      wed.refresh();
+      thu.refresh();
+      fri.refresh();
+      sat.refresh();
+
+
 
     }else{
       return ;
+    }
+  }
+
+  bool getBoolean({String? sta}){
+    if(sta != null && sta.toString().trim() == "1"){
+      return true;
+    }else{
+      return false;
     }
   }
   addBtn() {

@@ -1452,9 +1452,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                     }
 
                                   }*/
-
                                 },
-
                               ),
                               Obx(() {
                                 return text_m_w700(
@@ -1499,6 +1497,10 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                         controller.userGridSetting1),
                                     exportFileName: "Client Deals",
                                     mode: PlutoGridMode.normal,
+                                    onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event){
+                                      print(">>>>>doubletapClick");
+                                      controller.doubleTap(selectedIndex: event.rowIdx);
+                                    },
                                     mapData: (controller
                                         .clientDealRetrieveModel!
                                         .agencyLeaveModel!.newDetails!
