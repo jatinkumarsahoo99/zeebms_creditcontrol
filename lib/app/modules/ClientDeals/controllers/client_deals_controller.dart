@@ -1330,47 +1330,46 @@ class ClientDealsController extends GetxController {
       print("I am from controller");
 
       sponsorTypeCode = (stateManager?.rows[selectedIndex].cells['SponsorTypeCode']?.value??"").toString();
-      selectProgram?.value = DropDownValue(key:(stateManager?.rows[selectedIndex].cells['ProgramCode']?.value??"").toString() ,
-          value:(stateManager?.rows[selectedIndex].cells['ProgramName']?.value??"").toString() );
-      startTime.text = (stateManager?.rows[selectedIndex].cells['Starttime']?.value??"").toString();
-      endTime.text = (stateManager?.rows[selectedIndex].cells['EndTime']?.value??"").toString();
-      secondsController2.text = (stateManager?.rows[selectedIndex].cells['Seconds']?.value??"").toString();
-      ratePerTenSecondsController.text = (stateManager?.rows[selectedIndex].cells['Rate']?.value??"").toString();
-      valueRateController.text = (stateManager?.rows[selectedIndex].cells['ValuationRate']?.value??"").toString();
-      amountController2.text = (stateManager?.rows[selectedIndex].cells['Amount']?.value??"").toString();
-      selectBand?.value = DropDownValue(value:(stateManager?.rows[selectedIndex].cells['TimeBand']?.value??"").toString() ,
+
+      selectProgram?.value = DropDownValue(key:(stateManager?.rows[selectedIndex].cells['programCode']?.value??"").toString() ,
+          value:(stateManager?.rows[selectedIndex].cells['programName']?.value??"").toString() );
+
+      startTime.text = (stateManager?.rows[selectedIndex].cells['starttime']?.value??"").toString();
+      endTime.text = (stateManager?.rows[selectedIndex].cells['endTime']?.value??"").toString();
+      secondsController2.text = (stateManager?.rows[selectedIndex].cells['seconds']?.value??"").toString();
+      ratePerTenSecondsController.text = (stateManager?.rows[selectedIndex].cells['rate']?.value??"").toString();
+      valueRateController.text = (stateManager?.rows[selectedIndex].cells['valuationRate']?.value??"").toString();
+      amountController2.text = (stateManager?.rows[selectedIndex].cells['amount']?.value??"").toString();
+      selectBand?.value = DropDownValue(value:(stateManager?.rows[selectedIndex].cells['timeBand']?.value??"").toString() ,
           key:(stateManager?.rows[selectedIndex].cells['bandcode']?.value??"").toString() );
 
-      sun.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Sun']?.value);
-      mon.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Mon']?.value);
-      tue.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Tue']?.value);
-      wed.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Wed']?.value);
-      thu.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Thu']?.value);
-      fri.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Fri']?.value);
-      sat.value = getBoolean(sta: stateManager?.rows[selectedIndex].cells['Sat']?.value);
+      print(">>>>>>>>>>>>>>sat${stateManager?.rows[selectedIndex].cells['sun']?.value??""}");
+      print(">>>>>>>>>>>>>>amt${stateManager?.rows[selectedIndex].cells['Amount']?.value??""}");
 
-      sun.refresh();
-      mon.refresh();
-      tue.refresh();
-      wed.refresh();
-      thu.refresh();
-      fri.refresh();
-      sat.refresh();
+      sun.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['sun']?.value??"").toString());
+      mon.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['mon']?.value??"").toString());
+      tue.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['tue']?.value??"").toString());
+      wed.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['wed']?.value??"").toString());
+      thu.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['thu']?.value??"").toString());
+      fri.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['fri']?.value??"").toString());
+      sat.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['sat']?.value??"").toString());
 
-
+      update(['middle']);
 
     }else{
       return ;
     }
   }
 
-  bool getBoolean({String? sta}){
-    if(sta != null && sta.toString().trim() == "1"){
+  bool getBoolean({String? staData}){
+    print(">>>>>>>>>>>>>>sat$staData");
+    if(staData != null && staData.toString().trim() == "1"){
       return true;
     }else{
       return false;
     }
   }
+
   addBtn() {
 
   }
