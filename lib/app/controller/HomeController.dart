@@ -13,6 +13,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import '../data/DrawerModel.dart';
+import '../data/user_data_settings_model.dart';
 import '../providers/Aes.dart';
 import '../providers/ApiFactory.dart';
 import '../routes/app_pages.dart';
@@ -255,6 +256,53 @@ class HomeController extends GetxController {
             return null;
           }
         });
+  }
+
+  void postUserGridSetting2(
+      {required List<Map<String, PlutoGridStateManager?>> listStateManager,
+        String? formName}) {
+    if (listStateManager.isEmpty) return;
+    var data = <Map<String, dynamic>>[];
+
+    for (var element in listStateManager) {
+      element.forEach(
+            (key, value) {
+          if (value != null) {
+            Map<String, double> singleMap = {};
+            for (var element in value.columns) {
+              singleMap[element.field] = element.width;
+            }
+            data.add(
+              UserSetting(
+                formName: (formName?.replaceAll(' ', '')) ??
+                    Get.find<MainController>().formName.replaceAll(" ", ""),
+                controlName: key,
+                userSettings: singleMap,
+              ).toJson(),
+            );
+          }
+        },
+      );
+    }
+    if (data.isEmpty) return;
+    Get.find<ConnectorControl>().POSTMETHOD(
+      api: ApiFactory.USER_SETTINGS,
+      json: {"lstUserSettings": data},
+      fun: (map) {},
+    );
+  }
+
+  Future<UserDataSettings> fetchUserSetting2({String? formName}) {
+    Completer<UserDataSettings> completer = Completer();
+    Get.find<ConnectorControl>().GETMETHODCALL(
+      api:
+      "${ApiFactory.FETCH_USER_SETTING}?formName=${(formName?.replaceAll(" ", "")) ?? Get.find<MainController>().formName.replaceAll(" ", "")}",
+      fun: (map) {
+        var userSettings = UserDataSettings.fromJson(map);
+        return completer.complete(userSettings);
+      },
+    );
+    return completer.future;
   }
 
   Widget getCommonButton<T>(

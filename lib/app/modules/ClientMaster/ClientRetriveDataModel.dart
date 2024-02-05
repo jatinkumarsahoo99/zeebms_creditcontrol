@@ -4,7 +4,7 @@ import '../../data/DropDownValue.dart';
 class ClientRetriveDataModel {
   List<LstRecords>? lstRecords;
   String? lstAddInfos;
-  List<Null>? lstClientAgencyMaster;
+  List<ClientAgencyMaster>? lstClientAgencyMaster;
   List<LstPayTerm>? lstPayTerm;
   List<DropDownValue>? lstPaymentMaster;
 
@@ -23,12 +23,12 @@ class ClientRetriveDataModel {
       });
     }
     lstAddInfos = json['lstAddInfos'];
-   /* if (json['lstClientAgencyMaster'] != null) {
-      lstClientAgencyMaster = <Null>[];
+    if (json['lstClientAgencyMaster'] != null) {
+      lstClientAgencyMaster = <ClientAgencyMaster>[];
       json['lstClientAgencyMaster'].forEach((v) {
-        lstClientAgencyMaster!.add(new Null.fromJson(v));
+        lstClientAgencyMaster!.add(new ClientAgencyMaster.fromJson(v));
       });
-    }*/
+    }
     if (json['lstPayTerm'] != null) {
       lstPayTerm = <LstPayTerm>[];
       json['lstPayTerm'].forEach((v) {
@@ -293,6 +293,89 @@ class LstPaymentMaster {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['paymentmodecode'] = this.paymentmodecode;
     data['paymentmodecaption'] = this.paymentmodecaption;
+    return data;
+  }
+}
+
+
+class ClientAgencyMaster {
+  String? locationName;
+  String? locationCode;
+  String? channelName;
+  String? channelCode;
+  String? agencyName;
+  String? agencyCode;
+  String? executiveName;
+  String? executiveCode;
+  String? payroutecode;
+  String? payrouteName;
+  String? effectiveFrom;
+  String? plantid;
+  String? plantName;
+  String? clientName;
+
+  ClientAgencyMaster(
+      {this.locationName,
+        this.locationCode,
+        this.channelName,
+        this.channelCode,
+        this.agencyName,
+        this.agencyCode,
+        this.executiveName,
+        this.executiveCode,
+        this.payroutecode,
+        this.payrouteName,
+        this.effectiveFrom,
+        this.plantid,
+        this.clientName,
+        this.plantName});
+
+  ClientAgencyMaster.fromJson(Map<String, dynamic> json) {
+    locationName = json['locationName'];
+    locationCode = json['locationCode'];
+    channelName = json['channelName'];
+    channelCode = json['channelCode'];
+    agencyName = json['agencyName'];
+    agencyCode = json['agencyCode'];
+    executiveName = json['executiveName'];
+    executiveCode = json['executiveCode'];
+    payroutecode = json['payroutecode'];
+    payrouteName = json['payrouteName'];
+    effectiveFrom = json['effectiveFrom'];
+    plantid = json['plantid'];
+    plantName = json['plantName'];
+    clientName = json['clientName'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['locationName'] = this.locationName;
+    data['locationCode'] = this.locationCode;
+    data['channelName'] = this.channelName;
+    data['channelCode'] = this.channelCode;
+    data['agencyName'] = this.agencyName;
+    data['clientName'] = this.clientName;
+    data['personnelName'] = this.executiveName;
+    data['payrouteName'] = this.payrouteName;
+    data['agencyCode'] = this.agencyCode;
+    data['executiveCode'] = this.executiveCode;
+    data['payroutecode'] = this.payroutecode;
+    data['effectiveFrom'] = this.effectiveFrom;
+    data['plantid'] = this.plantid;
+    data['plantName'] = this.plantName;
+
+    return data;
+  }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['locationCode'] = this.locationCode;
+    data['channelCode'] = this.channelCode;
+    data['agencyCode'] = this.agencyCode;
+    data['executiveCode'] = this.executiveCode;
+    data['payroutecode'] = this.payroutecode;
+    data['effectiveFromDate'] = this.effectiveFrom;
+    data['plantid'] = int.tryParse(this.plantid.toString());
     return data;
   }
 }
