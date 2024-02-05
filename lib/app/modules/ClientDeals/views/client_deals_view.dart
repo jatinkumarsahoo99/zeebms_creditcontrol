@@ -930,7 +930,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                               ),
                                               Obx(() {
                                                 return Container(
-                                                  width: Get.width*0.16,
+                                                  width: Get.width * 0.16,
                                                   child: text_m_w700(
                                                       controller.executive
                                                           .value ?? ""),
@@ -960,22 +960,35 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                   }),
                                                 ],
                                               ),
-                                              text_m_w700(
-                                                "sssssss",
-                                                color: Colors.red,
-                                              ),
+                                              Obx(() {
+                                                return Container(
+                                                  child: text_m_w700(
+                                                    controller.clientEmb.value ?? "",
+                                                    color: Colors.red,
+                                                  ),
+                                                );
+                                              }),
                                             ],
                                           ),
                                         ),
                                         sizedBoxWidth(10),
                                         SizedBox(
-                                          width: Get.width * 0.2,
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                left: 50),
-                                            child: text_m_w700(
-                                              "sssssss",
-                                              color: Colors.blue,
+                                          width: Get.width * 0.17,
+                                          child: InkWell(
+                                            onTap: (){
+
+                                            },
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 50),
+                                              child: Obx(() {
+                                                return Container(
+                                                  child: text_m_w700(
+                                                    controller.linkedDealNumber.value ?? "",
+                                                    color: Colors.blue,
+                                                  ),
+                                                );
+                                              }),
                                             ),
                                           ),
                                         ),
@@ -1164,261 +1177,261 @@ class ClientDealsView extends GetView<ClientDealsController> {
                     const SizedBox(height: 5),*/
 
                           GetBuilder<ClientDealsController>(
-                            id: "middle",
+                              id: "middle",
                               builder: (controller) {
-                            return Column(
-                              children: [
-                                Row(
-                                  // runSpacing: 10,
-                                  // spacing: 10,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                return Column(
                                   children: [
-                                    // LabelText2.style(hint: "Type")
-                                    CheckBoxOnRight(
-                                        title: "Type",
-                                        top: 14,
-                                        value: controller.type.value,
-                                        onChanged: (val) {
-                                          controller.type.value = val!;
-                                          controller.accountEnaSta.value = val;
-                                          controller.accountEnaSta.refresh();
+                                    Row(
+                                      // runSpacing: 10,
+                                      // spacing: 10,
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // LabelText2.style(hint: "Type")
+                                        CheckBoxOnRight(
+                                            title: "Type",
+                                            top: 14,
+                                            value: controller.type.value,
+                                            onChanged: (val) {
+                                              controller.type.value = val!;
+                                              controller.accountEnaSta.value = val;
+                                              controller.accountEnaSta.refresh();
+                                            }),
+
+                                        Obx(() {
+                                          return DropDownField.formDropDown1WidthMap(
+                                              controller.accountList.value ?? [], (data) {
+                                            controller.selectAccount?.value = data;
+                                            controller.getSubType(
+                                                accountCode: controller.selectAccount?.value?.key ??
+                                                    "");
+                                          }, "Account", .18,
+                                              selected: controller.selectAccount?.value,
+                                              isEnable: controller.accountEnaSta.value
+                                            // titleInLeft: true,
+                                          );
                                         }),
-
-                                    Obx(() {
-                                      return DropDownField.formDropDown1WidthMap(
-                                          controller.accountList.value ?? [], (data) {
-                                        controller.selectAccount?.value = data;
-                                        controller.getSubType(
-                                            accountCode: controller.selectAccount?.value?.key ?? "");
-                                      }, "Account", .18,
-                                          selected: controller.selectAccount?.value,
-                                          isEnable: controller.accountEnaSta.value
-                                        // titleInLeft: true,
-                                      );
-                                    }),
-                                    Obx(() {
-                                      return DropDownField.formDropDown1WidthMap(
-                                        controller.subTypeList.value ?? [],
-                                            (data) {
-                                          controller.selectSubType?.value = data;
-                                        },
-                                        selected: controller.selectSubType?.value,
-                                        isEnable: controller.accountEnaSta.value,
-                                        "Sub Type",
-                                        .18,
-                                        // titleInLeft: true,
-                                      );
-                                    }),
-                                    DropDownField.formDropDown1WidthMap(
-                                        controller.spotTypeList.value ?? [], (data) {
-                                      controller.selectSpotType?.value = data;
-                                    }, "Spot Type", .18,
-                                        selected: controller.selectSpotType?.value
-                                      // titleInLeft: true,
-                                    ),
-                                    SizedBox(
-                                      width: Get.width * .18,
-                                      child: DropDownField
-                                          .formDropDownSearchAPI2Expand(
-                                        GlobalKey(),
-                                        context,
-                                        title: "Program",
-                                        url: "",
-                                        onchanged: (value) {},
-                                        selectedValue: controller.selectProgram?.value,
-                                        // width: Get.width * 0.3,
-                                        // titleInLeft: true,
-                                        textSizeboxWidth: 60,
-                                      ),
-                                    ),
-                                    DropDownField.formDropDown1WidthMap(
-                                        controller.bandList.value ?? [], (data) {
-                                      controller.selectBand?.value = data;
-                                    }, "Band", .18,
-                                        selected: controller.selectBand?.value
-                                      // titleInLeft: true,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 3),
-
-                                Obx(() {
-                                  return Row(
-                                    // runSpacing: 5,
-                                    // spacing: 10,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      // LabelText2.style(hint: "Type")
-
-                                      DropDownField.formDropDown1WidthMap(
-                                          controller.addInfoList.value ?? [], (data) {
-                                        controller.selectAddInfo?.value = data;
-                                      }, "AddInfo", .18,
-                                          selected: controller.selectAddInfo?.value
-                                        // titleInLeft: true,
-                                      ),
-                                      // Spacer(),
-
-                                      CheckBoxOnRight(
-                                          title: "Week End",
-                                          value: controller.weekEnd.value,
-                                          onChanged: (val) {
-                                            controller.weekEnd.value = val!;
-                                            controller.weekend(val);
-                                          }),
-                                      sizedBoxWidth(20),
-                                      CheckBoxOnRight(
-                                          title: "Week Day",
-                                          onChanged: (val) {
-                                            controller.weekDay.value = val!;
-                                            controller.weekDayFun(val);
-                                          },
-                                          value: controller.weekDay.value),
-                                      sizedBoxWidth(20),
-                                      CheckBoxOnRight(
-                                          title: "Mon",
-                                          value: controller.mon.value,
-                                          onChanged: (val) {
-                                            controller.mon.value = val!;
-                                          }),
-                                      CheckBoxOnRight(
-                                          title: "Tue",
-                                          value: controller.tue.value,
-                                          onChanged: (val) {
-                                            controller.tue.value = val!;
-                                          }),
-                                      CheckBoxOnRight(
-                                          title: "Wed",
-                                          value: controller.wed.value,
-                                          onChanged: (val) {
-                                            controller.wed.value = val!;
-                                          }),
-                                      CheckBoxOnRight(
-                                          title: "Thu",
-                                          value: controller.thu.value,
-                                          onChanged: (val) {
-                                            controller.thu.value = val!;
-                                          }),
-                                      CheckBoxOnRight(
-                                          title: "Fri",
-                                          value: controller.fri.value,
-                                          onChanged: (val) {
-                                            controller.fri.value = val!;
-                                          }),
-                                      CheckBoxOnRight(
-                                          title: "Sat",
-                                          value: controller.sat.value,
-                                          onChanged: (val) {
-                                            controller.sat.value = val!;
-                                          }),
-                                      CheckBoxOnRight(
-                                          title: "Sun",
-                                          value: controller.sun.value,
-                                          onChanged: (val) {
-                                            controller.sun.value = val!;
-                                          }),
-                                      InputFields.formFieldNumberMask(
-                                        hintTxt: "Start Time",
-                                        controller: controller.startTime,
-                                        widthRatio: 0.08,
-
-                                        // isEnable: controllerX.isEnable,
-                                        onEditComplete: (val) {
-                                          // controllerX.calculateDuration();
-                                        },
-                                        // isTime: true,
-                                        // isEnable: controller.isEnable.value,
-                                        paddingLeft: 0,
-                                      ),
-
-                                      InputFields.formFieldNumberMask(
-                                        hintTxt: "End Time",
-                                        controller: controller.endTime,
-                                        widthRatio: 0.08,
-                                        // isEnable: controllerX.isEnable,
-                                        onEditComplete: (val) {
-                                          // controllerX.calculateDuration();
-                                        },
-                                        // isTime: true,
-                                        // isEnable: controller.isEnable.value,
-                                        paddingLeft: 0,
-                                      ),
-                                    ],
-                                  );
-                                }),
-                                Row(
-                                  // mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    // SizedBox(
-                                    //   width: Get.width * 0.15,
-                                    //   child: InputFields.formFieldExpand2(
-                                    //     hintTxt: "End time",
-                                    //     controller: TextEditingController(),
-                                    //     titleInLeft: true,
-                                    //     titleSizeboxWidth: 50,
-                                    //     bottomPadding: false,
-                                    //   ),
-                                    // ),
-
-                                    // Spacer(),
-
-                                    SizedBox(
-                                      width: Get.width * 0.18,
-                                      child: InputFields.numbers4(
-                                          hintTxt: "Seconds",
-                                          controller: controller.secondsController2,
+                                        Obx(() {
+                                          return DropDownField.formDropDown1WidthMap(
+                                            controller.subTypeList.value ?? [],
+                                                (data) {
+                                              controller.selectSubType?.value = data;
+                                            },
+                                            selected: controller.selectSubType?.value,
+                                            isEnable: controller.accountEnaSta.value,
+                                            "Sub Type",
+                                            .18,
+                                            // titleInLeft: true,
+                                          );
+                                        }),
+                                        DropDownField.formDropDown1WidthMap(
+                                            controller.spotTypeList.value ?? [], (data) {
+                                          controller.selectSpotType?.value = data;
+                                        }, "Spot Type", .18,
+                                            selected: controller.selectSpotType?.value
                                           // titleInLeft: true,
-                                          // titleSizeboxWidth: 45,
-                                          fieldWidth: 0.1,
-                                          padLeft: 0),
+                                        ),
+                                        SizedBox(
+                                          width: Get.width * .18,
+                                          child: DropDownField
+                                              .formDropDownSearchAPI2Expand(
+                                            GlobalKey(),
+                                            context,
+                                            title: "Program",
+                                            url: "",
+                                            onchanged: (value) {},
+                                            selectedValue: controller.selectProgram?.value,
+                                            // width: Get.width * 0.3,
+                                            // titleInLeft: true,
+                                            textSizeboxWidth: 60,
+                                          ),
+                                        ),
+                                        DropDownField.formDropDown1WidthMap(
+                                            controller.bandList.value ?? [], (data) {
+                                          controller.selectBand?.value = data;
+                                        }, "Band", .18,
+                                            selected: controller.selectBand?.value
+                                          // titleInLeft: true,
+                                        ),
+                                      ],
                                     ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
+                                    const SizedBox(height: 3),
 
-                                    SizedBox(
-                                      width: Get.width * 0.18,
-                                      child: InputFields.numbers4(
-                                        hintTxt: "Rate per 100 seconds",
-                                        controller: controller
-                                            .ratePerTenSecondsController,
-                                        // titleInLeft: true,
-                                        // titleSizeboxWidth: 45,
-                                        fieldWidth: 0.15,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    SizedBox(
-                                      width: Get.width * 0.18,
-                                      child: InputFields.numbers4(
-                                        hintTxt: "Amount",
-                                        controller: controller.amountController2,
-                                        // titleInLeft: true,
-                                        // titleSizeboxWidth: 45,
-                                        fieldWidth: 0.15,
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      width: 5,
-                                    ),
-                                    SizedBox(
-                                      width: Get.width * 0.18,
-                                      child: InputFields.numbers4(
-                                        hintTxt: "Val Rate",
-                                        controller: controller.valueRateController,
-                                        // titleInLeft: true,
-                                        // titleSizeboxWidth: 45,
-                                        fieldWidth: 0.15,
-                                      ),
+                                    Obx(() {
+                                      return Row(
+                                        // runSpacing: 5,
+                                        // spacing: 10,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          // LabelText2.style(hint: "Type")
+
+                                          DropDownField.formDropDown1WidthMap(
+                                              controller.addInfoList.value ?? [], (data) {
+                                            controller.selectAddInfo?.value = data;
+                                          }, "AddInfo", .18,
+                                              selected: controller.selectAddInfo?.value
+                                            // titleInLeft: true,
+                                          ),
+                                          // Spacer(),
+
+                                          CheckBoxOnRight(
+                                              title: "Week End",
+                                              value: controller.weekEnd.value,
+                                              onChanged: (val) {
+                                                controller.weekEnd.value = val!;
+                                                controller.weekend(val);
+                                              }),
+                                          sizedBoxWidth(20),
+                                          CheckBoxOnRight(
+                                              title: "Week Day",
+                                              onChanged: (val) {
+                                                controller.weekDay.value = val!;
+                                                controller.weekDayFun(val);
+                                              },
+                                              value: controller.weekDay.value),
+                                          sizedBoxWidth(20),
+                                          CheckBoxOnRight(
+                                              title: "Mon",
+                                              value: controller.mon.value,
+                                              onChanged: (val) {
+                                                controller.mon.value = val!;
+                                              }),
+                                          CheckBoxOnRight(
+                                              title: "Tue",
+                                              value: controller.tue.value,
+                                              onChanged: (val) {
+                                                controller.tue.value = val!;
+                                              }),
+                                          CheckBoxOnRight(
+                                              title: "Wed",
+                                              value: controller.wed.value,
+                                              onChanged: (val) {
+                                                controller.wed.value = val!;
+                                              }),
+                                          CheckBoxOnRight(
+                                              title: "Thu",
+                                              value: controller.thu.value,
+                                              onChanged: (val) {
+                                                controller.thu.value = val!;
+                                              }),
+                                          CheckBoxOnRight(
+                                              title: "Fri",
+                                              value: controller.fri.value,
+                                              onChanged: (val) {
+                                                controller.fri.value = val!;
+                                              }),
+                                          CheckBoxOnRight(
+                                              title: "Sat",
+                                              value: controller.sat.value,
+                                              onChanged: (val) {
+                                                controller.sat.value = val!;
+                                              }),
+                                          CheckBoxOnRight(
+                                              title: "Sun",
+                                              value: controller.sun.value,
+                                              onChanged: (val) {
+                                                controller.sun.value = val!;
+                                              }),
+                                          InputFields.formFieldNumberMask(
+                                            hintTxt: "Start Time",
+                                            controller: controller.startTime,
+                                            widthRatio: 0.08,
+
+                                            // isEnable: controllerX.isEnable,
+                                            onEditComplete: (val) {
+                                              // controllerX.calculateDuration();
+                                            },
+                                            // isTime: true,
+                                            // isEnable: controller.isEnable.value,
+                                            paddingLeft: 0,
+                                          ),
+
+                                          InputFields.formFieldNumberMask(
+                                            hintTxt: "End Time",
+                                            controller: controller.endTime,
+                                            widthRatio: 0.08,
+                                            // isEnable: controllerX.isEnable,
+                                            onEditComplete: (val) {
+                                              // controllerX.calculateDuration();
+                                            },
+                                            // isTime: true,
+                                            // isEnable: controller.isEnable.value,
+                                            paddingLeft: 0,
+                                          ),
+                                        ],
+                                      );
+                                    }),
+                                    Row(
+                                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        // SizedBox(
+                                        //   width: Get.width * 0.15,
+                                        //   child: InputFields.formFieldExpand2(
+                                        //     hintTxt: "End time",
+                                        //     controller: TextEditingController(),
+                                        //     titleInLeft: true,
+                                        //     titleSizeboxWidth: 50,
+                                        //     bottomPadding: false,
+                                        //   ),
+                                        // ),
+
+                                        // Spacer(),
+
+                                        SizedBox(
+                                          width: Get.width * 0.18,
+                                          child: InputFields.numbers4(
+                                              hintTxt: "Seconds",
+                                              controller: controller.secondsController2,
+                                              // titleInLeft: true,
+                                              // titleSizeboxWidth: 45,
+                                              fieldWidth: 0.1,
+                                              padLeft: 0),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+
+                                        SizedBox(
+                                          width: Get.width * 0.18,
+                                          child: InputFields.numbers4(
+                                            hintTxt: "Rate per 100 seconds",
+                                            controller: controller
+                                                .ratePerTenSecondsController,
+                                            // titleInLeft: true,
+                                            // titleSizeboxWidth: 45,
+                                            fieldWidth: 0.15,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        SizedBox(
+                                          width: Get.width * 0.18,
+                                          child: InputFields.numbers4(
+                                            hintTxt: "Amount",
+                                            controller: controller.amountController2,
+                                            // titleInLeft: true,
+                                            // titleSizeboxWidth: 45,
+                                            fieldWidth: 0.15,
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          width: 5,
+                                        ),
+                                        SizedBox(
+                                          width: Get.width * 0.18,
+                                          child: InputFields.numbers4(
+                                            hintTxt: "Val Rate",
+                                            controller: controller.valueRateController,
+                                            // titleInLeft: true,
+                                            // titleSizeboxWidth: 45,
+                                            fieldWidth: 0.15,
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
-                                ),
-                              ],
-                            );
-                          }),
-
+                                );
+                              }),
 
 
                           const SizedBox(height: 5),
@@ -1433,11 +1446,15 @@ class ClientDealsView extends GetView<ClientDealsController> {
                               ),
                               FormButton1(
                                 btnText: "Clear",
-                                callback: () {},
+                                callback: () {
+                                  controller.btnClearClick();
+                                },
                               ),
                               FormButton1(
                                 btnText: "Duplicate",
-                                callback: () {},
+                                callback: () {
+                                  controller.btnDuplicateClick(selectedInd: controller.stateManager?.currentRowIdx??-1);
+                                },
                               ),
                               sizedBoxWidth(100),
                               FormButton1(
@@ -1513,12 +1530,11 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                     mode: PlutoGridMode.normal,
                                     onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent? event) {
                                       print(">>>>>doubletapClick");
-                                      controller.doubleTap(selectedIndex: event?.rowIdx??-1);
+                                      controller.doubleTap(selectedIndex: event?.rowIdx ?? -1);
                                     },
 
                                     mapData: (controller
-                                        .clientDealRetrieveModel!
-                                        .agencyLeaveModel!.newDetails!
+                                        .importGridList!
                                         .map((e) => e.toJson())
                                         .toList()),
                                     // mapData: (controllerX.dataList)!,

@@ -262,7 +262,7 @@ class ClientDealsController extends GetxController {
     }
   }
 
-  getSubType({String ? accountCode}){
+  getSubType({String? accountCode}) {
     if (accountCode != null && accountCode != "") {
       try {
         LoadingDialog.call();
@@ -429,7 +429,7 @@ class ClientDealsController extends GetxController {
     return completer.future;
   }
 
-  channelLeave() {
+  channelLeave({String? netCode}) {
     try {
       LoadingDialog.call();
       Map<String, dynamic> postData = {
@@ -469,6 +469,15 @@ class ClientDealsController extends GetxController {
                   dataList.add(DropDownValue.fromJsonDynamic(e, "netcode", "networkname"));
                 });
                 addInfoList.addAll(dataList);
+                if (netCode != "") {
+                  for (var element in addInfoList) {
+                    if (element.key.toString().trim() == netCode.toString().trim()) {
+                      selectAddInfo?.value = DropDownValue(key: element.key, value: element.value);
+                      selectAddInfo?.refresh();
+                      break;
+                    }
+                  }
+                }
                 addInfoList.refresh();
               }
             } else {}
@@ -607,6 +616,8 @@ class ClientDealsController extends GetxController {
   }
 
   ClientDealRetrieveModel? clientDealRetrieveModel;
+  Rx<String> linkedDealNumber = Rx<String>("sssssss");
+  Rx<String> clientEmb = Rx<String>("sssssss");
   retrieveRecord(
       {String? locationCode,
       String? channelCode,
@@ -637,6 +648,7 @@ class ClientDealsController extends GetxController {
                   (clientDealRetrieveModel?.agencyLeaveModel?.newDetails?.length ?? 0) > 0) {
                 importGridList = clientDealRetrieveModel?.agencyLeaveModel?.newDetails;
               }
+              // linkedDealNumber
 
               if (clientDealRetrieveModel != null &&
                   clientDealRetrieveModel?.agencyLeaveModel != null) {
@@ -787,6 +799,20 @@ class ClientDealsController extends GetxController {
                     });
                   }
                 } catch (e) {}
+              }
+
+              if (clientDealRetrieveModel?.agencyLeaveModel?.linkedDealNumber != null &&
+                  clientDealRetrieveModel?.agencyLeaveModel?.linkedDealNumber != "") {
+                linkedDealNumber.value =
+                    "Linked Deal Number  ${clientDealRetrieveModel?.agencyLeaveModel?.linkedDealNumber}";
+                clientEmb.value = "Client Emb";
+                clientEmb.refresh();
+                linkedDealNumber.refresh();
+              } else {
+                linkedDealNumber.value = "sssssss";
+                clientEmb.value = "sssssss";
+                clientEmb.refresh();
+                linkedDealNumber.refresh();
               }
 
               update(["grid"]);
@@ -1292,86 +1318,210 @@ class ClientDealsController extends GetxController {
     }
   }
 
-  primarySecondaryEvent(bool sta){
-    if(sta == true){
+  primarySecondaryEvent(bool sta) {
+    if (sta == true) {
       accountEnaSta.value = true;
       accountEnaSta.refresh();
-    }else{
+    } else {
       accountEnaSta.value = false;
       selectAccount?.value = null;
       selectSubType?.value = null;
       accountEnaSta.refresh();
     }
-
   }
 
   String? sponsorTypeCode = "";
 
-  doubleTap({required int selectedIndex}) {
+  Future<String> doubleTap({required int selectedIndex}) {
+    Completer<String> completer = Completer<String>();
 
-
-    if(stateManager != null && selectedIndex != -1){
-      if(stateManager?.rows[selectedIndex].cells['Accountcode']?.value ==  "" ||
-          stateManager?.rows[selectedIndex].cells['Accountcode']?.value == null ){
-        if(stateManager?.rows[selectedIndex].cells['Seconds']?.value.toString() != "0"){
+    if (stateManager != null && selectedIndex != -1) {
+      if (stateManager?.rows[selectedIndex].cells['accountCode']?.value == "" ||
+          stateManager?.rows[selectedIndex].cells['accountCode']?.value == null) {
+        if (stateManager?.rows[selectedIndex].cells['seconds']?.value.toString() != "0") {
           type.value = false;
           type.refresh();
+          secondsController2.text =
+              (stateManager?.rows[selectedIndex].cells['bookedSeconds']?.value ?? "").toString();
           primarySecondaryEvent(type.value);
-        }else{
-          type.value = true;
-          type.refresh();
-          primarySecondaryEvent(type.value);
+          // secondsController2
         }
-
         // cboDbandcode.Enabled = True
         // cboDnetcode.Enabled = True
+      } else {
+        if (stateManager?.rows[selectedIndex].cells['seconds']?.value.toString() != "0") {
+          type.value = true;
+          type.refresh();
+          secondsController2.text =
+              (stateManager?.rows[selectedIndex].cells['seconds']?.value ?? "").toString();
+          primarySecondaryEvent(type.value);
+        }
       }
 
       print("I am from controller");
+      channelLeave(netCode: stateManager?.rows[selectedIndex].cells['netCode']?.value ?? "");
 
-      sponsorTypeCode = (stateManager?.rows[selectedIndex].cells['SponsorTypeCode']?.value??"").toString();
+      txtDRecordNumber.value =
+          (stateManager?.rows[selectedIndex].cells['recordnumber']?.value ?? "").toString();
 
-      selectProgram?.value = DropDownValue(key:(stateManager?.rows[selectedIndex].cells['programCode']?.value??"").toString() ,
-          value:(stateManager?.rows[selectedIndex].cells['programName']?.value??"").toString() );
+      sponsorTypeCode =
+          (stateManager?.rows[selectedIndex].cells['SponsorTypeCode']?.value ?? "").toString();
 
-      startTime.text = (stateManager?.rows[selectedIndex].cells['starttime']?.value??"").toString();
-      endTime.text = (stateManager?.rows[selectedIndex].cells['endTime']?.value??"").toString();
-      secondsController2.text = (stateManager?.rows[selectedIndex].cells['seconds']?.value??"").toString();
-      ratePerTenSecondsController.text = (stateManager?.rows[selectedIndex].cells['rate']?.value??"").toString();
-      valueRateController.text = (stateManager?.rows[selectedIndex].cells['valuationRate']?.value??"").toString();
-      amountController2.text = (stateManager?.rows[selectedIndex].cells['amount']?.value??"").toString();
-      selectBand?.value = DropDownValue(value:(stateManager?.rows[selectedIndex].cells['timeBand']?.value??"").toString() ,
-          key:(stateManager?.rows[selectedIndex].cells['bandcode']?.value??"").toString() );
+      selectSpotType?.value = DropDownValue(
+          key: (stateManager?.rows[selectedIndex].cells['SponsorTypeCode']?.value ?? "").toString(),
+          value:
+              (stateManager?.rows[selectedIndex].cells['sponsorTypeName']?.value ?? "").toString());
 
-      print(">>>>>>>>>>>>>>sat${stateManager?.rows[selectedIndex].cells['sun']?.value??""}");
-      print(">>>>>>>>>>>>>>amt${stateManager?.rows[selectedIndex].cells['Amount']?.value??""}");
+      selectProgram?.value = DropDownValue(
+          key: (stateManager?.rows[selectedIndex].cells['programCode']?.value ?? "").toString(),
+          value: (stateManager?.rows[selectedIndex].cells['programName']?.value ?? "").toString());
 
-      sun.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['sun']?.value??"").toString());
-      mon.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['mon']?.value??"").toString());
-      tue.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['tue']?.value??"").toString());
-      wed.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['wed']?.value??"").toString());
-      thu.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['thu']?.value??"").toString());
-      fri.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['fri']?.value??"").toString());
-      sat.value = getBoolean(staData: (stateManager?.rows[selectedIndex].cells['sat']?.value??"").toString());
+      startTime.text =
+          (stateManager?.rows[selectedIndex].cells['starttime']?.value ?? "").toString();
+      endTime.text = (stateManager?.rows[selectedIndex].cells['endTime']?.value ?? "").toString();
+
+      ratePerTenSecondsController.text =
+          (stateManager?.rows[selectedIndex].cells['rate']?.value ?? "").toString();
+      valueRateController.text =
+          (stateManager?.rows[selectedIndex].cells['valuationRate']?.value ?? "").toString();
+      amountController2.text =
+          (stateManager?.rows[selectedIndex].cells['amount']?.value ?? "").toString();
+      selectBand?.value = DropDownValue(
+          value: (stateManager?.rows[selectedIndex].cells['timeBand']?.value ?? "").toString(),
+          key: (stateManager?.rows[selectedIndex].cells['bandcode']?.value ?? "").toString());
+
+      print(">>>>>>>>>>>>>>sat${stateManager?.rows[selectedIndex].cells['sun']?.value ?? ""}");
+      print(">>>>>>>>>>>>>>amt${stateManager?.rows[selectedIndex].cells['Amount']?.value ?? ""}");
+
+      sun.value = getBoolean(
+          staData: (stateManager?.rows[selectedIndex].cells['sun']?.value ?? "").toString());
+      mon.value = getBoolean(
+          staData: (stateManager?.rows[selectedIndex].cells['mon']?.value ?? "").toString());
+      tue.value = getBoolean(
+          staData: (stateManager?.rows[selectedIndex].cells['tue']?.value ?? "").toString());
+      wed.value = getBoolean(
+          staData: (stateManager?.rows[selectedIndex].cells['wed']?.value ?? "").toString());
+      thu.value = getBoolean(
+          staData: (stateManager?.rows[selectedIndex].cells['thu']?.value ?? "").toString());
+      fri.value = getBoolean(
+          staData: (stateManager?.rows[selectedIndex].cells['fri']?.value ?? "").toString());
+      sat.value = getBoolean(
+          staData: (stateManager?.rows[selectedIndex].cells['sat']?.value ?? "").toString());
+
+      type.value =
+          ((stateManager?.rows[selectedIndex].cells['primaryEventCode']?.value ?? "").toString() ==
+                  "1")
+              ? true
+              : false;
+      type.refresh();
+
+      if ((stateManager?.rows[selectedIndex].cells['primaryEventCode']?.value ?? "").toString() ==
+          "1") {
+        selectAccount?.value = DropDownValue(
+            value: stateManager?.rows[selectedIndex].cells['accountname']?.value ?? "",
+            key: stateManager?.rows[selectedIndex].cells['accountCode']?.value ?? "");
+        getSubType(accountCode: selectAccount?.value?.key ?? "");
+
+        selectSubType?.value = DropDownValue(
+            value: stateManager?.rows[selectedIndex].cells['eventname']?.value ?? "",
+            key: stateManager?.rows[selectedIndex].cells['eventcode']?.value ?? "");
+
+        selectSubType?.refresh();
+        selectAccount?.refresh();
+      }
 
       update(['middle']);
-
-    }else{
-      return ;
+      completer.complete("");
+      return completer.future;
+    } else {
+      completer.complete("");
+      return completer.future;
     }
   }
 
-  bool getBoolean({String? staData}){
+  btnClearClick() {
+    type.value = false;
+    accountEnaSta.value = false;
+    selectAccount?.value = null;
+    selectSubType?.value = null;
+    selectSpotType?.value = null;
+    selectProgram?.value = null;
+    selectBrand?.value = null;
+    selectAddInfo?.value = null;
+    weekDay.value = false;
+    weekEnd.value = false;
+    mon.value = false;
+    tue.value = false;
+    wed.value = false;
+    thu.value = false;
+    fri.value = false;
+    sat.value = false;
+    sun.value = false;
+    startTime.text = "00:00:00:00";
+    endTime.text = "00:00:00:00";
+    secondsController2.text = "0";
+    ratePerTenSecondsController.text = "0";
+    amountController2.text = "0";
+    valueRateController.text = "0";
+    txtDRecordNumber.value = "0";
+    type.refresh();
+    update(['middle']);
+  }
+
+  btnDuplicateClick({required int selectedInd}) {
+    if (stateManager == null || (stateManager?.rows.length ?? 0) <= 0) {
+      return;
+    }
+    doubleTap(selectedIndex: selectedInd).then((value) {
+      txtDRecordNumber.value = "0";
+    });
+  }
+
+  bool getBoolean({String? staData}) {
     print(">>>>>>>>>>>>>>sat$staData");
-    if(staData != null && staData.toString().trim() == "1"){
+    if (staData != null && staData.toString().trim() == "1") {
       return true;
-    }else{
+    } else {
       return false;
     }
   }
 
-  addBtn() {
+  Rx<String> txtDRecordNumber = Rx<String>("0");
 
+  addBtn() {
+    if (valueRateController.text.trim() == "0" &&
+        secondsController2.text.trim() == "0" &&
+        amountController2.text.trim() == "0") {
+      return;
+    }
+
+    if (selectAddInfo?.value == null) {
+      return;
+    }
+
+    if (type.value == true) {
+      if (selectAccount == null ||
+          selectSubType == null ||
+          selectAccount?.value == null ||
+          selectSubType?.value == null) {
+        LoadingDialog.showErrorDialog1(
+            "Please select the accountcode and eventtype for secondary events!",
+            callback: () {});
+        return;
+      }
+    }
+
+    if ((txtDRecordNumber.value ?? "").toString().trim() != "0") {
+      LoadingDialog.modify2("This Record Already exists!\nDo you want to modify it?",
+              () {
+        for(int i=0;i<(importGridList?.length??0);i++){
+
+        }
+
+              }, () {
+        return;
+      }, deleteTitle: "Yes", cancelTitle: "No");
+    }
   }
 
   @override
