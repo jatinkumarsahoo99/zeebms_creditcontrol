@@ -5,7 +5,9 @@ import 'package:get/get.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
+import '../../../../widgets/PlutoGrid/src/pluto_grid.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
@@ -731,7 +733,8 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                   child: FormButtonWrapper(
                                                     btnText: "Add",
                                                     callback: () {
-                                                      // controllerX.showApiCall();
+                                                      controllerX
+                                                          .addToClientMaster();
                                                     },
                                                     showIcon: true,
                                                   ),
@@ -741,16 +744,63 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                             SizedBox(
                                               height: 7,
                                             ),
-                                            Container(
-                                              width: Get.width *
-                                                  controllerX.fixedWidth3,
-                                              height: Get.height * 0.23,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.grey),
-                                                color: Colors.grey,
-                                              ),
-                                            ),
+                                            GetBuilder<ClientMasterController>(
+                                                init: controllerX,
+                                                id: "clientData",
+                                                builder: (logic) {
+                                                  return (controllerX
+                                                                  .lstClientAgencyMaster !=
+                                                              null &&
+                                                          (controllerX
+                                                                  .lstClientAgencyMaster
+                                                                  ?.isNotEmpty ??
+                                                              false))
+                                                      ? SizedBox(
+                                                          height:
+                                                              Get.height * 0.16,
+                                                          child:
+                                                              DataGridFromMap(
+                                                            showSrNo: true,
+                                                            exportFileName:
+                                                                "Client Master",
+                                                            mode: PlutoGridMode
+                                                                .normal,
+                                                            mapData: (controllerX
+                                                                .lstClientAgencyMaster!
+                                                                .map((e) =>
+                                                                    e.toJson())
+                                                                .toList()),
+                                                            hideKeys: [
+                                                              "plantid"
+                                                            ],
+                                                            // mapData: (controllerX.dataList)!,
+                                                            widthRatio:
+                                                                Get.width / 9 -
+                                                                    1,
+                                                            onload:
+                                                                (PlutoGridOnLoadedEvent
+                                                                    load) {
+                                                              controllerX
+                                                                      .clientMasterManager =
+                                                                  load.stateManager;
+                                                            },
+                                                          ),
+                                                        )
+                                                      : Container(
+                                                          width: Get.width *
+                                                              controllerX
+                                                                  .fixedWidth3,
+                                                          height:
+                                                              Get.height * 0.16,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .grey),
+                                                            color: Colors.grey,
+                                                          ),
+                                                        );
+                                                }),
                                           ],
                                         ),
                                       ),
@@ -774,17 +824,23 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                 /*SizedBox(
                                             width: Get.width*0.005,
                                           ),*/
-                                                DropDownField
-                                                    .formDropDown1WidthMap(
-                                                  [],
-                                                  (value) {
-                                                    // controllerX.selectedCensorShipType = value;
-                                                  },
-                                                  "Agency",
-                                                  0.3,
-                                                  // isEnable: controllerX.isEnable,
-                                                  autoFocus: false,
-                                                ),
+                                                Obx(() {
+                                                  return DropDownField
+                                                      .formDropDown1WidthMap(
+                                                    controllerX.agencyList1
+                                                            ?.value ??
+                                                        [],
+                                                    (value) {
+                                                      controllerX
+                                                              .selectAgency1 =
+                                                          value;
+                                                    },
+                                                    "Agency",
+                                                    0.3,
+                                                    selected: controllerX.selectAgency1,
+                                                    autoFocus: false,
+                                                  );
+                                                }),
                                                 /*SizedBox(
                                             width: Get.width*0.035,
                                           ),
@@ -792,7 +848,10 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                             width: Get.width*0.034,
                                           ),*/
                                                 InkWell(
-                                                  onTap: () {},
+                                                  onTap: () {
+                                                    controllerX
+                                                        .getAgencyFromList();
+                                                  },
                                                   child: Padding(
                                                     padding:
                                                         const EdgeInsets.only(
@@ -831,13 +890,13 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                           ?.lstPaymentMaster ??
                                                       [],
                                                   (value) {
-                                                    controllerX.selectAgency1 =
+                                                    controllerX.selectPayMode =
                                                         value;
                                                   },
                                                   "Pay Mode",
                                                   0.3,
                                                   selected:
-                                                      controllerX.selectAgency1,
+                                                      controllerX.selectPayMode,
                                                   // isEnable: controllerX.isEnable,
                                                   autoFocus: false,
                                                 ),
@@ -869,7 +928,7 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                   child: FormButtonWrapper(
                                                     btnText: "Add",
                                                     callback: () {
-                                                      // controllerX.showApiCall();
+                                                      controllerX.addPayTerm();
                                                     },
                                                     showIcon: true,
                                                   ),
@@ -883,16 +942,60 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                             SizedBox(
                                               height: 5,
                                             ),
-                                            Container(
-                                              width: Get.width *
-                                                  controllerX.fixedWidth3,
-                                              height: Get.height * 0.12,
-                                              decoration: BoxDecoration(
-                                                border: Border.all(
-                                                    color: Colors.grey),
-                                                color: Colors.grey,
-                                              ),
-                                            ),
+                                            GetBuilder<ClientMasterController>(
+                                                init: controllerX,
+                                                id: "payTerm",
+                                                builder: (logic) {
+                                                  return (controllerX
+                                                                  .payTermList !=
+                                                              null &&
+                                                          (controllerX
+                                                                  .payTermList
+                                                                  ?.isNotEmpty ??
+                                                              false))
+                                                      ? SizedBox(
+                                                          height:
+                                                              Get.height * 0.12,
+                                                          child:
+                                                              DataGridFromMap(
+                                                            showSrNo: true,
+                                                            exportFileName:
+                                                                "Client Master - Pay Term",
+                                                            mode: PlutoGridMode
+                                                                .normal,
+                                                            mapData: (controllerX
+                                                                .payTermList!
+                                                                .map((e) =>
+                                                                    e.toJson())
+                                                                .toList()),
+                                                            // mapData: (controllerX.dataList)!,
+                                                            widthRatio:
+                                                                Get.width / 9 -
+                                                                    1,
+                                                            onload:
+                                                                (PlutoGridOnLoadedEvent
+                                                                    load) {
+                                                              controllerX
+                                                                      .payTermManager =
+                                                                  load.stateManager;
+                                                            },
+                                                          ),
+                                                        )
+                                                      : Container(
+                                                          width: Get.width *
+                                                              controllerX
+                                                                  .fixedWidth3,
+                                                          height:
+                                                              Get.height * 0.12,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            border: Border.all(
+                                                                color: Colors
+                                                                    .grey),
+                                                            color: Colors.grey,
+                                                          ),
+                                                        );
+                                                }),
                                             SizedBox(
                                               height: 3,
                                             ),
