@@ -34,15 +34,21 @@ class ConnectorControl extends GetConnect {
   updateToken(Function fun) {
     /////TOKEN GENERATE FOR ACCESS APIS => FROM : MS SERVER
     Get.find<ConnectorControl>().POST_CALL_MS_TOKEN(
-      employeId: Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "")!,
+      employeId:
+          Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "")!,
       fun: (Map<String, dynamic> map) {
-        if (map.containsKey("responseprofile") && map["responseprofile"]["access_token"] != null) {
-          Get.find<MainController>().user?.token = map["responseprofile"]["access_token"];
-          Get.find<MainController>().sharedPref?.save("user", Get.find<MainController>().user);
+        if (map.containsKey("responseprofile") &&
+            map["responseprofile"]["access_token"] != null) {
+          Get.find<MainController>().user?.token =
+              map["responseprofile"]["access_token"];
+          Get.find<MainController>()
+              .sharedPref
+              ?.save("user", Get.find<MainController>().user);
           fun();
         } else {
           // Snack.callError("Unable to acquire access token. Please login again");
-          LoadingDialog.showErrorDialog("Unable to acquire access token. Please login again");
+          LoadingDialog.showErrorDialog(
+              "Unable to acquire access token. Please login again");
         }
       },
       failed: (val) {
@@ -50,17 +56,23 @@ class ConnectorControl extends GetConnect {
         // Snack.callError("Unable to generate token");
         if (val != null && val.containsKey("responseprofile")) {
           if (val["responseprofile"].containsKey("message")) {
-            LoadingDialog.showErrorDialog((val["responseprofile"]["message"]) ?? "Some error occurred. Please contact BMS system administrator",
+            LoadingDialog.showErrorDialog(
+                (val["responseprofile"]["message"]) ??
+                    "Some error occurred. Please contact BMS system administrator",
                 callback: () {
-                  // Get.find<HomeController>().logout();
-                });
+              // Get.find<HomeController>().logout();
+            });
           } else {
-            LoadingDialog.showErrorDialog("Some error occurred. Please contact BMS system administrator", callback: () {
+            LoadingDialog.showErrorDialog(
+                "Some error occurred. Please contact BMS system administrator",
+                callback: () {
               // Get.find<HomeController>().logout();
             });
           }
         } else {
-          LoadingDialog.showErrorDialog("Some error occurred. Please contact BMS system administrator", callback: () {
+          LoadingDialog.showErrorDialog(
+              "Some error occurred. Please contact BMS system administrator",
+              callback: () {
             // Get.find<HomeController>().logout();
           });
         }
@@ -68,7 +80,11 @@ class ConnectorControl extends GetConnect {
     );
   }
 
-  GETMETHODCALL({required String api, required Function fun, Function? failed, ResponseType? responseType}) async {
+  GETMETHODCALL(
+      {required String api,
+      required Function fun,
+      Function? failed,
+      ResponseType? responseType}) async {
     print("<<>>>>>API CALL>>>>>>\n\n\n\n\n\n\n\n\n" + api);
     try {
       service.Response response = await dio.get(api,
@@ -76,9 +92,18 @@ class ConnectorControl extends GetConnect {
             responseType: responseType,
             headers: {
               "Access-Control-Allow-Origin": "*",
-              "Authorization": "Bearer " + ((Get.find<MainController>().user != null) ? Get.find<MainController>().user?.token ?? "" : ""),
-              "PersonnelNo": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") : ""),
-              "Userid": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") : "")
+              "Authorization": "Bearer " +
+                  ((Get.find<MainController>().user != null)
+                      ? Get.find<MainController>().user?.token ?? ""
+                      : ""),
+              "PersonnelNo": ((Get.find<MainController>().user != null)
+                  ? Aes.encrypt(
+                      Get.find<MainController>().user?.personnelNo ?? "")
+                  : ""),
+              "Userid": ((Get.find<MainController>().user != null)
+                  ? Aes.encrypt(
+                      Get.find<MainController>().user?.logincode ?? "")
+                  : "")
             },
           ));
       if (response.statusCode == 200) {
@@ -116,7 +141,7 @@ class ConnectorControl extends GetConnect {
         updateToken(() {
           GETMETHODCALL(api: api, fun: fun, failed: failed);
         });
-      }else if ([400, 403].contains(e.response?.statusCode)) {
+      } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
           Get.back();
         }
@@ -142,10 +167,10 @@ class ConnectorControl extends GetConnect {
 
   POSTMETHOD_FORMDATAWITHTYPE1(
       {required String api,
-        required dynamic json,
-        int? timeout = 36000,
-        required Function fun,
-        Function? failed}) async {
+      required dynamic json,
+      int? timeout = 36000,
+      required Function fun,
+      Function? failed}) async {
     try {
       service.Response response = await dio.post(api,
           data: json,
@@ -162,7 +187,7 @@ class ConnectorControl extends GetConnect {
 
                 "PersonnelNo": ((Get.find<MainController>().user != null)
                     ? Aes.encrypt(
-                    Get.find<MainController>().user?.personnelNo ?? "")
+                        Get.find<MainController>().user?.personnelNo ?? "")
                     : ""),
                 "Userid": ((Get.find<MainController>().user != null)
                     ? Get.find<MainController>().user?.logincode ?? ""
@@ -210,7 +235,10 @@ class ConnectorControl extends GetConnect {
     }
   }
 
-  POST_CALL_MS_TOKEN({required Function fun, required Function failed, required String employeId}) async {
+  POST_CALL_MS_TOKEN(
+      {required Function fun,
+      required Function failed,
+      required String employeId}) async {
     try {
       /* Map<String, dynamic> map = {
         "grant_type": "client_credentials",
@@ -249,15 +277,22 @@ class ConnectorControl extends GetConnect {
     }
   }
 
-  GETMETHODCALL_TOKEN({required String api, required String token, required Function fun}) async {
+  GETMETHODCALL_TOKEN(
+      {required String api,
+      required String token,
+      required Function fun}) async {
     print("<<>>>>>API CALL>>>>>>\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n" + api);
     try {
       service.Response response = await dio.get(
         api,
         options: Options(headers: {
           "Authorization": "Bearer " + ((token != null) ? token : ""),
-          "PersonnelNo": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") : ""),
-          "Userid": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") : "")
+          "PersonnelNo": ((Get.find<MainController>().user != null)
+              ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "")
+              : ""),
+          "Userid": ((Get.find<MainController>().user != null)
+              ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "")
+              : "")
         }),
       );
       if (response.statusCode == 200) {
@@ -284,15 +319,26 @@ class ConnectorControl extends GetConnect {
     }
   }
 
-  POSTMETHOD({required String api, dynamic? json, required Function fun,Function? failed}) async {
+  POSTMETHOD(
+      {required String api,
+      dynamic? json,
+      required Function fun,
+      Function? failed}) async {
     try {
       print("API NAME:>" + api);
       service.Response response = await dio.post(
         api,
         options: Options(headers: {
-          "Authorization": "Bearer " + ((Get.find<MainController>().user != null) ? Get.find<MainController>().user?.token ?? "" : ""),
-          "PersonnelNo": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") : ""),
-          "Userid": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") : "")
+          "Authorization": "Bearer " +
+              ((Get.find<MainController>().user != null)
+                  ? Get.find<MainController>().user?.token ?? ""
+                  : ""),
+          "PersonnelNo": ((Get.find<MainController>().user != null)
+              ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "")
+              : ""),
+          "Userid": ((Get.find<MainController>().user != null)
+              ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "")
+              : "")
         }, responseType: ResponseType.json),
         data: (json != null) ? jsonEncode(json) : null,
       );
@@ -326,7 +372,7 @@ class ConnectorControl extends GetConnect {
         if (Get.isDialogOpen ?? false) {
           Get.back();
           LoadingDialog.callErrorMessage1(msg: "500Internal Server Error");
-        }else{
+        } else {
           LoadingDialog.callErrorMessage1(msg: "Internal Server Error");
         }
       } else if ([400, 403].contains(e.response?.statusCode)) {
@@ -359,21 +405,32 @@ class ConnectorControl extends GetConnect {
     }
   }
 
-  GET_METHOD_WITH_PARAM({required String api, Map<String,dynamic>? json, required Function fun,Function? failed}) async {
+  POSTMETHOD_BYTES(
+      {required String api, dynamic? json, required Function fun}) async {
     try {
       print("API NAME:>" + api);
-      service.Response response = await dio.get(
-          api,
-          options: Options(
-              headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Authorization": "Bearer " + ((Get.find<MainController>().user != null) ? Get.find<MainController>().user?.token ?? "" : ""),
-                "PersonnelNo": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") : ""),
-                "Userid": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") : "")
-              },
-              responseType: ResponseType.json),
-          // data: (json != null) ? jsonEncode(json) : null,
-          queryParameters: (json != null)?json:null
+      service.Response response = await dio.post(
+        api,
+        options: Options(
+            /*receiveTimeout: Duration(milliseconds: 36000),
+            sendTimeout: Duration(milliseconds: 36000),*/
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Authorization": "Bearer " +
+                  ((Get.find<MainController>().user != null)
+                      ? Get.find<MainController>().user?.token ?? ""
+                      : ""),
+              "PersonnelNo": ((Get.find<MainController>().user != null)
+                  ? Aes.encrypt(
+                      Get.find<MainController>().user?.personnelNo ?? "")
+                  : ""),
+              "Userid": ((Get.find<MainController>().user != null)
+                  ? Aes.encrypt(
+                      Get.find<MainController>().user?.logincode ?? "")
+                  : "")
+            },
+            responseType: ResponseType.bytes),
+        data: (json != null) ? jsonEncode(json) : null,
       );
       if (response.statusCode == 200 || response.statusCode == 201) {
         try {
@@ -401,11 +458,91 @@ class ConnectorControl extends GetConnect {
         updateToken(() {
           POSTMETHOD(api: api, json: json, fun: fun);
         });
-      }else if (e.response?.statusCode == 500) {
+      } else if ([400, 403].contains(e.response?.statusCode)) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+        }
+        if (e.response?.data is Map && e.response?.data.containsKey("status")) {
+          if (e.response?.data["status"] is num) {
+            LoadingDialog.showErrorDialog(
+                (e.response?.data["title"]).toString());
+          } else {
+            LoadingDialog.showErrorDialog(
+                (e.response?.data["status"]).toString());
+          }
+          // LoadingDialog.showErrorDialog((e.response?.data["status"]));
+        }
+      } else {
+        switch (e.type) {
+          case DioErrorType.connectionTimeout:
+          case DioErrorType.cancel:
+          case DioErrorType.sendTimeout:
+          case DioErrorType.receiveTimeout:
+          case DioErrorType.unknown:
+            fun(failedMap);
+            break;
+          case DioErrorType.badResponse:
+            fun(e.response?.data);
+        }
+      }
+    }
+  }
+
+  GET_METHOD_WITH_PARAM(
+      {required String api,
+      Map<String, dynamic>? json,
+      required Function fun,
+      Function? failed}) async {
+    try {
+      print("API NAME:>" + api);
+      service.Response response = await dio.get(api,
+          options: Options(headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Authorization": "Bearer " +
+                ((Get.find<MainController>().user != null)
+                    ? Get.find<MainController>().user?.token ?? ""
+                    : ""),
+            "PersonnelNo": ((Get.find<MainController>().user != null)
+                ? Aes.encrypt(
+                    Get.find<MainController>().user?.personnelNo ?? "")
+                : ""),
+            "Userid": ((Get.find<MainController>().user != null)
+                ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "")
+                : "")
+          }, responseType: ResponseType.json),
+          // data: (json != null) ? jsonEncode(json) : null,
+          queryParameters: (json != null) ? json : null);
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        try {
+          fun(response.data);
+        } catch (e) {
+          print("Message is: " + e.toString());
+        }
+      } else if (response.statusCode == 417) {
+        fun(response.data);
+      } else {
+        print("Message is: >>1");
+        fun(failedMap);
+      }
+    } on DioError catch (e) {
+      /*if (e.response?.statusCode == 401 &&
+          (e.response?.headers.map.containsKey("www-authenticate"))! &&
+          e.response?.headers.map["www-authenticate"]?.length == 2 &&
+          (e.response?.headers.map["www-authenticate"]![0]
+              .contains("invalid_token"))! &&
+          (e.response?.headers.map["www-authenticate"]![1]
+              .contains("The token expired at"))!) {*/
+      if (e.response?.statusCode == 401) {
+        //Snack.callError("Token Expired. We are regenerating new token",
+//            widthRatio: 0.5);
+        updateToken(() {
+          POSTMETHOD(api: api, json: json, fun: fun);
+        });
+      } else if (e.response?.statusCode == 500) {
         if (Get.isDialogOpen ?? false) {
           Get.back();
           LoadingDialog.callErrorMessage1(msg: "500Internal Server Error");
-        }else{
+        } else {
           LoadingDialog.callErrorMessage1(msg: "Internal Server Error");
         }
       } else if ([400, 403].contains(e.response?.statusCode)) {
@@ -422,27 +559,33 @@ class ConnectorControl extends GetConnect {
           case DioErrorType.sendTimeout:
           case DioErrorType.receiveTimeout:
           case DioErrorType.unknown:
-            if(failed!=null)
-            failed!(failedMap);
+            if (failed != null) failed!(failedMap);
             break;
           case DioErrorType.badResponse:
-            if(failed!=null)
-            failed!(e.response?.data ?? "");
+            if (failed != null) failed!(e.response?.data ?? "");
         }
       }
     }
   }
 
-  DELETEMETHOD({required String api, dynamic json, required Function fun}) async {
+  DELETEMETHOD(
+      {required String api, dynamic json, required Function fun}) async {
     try {
       print("API NAME:>" + api);
       service.Response response = await dio.delete(
         api,
         options: Options(headers: {
-          "Authorization": "Bearer ${(Get.find<MainController>().user != null) ? Get.find<MainController>().user?.token ?? "" : ""}",
-          "PersonnelNo": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") : ""),
-          "Userid": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") : ""),
-          "FormName": ((Get.find<MainController>().formName != null) ? Get.find<MainController>().formName ?? "" : "")
+          "Authorization":
+              "Bearer ${(Get.find<MainController>().user != null) ? Get.find<MainController>().user?.token ?? "" : ""}",
+          "PersonnelNo": ((Get.find<MainController>().user != null)
+              ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "")
+              : ""),
+          "Userid": ((Get.find<MainController>().user != null)
+              ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "")
+              : ""),
+          "FormName": ((Get.find<MainController>().formName != null)
+              ? Get.find<MainController>().formName ?? ""
+              : "")
         }, responseType: ResponseType.json),
         data: (json != null) ? jsonEncode(json) : null,
       );
@@ -488,7 +631,11 @@ class ConnectorControl extends GetConnect {
     }
   }
 
-  POSTMETHOD_FORMDATA({required String api, required dynamic json, int? timeout = 36000, required Function fun}) async {
+  POSTMETHOD_FORMDATA(
+      {required String api,
+      required dynamic json,
+      int? timeout = 36000,
+      required Function fun}) async {
     try {
       service.Response response = await dio.post(api,
           data: json,
@@ -498,10 +645,19 @@ class ConnectorControl extends GetConnect {
               headers: {
                 // "accept-language": (AppData.selectedLanguage=="English")?"en":"ar",
                 'Content-Type': 'application/json',
-                "Authorization": "Bearer " + ((Get.find<MainController>().user != null) ? Get.find<MainController>().user?.token ?? "" : ""),
+                "Authorization": "Bearer " +
+                    ((Get.find<MainController>().user != null)
+                        ? Get.find<MainController>().user?.token ?? ""
+                        : ""),
 
-                "PersonnelNo": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") : ""),
-                "Userid": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") : "")
+                "PersonnelNo": ((Get.find<MainController>().user != null)
+                    ? Aes.encrypt(
+                        Get.find<MainController>().user?.personnelNo ?? "")
+                    : ""),
+                "Userid": ((Get.find<MainController>().user != null)
+                    ? Aes.encrypt(
+                        Get.find<MainController>().user?.logincode ?? "")
+                    : "")
               },
               responseType: ResponseType.json));
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -547,7 +703,11 @@ class ConnectorControl extends GetConnect {
     }
   }
 
-  POSTMETHOD_FORMDATAWITHTYPE({required String api, required dynamic json, int? timeout = 36000, required Function fun}) async {
+  POSTMETHOD_FORMDATAWITHTYPE(
+      {required String api,
+      required dynamic json,
+      int? timeout = 36000,
+      required Function fun}) async {
     try {
       service.Response response = await dio.post(api,
           data: json,
@@ -557,10 +717,18 @@ class ConnectorControl extends GetConnect {
               headers: {
                 // "accept-language": (AppData.selectedLanguage=="English")?"en":"ar",
                 'Content-Type': 'application/json',
-                "Authorization": "Bearer " + ((Get.find<MainController>().user != null) ? Get.find<MainController>().user?.token ?? "" : ""),
+                "Authorization": "Bearer " +
+                    ((Get.find<MainController>().user != null)
+                        ? Get.find<MainController>().user?.token ?? ""
+                        : ""),
 
-                "PersonnelNo": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") : ""),
-                "Userid": ((Get.find<MainController>().user != null) ? Get.find<MainController>().user?.logincode ?? "" : "")
+                "PersonnelNo": ((Get.find<MainController>().user != null)
+                    ? Aes.encrypt(
+                        Get.find<MainController>().user?.personnelNo ?? "")
+                    : ""),
+                "Userid": ((Get.find<MainController>().user != null)
+                    ? Get.find<MainController>().user?.logincode ?? ""
+                    : "")
               },
               responseType: ResponseType.json));
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -588,7 +756,8 @@ class ConnectorControl extends GetConnect {
         //Snack.callError("Token Expired. We are regenerating new token",
 //            widthRatio: 0.5);
         updateToken(() {
-          POSTMETHOD_FORMDATAWITHTYPE(api: api, json: json, fun: fun, timeout: timeout);
+          POSTMETHOD_FORMDATAWITHTYPE(
+              api: api, json: json, fun: fun, timeout: timeout);
         });
       } else {
         switch (e.type) {
@@ -606,7 +775,11 @@ class ConnectorControl extends GetConnect {
     }
   }
 
-  POSTMETHOD_FORMDATA_HEADER({required String api, required dynamic json, int? timeout = 36000, required Function fun}) async {
+  POSTMETHOD_FORMDATA_HEADER(
+      {required String api,
+      required dynamic json,
+      int? timeout = 36000,
+      required Function fun}) async {
     try {
       service.Response response = await dio.post(api,
           data: json,
@@ -616,11 +789,22 @@ class ConnectorControl extends GetConnect {
               headers: {
                 // "accept-language": (AppData.selectedLanguage=="English")?"en":"ar",
                 'Content-Type': 'application/json',
-                "Authorization": "Bearer " + ((Get.find<MainController>().user != null) ? Get.find<MainController>().user?.token ?? "" : ""),
+                "Authorization": "Bearer " +
+                    ((Get.find<MainController>().user != null)
+                        ? Get.find<MainController>().user?.token ?? ""
+                        : ""),
 
-                "PersonnelNo": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") : ""),
-                "Userid": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") : ""),
-                "FormName": ((Get.find<MainController>().formName != null) ? Get.find<MainController>().formName ?? "" : "")
+                "PersonnelNo": ((Get.find<MainController>().user != null)
+                    ? Aes.encrypt(
+                        Get.find<MainController>().user?.personnelNo ?? "")
+                    : ""),
+                "Userid": ((Get.find<MainController>().user != null)
+                    ? Aes.encrypt(
+                        Get.find<MainController>().user?.logincode ?? "")
+                    : ""),
+                "FormName": ((Get.find<MainController>().formName != null)
+                    ? Get.find<MainController>().formName ?? ""
+                    : "")
               },
               responseType: ResponseType.json));
       if (response.statusCode == 200 || response.statusCode == 201) {
@@ -668,10 +852,10 @@ class ConnectorControl extends GetConnect {
 
   GET_METHOD_CALL_HEADER(
       {required String api,
-        // required String formName,
-        required Function fun,
-        Function? failed,
-        ResponseType? responseType}) async {
+      // required String formName,
+      required Function fun,
+      Function? failed,
+      ResponseType? responseType}) async {
     print("<<>>>>>API CALL>>>>>>\n\n\n\n\n\n\n\n\n" + api);
     try {
       service.Response response = await dio.get(api,
@@ -679,10 +863,21 @@ class ConnectorControl extends GetConnect {
             responseType: responseType,
             headers: {
               "Access-Control-Allow-Origin": "*",
-              "Authorization": "Bearer " + ((Get.find<MainController>().user != null) ? Get.find<MainController>().user?.token ?? "" : ""),
-              "PersonnelNo": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.personnelNo ?? "") : ""),
-              "Userid": ((Get.find<MainController>().user != null) ? Aes.encrypt(Get.find<MainController>().user?.logincode ?? "") : ""),
-              "FormName": ((Get.find<MainController>().formName != null) ? Get.find<MainController>().formName ?? "" : "")
+              "Authorization": "Bearer " +
+                  ((Get.find<MainController>().user != null)
+                      ? Get.find<MainController>().user?.token ?? ""
+                      : ""),
+              "PersonnelNo": ((Get.find<MainController>().user != null)
+                  ? Aes.encrypt(
+                      Get.find<MainController>().user?.personnelNo ?? "")
+                  : ""),
+              "Userid": ((Get.find<MainController>().user != null)
+                  ? Aes.encrypt(
+                      Get.find<MainController>().user?.logincode ?? "")
+                  : ""),
+              "FormName": ((Get.find<MainController>().formName != null)
+                  ? Get.find<MainController>().formName ?? ""
+                  : "")
             },
           ));
       if (response.statusCode == 200) {

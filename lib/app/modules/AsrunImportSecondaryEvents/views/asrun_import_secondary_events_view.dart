@@ -2,6 +2,7 @@ import 'package:bms_creditcontrol/app/controller/HomeController.dart';
 import 'package:bms_creditcontrol/app/routes/app_pages.dart';
 import 'package:bms_creditcontrol/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_creditcontrol/widgets/dropdown.dart';
+import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -31,23 +32,41 @@ class AsrunImportSecondaryEventsView
                 runSpacing: 5,
                 spacing: 5,
                 children: [
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (value) {},
-                    "Location",
-                    .23,
-                    autoFocus: true,
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.location.value,
+                      (value) {
+                        controller.selectLocation.value = value;
+                        controller.getChannel(value.key);
+                      },
+                      "Location",
+                      .23,
+                      autoFocus: true,
+                      selected: controller.selectLocation.value,
+                      isEnable: controller.isEnabel.value,
+                      inkWellFocusNode: controller.locationFN,
+                    ),
                   ),
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (data) {},
-                    "Channel",
-                    .23,
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.channel.value,
+                      (data) {
+                        controller.selectChannel.value = data;
+                      },
+                      "Channel",
+                      .23,
+                      selected: controller.selectChannel.value,
+                      isEnable: controller.isEnabel.value,
+                      inkWellFocusNode: controller.channelFN,
+                    ),
                   ),
                   DateWithThreeTextField(
                     title: "Log Date",
                     mainTextController: controller.logDate,
                     widthRation: .135,
+                    onFocusChange: (date) {
+                      controller.isEnabel.value = false;
+                    },
                   ),
                   FormButtonWrapper(
                     btnText: "Import File",
@@ -59,29 +78,28 @@ class AsrunImportSecondaryEventsView
                 ],
               ),
               const SizedBox(height: 10),
-              // Obx(
-              //   () =>
-              Expanded(
-                  child:
-                      // controller.showList.isEmpty
-                      //     ?
-                      Container(
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.grey)),
-              )
-                  // : DataGridFromMap3(
-                  //     mapData: [],
-                  //     onload: (value) {
-
-                  //     },
-                  //     exportFileName: "Mix Master Delivery Status",
-                  //     witdthSpecificColumn: Get.find<HomeController>()
-                  //         .getGridWidthByKey(
-                  //             userGridSettingList:
-                  //                 controller.userGridSetting1?.value),
-                  //   ),
-                  ),
-              // ),
+              Obx(
+                () => Expanded(
+                  child: controller.asrunImportList.isEmpty
+                      ? Container(
+                          decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey)),
+                        )
+                      : DataGridFromMap3(
+                          mapData: controller.asrunImportList.value
+                              .map((e) => e.toJson())
+                              .toList(),
+                          onload: (value) {
+                            controller.asrunGrid = value.stateManager;
+                          },
+                          exportFileName: "Asrun Import Secondary Events",
+                          widthSpecificColumn: Get.find<HomeController>()
+                              .getGridWidthByKey(
+                                  userGridSettingList:
+                                      controller.userGridSetting1?.value),
+                        ),
+                ),
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Get.find<HomeController>().getCommonButton(
@@ -89,7 +107,7 @@ class AsrunImportSecondaryEventsView
                   handleAutoClear: false,
                   disableBtns: ['Save', 'Refresh'],
                   (btnName) {
-                    // controller.formHandler(btnName);
+                    controller.formHandler(btnName);
                   },
                 ),
               ),

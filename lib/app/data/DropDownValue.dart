@@ -2,9 +2,10 @@ class DropDownValue {
   String? value;
 
   String? key;
+  String? optional;
   int? selectedIndex = 0;
 
-  DropDownValue({this.value, this.key,this.selectedIndex});
+  DropDownValue({this.value, this.key, this.selectedIndex, this.optional});
 
   DropDownValue.fromJson(Map<String, dynamic> json) {
     value = json['value'];
@@ -37,6 +38,14 @@ class DropDownValue {
     final Map<String, dynamic> data = <String, dynamic>{};
     data[valueNew??'value'] = value;
     data[keyNew??'key'] = key;
+    return data;
+  }
+
+  Map<String, dynamic> toJsonCustom(key1,value1) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data[value1] = value;
+
+    data[key1] = key;
     return data;
   }
 }
