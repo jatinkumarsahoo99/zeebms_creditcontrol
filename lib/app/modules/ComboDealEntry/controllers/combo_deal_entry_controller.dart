@@ -248,7 +248,7 @@ class ComboDealEntryController extends GetxController {
     var payload = {
       "lstTblLinkDeals": tabelLinkDealList,
       "dealcode": dealCode,
-      "groupNumber": groupNo.text,
+      "groupNumber": int.parse(groupNo.text),
       "clientCode": selectClient.value?.key ?? "",
       "agencyCode": selectAgency.value?.key ?? "",
       "groupdate": date.text,
