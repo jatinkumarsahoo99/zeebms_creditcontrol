@@ -1,9 +1,11 @@
 import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
+import 'package:bms_creditcontrol/widgets/PlutoGrid/pluto_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../providers/ApiFactory.dart';
 import '../ClientMasterModel.dart';
 import '../ClientRetriveDataModel.dart';
@@ -60,10 +62,13 @@ class ClientMasterController extends GetxController {
   // List<DropDownValue>? plantList;
   RxList<DropDownValue>? channelList = RxList([]);
   RxList<DropDownValue>? plantList = RxList([]);
+  RxList<DropDownValue>? agencyList1 = RxList([]);
   List<LstPayTerm>? payTermList;
-  List<LstPayTerm>? lstClientAgencyMaster;
+  List<ClientAgencyMaster>? lstClientAgencyMaster;
 
-  FocusNode payRouteFS=FocusNode();
+  FocusNode payRouteFS = FocusNode();
+  PlutoGridStateManager? payTermManager;
+  PlutoGridStateManager? clientMasterManager;
 
   @override
   void onInit() {
@@ -205,15 +210,135 @@ class ClientMasterController extends GetxController {
                       element.key ==
                       retrieveData?.lstRecords![0].creditRateCode);
             }
+            payTermList = retrieveData?.lstPayTerm ?? [];
 
             // selectPayment
             // selectCredit
           } else {
             masterModel = null;
           }
-          update(["main"]);
+          update(["main", "payTerm"]);
         });
   }
 
-  formHandler(String string) {}
+  formHandler(name) {
+    switch (name) {
+      case "Save":
+        save();
+        break;
+      case "Clear":
+        Get.delete<ClientMasterController>();
+        Get.find<HomeController>().clearPage1();
+        break;
+    }
+  }
+
+  void addToClientMaster() {
+    if (lstClientAgencyMaster == null) {
+      lstClientAgencyMaster = [];
+    }
+    ClientAgencyMaster data = ClientAgencyMaster();
+    data.locationCode = selectLocation?.value?.key ?? "";
+    data.locationName = selectLocation?.value?.value ?? "";
+    data.channelCode = selectChannel?.value?.key ?? "";
+    data.channelName = selectChannel?.value?.value ?? "";
+    data.agencyCode = selectAgency?.key ?? "";
+    data.agencyName = selectAgency?.value ?? "";
+    data.payroutecode = selectPayroute?.key ?? "";
+    data.payrouteName = selectPayroute?.value ?? "";
+    data.plantid = selectPlant?.key ?? "";
+    data.plantName = selectPlant?.value ?? "";
+    data.clientName = selectClientName?.value ?? "";
+    data.effectiveFrom = effective_.text;
+    data.executiveName = selectExecutive?.value ?? "";
+    data.executiveCode = selectExecutive?.key ?? "";
+    lstClientAgencyMaster?.add(data);
+    update(["clientData"]);
+  }
+
+  postSave() {
+    var jsonData = {
+      "clientCode": selectClientName?.key ?? "",
+      "clientName": selectClientName?.value ?? "",
+      "clientShortName": retrieveData?.lstRecords![0].clientShortName ?? "",
+      "address1": retrieveData?.lstRecords![0].address1 ?? "",
+      "address2": retrieveData?.lstRecords![0].address2 ?? "",
+      "city": retrieveData?.lstRecords![0].city ?? "",
+      "phone": retrieveData?.lstRecords![0].phone ?? "",
+      "fax": retrieveData?.lstRecords![0].fax ?? "",
+      "mobile": retrieveData?.lstRecords![0].mobile ?? "",
+      "email": retrieveData?.lstRecords![0].email ?? "",
+      "contactPerson": retrieveData?.lstRecords![0].contactPerson ?? "",
+      "creditRateCode": retrieveData?.lstRecords![0].creditRateCode ?? "",
+      "modifiedBy": retrieveData?.lstRecords![0].modifiedBy ?? "",
+      "pin": retrieveData?.lstRecords![0].pin ?? "",
+      "countrycode": retrieveData?.lstRecords![0].countrycode ?? "",
+      "ibf": retrieveData?.lstRecords![0].ibfcode != "" ? "Y" : "N",
+      "ibfcode": retrieveData?.lstRecords![0].ibfcode ?? "",
+      "sapClinetCode": retrieveData?.lstRecords![0].sapClinetCode ?? "",
+      "name1": retrieveData?.lstRecords![0].name1 ?? "",
+      "name2": retrieveData?.lstRecords![0].name2 ?? "",
+      "name3": retrieveData?.lstRecords![0].name3 ?? "",
+      "paymentmodecode": retrieveData?.lstRecords![0].paymentmodecode ?? "",
+      "ibfremark": retrieveData?.lstRecords![0].ibfremark ?? "",
+      "groupFlag": retrieveData?.lstRecords![0].groupFlag ?? "",
+      "contractual": retrieveData?.lstRecords![0].chkContractual ?? false,
+      "psuFlag": retrieveData?.lstRecords![0].psuFlag ?? "",
+      "brandFlag": false,
+      "surrogateflag": false,
+      "slotsaleflag": false,
+      "exposureflag": false,
+      "pdc": false,
+      "creditdays":
+          retrieveData?.lstRecords![0].clientShortName.toString() ?? "",
+      "osAmount": retrieveData?.lstRecords![0].osAmount.toString() ?? "",
+      "lstClientAgencyMaster":
+          lstClientAgencyMaster?.map((e) => e.toJson1()).toList(),
+      "lstPayTerm": payTermList?.map((e) => e.toJson()).toList()
+    };
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.CLIENT_MASTER_POST_SAVE,
+        fun: (map) {
+          Get.back();
+          // map.
+          if (map is Map && map.containsKey("message")) {
+            LoadingDialog.callDataSaved(msg: map["message"]);
+          } else {
+            LoadingDialog.callErrorMessage1(msg: map.toString());
+          }
+        },
+        json: jsonData);
+  }
+
+  save() {
+    // LoadingDialog.call();
+    postSave();
+  }
+
+  void getAgencyFromList() {
+    if (lstClientAgencyMaster != null &&
+        (lstClientAgencyMaster?.isNotEmpty ?? false)) {
+      lstClientAgencyMaster?.forEach((e) {
+        agencyList1?.add(DropDownValue(key: e.agencyCode, value: e.agencyName));
+      });
+    }
+  }
+
+  void addPayTerm() {
+    if (payTermList == null) {
+      payTermList = [];
+    }
+    LstPayTerm data = LstPayTerm();
+    data.clientcode = selectClientName?.key??"";
+    data.clientName = selectClientName?.value??"";
+    data.paymentmodecode = selectPayMode?.key??"";
+    data.paymentMode = selectPayMode?.value??"";
+    data.ibfRemark = ibfRemark1_.text;
+    data.agencyCode = selectAgency1?.key ?? "";
+    data.agencyName = selectAgency1?.value ?? "";
+    data.clientName = selectClientName?.value ?? "";
+    payTermList?.add(data);
+    update(["payTerm"]);
+  }
 }

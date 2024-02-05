@@ -1,23 +1,161 @@
+import 'package:bms_creditcontrol/app/controller/HomeController.dart';
+import 'package:bms_creditcontrol/app/controller/MainController.dart';
+import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
+import 'package:bms_creditcontrol/widgets/CheckBox/multi_check_box.dart';
+import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:get/get.dart';
 
-class CompanyChannelLinkController extends GetxController {
-  //TODO: Implement CompanyChannelLinkController
+import '../../../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
+import '../../../controller/ConnectorControl.dart';
+import '../../../data/user_data_settings_model.dart';
+import '../../../providers/ApiFactory.dart';
+import '../ChannelLinkMasterData.dart';
 
-  final count = 0.obs;
+class CompanyChannelLinkController extends GetxController {
+  DropDownValue? selectLocation;
+  DropDownValue? selectChannel;
+  DropDownValue? selectPayrouteCat;
+  DropDownValue? selectCollAgent;
+  DropDownValue? selectCurrency;
+  DropDownValue? selectParentCompany;
+  DropDownValue? selectSapProfCen;
+
+  ChannelLinkMasterData? initData;
+  List<DropDownValue>? channelList = [];
+  RxList<DropDownValue>? sapProfileList = RxList([]);
+  PlutoGridStateManager? gridManager;
+
+  UserDataSettings? userDataSettings;
+
   @override
   void onInit() {
+    fetchUserGridSetting();
+    getLoad();
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  fetchUserGridSetting() async {
+    userDataSettings = await Get.find<HomeController>()
+        .fetchUserSetting2(formName: "frmTransmissionlog");
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  getLoad() {
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.CHANNEL_LINK_INIT,
+        fun: (Map map) {
+          if (map.containsKey("loadData") && map["loadData"] != null) {
+            initData = ChannelLinkMasterData.fromJson(map["loadData"]);
+          } else {
+            initData = null;
+          }
+          update(["init", "grid"]);
+        });
   }
 
-  void increment() => count.value++;
+  getChannel() {
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.CHANNEL_LINK_LOCATION + (selectLocation?.key ?? ""),
+        fun: (Map map) {
+          if (map.containsKey("infoChannelList") &&
+              map["infoChannelList"] != null) {
+            channelList = [];
+            map["infoChannelList"].forEach((e) {
+              channelList?.add(DropDownValue(
+                  key: e["channelCode"], value: e["channelName"]));
+            });
+          }
+          update(["init"]);
+        });
+  }
+
+  getSapProfile() {
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.CHANNEL_LINK_SAP_PROFIT_CENTER +
+            (selectParentCompany?.key ?? ""),
+        fun: (Map map) {
+          if (map.containsKey("infoSapProfitCenter") &&
+              map["infoSapProfitCenter"] != null) {
+            sapProfileList?.value.clear();
+            map["infoSapProfitCenter"].forEach((e) {
+              sapProfileList?.value.add(DropDownValue(
+                  key: e["profitCentreCode"], value: e["profitcentername"]));
+            });
+          }
+          // update(["init"]);
+        });
+  }
+
+  validateData() {
+    if (selectLocation == null) {
+      LoadingDialog.callInfoMessage("Location Name cannot be empty.");
+    } else if (selectChannel == null) {
+      LoadingDialog.callInfoMessage("Channel Name cannot be empty.");
+    } else if (selectPayrouteCat == null) {
+      LoadingDialog.callInfoMessage("Payroute category Name cannot be empty.");
+    } else {
+      List<MultiCheckBoxModel>? selectedList = initData
+          ?.lstfillComboRes?.lstCurrencies
+          ?.where((element) => element.isSelected ?? false)
+          .toList();
+      if (selectedList != null) {
+        saveData();
+      } else {
+        LoadingDialog.callInfoMessage("Select Currency name.");
+      }
+    }
+  }
+
+  saveData() {
+    var jsonData = {
+      "strCode": 0,
+      "lstSelectedCurrencies": initData?.lstfillComboRes?.lstCurrencies
+          ?.where((element) => element.isSelected ?? false)
+          .map((e) =>
+              e.val?.toJsonCustom("currencyTypeCode", "currencyTypeName"))
+          .toList(),
+      "companyChannelData":
+          initData?.companyChannelLinkDatas?.map((e) => e.toJson()).toList(),
+      "locationName": selectLocation?.value ?? "",
+      "locationCode": selectLocation?.key ?? "",
+      "channelName": selectChannel?.value ?? "",
+      "channelCode": selectChannel?.key ?? "",
+      "payrouteCategoryName": selectPayrouteCat?.value ?? "",
+      "payrouteCategoryCode": selectPayrouteCat?.key ?? "",
+      "collectionAgentCode": selectCollAgent?.key ?? "",
+      "loggedUser": Get.find<MainController>().user?.logincode ?? "",
+      "parentsCode": selectParentCompany?.key ?? "",
+      "sapprofitCode": selectSapProfCen?.key ?? ""
+    };
+    Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.CHANNEL_LINK_SAVE,
+        fun: (Map map) {
+          if (map.containsKey("infoSapProfitCenter") &&
+              map["infoSapProfitCenter"] != null) {
+            sapProfileList?.value.clear();
+            map["infoSapProfitCenter"].forEach((e) {
+              sapProfileList?.value.add(DropDownValue(
+                  key: e["profitCentreCode"], value: e["profitcentername"]));
+            });
+          }
+          // update(["init"]);
+        },
+        json: jsonData);
+  }
+
+  void formHandler(String btnName) {
+    switch (btnName) {
+      case "Save":
+        saveData();
+        break;
+      case "Clear":
+        Get.delete<CompanyChannelLinkController>();
+        Get.find<HomeController>().clearPage1();
+        break;
+      case "Exit":
+        Get.find<HomeController>().postUserGridSetting2(listStateManager: [
+          {"gridManager": gridManager},
+        ], formName: "frmCompanyChannelLink");
+        break;
+    }
+  }
 }
