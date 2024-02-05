@@ -30,10 +30,10 @@ class Billings {
   String? bookingnumber;
   String? sFlag;
   String? currency;
-  int? spotAmount;
-  int? totdur;
-  int? noofspot;
-  int? cAgencyShare;
+  num? spotAmount;
+  num? totdur;
+  num? noofspot;
+  num? cAgencyShare;
   dynamic zoneCode;
 
   Billings(

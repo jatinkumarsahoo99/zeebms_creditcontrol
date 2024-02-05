@@ -235,7 +235,7 @@ class ReadytoBillsController extends GetxController {
         "fromDate": dateConvertToyyyyMMdd(fromDate.text),
         "toDate": dateConvertToyyyyMMdd(toDate.text),
         "chkR4": isR4.value,
-        "agencycode": selectAgency.value?.key ?? "",
+        "agencycode": selectAgency.value?.key ?? null,
       };
       LoadingDialog.call();
       Get.find<ConnectorControl>().POSTMETHOD(
@@ -274,16 +274,17 @@ class ReadytoBillsController extends GetxController {
         "fromDate": dateConvertToyyyyMMdd(fromDate.text),
         "toDate": dateConvertToyyyyMMdd(toDate.text),
         "chkR4": isR4.value,
-        "agencycode": selectAgency.value?.key ?? "",
+        "agencycode": selectAgency.value?.key ?? null,
         "sapBookingLst": sapBookingLIst,
       };
     } else {
       // Billing VAlue
       var sapBookingLIst = [];
       for (var item in billingValueList) {
-        if (item.bookingnumber!.isNotEmpty && item.checked == true) {
+        if (item.checked == true) {
           sapBookingLIst.add({
-            "bookingNumber": item.bookingnumber,
+            "bookingNumber":
+                item.bookingnumber!.isNotEmpty ? item.bookingnumber : "",
             "channelCode": selectChannel.value?.key ?? "",
             "locationCode": selectLocation.value?.key ?? "",
           });
@@ -295,7 +296,7 @@ class ReadytoBillsController extends GetxController {
         "fromDate": dateConvertToyyyyMMdd(fromDate.text),
         "toDate": dateConvertToyyyyMMdd(toDate.text),
         "chkR4": isR4.value,
-        "agencycode": selectAgency.value?.key ?? "",
+        "agencycode": selectAgency.value?.key ?? null,
         "sapBookingLst": sapBookingLIst,
       };
     }
@@ -306,10 +307,14 @@ class ReadytoBillsController extends GetxController {
         api: ApiFactory.READY_TO_BILLS_SEND_TO_SAP,
         fun: (Map map) {
           Get.back();
-          if (map != null && map.containsKey('mark')) {
-            LoadingDialog.callInfoMessage(
-              map['mark'],
-            );
+          if (map != null && map.containsKey('sendToSAP')) {
+            LoadingDialog.callDataSaved(
+                msg: map['sendToSAP'],
+                callback: () {
+                  export();
+                  Get.delete<ReadytoBillsController>();
+                  Get.find<HomeController>().clearPage1();
+                });
           }
         });
   }
@@ -328,10 +333,13 @@ class ReadytoBillsController extends GetxController {
         api: ApiFactory.READY_TO_BILLS_RESEND_TO_SAP,
         fun: (Map map) {
           Get.back();
-          if (map != null && map.containsKey('mark')) {
-            LoadingDialog.callInfoMessage(
-              map['mark'],
-            );
+          if (map != null && map.containsKey('resendToSAP')) {
+            LoadingDialog.callDataSaved(
+                msg: map['resendToSAP'],
+                callback: () {
+                  Get.delete<ReadytoBillsController>();
+                  Get.find<HomeController>().clearPage1();
+                });
           }
         });
   }
@@ -566,12 +574,12 @@ class ReadytoBillsController extends GetxController {
                       FormButtonWrapper(
                         btnText: "Resend To SAP",
                         callback: () {
-                          LoadingDialog.modify('Want to resend data to SAP.',
-                              () {
-                            resendToSap();
-                          }, () {
-                            Get.back();
-                          });
+                          LoadingDialog.recordExists(
+                            'Want to resend data to SAP.',
+                            () {
+                              resendToSap();
+                            },
+                          );
                         },
                         showIcon: false,
                       ),

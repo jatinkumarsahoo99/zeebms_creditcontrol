@@ -1016,4 +1016,16 @@ class ApiFactory {
   static String get READY_TO_BILLS_SAVE => "$BASE_URL/api/ReadyToBills/save";
 
   /// ////////////////////////// End READY TO BILLS Model////////////////////////////////
+  ///   ///
+  ///
+  ///
+  /// ////////////////////////// Start ASRUN SECONDARY EVENT Model////////////////////////////////
+  static String get ASRUN_SECONDARY_EVENT_GET_LOCATION =>
+      "$BASE_URL/api/AsrunSecondaryEvent/GetLocation";
+  static String ASRUN_SECONDARY_EVENT_GET_CHANNEL(String location) =>
+      "$BASE_URL/api/AsrunSecondaryEvent/GetChannel?Location=$location";
+  static String get ASRUN_SECONDARY_EVENT_IMPORT =>
+      "$BASE_URL/api/AsrunSecondaryEvent/Import";
+
+  /// ////////////////////////// End ASRUN SECONDARY EVENT Model////////////////////////////////
 }
