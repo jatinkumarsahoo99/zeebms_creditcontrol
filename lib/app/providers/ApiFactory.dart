@@ -1126,4 +1126,13 @@ class ApiFactory {
       "$BASE_URL/api/CompanyChannelLink/SaveRecords";
 
   ///////////////////////////////End: Client Channel Link///////////////////////////////////////////////////
+
+
+///  ///////////////////////////// CLIENT EMBARGO ////////////////////////////////
+  static String get CLIENT_EMBARGO_ON_LOAD => "$BASE_URL/api/ClientEmbargo/GetLoad";
+  static String get CLIENT_EMBARGO_GET_CLIENT => "$BASE_URL/api/ClientEmbargo/GetClient?SearchText=";
+  static String get CLIENT_EMBARGO_GET_CLIENT_NAME_CLICK => "$BASE_URL/api/ClientEmbargo/GetClientNameClick?ClientCode=";
+  static String get CLIENT_EMBARGO_POST=> "$BASE_URL/api/ClientEmbargo/PostSave";
+
+
 }
