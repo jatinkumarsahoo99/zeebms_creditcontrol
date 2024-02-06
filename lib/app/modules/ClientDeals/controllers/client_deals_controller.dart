@@ -1512,15 +1512,58 @@ class ClientDealsController extends GetxController {
     }
 
     if ((txtDRecordNumber.value ?? "").toString().trim() != "0") {
-      LoadingDialog.modify2("This Record Already exists!\nDo you want to modify it?",
-              () {
-        for(int i=0;i<(importGridList?.length??0);i++){
-
+      LoadingDialog.modify2("This Record Already exists!\nDo you want to modify it?", () {
+        for (int i = 0; i < (importGridList?.length ?? 0); i++) {
+          if (importGridList?[i].recordnumber.toString().toLowerCase().trim() ==
+              (txtDRecordNumber.value ?? "0").toString().toLowerCase().trim()) {
+            break;
+          }
         }
-
-              }, () {
+      }, () {
         return;
       }, deleteTitle: "Yes", cancelTitle: "No");
+    }
+  }
+
+  addEdit(int index) {
+    importGridList?[index].recordnumber = txtDRecordNumber.value;
+    importGridList?[index].sponsorTypeCode = selectSpotType?.value?.key ?? "";
+    importGridList?[index].sponsorTypeName = selectSpotType?.value?.value ?? "";
+    importGridList?[index].programCode = selectProgram?.value?.key ?? "";
+    importGridList?[index].programName = selectProgram?.value?.value ?? "";
+    importGridList?[index].starttime = startTime.text ?? "";
+    importGridList?[index].endTime = endTime.text ?? "";
+    importGridList?[index].seconds = secondsController2.text ?? "";
+    importGridList?[index].rate = ratePerTenSecondsController.text ?? "";
+    importGridList?[index].amount = amountController2.text ?? "";
+    importGridList?[index].bandCode = selectBand?.value?.key ?? "";
+    importGridList?[index].timeBand = selectBand?.value?.value ?? "";
+    importGridList?[index].valuationRate = valueRateController.text ?? "";
+    importGridList?[index].netCode = selectAddInfo?.value?.key ?? "";
+    importGridList?[index].netWorkName = selectAddInfo?.value?.key ?? "";
+    importGridList?[index].sun = getOneZero(sta: sun.value);
+    importGridList?[index].mon = getOneZero(sta: mon.value);
+    importGridList?[index].tue = getOneZero(sta: tue.value);
+    importGridList?[index].wed = getOneZero(sta: wed.value);
+    importGridList?[index].thu = getOneZero(sta: thu.value);
+    importGridList?[index].fri = getOneZero(sta: fri.value);
+    importGridList?[index].sat = getOneZero(sta: sat.value);
+    importGridList?[index].primaryEventCode = getOneZero(sta: type.value);
+    if (type.value == true) {
+      importGridList?[index].accountCode = selectAccount?.value?.key ?? "";
+      importGridList?[index].accountname = selectAccount?.value?.value ?? "";
+      importGridList?[index].eventcode = selectAccount?.value?.key ?? "";
+      importGridList?[index].eventname = selectAccount?.value?.value ?? "";
+    }
+    btnClearClick();
+
+  }
+
+  getOneZero({bool? sta}) {
+    if (sta ?? false) {
+      return "1";
+    } else {
+      return "0";
     }
   }
 

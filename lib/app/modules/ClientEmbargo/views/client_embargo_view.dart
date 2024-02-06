@@ -59,8 +59,10 @@ class ClientEmbargoView extends StatelessWidget {
                             parseKeyForValue: "ClientName",
                             selectedValue: controllerX.selectedClient.value,
                             // selectedValue: controllerX.selectedEmployee.value,
-                            onchanged: (data) {},
-                            dialogHeight: 0.3,
+                            onchanged: (data) {
+                              controllerX.getClientNameClick(clientCode: data.key ?? "");
+                            },
+                            dialogHeight: 200,
                             width: (Get.width * controllerX.fixedWidth)),
                         SizedBox(
                           width: Get.width * controllerX.fixedWidth,
@@ -137,53 +139,116 @@ class ClientEmbargoView extends StatelessWidget {
                                   (
                                     id: "grid1",
                                     builder: (controllerX) {
-                                  return Container(decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey)),
-                                    child: (controllerX
-                                        .clientEmbargoModel != null && controllerX
-                                        .clientEmbargoModel?.ceLoad != null && controllerX
-                                        .clientEmbargoModel?.ceLoad?.result != null &&
-                                        controllerX
-                                            .clientEmbargoModel?.ceLoad?.result?.lstclientEmbs !=
-                                            null &&
-                                        (controllerX
-                                            .clientEmbargoModel?.ceLoad?.result?.lstclientEmbs
-                                            ?.length ?? 0) > 0
-                                    ) ? DataGridFromMap(
-                                      showSrNo: true,
-                                      hideCode: false,
-                                      formatDate: false,
-                                      columnAutoResize: false,
-                                      doPasccal: true,
-                                      colorCallback: (row) =>
-                                      (row.row.cells
-                                          .containsValue(
-                                          controllerX.stateManager?.currentCell))
-                                          ? Colors.deepPurple.shade200
-                                          : Colors.white,
-                                      exportFileName: "Client Embargo",
-                                      mode: PlutoGridMode.normal,
-
-                                      mapData: (controllerX
-                                          .clientEmbargoModel!.ceLoad!.result!.lstclientEmbs!
-                                          .map((e) => e.toJson())
-                                          .toList()),
-                                      // mapData: (controllerX.dataList)!,
-                                      widthRatio: Get.width / 9 - 1,
-                                      onload: (PlutoGridOnLoadedEvent? load) {
-                                        controllerX.stateManager =
-                                            load?.stateManager;
-                                      },
-                                    ) : const Center(child: Text("Data not found"),),
-                                  );
-                                }));
+                                      return Container(decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.grey)),
+                                        child: (controllerX
+                                            .clientEmbargoModel != null && controllerX
+                                            .clientEmbargoModel?.ceLoad != null &&
+                                            controllerX
+                                                .clientEmbargoModel?.ceLoad?.lstclientEmbs !=
+                                                null &&
+                                            (controllerX
+                                                .clientEmbargoModel?.ceLoad?.lstclientEmbs
+                                                ?.length ?? 0) > 0
+                                        ) ? DataGridFromMap(
+                                          showSrNo: true,
+                                          hideCode: false,
+                                          formatDate: false,
+                                          columnAutoResize: true,
+                                          doPasccal: true,
+                                          colorCallback: (row) =>
+                                          (row.row.cells
+                                              .containsValue(
+                                              controllerX.stateManager?.currentCell))
+                                              ? Colors.deepPurple.shade200
+                                              : Colors.white,
+                                          exportFileName: "Client Embargo",
+                                          hideKeys: ["locationcode","channelcode","clientcode"],
+                                          mode: PlutoGridMode.normal,
+                                          onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent? event) {
+                                            // print(">>>>>>>>>>>onRowDoubleTap${event?.cell.key??""}");
+                                            // print(">>>>>>>>>>>onRowDoubleTapVal${event?.cell.value??""}");
+                                            // print(">>>>>>>>>>>onRowDoubleTapRow${event?.cell.row??""}");
+                                            print(">>>>>>>>>>>onRowDoubleTapColField${event?.cell
+                                                .column.field ?? ""}");
+                                            print(
+                                                ">>>>>>>>>>>onRowDoubleTapColField${event?.cell.row
+                                                    .cells['clientcode']?.value ?? ""}");
+                                            // print(">>>>>>>>>>>onRowDoubleTapColKey${event?.cell.column.key??""}");
+                                            controllerX.getClientNameClick(
+                                                clientCode: event?.cell.row.cells['clientcode']
+                                                    ?.value ?? "");
+                                          },
+                                          mapData: (controllerX
+                                              .clientEmbargoModel!.ceLoad!.lstclientEmbs!
+                                              .map((e) => e.toJson())
+                                              .toList()),
+                                          // mapData: (controllerX.dataList)!,
+                                          widthRatio: Get.width / 9 - 1,
+                                          onload: (PlutoGridOnLoadedEvent? load) {
+                                            controllerX.stateManager =
+                                                load?.stateManager;
+                                          },
+                                        ) : const Center(child: Text("Data not found"),),
+                                      );
+                                    }));
                           }
                           else {
-                            return Container(
-                              height: Get.height * 0.4,
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey)),
-                              child: const Center(child: Text("Data not found2"),),
+                            return SizedBox(
+                              child: GetBuilder<ClientEmbargoController>(
+                                id: "grid2",
+                                  builder: (controllerX) {
+                                return Container(
+                                  height: Get.height * 0.4,
+                                  decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey)),
+                                  child: (controllerX.clientEmbargoHistoryModel != null &&
+                                      controllerX.clientEmbargoHistoryModel?.clientNameClick !=
+                                          null &&
+                                      controllerX.clientEmbargoHistoryModel?.clientNameClick
+                                          ?.lstClient != null &&
+                                      (controllerX.clientEmbargoHistoryModel?.clientNameClick
+                                          ?.lstClient?.length ?? 0) > 0
+                                  ) ? DataGridFromMap(
+                                    showSrNo: true,
+                                    hideCode: false,
+                                    formatDate: false,
+                                    columnAutoResize: true,
+                                    doPasccal: true,
+                                    colorCallback: (row) =>
+                                    (row.row.cells
+                                        .containsValue(
+                                        controllerX.stateManagerHistory?.currentCell))
+                                        ? Colors.deepPurple.shade200
+                                        : Colors.white,
+                                    exportFileName: "Client Embargo",
+                                    mode: PlutoGridMode.normal,
+                                    onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent? event) {
+                                      // print(">>>>>>>>>>>onRowDoubleTap${event?.cell.key??""}");
+                                      // print(">>>>>>>>>>>onRowDoubleTapVal${event?.cell.value??""}");
+                                      // print(">>>>>>>>>>>onRowDoubleTapRow${event?.cell.row??""}");
+                                      print(">>>>>>>>>>>onRowDoubleTapColField${event?.cell.column
+                                          .field ?? ""}");
+                                      print(">>>>>>>>>>>onRowDoubleTapColField${event?.cell.row
+                                          .cells['clientcode']?.value ?? ""}");
+                                      // print(">>>>>>>>>>>onRowDoubleTapColKey${event?.cell.column.key??""}");
+                                      controllerX.getClientNameClick(
+                                          clientCode: event?.cell.row.cells['clientcode']?.value ??
+                                              "");
+                                    },
+                                    mapData: (controllerX
+                                        .clientEmbargoHistoryModel!.clientNameClick!.lstClient!
+                                        .map((e) => e.toJson())
+                                        .toList()),
+                                    // mapData: (controllerX.dataList)!,
+                                    widthRatio: Get.width / 9 - 1,
+                                    onload: (PlutoGridOnLoadedEvent? load) {
+                                      controllerX.stateManagerHistory =
+                                          load?.stateManager;
+                                    },
+                                  ) : const Center(child: Text("Data not found2"),),
+                                );
+                              }),
                             );
                           }
                         }),
