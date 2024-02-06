@@ -1022,22 +1022,22 @@ class ApiFactory {
       "$BASE_URL/api/ClientMaster/GetLocationLeave?locationcode=";
 
   static String CLIENT_MASTER_RETRIVE_DATA(
-      String clientId,
-      String clientName,
-      ) =>
+    String clientId,
+    String clientName,
+  ) =>
       "$BASE_URL/api/ClientMaster/GetRetrieveRecord?ClientCode=$clientId&ClientName=$clientName&FormName=frmClientMaster";
 
   static String CLIENT_MASTER_SEARCH_PAYROUTE(
-      String locId,
-      String chlId,
-      ) =>
+    String locId,
+    String chlId,
+  ) =>
       "$BASE_URL/api/ClientMaster/GetPayRoute?Locationcode=$locId&channelcode=$chlId&SearchText=";
 
   static String CLIENT_MASTER_GET_PAYROUTE_CODE(
-      String locId,
-      String chlId,
-      String routeId,
-      ) =>
+    String locId,
+    String chlId,
+    String routeId,
+  ) =>
       "$BASE_URL/api/ClientMaster/GetPayRouteCodeSelect?locationcode=$locId&ChannelCode=$chlId&PayRouteCode=$routeId";
 
   static String get CLIENT_MASTER_UNBLOCK_CLIENT =>
@@ -1045,10 +1045,53 @@ class ApiFactory {
 
   static String get CLIENT_MASTER_BLOCK_CLIENT =>
       "$BASE_URL/api/ClientMaster/Postblockclient";
-
   static String get CLIENT_MASTER_POST_SAVE =>
       "$BASE_URL/api/ClientMaster/PostSaveRecord";
 
+  /// ////////////////////////// End CLIENT MASTER Model////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start READY TO BILLS Model////////////////////////////////
+  static String get READY_TO_BILLS_ON_LOAD =>
+      "$BASE_URL/api/ReadyToBills/onload";
+  static String READY_TO_BILLS_GET_CHANNEL(String location) =>
+      "$BASE_URL/api/ReadyToBills/GetChannel?location=$location";
+  static String get READY_TO_BILLS_GET_AGENCIES =>
+      "$BASE_URL/api/ReadyToBills/GetAgencies?agencyname=";
+  static String get READY_TO_BILLS_GET_BILLING_STATUS =>
+      "$BASE_URL/api/ReadyToBills/GetBillingStatus";
+  static String get READY_TO_BILLS_MARK => "$BASE_URL/api/ReadyToBills/Mark";
+  static String get READY_TO_BILLS_CHECK_DUPLICATE =>
+      "$BASE_URL/api/ReadyToBills/CheckDuplicate";
+  static String get READY_TO_BILLS_VERIFY =>
+      "$BASE_URL/api/ReadyToBills/verify";
+  static String get READY_TO_BILLS_BILLING_VALUE =>
+      "$BASE_URL/api/ReadyToBills/BillingValue";
+  static String get READY_TO_BILLS_RESEND_TO_SAP =>
+      "$BASE_URL/api/ReadyToBills/ResendToSAP";
+  static String get READY_TO_BILLS_SEND_TO_SAP =>
+      "$BASE_URL/api/ReadyToBills/sendToSAP";
+  static String get READY_TO_BILLS_EXPORT =>
+      "$BASE_URL/api/ReadyToBills/Export";
+  static String get READY_TO_BILLS_SAVE => "$BASE_URL/api/ReadyToBills/save";
+
+  /// ////////////////////////// End READY TO BILLS Model////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start ASRUN SECONDARY EVENT Model////////////////////////////////
+  static String get ASRUN_SECONDARY_EVENT_GET_LOCATION =>
+      "$BASE_URL/api/AsrunSecondaryEvent/GetLocation";
+  static String ASRUN_SECONDARY_EVENT_GET_CHANNEL(String location) =>
+      "$BASE_URL/api/AsrunSecondaryEvent/GetChannel?Location=$location";
+  static String get ASRUN_SECONDARY_EVENT_IMPORT =>
+      "$BASE_URL/api/AsrunSecondaryEvent/Import";
+
+  /// ////////////////////////// End ASRUN SECONDARY EVENT Model////////////////////////////////
+  ///
+  ///
+  ///
   //////////////////////////////////Client Channel Link/////////////////////////////////////////////////////
 
   static String get CHANNEL_LINK_INIT =>
