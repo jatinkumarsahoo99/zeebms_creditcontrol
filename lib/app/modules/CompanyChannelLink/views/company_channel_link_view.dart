@@ -40,6 +40,7 @@ class CompanyChannelLinkView extends GetView<CompanyChannelLinkController> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Expanded(
+                        flex:6,
                         child: Column(
                           children: [
                             Row(
@@ -116,44 +117,42 @@ class CompanyChannelLinkView extends GetView<CompanyChannelLinkController> {
                         ),
                       ),
                       sizedBoxWidth(10),
-                      SizedBox(
-                        width: Get.width * .4,
-                        child: Expanded(
-                          child: Column(
-                            children: [
-                              DropDownField.formDropDown1WidthMapExpand(
-                                  controller.initData?.lstfillComboRes
-                                          ?.lstPayRouteCategories ??
-                                      [], (value) {
-                                controller.selectPayrouteCat = value;
-                              }, "Payroute Category",
-                                  // .23,
-                                  // autoFocus: true,
-                                  selected: controller.selectPayrouteCat
-                                  // titleInLeft: true,
-                                  ),
-                              sizedBoxHeight(5),
-                              DropDownField().formDropDownCheckBoxMapExpanded(
+                      Expanded(
+                        flex:4,
+                        child: Column(
+                          children: [
+                            DropDownField.formDropDown1WidthMapExpand(
                                 controller.initData?.lstfillComboRes
-                                        ?.lstCurrencies ??
-                                    [],
-                                (value) {
-                                  // controller.selectCurrency = value;
-                                },
-                                "Currency",
-                                // 0.16,
-                                onChanged: (index, selectValue) {
-                                  // controller.locations[index].isSelected = selectValue;
-                                  controller
-                                      .initData
-                                      ?.lstfillComboRes
-                                      ?.lstCurrencies![index]
-                                      .isSelected = selectValue;
-                                },
-                                // showData:
-                              ),
-                            ],
-                          ),
+                                        ?.lstPayRouteCategories ??
+                                    [], (value) {
+                              controller.selectPayrouteCat = value;
+                            }, "Payroute Category",
+                                // .23,
+                                // autoFocus: true,
+                                selected: controller.selectPayrouteCat
+                                // titleInLeft: true,
+                                ),
+                            sizedBoxHeight(5),
+                            DropDownField().formDropDownCheckBoxMapExpanded(
+                              controller.initData?.lstfillComboRes
+                                      ?.lstCurrencies ??
+                                  [],
+                              (value) {
+                                // controller.selectCurrency = value;
+                              },
+                              "Currency",
+                              // 0.16,
+                              onChanged: (index, selectValue) {
+                                // controller.locations[index].isSelected = selectValue;
+                                controller
+                                    .initData
+                                    ?.lstfillComboRes
+                                    ?.lstCurrencies![index]
+                                    .isSelected = selectValue;
+                              },
+                              // showData:
+                            ),
+                          ],
                         ),
                       ),
                     ],
