@@ -27,6 +27,8 @@ class CompanyChannelLinkController extends GetxController {
 
   UserDataSettings? userDataSettings;
 
+  int strCode = -1;
+
   @override
   void onInit() {
     fetchUserGridSetting();
@@ -98,16 +100,35 @@ class CompanyChannelLinkController extends GetxController {
           ?.where((element) => element.isSelected ?? false)
           .toList();
       if (selectedList != null) {
-        saveData();
+        if (strCode != -1) {
+          LoadingDialog.modify(
+              "Record Already Exist!\nDo you want to modify it?", () {
+            saveData();
+          }, () {});
+        } else {
+          saveData();
+        }
       } else {
         LoadingDialog.callInfoMessage("Select Currency name.");
       }
     }
   }
 
+  clearData() {
+    selectLocation=null;
+    selectChannel=null;
+    selectPayrouteCat=null;
+    selectCollAgent=null;
+    selectCurrency=null;
+    selectParentCompany=null;
+    selectSapProfCen=null;
+    update(["init"]);
+  }
+
   saveData() {
+    LoadingDialog.call();
     var jsonData = {
-      "strCode": 0,
+      "strCode": strCode,
       "lstSelectedCurrencies": initData?.lstfillComboRes?.lstCurrencies
           ?.where((element) => element.isSelected ?? false)
           .map((e) =>
@@ -128,14 +149,19 @@ class CompanyChannelLinkController extends GetxController {
     };
     Get.find<ConnectorControl>().POSTMETHOD(
         api: ApiFactory.CHANNEL_LINK_SAVE,
-        fun: (Map map) {
-          if (map.containsKey("infoSapProfitCenter") &&
-              map["infoSapProfitCenter"] != null) {
-            sapProfileList?.value.clear();
-            map["infoSapProfitCenter"].forEach((e) {
-              sapProfileList?.value.add(DropDownValue(
-                  key: e["profitCentreCode"], value: e["profitcentername"]));
-            });
+        fun: (map) {
+          Get.back();
+          if (map is Map &&
+              map.containsKey("infoSave") &&
+              map["infoSave"] != null) {
+            LoadingDialog.callDataSaved(
+                msg: map["infoSave"],
+                callback: () {
+                  clearData();
+                  getLoad();
+                });
+          } else {
+            LoadingDialog.callErrorMessage1(msg: map.toString());
           }
           // update(["init"]);
         },
@@ -145,7 +171,8 @@ class CompanyChannelLinkController extends GetxController {
   void formHandler(String btnName) {
     switch (btnName) {
       case "Save":
-        saveData();
+        // saveData();
+        validateData();
         break;
       case "Clear":
         Get.delete<CompanyChannelLinkController>();
