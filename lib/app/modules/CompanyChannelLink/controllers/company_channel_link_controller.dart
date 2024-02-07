@@ -9,6 +9,7 @@ import '../../../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart'
 import '../../../controller/ConnectorControl.dart';
 import '../../../data/user_data_settings_model.dart';
 import '../../../providers/ApiFactory.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 import '../ChannelLinkMasterData.dart';
 
 class CompanyChannelLinkController extends GetxController {
@@ -182,6 +183,14 @@ class CompanyChannelLinkController extends GetxController {
         Get.find<HomeController>().postUserGridSetting2(listStateManager: [
           {"gridManager": gridManager},
         ], formName: "frmCompanyChannelLink");
+        break;
+      case "Search":
+        Get.to(SearchPage(
+            screenName: "Company Channel Link",
+            isAppBarReq: true,
+            isPopup: true,
+            appBarName: "Company Channel Link",
+            strViewName: "vTesting"));
         break;
     }
   }
