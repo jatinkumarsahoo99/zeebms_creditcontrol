@@ -16,7 +16,7 @@ import '../controllers/company_channel_link_controller.dart';
 class CompanyChannelLinkView extends GetView<CompanyChannelLinkController> {
   CompanyChannelLinkView({Key? key}) : super(key: key);
 
-  final controller = Get.put<CompanyChannelLinkController>(
+  CompanyChannelLinkController controller = Get.put<CompanyChannelLinkController>(
     CompanyChannelLinkController(),
   );
 
