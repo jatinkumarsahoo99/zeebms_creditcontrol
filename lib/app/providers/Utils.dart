@@ -55,7 +55,14 @@ class Utils {
     }else{
       return "";
     }
+  }
 
+  static String getMMDDYYYYFromDDMMYYYYInString3(String? ddMMYYYY) {
+    if(ddMMYYYY != null && ddMMYYYY != ""){
+      return DateFormat("yyyy-MM-ddTHH:mm:ss.SSS").format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
+    }else{
+      return "";
+    }
   }
 
   static String getMMDDYYYYFromDDMMYYYYInString(String ddMMYYYY) {

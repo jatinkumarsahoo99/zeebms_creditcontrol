@@ -42,7 +42,7 @@ class ClientEmbargoController extends GetxController {
                 map['ceLoad']['lstclientEmbs'] != null &&
                 map['ceLoad']['lstclientEmbs'].length > 0) {
               clientEmbargoModel = ClientEmbargoModel.fromJson(map as Map<String, dynamic>);
-              dateController.text = Utils.getMMDDYYYYFromDDMMYYYYInString2(
+              dateController.text = Utils.getMMDDYYYYFromDDMMYYYYInString3(
                   clientEmbargoModel?.ceLoad?.minfromDate ?? "");
               print(">>>>>>>>>>>>>>>>>>data${clientEmbargoModel?.toJson()}");
               update(['grid1']);
