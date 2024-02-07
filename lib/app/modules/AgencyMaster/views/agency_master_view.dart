@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
+import '../../../providers/ApiFactory.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/agency_master_controller.dart';
 
@@ -46,47 +48,53 @@ class AgencyMasterView extends StatelessWidget {
                                           GlobalKey(), context,
                                           title: "Agency Name",
                                           autoFocus: false,
-                                          customInData: "empList",
-                                          url: "",
+                                          // customInData: "empList",
+                                          url:ApiFactory.AGENCY_MASTER_GET_AGENCY_NAME?? "",
                                           // inkwellFocus: controllerX.employeeFocus,
                                           // parseKeyForTitle: "programName",
-                                          parseKeyForKey: "employeecode",
-                                          parseKeyForValue: "employeename",
+                                          parseKeyForKey: "agencycode",
+                                          parseKeyForValue: "Agencyname",
+                                          selectedValue: controllerX.selectedAgencyName.value,
                                           // selectedValue: controllerX.selectedEmployee.value,
-                                          onchanged: (data) {},
+                                          onchanged: (data) {
+                                            controllerX.selectedAgencyName.value = data;
+                                            controllerX.getRetrieveRecord();
+                                          },
+                                          dialogHeight: 200,
                                           width: (Get.width * controllerX.fixedWidth)),
                                       InputFields.formField1(
                                         hintTxt: "Group Name",
                                         // autoFocus: true,
                                         // controller: controllerX.productLevel1Controller,
-                                        controller: TextEditingController(),
+                                        controller: controllerX.groupNameController,
                                         width: controllerX.fixedWidth,
                                         // isEnable: controllerX.isEnable,
                                         onchanged: (value) {},
                                         autoFocus: false,
+                                        isEnable: controllerX.disable.value,
                                         // focusNode: controllerX.productLevel1Focus
-
                                         // autoFocus: true,
                                       ),
                                       InputFields.formField1(
                                         hintTxt: "Contact Person",
                                         // autoFocus: true,
                                         // controller: controllerX.productLevel1Controller,
-                                        controller: TextEditingController(),
+                                        controller: controllerX.contactPersonController,
                                         width: controllerX.fixedWidth,
+                                        isEnable: controllerX.disable.value,
                                         // isEnable: controllerX.isEnable,
                                         onchanged: (value) {},
                                         autoFocus: false,
                                         // focusNode: controllerX.productLevel1Focus
-
                                         // autoFocus: true,
                                       ),
                                       InputFields.formField1(
                                         hintTxt: "Address",
                                         // autoFocus: true,
                                         // controller: controllerX.productLevel1Controller,
-                                        controller: TextEditingController(),
+                                        controller: controllerX.addressController,
                                         width: controllerX.fixedWidth,
+                                        isEnable: controllerX.disable.value,
                                         // isEnable: controllerX.isEnable,
                                         onchanged: (value) {},
                                         autoFocus: false,
@@ -98,8 +106,9 @@ class AgencyMasterView extends StatelessWidget {
                                         hintTxt: "",
                                         // autoFocus: true,
                                         // controller: controllerX.productLevel1Controller,
-                                        controller: TextEditingController(),
+                                        controller: controllerX.addressController1,
                                         width: controllerX.fixedWidth,
+                                        isEnable: controllerX.disable.value,
                                         // isEnable: controllerX.isEnable,
                                         onchanged: (value) {},
                                         autoFocus: false,
@@ -113,12 +122,13 @@ class AgencyMasterView extends StatelessWidget {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             DropDownField.formDropDown1WidthMap(
-                                              [],
+                                             controllerX.cityLst.value?? [],
                                                   (value) {
                                                 // controllerX.selectedCensorShipType = value;
                                               },
                                               "City",
                                               controllerX.fixedWidth1,
+                                              selected: controllerX.selectedCity.value,
                                               // isEnable: controllerX.isEnable,
                                               autoFocus: false,
                                             ),
@@ -126,8 +136,9 @@ class AgencyMasterView extends StatelessWidget {
                                               hintTxt: "Pin",
                                               // autoFocus: true,
                                               // controller: controllerX.productLevel1Controller,
-                                              controller: TextEditingController(),
+                                              controller: controllerX.pinController,
                                               width: controllerX.fixedWidth1,
+                                              isEnable: controllerX.disable.value,
                                               // isEnable: controllerX.isEnable,
                                               onchanged: (value) {},
                                               autoFocus: false,
@@ -147,7 +158,8 @@ class AgencyMasterView extends StatelessWidget {
                                               hintTxt: "Tel",
                                               // autoFocus: true,
                                               // controller: controllerX.productLevel1Controller,
-                                              controller: TextEditingController(),
+                                              controller: controllerX.telController,
+                                              isEnable: controllerX.disable.value,
                                               width: controllerX.fixedWidth1,
                                               // isEnable: controllerX.isEnable,
                                               onchanged: (value) {},
@@ -160,8 +172,9 @@ class AgencyMasterView extends StatelessWidget {
                                               hintTxt: "Email",
                                               // autoFocus: true,
                                               // controller: controllerX.productLevel1Controller,
-                                              controller: TextEditingController(),
+                                              controller: controllerX.emailController,
                                               width: controllerX.fixedWidth1,
+                                              isEnable: controllerX.disable.value,
                                               // isEnable: controllerX.isEnable,
                                               onchanged: (value) {},
                                               autoFocus: false,
@@ -179,9 +192,10 @@ class AgencyMasterView extends StatelessWidget {
                                           children: [
                                             InputFields.formField1(
                                               hintTxt: "SAP Code",
+                                              isEnable: controllerX.disable.value,
                                               // autoFocus: true,
                                               // controller: controllerX.productLevel1Controller,
-                                              controller: TextEditingController(),
+                                              controller: controllerX.sapCodeController,
                                               width: controllerX.fixedWidth1,
                                               // isEnable: controllerX.isEnable,
                                               onchanged: (value) {},
@@ -192,9 +206,10 @@ class AgencyMasterView extends StatelessWidget {
                                             ),
                                             InputFields.formField1(
                                               hintTxt: "Cust Grp",
+                                              isEnable: controllerX.disable.value,
                                               // autoFocus: true,
                                               // controller: controllerX.productLevel1Controller,
-                                              controller: TextEditingController(),
+                                              controller: controllerX.custGrpController,
                                               width: controllerX.fixedWidth1,
                                               // isEnable: controllerX.isEnable,
                                               onchanged: (value) {},
@@ -215,8 +230,9 @@ class AgencyMasterView extends StatelessWidget {
                                               hintTxt: "Mobile",
                                               // autoFocus: true,
                                               // controller: controllerX.productLevel1Controller,
-                                              controller: TextEditingController(),
+                                              controller: controllerX.mobileController,
                                               width: controllerX.fixedWidth1,
+                                              isEnable: controllerX.disable.value,
                                               // isEnable: controllerX.isEnable,
                                               onchanged: (value) {},
                                               autoFocus: false,
@@ -228,10 +244,11 @@ class AgencyMasterView extends StatelessWidget {
                                               hintTxt: "IBF Desc",
                                               // autoFocus: true,
                                               // controller: controllerX.productLevel1Controller,
-                                              controller: TextEditingController(),
+                                              controller: controllerX.IBFDescController,
                                               width: controllerX.fixedWidth1,
                                               // isEnable: controllerX.isEnable,
                                               onchanged: (value) {},
+                                              isEnable: controllerX.disable.value,
                                               autoFocus: false,
                                               // focusNode: controllerX.productLevel1Focus
 
@@ -244,8 +261,9 @@ class AgencyMasterView extends StatelessWidget {
                                         hintTxt: "Print Name",
                                         // autoFocus: true,
                                         // controller: controllerX.productLevel1Controller,
-                                        controller: TextEditingController(),
+                                        controller: controllerX.printNameController,
                                         width: controllerX.fixedWidth,
+                                        isEnable: controllerX.disable.value,
                                         // isEnable: controllerX.isEnable,
                                         onchanged: (value) {},
                                         autoFocus: false,
@@ -257,7 +275,8 @@ class AgencyMasterView extends StatelessWidget {
                                         hintTxt: "Name 3",
                                         // autoFocus: true,
                                         // controller: controllerX.productLevel1Controller,
-                                        controller: TextEditingController(),
+                                        controller: controllerX.name3Controller,
+                                        isEnable: controllerX.disable.value,
                                         width: controllerX.fixedWidth,
                                         // isEnable: controllerX.isEnable,
                                         onchanged: (value) {},
@@ -270,8 +289,9 @@ class AgencyMasterView extends StatelessWidget {
                                         hintTxt: "PAN No.",
                                         // autoFocus: true,
                                         // controller: controllerX.productLevel1Controller,
-                                        controller: TextEditingController(),
+                                        controller: controllerX.panNoController,
                                         width: controllerX.fixedWidth,
+                                        isEnable: controllerX.disable.value,
                                         // isEnable: controllerX.isEnable,
                                         onchanged: (value) {},
                                         autoFocus: false,
@@ -283,8 +303,9 @@ class AgencyMasterView extends StatelessWidget {
                                         hintTxt: "GST No.",
                                         // autoFocus: true,
                                         // controller: controllerX.productLevel1Controller,
-                                        controller: TextEditingController(),
+                                        controller: controllerX.gstNoController,
                                         width: controllerX.fixedWidth,
+                                        isEnable: controllerX.disable.value,
                                         // isEnable: controllerX.isEnable,
                                         onchanged: (value) {},
                                         autoFocus: false,
@@ -321,7 +342,7 @@ class AgencyMasterView extends StatelessWidget {
                   hintTxt: "Email To",
                   // autoFocus: true,
                   // controller: controllerX.productLevel1Controller,
-                  controller: TextEditingController(),
+                  controller: controllerX.emailToController,
                   width: 0.95,
                   // isEnable: controllerX.isEnable,
                   onchanged: (value) {},
@@ -334,7 +355,7 @@ class AgencyMasterView extends StatelessWidget {
                   hintTxt: "Email CC",
                   // autoFocus: true,
                   // controller: controllerX.productLevel1Controller,
-                  controller: TextEditingController(),
+                  controller: controllerX.emailCCController,
                   width: 0.95,
                   // isEnable: controllerX.isEnable,
                   onchanged: (value) {},

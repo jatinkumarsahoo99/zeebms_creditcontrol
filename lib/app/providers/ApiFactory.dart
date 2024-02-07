@@ -1135,4 +1135,14 @@ class ApiFactory {
   static String get CLIENT_EMBARGO_POST=> "$BASE_URL/api/ClientEmbargo/PostSave";
 
 
+  /// ////////////////////////// AGENCY GROUP ///////////////////////////////////
+
+  static String get AGENCY_MASTER_ON_LOAD => "$BASE_URL/api/AgencyMasters/GetAgencyMasterLoad";
+  static String get AGENCY_MASTER_GET_AGENCY_NAME => "$BASE_URL/api/AgencyMasters/GetAngecyName?BMSAngecyName=";
+  static String get AGENCY_MASTER_GET_RETRIEVE_RECORD => "$BASE_URL/api/AgencyMasters/GetRetrieveRecord";
+  static String get AGENCY_MASTER_POST_BLOCK_AGENCY => "$BASE_URL/api/AgencyMasters/Postblockagency";
+  static String get AGENCY_MASTER_POST_UN_BLOCK_AGENCY => "$BASE_URL/api/AgencyMasters/Postunblockagency";
+  static String get AGENCY_MASTER_POST => "$BASE_URL/api/AgencyMasters/PostValidateAndSaveRecord";
+
+
 }
