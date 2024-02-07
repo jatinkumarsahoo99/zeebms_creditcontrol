@@ -930,10 +930,13 @@ class ApiFactory {
   /// ////////////////////////// Start Currency Type Master Model////////////////////////////////
   static String get CURRENCY_TYPE_MASTER_INITIAL_LOAD =>
       "$BASE_URL/api/CurrencyTypeMaster/Initialload";
+
   static String CURRENCY_TYPE_MASTER_LEAVE_CURRENCY_NAME(String currencyName) =>
       "$BASE_URL/api/CurrencyTypeMaster/CurrencyTypeLeave?CurrencyName=$currencyName";
+
   static String CURRENCY_TYPE_MASTER_FEATCH_CURRENCY(String currencyName) =>
       "$BASE_URL/api/CurrencyTypeMaster/FetchCurrency?CurrencyName=$currencyName";
+
   static String get CURRENCY_TYPE_MASTER_SAVE_DATA =>
       "$BASE_URL/api/CurrencyTypeMaster/SaveData";
 
@@ -944,18 +947,24 @@ class ApiFactory {
   /// ////////////////////////// Start Combo Deal Entry Model////////////////////////////////
   static String get COMBO_DEAL_ENTRY_SEARCH_CLIENT =>
       "$BASE_URL/api/ComboDealEntry/GetClient?SearchText=";
+
   static String COMBO_DEAL_ENTRY_SEARCH_CLIENT1(String searchText) =>
       "$BASE_URL/api/ComboDealEntry/GetClient?SearchText=${Uri.encodeQueryComponent(searchText)}";
+
   static String COMBO_DEAL_ENTRY_GET_AGENCY(String clientCode) =>
       "$BASE_URL/api/ComboDealEntry/GetClientLeave?ClientCode=$clientCode";
+
   static String COMBO_DEAL_ENTRY_GET_AGENCY_LEAVE(
           String clientCode, String agencyCode, String groupdate) =>
       "$BASE_URL/api/ComboDealEntry/GetAgencyLeave?ClientCode=$clientCode&AgencyCode=$agencyCode&Groupdate=$groupdate";
+
   static String COMBO_DEAL_ENTRY_GET_DEALS_CONTENT_CLICK(String dealcode,
           String locationcode, String channelcode, String dealnumber) =>
       "$BASE_URL/api/ComboDealEntry/GetDealsContentClick?dealcode=$dealcode&locationcode=$locationcode&channelcode=$channelcode&dealnumber=$dealnumber";
+
   static String COMBO_DEAL_ENTRY_GROUP_NUMBER_LEAVE(String groupNumber) =>
       "$BASE_URL/api/ComboDealEntry/GetGroupNumberLeave?GroupNumber=$groupNumber";
+
   static String get COMBO_DEAL_ENTRY_SAVE_RECORD =>
       "$BASE_URL/api/ComboDealEntry/PostSaveRecord";
 
@@ -1064,6 +1073,7 @@ class ApiFactory {
 
   static String get CLIENT_MASTER_BLOCK_CLIENT =>
       "$BASE_URL/api/ClientMaster/Postblockclient";
+
   static String get CLIENT_MASTER_POST_SAVE =>
       "$BASE_URL/api/ClientMaster/PostSaveRecord";
 
@@ -1074,25 +1084,36 @@ class ApiFactory {
   /// ////////////////////////// Start READY TO BILLS Model////////////////////////////////
   static String get READY_TO_BILLS_ON_LOAD =>
       "$BASE_URL/api/ReadyToBills/onload";
+
   static String READY_TO_BILLS_GET_CHANNEL(String location) =>
       "$BASE_URL/api/ReadyToBills/GetChannel?location=$location";
+
   static String get READY_TO_BILLS_GET_AGENCIES =>
       "$BASE_URL/api/ReadyToBills/GetAgencies?agencyname=";
+
   static String get READY_TO_BILLS_GET_BILLING_STATUS =>
       "$BASE_URL/api/ReadyToBills/GetBillingStatus";
+
   static String get READY_TO_BILLS_MARK => "$BASE_URL/api/ReadyToBills/Mark";
+
   static String get READY_TO_BILLS_CHECK_DUPLICATE =>
       "$BASE_URL/api/ReadyToBills/CheckDuplicate";
+
   static String get READY_TO_BILLS_VERIFY =>
       "$BASE_URL/api/ReadyToBills/verify";
+
   static String get READY_TO_BILLS_BILLING_VALUE =>
       "$BASE_URL/api/ReadyToBills/BillingValue";
+
   static String get READY_TO_BILLS_RESEND_TO_SAP =>
       "$BASE_URL/api/ReadyToBills/ResendToSAP";
+
   static String get READY_TO_BILLS_SEND_TO_SAP =>
       "$BASE_URL/api/ReadyToBills/sendToSAP";
+
   static String get READY_TO_BILLS_EXPORT =>
       "$BASE_URL/api/ReadyToBills/Export";
+
   static String get READY_TO_BILLS_SAVE => "$BASE_URL/api/ReadyToBills/save";
 
   /// ////////////////////////// End READY TO BILLS Model////////////////////////////////
@@ -1102,8 +1123,10 @@ class ApiFactory {
   /// ////////////////////////// Start ASRUN SECONDARY EVENT Model////////////////////////////////
   static String get ASRUN_SECONDARY_EVENT_GET_LOCATION =>
       "$BASE_URL/api/AsrunSecondaryEvent/GetLocation";
+
   static String ASRUN_SECONDARY_EVENT_GET_CHANNEL(String location) =>
       "$BASE_URL/api/AsrunSecondaryEvent/GetChannel?Location=$location";
+
   static String get ASRUN_SECONDARY_EVENT_IMPORT =>
       "$BASE_URL/api/AsrunSecondaryEvent/Import";
 
@@ -1145,4 +1168,19 @@ class ApiFactory {
   static String get AGENCY_MASTER_POST => "$BASE_URL/api/AgencyMasters/PostValidateAndSaveRecord";
 
 
+  //////////////////////////////////Bill EXPORT /////////////////////////////////////////////////////
+
+  static String get BILL_EXPORT_INIT =>
+      "$BASE_URL/api/ExportBillingData/onLoad";
+
+  static String get BILL_EXPORT_GET_DETAILS =>
+      "$BASE_URL/api/ExportBillingData/GetDetails";
+
+  static String get BILL_EXPORT_FILES =>
+      "$BASE_URL/api/ExportBillingData/GetExportFiles";
+
+  static String get BILL_VIEWS_DATA =>
+      "$BASE_URL/api/ExportBillingData/ViewData";
+
+///////////////////////////////End: Bill EXPORT ///////////////////////////////////////////////////
 }

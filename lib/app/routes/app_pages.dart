@@ -242,5 +242,9 @@ class AppPages {
       name: _Paths.EMAIL_BILL_DETAILS,
       page: () => AuthGuard(childName: _Paths.EMAIL_BILL_DETAILS),
     ),
+    GetPage(
+      name: _Paths.TRAFFIC_ORDER_CORRECTION,
+      page: () => AuthGuard(childName: _Paths.TRAFFIC_ORDER_CORRECTION),
+    ),
   ];
 }
