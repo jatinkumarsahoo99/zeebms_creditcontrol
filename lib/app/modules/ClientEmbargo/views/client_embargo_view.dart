@@ -60,6 +60,7 @@ class ClientEmbargoView extends StatelessWidget {
                             selectedValue: controllerX.selectedClient.value,
                             // selectedValue: controllerX.selectedEmployee.value,
                             onchanged: (data) {
+                              controllerX.selectedClient.value = data;
                               controllerX.getClientNameClick(clientCode: data.key ?? "");
                             },
                             dialogHeight: 200,
@@ -246,7 +247,7 @@ class ClientEmbargoView extends StatelessWidget {
                                       controllerX.stateManagerHistory =
                                           load?.stateManager;
                                     },
-                                  ) : const Center(child: Text("Data not found2"),),
+                                  ) : const Center(child: Text("Data not found"),),
                                 );
                               }),
                             );
