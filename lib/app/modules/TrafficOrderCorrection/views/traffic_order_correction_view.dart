@@ -52,6 +52,7 @@ class TrafficOrderCorrectionView
                                             (value) {
                                               controller.selectedLocation =
                                                   value;
+                                              controller.getChannel();
                                             },
                                             "Location",
                                             // .23,
@@ -67,7 +68,7 @@ class TrafficOrderCorrectionView
                                         child: Obx(() {
                                           return DropDownField
                                               .formDropDown1WidthMapExpand(
-                                            controller.ChannelList.value,
+                                            controller.channelList.value,
                                             (value) {
                                               controller.selectedChannel =
                                                   value;

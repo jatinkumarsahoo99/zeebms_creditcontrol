@@ -28,7 +28,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.BILL_EXPORT +
+      : (Routes.TRAFFIC_ORDER_CORRECTION +
           "?personalNo=%2F7i0zDr%2FLpXNOAIr8lUluw%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=a4Lfy%2FGb5Roxo9vLiBCqSQ%3D%3D");
 
   static final routes = [

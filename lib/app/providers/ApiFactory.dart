@@ -1144,5 +1144,34 @@ class ApiFactory {
   static String get BILL_VIEWS_DATA =>
       "$BASE_URL/api/ExportBillingData/ViewData";
 
-///////////////////////////////End: Bill EXPORT ///////////////////////////////////////////////////
+  ////////////////////////////End: Bill EXPORT ///////////////////////////////////////////////////
+
+  /////////////////////////////////// Traffic Order Correction /////////////////////////////////
+
+  static String get TO_INIT => "$BASE_URL/api/TOCorrection/Onload";
+
+  static String get TO_LOC_LEAVE =>
+      "$BASE_URL/api/TOCorrection/OnLocationLeave?LocationCode=";
+
+  static String get TO_TAPE_LAYOUT =>
+      "$BASE_URL/api/TOCorrection/OnTapeLayout?TapeId=";
+
+  static String get TO_ONSAVE => "$BASE_URL/api/TOCorrection/OnSave";
+
+  static String TO_GRID_TO_CORRECTION_CELL_CLICK(
+          locId, chnlId, bokNo, duration) =>
+      "$BASE_URL/api/TOCorrection/GridToCorrectionCellClick?LocationCode=$locId&ChannelCode=$chnlId&BookingNumber=$bokNo&Duration=$duration";
+
+  static String TO_TAPE_ID_LEAVE(tapeId, duration, rate) =>
+      "$BASE_URL/api/TOCorrection/TapeIdLeave?TapeId=$tapeId&Duration=$duration&Rate=$rate";
+
+  static String TO_PAYROUTE_GOT_FOCUS(
+          payrouteId, location, channel, clientCode, agencyCode) =>
+      "$BASE_URL/api/TOCorrection/PayRouteGotFocus?PayRoute=$payrouteId&LocationCode=$location&ChannelCode=$channel&ClientCode=$clientCode&AgencyCode=$agencyCode";
+
+  static String TO_PAYROUTE_LEAVE(locationId, channelId, payrouteId) =>
+      "$BASE_URL/api/TOCorrection/PayRouteLeave?LocationCode=$locationId&ChannelCode=$channelId&PayRouteCode=$payrouteId";
+
+  ///////////////////////////////End: Traffic Order Correction ////////////////////////////////
+
 }
