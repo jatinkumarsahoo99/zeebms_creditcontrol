@@ -371,7 +371,7 @@ class ConnectorControl extends GetConnect {
       } else if (e.response?.statusCode == 500) {
         if (Get.isDialogOpen ?? false) {
           Get.back();
-          LoadingDialog.callErrorMessage1(msg: "500Internal Server Error");
+          LoadingDialog.callErrorMessage1(msg: "500 Internal Server Error");
         } else {
           LoadingDialog.callErrorMessage1(msg: "Internal Server Error");
         }

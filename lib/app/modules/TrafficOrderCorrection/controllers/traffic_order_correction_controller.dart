@@ -1,12 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
+import '../../../controller/ConnectorControl.dart';
 import '../../../data/DropDownValue.dart';
+import '../../../providers/ApiFactory.dart';
+import '../ToInitModel.dart';
 
 class TrafficOrderCorrectionController extends GetxController {
   //TODO: Implement TrafficOrderCorrectionController
   var locationList = <DropDownValue>[].obs,
-      ChannelList = <DropDownValue>[].obs,
+      channelList = <DropDownValue>[].obs,
       clientList = <DropDownValue>[].obs,
       agencyList = <DropDownValue>[].obs,
       brandList = <DropDownValue>[].obs,
@@ -47,18 +50,35 @@ class TrafficOrderCorrectionController extends GetxController {
   final tecAmount = TextEditingController().obs;
   final tecRemarks = TextEditingController().obs;
 
+  ToInitModel? initData;
+
   @override
   void onInit() {
+    getLoad();
     super.onInit();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  getLoad() {
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.TO_INIT,
+        fun: (map) {
+          initData = ToInitModel.fromJson(map);
+          locationList.value = initData?.onload?.lstLocation ?? [];
+          zoneList.value = initData?.onload?.lstZone ?? [];
+        });
   }
 
-  @override
-  void onClose() {
-    super.onClose();
+  getChannel() {
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.TO_LOC_LEAVE + (selectedLocation?.key ?? ""),
+        fun: (map) {
+          channelList.value.clear();
+          if (map is Map && map.containsKey("infoLocationLeave")) {
+            map["infoLocationLeave"].forEach((v) {
+              channelList.value.add(new DropDownValue(
+                  key: v["channelcode"], value: v["channelname"]));
+            });
+          }
+        });
   }
 }
