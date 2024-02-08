@@ -5,8 +5,12 @@ import 'package:get/get.dart';
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
+import '../../CommonDocs/controllers/common_docs_controller.dart';
+import '../../CommonDocs/views/common_docs_view.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 import '../AgencyMasterRetrieveModel.dart';
 
 class AgencyMasterController extends GetxController {
@@ -290,8 +294,49 @@ class AgencyMasterController extends GetxController {
       Get.back();
     }
   }
+  clearAll() {
+    Get.delete<AgencyMasterController>();
+    Get.find<HomeController>().clearPage1();
+  }
 
-  formHandler(String string) {}
+
+  docs() async {
+    String documentKey = "";
+    if (agencyCode == "" ) {
+      documentKey = "";
+    } else {
+      documentKey = "Agencymaster $agencyCode";
+    }
+    if (documentKey == "") {
+      return;
+    }
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
+    });
+  }
+
+  formHandler(String str) {
+    if(str == "Clear"){
+      clearAll();
+    }else if(str == "Save"){
+
+    }else if(str == "Search"){
+      Get.to(
+        const SearchPage(
+          key: Key("Agency Master"),
+          screenName: "Agency Master",
+          appBarName: "Agency Master",
+          strViewName: "BMS_vAgencyMaster",
+          isAppBarReq: true,
+        ),
+      );
+    }else if(str == "Docs"){
+      docs();
+    }
+  }
 
   @override
   void onInit() {
