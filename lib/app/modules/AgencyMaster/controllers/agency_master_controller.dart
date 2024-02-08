@@ -1,7 +1,9 @@
+import 'package:bms_creditcontrol/app/modules/GSTPlantInfo/GSTPlantInfoModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
+import '../../../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import '../../../controller/ConnectorControl.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
@@ -42,7 +44,13 @@ class AgencyMasterController extends GetxController {
   TextEditingController emailToController = TextEditingController();
   TextEditingController emailCCController = TextEditingController();
 
-  AgencyMasterRetrieveModel ?agencyMasterRetrieveModel;
+  AgencyMasterRetrieveModel? agencyMasterRetrieveModel;
+
+  PlutoGridStateManager? stateManager;
+
+  String agencyCode = "";
+  String strShortName = "";
+  String strCreditRateCode = "";
 
   getAllLoadData() {
     LoadingDialog.call();
@@ -83,12 +91,15 @@ class AgencyMasterController extends GetxController {
           json: postData,
           fun: (map) {
             closeDialogIfOpen();
-            if(map is Map && map['retrieve'] != null ){
-              agencyMasterRetrieveModel = AgencyMasterRetrieveModel.fromJson(map as Map<String,dynamic>);
+            if (map is Map && map['retrieve'] != null) {
+              agencyMasterRetrieveModel =
+                  AgencyMasterRetrieveModel.fromJson(map as Map<String, dynamic>);
               assignVal(agencyMasterRetrieveModel);
-            }else{
+              update(['grid']);
+            } else {
               agencyMasterRetrieveModel = null;
               assignVal(agencyMasterRetrieveModel);
+              update(['grid']);
             }
           },
           failed: (map) {
@@ -99,45 +110,50 @@ class AgencyMasterController extends GetxController {
     }
   }
 
-  assignVal(AgencyMasterRetrieveModel? agencyDetail){
-    if(agencyDetail != null){
-      groupNameController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].groupName??"" ;
-      contactPersonController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].contactPerson??"";
-      addressController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].address1??"";
-      addressController1.text = agencyDetail.retrieve?.lstAGencyMaster?[0].address2??"";
-
+  assignVal(AgencyMasterRetrieveModel? agencyDetail) {
+    if (agencyDetail != null) {
+      groupNameController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].groupName ?? "";
+      contactPersonController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].contactPerson ?? "";
+      addressController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].address1 ?? "";
+      addressController1.text = agencyDetail.retrieve?.lstAGencyMaster?[0].address2 ?? "";
 
       for (DropDownValue e in cityLst) {
-        if(e.key.toString().trim() ==agencyDetail.retrieve?.lstAGencyMaster?[0].city.toString().trim() ){
-          selectedCity.value = DropDownValue(value:e.value??"" ,key:e.key??"" );
+        if (e.key.toString().trim() ==
+            agencyDetail.retrieve?.lstAGencyMaster?[0].city.toString().trim()) {
+          selectedCity.value = DropDownValue(value: e.value ?? "", key: e.key ?? "");
           break;
         }
       }
+      selectedCity.refresh();
 
-      pinController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].pin??"";
-      telController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].phone??"";
-      emailController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].email??"";
-      sapCodeController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].sapAgencyCode??"";
-      custGrpController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].custGroupCode??"";
-      mobileController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].mobile??"";
-      IBFDescController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].ibfcode??"";
-      printNameController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].name2??"";
-      name3Controller.text = agencyDetail.retrieve?.lstAGencyMaster?[0].name3??"";
+      pinController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].pin ?? "";
+      telController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].phone ?? "";
+      emailController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].email ?? "";
+      sapCodeController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].sapAgencyCode ?? "";
+      custGrpController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].custGroupCode ?? "";
+      mobileController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].mobile ?? "";
+      IBFDescController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].ibfcode ?? "";
+      printNameController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].name2 ?? "";
+      name3Controller.text = agencyDetail.retrieve?.lstAGencyMaster?[0].name3 ?? "";
       // panNoController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].pa??"";
-      gstNoController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].agencyGSTNumber??"";
-      emailToController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].mailto??"";
-      emailToController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].mailcc??"";
+      gstNoController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].agencyGSTNumber ?? "";
+      emailToController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].mailto ?? "";
+      emailCCController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].mailcc ?? "";
 
+      agencyCode = agencyDetail.retrieve?.lstAGencyMaster?[0].agencyCode ?? "";
+      strShortName = agencyDetail.retrieve?.lstAGencyMaster?[0].agencyShortName ?? "";
+      strCreditRateCode = agencyDetail.retrieve?.lstAGencyMaster?[0].creditRateCode ?? "";
 
-
-    }else{
+    } else {
       groupNameController.text = "";
+      agencyCode = "";
+      strShortName = "";
+      strCreditRateCode = "";
 
       contactPersonController.text = "";
       addressController.text = "";
       addressController1.text = "";
       selectedCity.value = null;
-
 
       pinController.text = "";
       telController.text = "";
@@ -152,8 +168,120 @@ class AgencyMasterController extends GetxController {
       gstNoController.text = "";
       emailToController.text = "";
       emailToController.text = "";
+    }
+  }
 
+  postBlockAgency() {
+    LoadingDialog.call();
+    try {
+      Map<String, dynamic> postData = {
+        "changeAgencyCode": selectedAgencyName.value?.key ?? "",
+        "agencyCode": selectedAgencyName.value?.key ?? ""
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.AGENCY_MASTER_POST_BLOCK_AGENCY,
+          json: postData,
+          fun: (map) {
+            closeDialogIfOpen();
+            print(">>>>>>>>>>>>map" + map.toString());
+            // {"blockMessage":"Agency Blocked"}
+            if(map is Map && map['blockMessage'] != null){
+              LoadingDialog.callDataSaved(msg:map['blockMessage']??"");
+            }else{
+              LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
+            }
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+            LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
+          });
+    } catch (e) {
+      closeDialogIfOpen();
+      LoadingDialog.showErrorDialog(("Something went wrong"));
+    }
+  }
 
+  postUnBlockAgency() {
+    LoadingDialog.call();
+    try {
+      Map<String, dynamic> postData = {"agencyCode": selectedAgencyName.value?.key ?? ""};
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.AGENCY_MASTER_POST_UN_BLOCK_AGENCY,
+          json: postData,
+          fun: (map) {
+            closeDialogIfOpen();
+            print(">>>>>>>>>>>>map" + map.toString());
+            // {"blockMessage":"Agency Blocked"}
+            if(map is Map && map['unblockMessage'] != null){
+              LoadingDialog.callDataSaved(msg:map['unblockMessage']??"");
+            }else{
+              LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
+            }
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+            LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
+          });
+    } catch (e) {
+      closeDialogIfOpen();
+      LoadingDialog.showErrorDialog(("Something went wrong"));
+    }
+  }
+
+  saveFunCall() {
+    if (agencyCode != "") {
+      LoadingDialog.modify("Record Already exist!", () {
+        saveApiCall();
+      }, () {},
+          cancelTitle: "No", deleteTitle: "Yes");
+    }
+  }
+
+  saveApiCall() {
+    try{
+      Map<String, dynamic> postData = {
+        "agencyCode": selectedAgencyName.value?.key??"",
+        "agencyName": selectedAgencyName.value?.value??"",
+        "agencyShortName": strShortName??"",
+        "address1": addressController.text??"",
+        "address2": addressController1.text??"",
+        "city": selectedCity.value?.key??"",
+        "phone": telController.text??"",
+        "mobile": mobileController.text??"",
+        "email": emailController.text??"",
+        "contactPerson": contactPersonController.text??"",
+        "creditRateCode": strCreditRateCode??"",
+        "pin": pinController.text??"",
+        "sapAgencyCode": sapCodeController.text??"",
+        "cust_group_code": custGrpController.text??"",
+        "name2": printNameController.text??"",
+        "name3": name3Controller.text??"",
+        "mailto": emailToController.text??"",
+        "mailcc": emailCCController.text??"",
+        "tblAddInfo": getJson(agencyMasterRetrieveModel) ?? []
+      };
+
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: "api",
+          json: postData,
+          fun: (map){
+
+      },failed: (map){
+            closeDialogIfOpen();
+      });
+
+    }catch(e){
+      closeDialogIfOpen();
+    }
+
+  }
+
+  getJson(AgencyMasterRetrieveModel? agencyMod){
+    if(agencyMod != null && agencyMod.retrieve != null && agencyMod.retrieve?.lstAGencyMaster != null
+        && (agencyMod.retrieve?.lstAGencyMaster?.length??0) >0 ){
+      return agencyMod.retrieve?.lstAGencyMaster?.map((e) => e.toJson()).toList();
+    }else{
+      return [];
     }
   }
 
