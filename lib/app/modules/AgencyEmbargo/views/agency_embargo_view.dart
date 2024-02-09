@@ -152,7 +152,6 @@ class AgencyEmbargoView extends GetView<AgencyEmbargoController> {
                                       ),
                                     ),
                             ),
-
                             //Agency Grid
                             Obx(
                               () => controller.agencyHistoryList.isEmpty
