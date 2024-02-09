@@ -110,7 +110,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
                       border: Border.all(color: Colors.grey),
                     ),
                     child: (controller.remarkList != null &&
-                        controller.remarkList.isNotEmpty) ? DataGridFromMap(
+                        controller.remarkList.isNotEmpty) ?
+                    DataGridFromMap(
                       showSrNo: true,
                       hideCode: false,
                       formatDate: false,

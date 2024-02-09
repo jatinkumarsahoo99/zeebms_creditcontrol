@@ -76,6 +76,7 @@ abstract class RoutesList {
     _Paths.READYTO_BILLS,
     _Paths.ASRUN_IMPORT_SECONDARY_EVENTS,
     _Paths.CLIENT_EMBARGO,
+    _Paths.AGENCY_GROUP_MASTER
   ];
 }
 

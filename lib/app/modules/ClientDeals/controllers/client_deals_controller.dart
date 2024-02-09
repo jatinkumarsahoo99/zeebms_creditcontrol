@@ -1488,7 +1488,7 @@ class ClientDealsController extends GetxController {
 
   Rx<String> txtDRecordNumber = Rx<String>("0");
 
-  addBtn() {
+  addBtn() async {
     if (valueRateController.text.trim() == "0" &&
         secondsController2.text.trim() == "0" &&
         amountController2.text.trim() == "0") {
@@ -1516,12 +1516,58 @@ class ClientDealsController extends GetxController {
         for (int i = 0; i < (importGridList?.length ?? 0); i++) {
           if (importGridList?[i].recordnumber.toString().toLowerCase().trim() ==
               (txtDRecordNumber.value ?? "0").toString().toLowerCase().trim()) {
+            addEdit(i);
             break;
           }
         }
       }, () {
         return;
       }, deleteTitle: "Yes", cancelTitle: "No");
+    } else {
+      for (int i = 0; i < (importGridList?.length ?? 0); i++) {
+        if ((getOneZero(sta: type.value) == importGridList?[i].primaryEventCode) &&
+            ((selectSpotType?.value?.key ?? "").toString().trim() ==
+                (importGridList?[i].sponsorTypeCode ?? "").toString().trim()) &&
+            ((selectProgram?.value?.key ?? "").toString().trim() ==
+                (importGridList?[i].programCode ?? "").toString().trim()) &&
+            (startTime.text == (importGridList?[i].starttime ?? "").toString().trim()) &&
+            (endTime.text == (importGridList?[i].endTime ?? "").toString().trim()) &&
+            (ratePerTenSecondsController.text.toString().trim() ==
+                (importGridList?[i].rate ?? "").toString().trim()) &&
+            (valueRateController.text.toString().trim() ==
+                (importGridList?[i].valuationRate ?? "").toString().trim()) &&
+            (getOneZero(sta: sun.value) == (importGridList?[i].sun ?? "").toString().trim()) &&
+            (getOneZero(sta: mon.value) == (importGridList?[i].mon ?? "").toString().trim()) &&
+            (getOneZero(sta: tue.value) == (importGridList?[i].tue ?? "").toString().trim()) &&
+            (getOneZero(sta: wed.value) == (importGridList?[i].wed ?? "").toString().trim()) &&
+            (getOneZero(sta: thu.value) == (importGridList?[i].fri ?? "").toString().trim()) &&
+            (getOneZero(sta: sat.value) == (importGridList?[i].sat ?? "").toString().trim()) &&
+            ((selectAccount?.value?.key).toString().trim() ==
+                (importGridList?[i].accountCode ?? "").toString().trim()) &&
+            ((selectSubType?.value?.key ?? "").toString().trim() ==
+                (importGridList?[i].eventcode ?? "").toString().trim())) {
+          bool sta = await LoadingDialog.modifyWithAsync(
+              "Similar entry already exists!\nDo you want to modify it?",
+              deleteTitle: "Yes",
+              cancelTitle: "No");
+          if (sta) {
+            // addEdit(i);
+            continue;
+          } else {
+            bool sta1 = await LoadingDialog.modifyWithAsync("Do you want to duplicate this row?",
+                deleteTitle: "Yes", cancelTitle: "No");
+            if (sta1) {
+              return;
+            } else {
+              // addEdit(i);
+              continue;
+            }
+          }
+          break;
+        }
+
+
+      }
     }
   }
 
@@ -1556,7 +1602,6 @@ class ClientDealsController extends GetxController {
       importGridList?[index].eventname = selectAccount?.value?.value ?? "";
     }
     btnClearClick();
-
   }
 
   getOneZero({bool? sta}) {

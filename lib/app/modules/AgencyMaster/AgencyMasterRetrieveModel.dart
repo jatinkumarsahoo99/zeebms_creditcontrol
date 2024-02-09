@@ -21,6 +21,7 @@ class AgencyMasterRetrieveModel {
 class Retrieve {
   List<LstAGencyMaster>? lstAGencyMaster;
   List<LstClientAgency>? lstClientAgency;
+  List<TblAddInfo>? tblAddInfo;
 
   Retrieve({this.lstAGencyMaster, this.lstClientAgency});
 
@@ -37,6 +38,14 @@ class Retrieve {
         lstClientAgency!.add(new LstClientAgency.fromJson(v));
       });
     }
+
+    if (json['tblAddInfo'] != null) {
+      tblAddInfo = <TblAddInfo>[];
+      json['tblAddInfo'].forEach((v) {
+        tblAddInfo!.add(new TblAddInfo.fromJson(v));
+      });
+    }
+
   }
 
   Map<String, dynamic> toJson() {
@@ -49,9 +58,41 @@ class Retrieve {
       data['lstClientAgency'] =
           this.lstClientAgency!.map((v) => v.toJson()).toList();
     }
+
+    if (this.tblAddInfo != null) {
+      data['tblAddInfo'] = this.tblAddInfo!.map((v) => v.toJson()).toList();
+    }
+
     return data;
   }
 }
+
+class TblAddInfo {
+  String? infoName;
+  String? infoValue;
+  int? isRequired;
+  String? allowedValues;
+
+  TblAddInfo(
+      {this.infoName, this.infoValue, this.isRequired, this.allowedValues});
+
+  TblAddInfo.fromJson(Map<String, dynamic> json) {
+    infoName = json['infoName'];
+    infoValue = json['infoValue'];
+    isRequired = json['isRequired'];
+    allowedValues = json['allowedValues'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['infoName'] = this.infoName??"";
+    data['infoValue'] = this.infoValue??"";
+    data['isRequired'] = this.isRequired??"";
+    data['allowedValues'] = this.allowedValues??"";
+    return data;
+  }
+}
+
 
 class LstAGencyMaster {
   String? agencyCode;
@@ -204,7 +245,7 @@ class LstClientAgency {
   String? personnelName;
   String? payroutename;
   String? effectiveFrom;
-  String? plantid;
+  int? plantid;
   String? plantName;
 
   LstClientAgency(

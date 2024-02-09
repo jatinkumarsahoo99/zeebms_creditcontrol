@@ -715,7 +715,7 @@ class ApiFactory {
       "$BASE_URL/api/SecondaryAsrunModi/GetLocations";
 
   static String get SECONDARY_ASRUN_MODIFICATION_CHANNEL =>
-      "$BASE_URL/api/SecondaryAsrunModi/GetChannels";
+      "$BASE_URL/api/SecondaryAsrunModi/GetChannels?LocationCode=";
 
   static String get SECONDARY_ASRUN_MODIFICATION_BIND_GRID =>
       "$BASE_URL/api/SecondaryAsrunModi/GetBindGrid";
@@ -1166,6 +1166,12 @@ class ApiFactory {
   static String get AGENCY_MASTER_POST_BLOCK_AGENCY => "$BASE_URL/api/AgencyMasters/Postblockagency";
   static String get AGENCY_MASTER_POST_UN_BLOCK_AGENCY => "$BASE_URL/api/AgencyMasters/Postunblockagency";
   static String get AGENCY_MASTER_POST => "$BASE_URL/api/AgencyMasters/PostValidateAndSaveRecord";
+
+
+  /// //////////////////  Agency Group Master ////////////////////////
+  static String get AGENCY_GROUP_MASTER_GET_RETRIEVE_RECORD => "$BASE_URL/api/AgencyGroupMaster/GetRetrieveRecord";
+  static String get AGENCY_GROUP_MASTER_GET_AGENCY => "$BASE_URL/api/AgencyGroupMaster/GetAgency?AgencyName=";
+  static String get AGENCY_GROUP_MASTER_POST => "$BASE_URL/api/AgencyGroupMaster/PostSave";
 
 
   //////////////////////////////////Bill EXPORT /////////////////////////////////////////////////////

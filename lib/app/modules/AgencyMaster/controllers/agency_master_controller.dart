@@ -233,16 +233,20 @@ class AgencyMasterController extends GetxController {
   }
 
   saveFunCall() {
+    print(">>>>>>>agencyCode$agencyCode");
     if (agencyCode != "") {
       LoadingDialog.modify("Record Already exist!", () {
         saveApiCall();
-      }, () {},
+      }, () {
+
+      },
           cancelTitle: "No", deleteTitle: "Yes");
     }
   }
 
   saveApiCall() {
     try{
+      LoadingDialog.call();
       Map<String, dynamic> postData = {
         "agencyCode": selectedAgencyName.value?.key??"",
         "agencyName": selectedAgencyName.value?.value??"",
@@ -266,24 +270,34 @@ class AgencyMasterController extends GetxController {
       };
 
       Get.find<ConnectorControl>().POSTMETHOD(
-          api: "api",
+          api:  ApiFactory.AGENCY_MASTER_POST,
           json: postData,
           fun: (map){
-
+            closeDialogIfOpen();
+            if(map is Map && map['save'] != null){
+              LoadingDialog.callDataSaved(msg:map['save']??"",callback: (){
+                clearAll();
+              });
+            }else{
+              LoadingDialog.showErrorDialog("Something went wrong");
+            }
       },failed: (map){
             closeDialogIfOpen();
+            LoadingDialog.showErrorDialog("Something went wrong");
       });
 
     }catch(e){
       closeDialogIfOpen();
+      print(">>>>>>exception"+e.toString());
+      LoadingDialog.showErrorDialog("Something went wrong");
     }
 
   }
 
   getJson(AgencyMasterRetrieveModel? agencyMod){
-    if(agencyMod != null && agencyMod.retrieve != null && agencyMod.retrieve?.lstAGencyMaster != null
-        && (agencyMod.retrieve?.lstAGencyMaster?.length??0) >0 ){
-      return agencyMod.retrieve?.lstAGencyMaster?.map((e) => e.toJson()).toList();
+    if(agencyMod != null && agencyMod.retrieve != null && agencyMod.retrieve?.tblAddInfo != null
+        && (agencyMod.retrieve?.tblAddInfo?.length??0) >0 ){
+      return agencyMod.retrieve?.tblAddInfo?.map((e) => e.toJson()).toList();
     }else{
       return [];
     }
@@ -322,7 +336,7 @@ class AgencyMasterController extends GetxController {
     if(str == "Clear"){
       clearAll();
     }else if(str == "Save"){
-
+      saveFunCall();
     }else if(str == "Search"){
       Get.to(
         const SearchPage(

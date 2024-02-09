@@ -352,7 +352,10 @@ class AgencyMasterView extends StatelessWidget {
                                           ? Colors.deepPurple.shade200
                                           : Colors.white,
                                       exportFileName: "Agency Master",
-                                      // hideKeys: ["locationcode","channelcode","clientcode"],
+                                      hideKeys: const ["locationCode","channelCode",
+                                        "agencyCode","clientCode","executiveCode",
+                                        "payroutecode","agencyName","personnelName",
+                                        "payroutename","effectiveFrom","plantid"],
                                       mode: PlutoGridMode.normal,
                                       mapData: (controllerX
                                           .agencyMasterRetrieveModel!.retrieve!.lstClientAgency!
