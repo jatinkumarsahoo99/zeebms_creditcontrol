@@ -9,6 +9,7 @@ Widget text_m_w700(String text, {Color color = Colors.black}) {
       fontSize: SizeDefine.labelSizeMedium,
       fontWeight: FontWeight.w700,
       color: color,
+      overflow: TextOverflow.ellipsis
     ),
   );
 }
