@@ -1,21 +1,25 @@
+import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
+import '../../../../widgets/PlutoGrid/src/pluto_grid.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
+import '../../../data/user_data_settings_model.dart';
 import '../../../providers/Utils.dart';
-import '../controllers/s_a_p_b_ill_check_report_controller.dart';
+import '../controllers/sap_bill_check_report_controller.dart';
 
 class SAPBIllCheckReportView extends GetView<SAPBIllCheckReportController> {
-   SAPBIllCheckReportView({Key? key}) : super(key: key);
+  SAPBIllCheckReportView({Key? key}) : super(key: key);
 
-   SAPBIllCheckReportController controllerX =
-   Get.put<SAPBIllCheckReportController>(SAPBIllCheckReportController());
+  SAPBIllCheckReportController controllerX =
+      Get.put<SAPBIllCheckReportController>(SAPBIllCheckReportController());
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,7 @@ class SAPBIllCheckReportView extends GetView<SAPBIllCheckReportController> {
               children: [
                 DateWithThreeTextField(
                   title: "From Date",
-                  mainTextController: TextEditingController(),
+                  mainTextController: controllerX.fromDt,
                   widthRation: .16,
                   // isEnable: controllerX.isEnable.value,
                 ),
@@ -38,17 +42,20 @@ class SAPBIllCheckReportView extends GetView<SAPBIllCheckReportController> {
                 ),
                 DateWithThreeTextField(
                   title: "ToDate",
-                  mainTextController: TextEditingController(),
+                  mainTextController: controllerX.toDt,
                   widthRation: .16,
                   // isEnable: controllerX.isEnable.value,
-                ),SizedBox(
+                ),
+                SizedBox(
                   width: 7,
                 ),
                 DropDownField.formDropDown1WidthMap(
-                   [],
-                      (value) {
-                    // controllerX.selectedBMSVersionList = value;
-                    // controllerX.getMatchDetails(programCode: value.key??"");
+                  [
+                    DropDownValue(key: "Yes", value: "Yes"),
+                    DropDownValue(key: "No", value: "No")
+                  ],
+                  (value) {
+                    controllerX.selectedR4 = value;
                   },
                   "R4",
                   .16,
@@ -62,26 +69,52 @@ class SAPBIllCheckReportView extends GetView<SAPBIllCheckReportController> {
                 ),
                 Padding(
                   padding:
-                  const EdgeInsets.only(top: 14.0, left: 10, right: 10),
+                      const EdgeInsets.only(top: 14.0, left: 10, right: 10),
                   child: FormButtonWrapper(
                     btnText: "Generate",
                     callback: () {
-                      // controllerX.showApiCall();
+                      controllerX.showApiCall();
                     },
                     showIcon: true,
                   ),
                 ),
-
               ],
             ),
             SizedBox(
               height: 8,
             ),
-            Expanded(child: Container(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-              ),
-            )),
+            GetBuilder<SAPBIllCheckReportController>(
+                id: "grid",
+                init: controllerX,
+                builder: (logic) {
+                  return Expanded(
+                      child: (controllerX.dataList != null &&
+                              (controllerX.dataList?.isNotEmpty ?? false))
+                          ? DataGridFromMap(
+                              showSrNo: true,
+                              exportFileName: "Client Channel Link",
+                              mode: PlutoGridMode.normal,
+                              mapData: controller.dataList!,
+
+                              // mapData: (controllerX.dataList)!,
+                              widthRatio: Get.width / 9 - 1,
+                              onload: (PlutoGridOnLoadedEvent load) {
+                                controller.gridManager = load.stateManager;
+                              },
+                              widthSpecificColumn: (controller
+                                  .userDataSettings?.userSetting
+                                  ?.firstWhere(
+                                      (element) =>
+                                          element.controlName == "gridManager",
+                                      orElse: () => UserSetting())
+                                  .userSettings),
+                            )
+                          : Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                              ),
+                            ));
+                }),
             SizedBox(height: 5),
             // const SizedBox(height: 8),
             Align(
@@ -90,13 +123,10 @@ class SAPBIllCheckReportView extends GetView<SAPBIllCheckReportController> {
                   id: "buttons",
                   init: Get.find<HomeController>(),
                   builder: (controller) {
-                    PermissionModel formPermissions =
-                    Get
-                        .find<MainController>()
+                    PermissionModel formPermissions = Get.find<MainController>()
                         .permissionList!
-                        .lastWhere(
-                            (element) =>
-                        element.appFormName == "frmAuditStatus");
+                        .lastWhere((element) =>
+                            element.appFormName == "frmSapBillcheckreport");
                     if (controller.buttons != null) {
                       return ButtonBar(
                         alignment: MainAxisAlignment.start,
@@ -107,13 +137,12 @@ class SAPBIllCheckReportView extends GetView<SAPBIllCheckReportController> {
                             FormButtonWrapper(
                               btnText: btn["name"],
                               callback: Utils.btnAccessHandler2(btn['name'],
-                                  controller, formPermissions) ==
-                                  null
+                                          controller, formPermissions) ==
+                                      null
                                   ? null
-                                  : () =>
-                                  controllerX.formHandler(
-                                    btn['name'],
-                                  ),
+                                  : () => controllerX.formHandler(
+                                        btn['name'],
+                                      ),
                             )
                         ],
                       );

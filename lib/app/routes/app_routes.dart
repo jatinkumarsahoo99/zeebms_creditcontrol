@@ -40,7 +40,7 @@ abstract class Routes {
   static const CURRENCY_TYPE_MASTER = _Paths.CURRENCY_TYPE_MASTER;
   static const EXPORT_BILLING_F_P_C = _Paths.EXPORT_BILLING_F_P_C;
   static const CLIENT_DEALS = _Paths.CLIENT_DEALS;
-  static const S_A_P_B_ILL_CHECK_REPORT = _Paths.S_A_P_B_ILL_CHECK_REPORT;
+  static const SAP_BILL_CHECK_REPORT = _Paths.S_A_P_B_ILL_CHECK_REPORT;
   static const GENERATE_BOOKING_REPORT = _Paths.GENERATE_BOOKING_REPORT;
   static const E_BILL_AGENCY_GROUP_MASTER = _Paths.E_BILL_AGENCY_GROUP_MASTER;
   static const ASRUN_SPECIFICATION_AD_REVENUE =
@@ -78,7 +78,9 @@ abstract class RoutesList {
     _Paths.ASRUN_VERIFICATION,
     _Paths.AGENCY_EMBARGO,
     _Paths.CLIENT_EMBARGO,
-    _Paths.AGENCY_GROUP_MASTER
+    _Paths.AGENCY_GROUP_MASTER,
+    _Paths.GENERATE_BOOKING_REPORT,
+    _Paths.S_A_P_B_ILL_CHECK_REPORT,
   ];
 }
 
@@ -121,7 +123,7 @@ abstract class _Paths {
   static const EXPORT_BILLING_F_P_C = '/Frmcarrtoonnetworkasrun';
   static const CLIENT_DEALS = '/frmDealMaster';
   static const S_A_P_B_ILL_CHECK_REPORT = '/frmSapBillcheckreport';
-  static const GENERATE_BOOKING_REPORT = '/generate-booking-report';
+  static const GENERATE_BOOKING_REPORT = '/frmGenerateBookingReport';
   static const E_BILL_AGENCY_GROUP_MASTER = '/Skybreakpattern';
   static const ASRUN_SPECIFICATION_AD_REVENUE = '/frmAsrunSpecification';
   static const COMPANY_CHANNEL_LINK = '/frmCompanyChannelLink';
