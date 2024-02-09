@@ -1294,8 +1294,11 @@ class ApiFactory {
   static String get EBILL_AGENCY_REMOVE_GRP =>
       "$BASE_URL/api/EBillAgencyGroupMaster/GetRemovefromGroup";
 
+  static String get EBILL_AGENCY_ADD_GRP_NAME =>
+      "$BASE_URL/api/EBillAgencyGroupMaster/GetButtonAdd?GroupName=";
+
   static String get EBILL_AGENCY_SAVE =>
       "$BASE_URL/api/EBillAgencyGroupMaster/PostSave";
 
-///////////////////////////////End: GENERATE BOOKING ACTIVITY AHDM ////////////////////////////////
+///////////////////////////////End: EBILL AGENCY GRP MASTER ////////////////////////////////
 }

@@ -78,7 +78,7 @@ abstract class RoutesList {
     _Paths.ASRUN_VERIFICATION,
     _Paths.AGENCY_EMBARGO,
     _Paths.CLIENT_EMBARGO,
-    _Paths.AGENCY_GROUP_MASTER
+    _Paths.AGENCY_GROUP_MASTER,
     _Paths.GENERATE_BOOKING_REPORT,
     _Paths.S_A_P_B_ILL_CHECK_REPORT,
   ];

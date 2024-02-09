@@ -20,7 +20,7 @@ class EBillAgencyGroupMasterController extends GetxController {
   TextEditingController mailCC = TextEditingController();
   TextEditingController grpName = TextEditingController();
 
-  RxBool grp=RxBool(false);
+  RxBool grp = RxBool(false);
 
   @override
   void onInit() {
@@ -89,8 +89,10 @@ class EBillAgencyGroupMasterController extends GetxController {
   void removeToGroup() {
     LoadingDialog.call();
     var jsonMap = {
-      "lstZsapAgency": lstagencymaster?.map((e) => e.toJsonCustom("groupCode", "agencycode")).toList(),
-      "groupCode": selectedGrp?.key??""
+      "lstZsapAgency": lstagencymaster
+          ?.map((e) => e.toJsonCustom("groupCode", "agencycode"))
+          .toList(),
+      "groupCode": selectedGrp?.key ?? ""
     };
     Get.find<ConnectorControl>().POSTMETHOD(
         api: ApiFactory.EBILL_AGENCY_REMOVE_GRP,
@@ -101,6 +103,19 @@ class EBillAgencyGroupMasterController extends GetxController {
   }
 
   void addNewGroup() {
-    grp.value=!grp.value;
+    grpName.text="";
+    grp.value = !grp.value;
+  }
+
+  void addNewGroup1() {
+    if (grpName.text == "") {
+      return;
+    }
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.EBILL_AGENCY_ADD_GRP_NAME + grpName.text,
+        fun: (map) {
+          Get.back();
+        });
   }
 }

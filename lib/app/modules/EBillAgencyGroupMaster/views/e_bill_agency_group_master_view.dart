@@ -222,7 +222,9 @@ class EBillAgencyGroupMasterView extends StatelessWidget {
                                             padding: const EdgeInsets.only(left: 10,top: 15.0),
                                             child: FormButton1(
                                               btnText: "Save",
-                                              callback: () {},
+                                              callback: () {
+                                                controller.addNewGroup1();
+                                              },
                                             ),
                                           )
                                         ],
