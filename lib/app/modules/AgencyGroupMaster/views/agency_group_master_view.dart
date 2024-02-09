@@ -1,9 +1,12 @@
+import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
 import '../../../../widgets/FormButton.dart';
+import '../../../../widgets/PlutoGrid/src/pluto_grid.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
@@ -12,13 +15,16 @@ import '../../../providers/Utils.dart';
 import '../controllers/agency_group_master_controller.dart';
 
 class AgencyGroupMasterView extends GetView<AgencyGroupMasterController> {
-   AgencyGroupMasterView({Key? key}) : super(key: key);
+  AgencyGroupMasterView({Key? key}) : super(key: key);
 
-   AgencyGroupMasterController controllerX =
-   Get.put<AgencyGroupMasterController>(AgencyGroupMasterController());
+  AgencyGroupMasterController controllerX =
+  Get.put<AgencyGroupMasterController>(AgencyGroupMasterController());
+
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    var size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       body: Center(
         child: SizedBox(
@@ -34,94 +40,160 @@ class AgencyGroupMasterView extends GetView<AgencyGroupMasterController> {
                     centerTitle: true,
                     backgroundColor: Colors.deepPurple,
                   ),
-                  Column(
-                    // mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children:[
-                        InputFields.formField1WidthBox(
-                            hintTxt: "Group Name",
-                            widthRatio: controllerX.fixedWidth,
-                            // height: Get.height*0.1,
-                            paddingLeft: 0,
-                            // maxLen: 5,
-                            // focus: controllerX.remarkFocus,
-                            controller: TextEditingController()),
-                        InputFields.formField1WidthBox(
-                            hintTxt: "Short Name",
-                            widthRatio: controllerX.fixedWidth,
-                            // height: Get.height*0.1,
-                            paddingLeft: 0,
-                            // maxLen: 5,
-                            // focus: controllerX.remarkFocus,
-                            controller: TextEditingController()),
-                        DropDownField.formDropDownSearchAPI2(
-                            GlobalKey(), context,
-                            title: "Agency Name",
-                            autoFocus: false,
-                            customInData: "empList",
-                            url: "",
-                            // inkwellFocus: controllerX.employeeFocus,
-                            // parseKeyForTitle: "programName",
-                            parseKeyForKey: "employeecode",
-                            parseKeyForValue: "employeename",
-                            // selectedValue: controllerX.selectedEmployee.value,
-                            onchanged: (data) {},
-                            width: (Get.width * controllerX.fixedWidth)),
-                        InputFields.formField1WidthBox(
-                            hintTxt: "Group Name",
-                            widthRatio: controllerX.fixedWidth,
-                            // height: Get.height*0.1,
-                            paddingLeft: 0,
-                            // maxLen: 5,
-                            // focus: controllerX.remarkFocus,
-                            controller: TextEditingController()),
-                        SizedBox(height: 6),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: SizedBox(
-                                height: Get.height*0.4,
-                                  child: Container(
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey))
-                              )),
-                            ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.only(top: 14.0, left: 10, right: 0),
-                                  child: FormButtonWrapper(
-                                    btnText: "Un-Block Agency",
-                                    callback: () {
-                                      // controllerX.showApiCall();
-                                    },
-                                    showIcon: true,
+                  FocusTraversalGroup(
+                    policy: OrderedTraversalPolicy(),
+                    child: Column(
+                      // mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          FocusTraversalOrder(
+                            order: const NumericFocusOrder(0),
+                            child: InputFields.formField1WidthBox(
+                                hintTxt: "Group Name",
+                                widthRatio: controllerX.fixedWidth,
+                                // height: Get.height*0.1,
+                                paddingLeft: 0,
+                                focus: controllerX.groupNameFocus,
+                                // maxLen: 5,
+                                // focus: controllerX.remarkFocus,
+                                controller: controllerX.groupNameController),
+                          ),
+                          FocusTraversalOrder(
+                            order: const NumericFocusOrder(1),
+                            child: InputFields.formField1WidthBox(
+                                hintTxt: "Short Name",
+                                widthRatio: controllerX.fixedWidth,
+                                // height: Get.height*0.1,
+                                paddingLeft: 0,
+                                focus: controllerX.shortNameFocus,
+                                // maxLen: 5,
+                                // focus: controllerX.remarkFocus,
+                                controller: controllerX.shortNameController),
+                          ),
+                          FocusTraversalOrder(
+                            order: const NumericFocusOrder(2),
+                            child: DropDownField.formDropDownSearchAPI2(
+                                GlobalKey(), context,
+                                title: "Agency Name",
+                                autoFocus: false,
+                                // customInData: "empList",
+                                url:ApiFactory.AGENCY_GROUP_MASTER_GET_AGENCY,
+                                // inkwellFocus: controllerX.employeeFocus,
+                                // parseKeyForTitle: "programName",
+                                parseKeyForKey: "AgencyCode",
+                                parseKeyForValue: "AgencyName",
+                                selectedValue: controllerX.selectedAgencyName.value,
+                                // selectedValue: controllerX.selectedEmployee.value,
+                                onchanged: (data) {
+                                  controllerX.selectedAgencyName.value = data;
+                                },
+                                dialogHeight: 200,
+                                inkwellFocus: controllerX.agencyNameFocus,
+                                width: (Get.width * controllerX.fixedWidth)),
+                          ),
+                          SizedBox(height: 6),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: FocusTraversalOrder(
+                                  order: const NumericFocusOrder(5),
+                                  child: SizedBox(
+                                      height: Get.height * 0.4,
+                                      child: GetBuilder<AgencyGroupMasterController>
+                                        (id: "grid",
+                                          builder: (controllerX) {
+                                        return Container(
+                                          decoration: BoxDecoration(
+                                              border: Border.all(color: Colors.grey)),
+                                          child: (controllerX.agencyGroupMasterModel != null &&
+                                              controllerX.agencyGroupMasterModel?.retrieveRecord !=
+                                                  null &&
+                                              controllerX.agencyGroupMasterModel?.retrieveRecord
+                                                  ?.lstagencymaster != null &&
+                                              (controllerX.agencyGroupMasterModel?.retrieveRecord
+                                                  ?.lstagencymaster?.length ?? 0) > 0
+                                          ) ? DataGridFromMap(
+                                            showSrNo: true,
+                                            hideCode: false,
+                                            formatDate: false,
+                                            columnAutoResize: true,
+                                            doPasccal: true,
+                                            colorCallback: (row) =>
+                                            (row.row.cells
+                                                .containsValue(
+                                                controllerX.stateManager?.currentCell))
+                                                ? Colors.deepPurple.shade200
+                                                : Colors.white,
+                                            exportFileName: "Agency Group Master",
+                                            hideKeys: const ["agencyCode"],
+                                            mode: PlutoGridMode.normal,
+                                            mapData: (controllerX
+                                                .agencyGroupMasterModel!.retrieveRecord!
+                                                .lstagencymaster!
+                                                .map((e) => e.toJson())
+                                                .toList()),
+                                            // mapData: (controllerX.dataList)!,
+                                            widthRatio: Get.width / 9 - 1,
+                                            onload: (PlutoGridOnLoadedEvent? load) {
+                                              controllerX.stateManager =
+                                                  load?.stateManager;
+                                            },
+                                          ) : Container(),
+                                        );
+                                      })),
+                                ),
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  FocusTraversalOrder(
+                                    order: const NumericFocusOrder(3),
+                                    child: SizedBox(
+                                      width: Get.width*0.1,
+                                      child: Padding(
+                                        padding:
+                                        const EdgeInsets.only(top: 14.0, left: 10, right: 0),
+                                        child: FormButtonWrapper(
+                                          btnText: "Add",
+                                          callback: () {
+                                            controllerX.addBtnCall();
+                                          },
+                                          showIcon: true,
+                                        ),
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 4,
-                                ),
-                                Padding(
-                                  padding:
-                                  const EdgeInsets.only(top: 14.0, left: 10, right: 0),
-                                  child: FormButtonWrapper(
-                                    btnText: "Un-Block Agency",
-                                    callback: () {
-                                      // controllerX.showApiCall();
-                                    },
-                                    showIcon: true,
+                                  SizedBox(
+                                    height: 4,
                                   ),
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                      ]
+                                  FocusTraversalOrder(
+                                    order: const NumericFocusOrder(4),
+                                    child: SizedBox(
+                                      width: Get.width*0.1,
+                                      child: Padding(
+                                        padding:
+                                        const EdgeInsets.only(top: 14.0, left: 10, right: 0),
+                                        child: FormButtonWrapper(
+                                          btnText: "Remove",
+                                          callback: () {
+                                            controllerX.removeCall();
+                                          },
+                                          showIcon: true,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ]
+                    ),
                   ),
 
                   SizedBox(height: 5),
+
                   /// bottom common buttons
                   Align(
                     alignment: Alignment.topLeft,
@@ -129,9 +201,10 @@ class AgencyGroupMasterView extends GetView<AgencyGroupMasterController> {
                         id: "buttons",
                         init: Get.find<HomeController>(),
                         builder: (controller) {
-                          try{
+                          try {
                             PermissionModel formPermissions =
-                            Get.find<MainController>()
+                            Get
+                                .find<MainController>()
                                 .permissionList!
                                 .lastWhere((element) =>
                             element.appFormName ==
@@ -149,16 +222,17 @@ class AgencyGroupMasterView extends GetView<AgencyGroupMasterController> {
                                           controller, formPermissions) ==
                                           null
                                           ? null
-                                          : () => controllerX.formHandler(
-                                        btn['name'],
-                                      ),
+                                          : () =>
+                                          controllerX.formHandler(
+                                            btn['name'],
+                                          ),
                                     )
                                 ],
                               );
-                            }else{
+                            } else {
                               return Container();
                             }
-                          }catch(e){
+                          } catch (e) {
                             return const Text("No Access");
                           }
                         }),

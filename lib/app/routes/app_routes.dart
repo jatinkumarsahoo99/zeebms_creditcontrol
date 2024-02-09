@@ -64,6 +64,7 @@ abstract class RoutesList {
     _Paths.CLIENT_EMBARGO,
     _Paths.EXPORT_BILLING_F_P_C,
     _Paths.G_S_T_PLANT_INFO,
+    _Paths.PLACE_TYPE_MASTER,
     _Paths.PLACE_MASTER,
     _Paths.STATION_MASTER,
     _Paths.CURRENCY_TYPE_MASTER,
@@ -74,6 +75,10 @@ abstract class RoutesList {
     _Paths.CLIENT_GROUP_MASTER,
     _Paths.READYTO_BILLS,
     _Paths.ASRUN_IMPORT_SECONDARY_EVENTS,
+    _Paths.ASRUN_VERIFICATION,
+    _Paths.AGENCY_EMBARGO,
+    _Paths.CLIENT_EMBARGO,
+    _Paths.AGENCY_GROUP_MASTER
     _Paths.GENERATE_BOOKING_REPORT,
     _Paths.S_A_P_B_ILL_CHECK_REPORT,
   ];

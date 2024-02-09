@@ -1,7 +1,11 @@
+import 'dart:html';
+
 import 'package:bms_creditcontrol/app/controller/HomeController.dart';
+import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:bms_creditcontrol/app/routes/app_pages.dart';
 import 'package:bms_creditcontrol/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_creditcontrol/widgets/dropdown.dart';
+import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:bms_creditcontrol/widgets/input_fields.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -48,16 +52,23 @@ class AgencyEmbargoView extends GetView<AgencyEmbargoController> {
                             GlobalKey(),
                             context,
                             title: "Agency Name",
-                            parseKeyForKey: "programCode",
-                            parseKeyForValue: "programName",
-                            url: "",
-                            onchanged: (data) {},
+                            parseKeyForKey: "agencyCode",
+                            parseKeyForValue: "agencyName",
+                            url: ApiFactory.AGENCY_EMBARGO_AGENCY_NAME,
+                            onchanged: (data) {
+                              controller.selectAgency.value = data;
+                              controller.getAgencyHistory(data.key);
+                            },
                             width: Get.width * 0.26,
+                            autoFocus: true,
                           ),
                           DateWithThreeTextField(
                             title: "Billing Period",
                             mainTextController: controller.date,
                             widthRation: .140,
+                            onFocusChange: (date) {
+                              controller.reasonFN.requestFocus();
+                            },
                           ),
                           InputFields.formField1(
                             hintTxt: "Embargo No.",
@@ -67,9 +78,10 @@ class AgencyEmbargoView extends GetView<AgencyEmbargoController> {
                           ),
                           InputFields.formFieldExpand2(
                             hintTxt: "Reason",
-                            controller: controller.reson,
+                            controller: controller.reason,
                             height: 70,
                             expands: true,
+                            focusNode: controller.reasonFN,
                           )
                         ],
                       ),
@@ -100,28 +112,79 @@ class AgencyEmbargoView extends GetView<AgencyEmbargoController> {
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
                             //Embargo Grid
-                            // controller.showList.isEmpty
-                            //     ?
-                            Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey)),
+                            Obx(
+                              () => controller.embargoList.isEmpty
+                                  ? Container(
+                                      decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey)),
+                                    )
+                                  : DataGridFromMap3(
+                                      mapData: controller.embargoList.value
+                                          .map((e) => e.toJson())
+                                          .toList(),
+                                      onload: (value) {
+                                        controller.embargoGrid =
+                                            value.stateManager;
+                                      },
+                                      colorCallback: (colorEvent) {
+                                        if (colorEvent.row.cells.containsValue(
+                                            controller
+                                                .embargoGrid?.currentCell)) {
+                                          return Colors.deepPurple.shade100;
+                                        }
+                                        return Colors.white;
+                                      },
+                                      onRowDoubleTap: (event) {
+                                        controller.agencyHistoryGrid
+                                            ?.setCurrentCell(
+                                                event.cell, event.rowIdx);
+                                        controller.getAgencyHistory(event
+                                            .row.cells['agencycode']?.value);
+                                      },
+                                      exportFileName: "Agency Embargo",
+                                      widthSpecificColumn:
+                                          Get.find<HomeController>()
+                                              .getGridWidthByKey(
+                                        userGridSettingList:
+                                            controller.userGridSetting1?.value,
+                                        key: 'key1',
+                                      ),
+                                    ),
                             ),
-                            // : DataGridFromMap3(
-                            //     mapData: [],
-                            //     onload: (value) {
-                            //     },
-                            //     exportFileName: "Mix Master Delivery Status",
-                            //     witdthSpecificColumn: Get.find<HomeController>()
-                            //         .getGridWidthByKey(
-                            //             userGridSettingList:
-                            //                 controller.userGridSetting1?.value),
-                            //   ),
-
                             //Agency Grid
-                            Container(
-                              decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.grey)),
-                            )
+                            Obx(
+                              () => controller.agencyHistoryList.isEmpty
+                                  ? Container(
+                                      decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey)),
+                                    )
+                                  : DataGridFromMap3(
+                                      mapData:
+                                          controller.agencyHistoryList.value,
+                                      onload: (value) {
+                                        controller.agencyHistoryGrid =
+                                            value.stateManager;
+                                      },
+                                      colorCallback: (colorEvent) {
+                                        if (colorEvent.row.cells.containsValue(
+                                            controller.agencyHistoryGrid
+                                                ?.currentCell)) {
+                                          return Colors.deepPurple.shade100;
+                                        }
+                                        return Colors.white;
+                                      },
+                                      exportFileName: "Agency Embargo",
+                                      widthSpecificColumn:
+                                          Get.find<HomeController>()
+                                              .getGridWidthByKey(
+                                        userGridSettingList:
+                                            controller.userGridSetting1?.value,
+                                        key: 'key2',
+                                      ),
+                                    ),
+                            ),
                           ],
                         ),
                       ),
@@ -144,41 +207,5 @@ class AgencyEmbargoView extends GetView<AgencyEmbargoController> {
         },
       ),
     );
-  }
-
-  embargoListGrid() {
-    // controller.showList.isEmpty
-    //     ?
-    Container(
-      decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-    );
-    // : DataGridFromMap3(
-    //     mapData: [],
-    //     onload: (value) {
-    //     },
-    //     exportFileName: "Mix Master Delivery Status",
-    //     witdthSpecificColumn: Get.find<HomeController>()
-    //         .getGridWidthByKey(
-    //             userGridSettingList:
-    //                 controller.userGridSetting1?.value),
-    //   ),
-  }
-
-  agencyHistoryGrid() {
-    // controller.showList.isEmpty
-    //     ?
-    Container(
-      decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-    );
-    // : DataGridFromMap3(
-    //     mapData: [],
-    //     onload: (value) {
-    //     },
-    //     exportFileName: "Mix Master Delivery Status",
-    //     witdthSpecificColumn: Get.find<HomeController>()
-    //         .getGridWidthByKey(
-    //             userGridSettingList:
-    //                 controller.userGridSetting1?.value),
-    //   ),
   }
 }
