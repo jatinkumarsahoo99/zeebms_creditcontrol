@@ -1107,4 +1107,34 @@ class ApiFactory {
       "$BASE_URL/api/CompanyChannelLink/SaveRecords";
 
   ///////////////////////////////End: Client Channel Link///////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start ASRUN MODIFICATION  Model////////////////////////////////
+  static String get ASRUN_MODIFICATION_GET_LOCATION =>
+      "$BASE_URL/api/AsRunModification/GetLocation";
+  static String ASRUN_MODIFICATION_GET_CHANNEL(String location) =>
+      "$BASE_URL/api/AsRunModification/GetChannel?location=$location";
+  static String ASRUN_MODIFICATION_RETRIEVE(
+          String locationCode, String channelCode, String logDate) =>
+      "$BASE_URL/api/AsRunModification/Retrieve?LocationCode=$locationCode&ChannelCode=$channelCode&logDate=$logDate";
+  static String get ASRUN_MODIFICATION_SAVE =>
+      "$BASE_URL/api/AsRunModification/save";
+  static String get ASRUN_MODIFICATION_GET_PROGRAM =>
+      "$BASE_URL/api/AsRunModification/GetProgram?programName=";
+
+  /// ////////////////////////// End ASRUN MODIFICATION Model////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start AGENCY EMBARGO Model////////////////////////////////
+  static String get AGENCY_EMBARGO_ON_LOAD =>
+      "$BASE_URL/api/AgencyEmbargo/onLoad";
+  static String get AGENCY_EMBARGO_AGENCY_NAME =>
+      "$BASE_URL/api/AgencyEmbargo/GetAgency?agencyName=";
+  static String AGENCY_EMBARGO_GET_AGENCY_HISTORY(String agencyCode) =>
+      "$BASE_URL/api/AgencyEmbargo/GetAgencyHistory?agencyCode=$agencyCode";
+  static String get AGENCY_EMBARGO_SAVE => "$BASE_URL/api/AgencyEmbargo/Save";
+
+  /// ////////////////////////// End AGENCY_EMBARGO Model////////////////////////////////
 }
