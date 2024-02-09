@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -135,6 +137,55 @@ class LoadingDialog {
   static showErrorDialog(String msg, {Function? callback}) {
     Get.defaultDialog(
       title: "",
+      titleStyle: const TextStyle(fontSize: 1),
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Icon(Icons.error_outline, color: Colors.red, size: 55),
+          const SizedBox(height: 10),
+          Text(
+            msg,
+            style: TextStyle(
+                color: Colors.black, fontSize: SizeDefine.popupTxtSize),
+          )
+        ],
+      ),
+      radius: 10,
+      confirm: DailogCloseButton(
+        autoFocus: true,
+        callback: () {
+          Get.back();
+          if (callback != null) {
+            callback();
+          }
+        },
+        btnText: "OK",
+      )
+      /*,confirm: MaterialButton(
+        onPressed: () {
+          Get.back();
+          callback!();
+        },
+        autofocus: true,
+        child: const Text(
+          "OK",
+          style: TextStyle(color: Colors.black),
+        ),
+      )*/
+      ,
+      contentPadding: EdgeInsets.only(
+        left: SizeDefine.popupMarginHorizontal,
+        right: SizeDefine.popupMarginHorizontal,
+        bottom: 16,
+      ),
+    );
+  }
+
+  static showErrorDialog1(String msg, {Function? callback}) {
+    Get.defaultDialog(
+      title: "",
+      barrierDismissible: false,
       titleStyle: const TextStyle(fontSize: 1),
       content: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -551,6 +602,187 @@ class LoadingDialog {
           right: SizeDefine.popupMarginHorizontal,
           bottom: 16),
     );
+  }
+
+  static modify3(String title, Function? confirm, Function? cancel,
+      {String? confirmTitle, String? cancelTitle}) {
+    Get.defaultDialog(
+      title: "",
+      titleStyle: TextStyle(fontSize: 1),
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            CupertinoIcons.check_mark_circled_solid,
+            color: Colors.green,
+            size: 55,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            title,
+            style: TextStyle(
+                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            textAlign: TextAlign.center,
+          )
+        ],
+      ),
+      radius: 10,
+      /*confirm: MaterialButton(
+          onPressed: () {
+            Get.back();
+            confirm!();
+          },
+          child: Text(deleteTitle ?? "Delete")),*/
+      confirm: DailogCloseButton(
+          autoFocus: false,
+          callback: () {
+            Get.back();
+            cancel!();
+          },
+          btnText: cancelTitle ?? "Cancel"),
+      /*cancel: MaterialButton(
+          onPressed: () {
+            Get.back();
+            cancel!();
+          },
+          child: Text(cancelTitle ?? "Cancel")),*/
+      cancel: DailogCloseButton(
+          autoFocus: true,
+          callback: () {
+            Get.back();
+            confirm!();
+          },
+          btnText: confirmTitle ?? "Delete"),
+      contentPadding: EdgeInsets.only(
+          left: SizeDefine.popupMarginHorizontal,
+          right: SizeDefine.popupMarginHorizontal,
+          bottom: 16),
+    );
+  }
+
+  static modify2(String title, Function? confirm, Function? cancel,
+      {String? deleteTitle, String? cancelTitle}) {
+    Get.defaultDialog(
+      title: "",
+      barrierDismissible: false,
+      titleStyle: TextStyle(fontSize: 1),
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            CupertinoIcons.check_mark_circled_solid,
+            color: Colors.green,
+            size: 55,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            title,
+            style: TextStyle(
+                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            textAlign: TextAlign.center,
+          )
+        ],
+      ),
+      radius: 10,
+      /*confirm: MaterialButton(
+          onPressed: () {
+            Get.back();
+            confirm!();
+          },
+          child: Text(deleteTitle ?? "Delete")),*/
+      confirm: DailogCloseButton(
+          autoFocus: false,
+          callback: () {
+            Get.back();
+            cancel!();
+          },
+          btnText: cancelTitle ?? "Cancel"),
+      /*cancel: MaterialButton(
+          onPressed: () {
+            Get.back();
+            cancel!();
+          },
+          child: Text(cancelTitle ?? "Cancel")),*/
+      cancel: DailogCloseButton(
+          autoFocus: true,
+          callback: () {
+            Get.back();
+            confirm!();
+          },
+          btnText: deleteTitle ?? "Delete"),
+      contentPadding: EdgeInsets.only(
+          left: SizeDefine.popupMarginHorizontal,
+          right: SizeDefine.popupMarginHorizontal,
+          bottom: 16),
+    );
+  }
+
+  static Future<bool> modifyWithAsync(String title,
+      {String? deleteTitle, String? cancelTitle}) {
+
+    Completer<bool> completer = Completer<bool>();
+
+    Get.defaultDialog(
+      title: "",
+      titleStyle: TextStyle(fontSize: 1),
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            CupertinoIcons.check_mark_circled_solid,
+            color: Colors.green,
+            size: 55,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            title,
+            style: TextStyle(
+                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            textAlign: TextAlign.center,
+          )
+        ],
+      ),
+      radius: 10,
+      /*confirm: MaterialButton(
+          onPressed: () {
+            Get.back();
+            confirm!();
+          },
+          child: Text(deleteTitle ?? "Delete")),*/
+      confirm: DailogCloseButton(
+          autoFocus: false,
+          callback: () {
+            Get.back();
+            completer.complete(true);
+          },
+          btnText: cancelTitle ?? "Cancel"),
+      /*cancel: MaterialButton(
+          onPressed: () {
+            Get.back();
+            cancel!();
+          },
+          child: Text(cancelTitle ?? "Cancel")),*/
+      cancel: DailogCloseButton(
+          autoFocus: true,
+          callback: () {
+            Get.back();
+            completer.complete(false);
+          },
+          btnText: deleteTitle ?? "Delete"),
+      contentPadding: EdgeInsets.only(
+          left: SizeDefine.popupMarginHorizontal,
+          right: SizeDefine.popupMarginHorizontal,
+          bottom: 16),
+    );
+
+    return completer.future;
+
   }
 
   static callDataDeleted([String? msg]) {
