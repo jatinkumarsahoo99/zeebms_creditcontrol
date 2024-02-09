@@ -1,3 +1,4 @@
+import 'package:bms_creditcontrol/app/modules/GSTPlantInfo/GSTPlantInfoModel.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:get/get.dart';
 
@@ -113,24 +114,29 @@ class SalesExecutiveMasterController extends GetxController {
         "personnelCode": selectSapName?.key ?? "",
         "userName": executiveName.value ?? "",
         "personnelName": selectExecutiveModel?.personnelName ?? "",
-        "personnelShortName": selectExecutiveModel?.personnelShortName ?? "",
-        "departmentCode": "<string>",
-        "designationCode": "<string>",
+        "personnelShortName": "",
+        "departmentCode": department.value??"",
+        "designationCode": designation.value??"",
         "locationCode": selectLocation?.key,
         "companyCode": selectCompany?.key,
-        "address1": "<string>",
-        "address2": "<string>",
+        "address1": "",
+        "address2": "",
         "placeCode": selectPlace?.key,
-        "pin1": masterModel?.lstCompanyMaster![selectCompany?.selectedIndex??0].pin1,
-        "phone": "<string>",
+        "pin1": 0,
+        "phone": "",
         "mobile": mobileno.value,
-        "fax": "<string>",
+        "fax": "",
         "email": email.value,
         "activeNonActive": isActive.value,
         "stationCode": selectStation?.key
       },
-      fun: (Map map) {
+      fun: (map) {
         Get.back();
+        if(map is Map && map.containsKey("postsave")){
+          LoadingDialog.callDataSaved(msg: map["postsave"]);
+        }else{
+          LoadingDialog.callErrorMessage1(msg: map.toString());
+        }
       },
     );
   }

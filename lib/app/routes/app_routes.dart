@@ -124,7 +124,7 @@ abstract class _Paths {
   static const COMPANY_CHANNEL_LINK = '/frmCompanyChannelLink';
   static const TRAFFIC_ORDER_CORRECTION = '/frmTOCorrection';
   static const BILL_EXPORT = '/frmExportData';
-  static const L_M_S_MASTER_REPORT_NEW = '/l-m-s-master-report-new';
+  // static const L_M_S_MASTER_REPORT_NEW = '/l-m-s-master-report-new';
   static const SALES_EXECUTIVE_MASTER = '/frmExecutiveMaster';
   static const EMAIL_BILL_DETAILS = '/frmBilling';
 }
