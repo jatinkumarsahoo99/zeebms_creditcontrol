@@ -1262,4 +1262,40 @@ class ApiFactory {
       "$BASE_URL/api/TOCorrection/PayRouteLeave?LocationCode=$locationId&ChannelCode=$channelId&PayRouteCode=$payrouteId";
 
   ///////////////////////////////End: Traffic Order Correction ////////////////////////////////
+
+  /////////////////////////////// SAP BILL CHECK REPORT ////////////////////////////////
+  static String SAP_BILL_CHECK_GENERATE(frmDt, toDt, r4) =>
+      "$BASE_URL/api/SAPBillCheckReport/GetGenrate?fromdate=$frmDt&todate=$toDt&R4_yn=$r4";
+
+///////////////////////////////End: SAP BILL CHECK REPORT ////////////////////////////////
+
+  /////////////////////////////// GENERATE BOOKING ACTIVITY AHDM ////////////////////////////////
+  static String get GENERATE_BOOKING_REPORT_INIT =>
+      "$BASE_URL/api/GenerateBookingReport/GetFromLoad";
+
+  static String get GENERATE_BOOKING_CHANNEL_LEAVE =>
+      "$BASE_URL/api/GenerateBookingReport/GetChannel?LocationCode=";
+
+  static String get GENERATE_BOOKING_GET_DETAILS =>
+      "$BASE_URL/api/GenerateBookingReport/GetRetrieve";
+
+///////////////////////////////End: GENERATE BOOKING ACTIVITY AHDM ////////////////////////////////
+
+  /////////////////////////////// EBILL AGENCY GRP MASTER ////////////////////////////////
+  static String get EBILL_AGENCY_INIT =>
+      "$BASE_URL/api/EBillAgencyGroupMaster/GetEBillAgencyFormload";
+
+  static String get EBILL_AGENCY_GRP_LEAVE =>
+      "$BASE_URL/api/EBillAgencyGroupMaster/GetGroupNameLeave?groupCode=";
+
+  static String EBILL_AGENCY_ADD_GRP(String grpCode,String agency) =>
+      "$BASE_URL/api/EBillAgencyGroupMaster/GetAddNewGroup?groupCode=$grpCode&agency=$agency";
+
+  static String get EBILL_AGENCY_REMOVE_GRP =>
+      "$BASE_URL/api/EBillAgencyGroupMaster/GetRemovefromGroup";
+
+  static String get EBILL_AGENCY_SAVE =>
+      "$BASE_URL/api/EBillAgencyGroupMaster/PostSave";
+
+///////////////////////////////End: GENERATE BOOKING ACTIVITY AHDM ////////////////////////////////
 }

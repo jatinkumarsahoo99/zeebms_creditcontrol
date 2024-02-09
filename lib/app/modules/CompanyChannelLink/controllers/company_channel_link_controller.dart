@@ -39,7 +39,7 @@ class CompanyChannelLinkController extends GetxController {
 
   fetchUserGridSetting() async {
     userDataSettings = await Get.find<HomeController>()
-        .fetchUserSetting2(formName: "frmTransmissionlog");
+        .fetchUserSetting2(formName: "frmCompanyChannelLink");
   }
 
   getLoad() {
