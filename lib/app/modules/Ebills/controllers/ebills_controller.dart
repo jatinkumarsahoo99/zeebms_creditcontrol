@@ -1,3 +1,6 @@
+import 'package:bms_creditcontrol/app/controller/ConnectorControl.dart';
+import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
+import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -33,11 +36,24 @@ class EbillsController extends GetxController {
   @override
   void onReady() {
     super.onReady();
+    selectionCurrentType.value = 'Group';
+    sendingCurrentType.value = 'Domestic';
+    getOnLoad();
   }
 
   @override
   void onClose() {
     super.onClose();
+  }
+
+  getOnLoad() {
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.EBILLS_GET_LOAD,
+        fun: (Map map) {
+          Get.back();
+          if (map != null && map.containsKey('location')) {}
+        });
   }
 
   checkAll() {

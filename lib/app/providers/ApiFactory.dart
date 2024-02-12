@@ -1288,7 +1288,7 @@ class ApiFactory {
   static String get EBILL_AGENCY_GRP_LEAVE =>
       "$BASE_URL/api/EBillAgencyGroupMaster/GetGroupNameLeave?groupCode=";
 
-  static String EBILL_AGENCY_ADD_GRP(String grpCode,String agency) =>
+  static String EBILL_AGENCY_ADD_GRP(String grpCode, String agency) =>
       "$BASE_URL/api/EBillAgencyGroupMaster/GetAddNewGroup?groupCode=$grpCode&agency=$agency";
 
   static String get EBILL_AGENCY_REMOVE_GRP =>
@@ -1301,4 +1301,11 @@ class ApiFactory {
       "$BASE_URL/api/EBillAgencyGroupMaster/PostSave";
 
 ///////////////////////////////End: EBILL AGENCY GRP MASTER ////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start EBILLS  Model////////////////////////////////
+  static String get EBILLS_GET_LOAD => "$BASE_URL/api/Ebills/GetLoad";
+
+  /// ////////////////////////// End EBILLS Model////////////////////////////////
 }
