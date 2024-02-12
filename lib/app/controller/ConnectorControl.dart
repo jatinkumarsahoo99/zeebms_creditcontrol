@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+
 // import 'package:bms_programming/app/controller/HomeController.dart';
 import 'package:dio/dio.dart';
 import 'package:dio/dio.dart' as service;
@@ -141,6 +142,16 @@ class ConnectorControl extends GetConnect {
         updateToken(() {
           GETMETHODCALL(api: api, fun: fun, failed: failed);
         });
+      } else if (e.response?.statusCode == 500) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+          LoadingDialog.callErrorMessage1(
+              msg:
+                  (e.response?.data ?? "500 Internal Server Error").toString());
+        } else {
+          LoadingDialog.callErrorMessage1(
+              msg: (e.response?.data ?? "Internal Server Error").toString());
+        }
       } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
           Get.back();
@@ -371,9 +382,21 @@ class ConnectorControl extends GetConnect {
       } else if (e.response?.statusCode == 500) {
         if (Get.isDialogOpen ?? false) {
           Get.back();
-          LoadingDialog.callErrorMessage1(msg:(e.response?.data?? "500Internal Server Error").toString());
+          LoadingDialog.callErrorMessage1(
+              msg:
+                  (e.response?.data ?? "500 Internal Server Error").toString());
         } else {
-          LoadingDialog.callErrorMessage1(msg:(e.response?.data?? "Internal Server Error").toString());
+          LoadingDialog.callErrorMessage1(
+              msg: (e.response?.data ?? "Internal Server Error").toString());
+        }
+      } else if (e.response?.statusCode == 500) {
+        if (Get.isDialogOpen ?? false) {
+          Get.back();
+          LoadingDialog.callErrorMessage1(
+              msg: (e.response?.data ?? "500Internal Server Error").toString());
+        } else {
+          LoadingDialog.callErrorMessage1(
+              msg: (e.response?.data ?? "Internal Server Error").toString());
         }
       } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {

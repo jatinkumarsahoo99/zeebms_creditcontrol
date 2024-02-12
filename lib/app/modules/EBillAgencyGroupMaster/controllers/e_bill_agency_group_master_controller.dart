@@ -61,14 +61,18 @@ class EBillAgencyGroupMasterController extends GetxController {
               lstagency?.add(DropDownValue(
                   key: e["agencycode"].toString(), value: e["agencyname"]));
             });
-            map['groups']["lstagencymaster"].forEach((e) {
-              lstagencymaster?.add(DropDownValue(
-                  key: e["agencycode"].toString(), value: e["agencyname"]));
-            });
-            map['groups']["lstemaildetails"].forEach((e) {
-              lstemaildetails?.add(DropDownValue(
-                  key: e["mailcc"].toString(), value: e["mailto"]));
-            });
+            if (map['groups']["lstagencymaster"] != null) {
+              map['groups']["lstagencymaster"].forEach((e) {
+                lstagencymaster?.add(DropDownValue(
+                    key: e["agencycode"].toString(), value: e["agencyname"]));
+              });
+            }
+            if (map['groups']["lstemaildetails"] != null) {
+              map['groups']["lstemaildetails"].forEach((e) {
+                lstemaildetails?.add(DropDownValue(
+                    key: e["mailcc"].toString(), value: e["mailto"]));
+              });
+            }
             mailTo.text = lstemaildetails![0].value ?? "";
             mailCC.text = lstemaildetails![0].value ?? "";
           }
@@ -83,6 +87,17 @@ class EBillAgencyGroupMasterController extends GetxController {
             selectedGrp?.key ?? "", selectedAgency?.key ?? ""),
         fun: (map) {
           Get.back();
+          if (map is Map &&
+              map.containsKey("agency") &&
+              map["agency"] != null) {
+            lstagencymaster = [];
+            if (map['agency'] != null) {
+              map['agency'].forEach((e) {
+                lstagencymaster?.add(DropDownValue(
+                    key: e["agencycode"].toString(), value: e["agencyname"]));
+              });
+            }
+          }
         });
   }
 
@@ -90,20 +105,63 @@ class EBillAgencyGroupMasterController extends GetxController {
     LoadingDialog.call();
     var jsonMap = {
       "lstZsapAgency": lstagencymaster
-          ?.map((e) => e.toJsonCustom("groupCode", "agencycode"))
+          ?.where((element) => element.isSelected ?? false)
+          .map((e) => {
+                "groupCode": (int.tryParse(selectedGrp?.key ?? "") ?? 0),
+                "agencycode": e.key ?? ""
+              })
           .toList(),
-      "groupCode": selectedGrp?.key ?? ""
+      "groupCode": int.tryParse(selectedGrp?.key ?? "")
     };
     Get.find<ConnectorControl>().POSTMETHOD(
         api: ApiFactory.EBILL_AGENCY_REMOVE_GRP,
         fun: (map) {
           Get.back();
+          if (map is Map &&
+              map.containsKey("agency") &&
+              map["agency"] != null) {
+            lstagencymaster = [];
+            if (map['agency'] != null) {
+              map['agency'].forEach((e) {
+                lstagencymaster?.add(DropDownValue(
+                    key: e["agencycode"].toString(), value: e["agencyname"]));
+              });
+            }
+          }
+        },
+        json: jsonMap);
+  }
+
+  void saveData() {
+    LoadingDialog.call();
+    var jsonMap = {
+      "groupcode": int.tryParse(selectedGrp?.key ?? ""),
+      "groupName": selectedGrp?.value ?? "",
+      "mailto": mailTo.text,
+      "mailcc": mailCC.text
+    };
+    Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.EBILL_AGENCY_SAVE,
+        fun: (map) {
+          Get.back();
+          if (map is Map &&
+              map.containsKey("save") &&
+              map["save"] != null &&
+              map["save"]
+                  .toString()
+                  .trim()
+                  .toLowerCase()
+                  .contains('successfully')) {
+            LoadingDialog.callErrorMessage1(msg: map["save"]);
+          } else {
+            LoadingDialog.callErrorMessage1(msg: map.toString());
+          }
         },
         json: jsonMap);
   }
 
   void addNewGroup() {
-    grpName.text="";
+    grpName.text = "";
     grp.value = !grp.value;
   }
 
@@ -116,6 +174,33 @@ class EBillAgencyGroupMasterController extends GetxController {
         api: ApiFactory.EBILL_AGENCY_ADD_GRP_NAME + grpName.text,
         fun: (map) {
           Get.back();
+          if (map is Map &&
+              map.containsKey("addbutton") &&
+              map["addbutton"].containsKey("lstgroupname") &&
+              map["addbutton"]["lstgroupname"] != null) {
+            grpList = [];
+            map["addbutton"]["lstgroupname"].forEach((e) {
+              grpList?.add(DropDownValue(
+                  key: e["groupCode"].toString(), value: e["groupname"]));
+            });
+            update(["init"]);
+          }
         });
+  }
+
+  void save() {
+    var jsonData = {
+      "groupcode": selectedGrp?.key ?? "",
+      "groupName": selectedGrp?.value ?? "",
+      "mailto": mailTo.text,
+      "mailcc": mailCC.text
+    };
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.EBILL_AGENCY_SAVE,
+        fun: (map) {
+          Get.back();
+        },
+        json: jsonData);
   }
 }
