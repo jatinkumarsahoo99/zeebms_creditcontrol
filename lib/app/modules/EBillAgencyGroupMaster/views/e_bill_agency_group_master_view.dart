@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/input_fields.dart';
+import '../../../controller/HomeController.dart';
 import '../controllers/e_bill_agency_group_master_controller.dart';
 
 class EBillAgencyGroupMasterView extends StatelessWidget {
@@ -58,6 +59,7 @@ class EBillAgencyGroupMasterView extends StatelessWidget {
                                   dialogHeight: Get.height * .35,
                                   autoFocus: true,
                                 ),
+                                SizedBox(height: 3,),
                                 DropDownField.formDropDown1WidthMap(
                                   controller.lstagency ?? [],
                                   (value) {
@@ -71,6 +73,7 @@ class EBillAgencyGroupMasterView extends StatelessWidget {
                                   dialogHeight: Get.height * .35,
                                   autoFocus: true,
                                 ),
+                                SizedBox(height: 3,),
                                 InputFields.formField5(
                                   hintTxt: "Mail To",
                                   controller: controller.mailTo,
@@ -85,6 +88,7 @@ class EBillAgencyGroupMasterView extends StatelessWidget {
                                   onchanged: (value) {},
                                   // autoFocus: true,
                                 ),
+                                SizedBox(height: 3,),
                                 InputFields.formField5(
                                   hintTxt: "MailCC",
                                   controller: controller.mailCC,
@@ -250,6 +254,7 @@ class EBillAgencyGroupMasterView extends StatelessWidget {
                           btnText: "Save",
                           callback: () {
                             // controllerX.showApiCall();
+                            controller.save();
                           },
                           showIcon: true,
                         ),
@@ -264,6 +269,8 @@ class EBillAgencyGroupMasterView extends StatelessWidget {
                           btnText: "Clear",
                           callback: () {
                             // controllerX.showApiCall();
+                            Get.delete<EBillAgencyGroupMasterController>();
+                            Get.find<HomeController>().clearPage1();
                           },
                           showIcon: true,
                         ),
