@@ -3,9 +3,16 @@ import 'package:flutter/material.dart';
 class DraggableFab extends StatefulWidget {
   final Widget child;
   final Offset? initPosition;
+  final Function? dragEndCall;
   final double securityBottom;
 
-  const DraggableFab({Key? key, required this.child, this.initPosition, this.securityBottom: 0}) : super(key: key);
+  const DraggableFab(
+      {Key? key,
+        required this.child,
+        this.initPosition,
+        this.dragEndCall,
+        this.securityBottom = 0})
+      : super(key: key);
 
   @override
   _DraggableFabState createState() => _DraggableFabState();
@@ -21,7 +28,8 @@ class _DraggableFabState extends State<DraggableFab> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _getWidgetSize(context));
+    WidgetsBinding.instance
+        .addPostFrameCallback((_) => _getWidgetSize(context));
   }
 
   void _getWidgetSize(BuildContext context) {
@@ -30,7 +38,8 @@ class _DraggableFabState extends State<DraggableFab> {
     if (widget.initPosition != null) {
       _calculatePosition(widget.initPosition!);
     } else {
-      final RenderBox renderBox = key.currentContext?.findRenderObject() as RenderBox;
+      final RenderBox renderBox =
+      key.currentContext?.findRenderObject() as RenderBox;
       final offset = renderBox.localToGlobal(Offset.zero) / 2;
       _calculatePosition(offset);
     }
@@ -45,15 +54,13 @@ class _DraggableFabState extends State<DraggableFab> {
           top: _top,
           child: Container(
             key: key,
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
-              boxShadow: const [
-                BoxShadow(color: Colors.black54),
-              ],
-              borderRadius: BorderRadius.circular(12),
+              // boxShadow: const [
+              //   BoxShadow(color: Colors.black54),
+              // ],
+              // borderRadius: BorderRadius.circular(12),
               color: Colors.grey.shade300,
-                // border: Border.all(width: 2)
-
             ),
             child: Draggable(
               feedback: widget.child,
@@ -69,6 +76,9 @@ class _DraggableFabState extends State<DraggableFab> {
 
   void _handleDragEnded(DraggableDetails draggableDetails) {
     _calculatePosition(draggableDetails.offset);
+    if(widget.dragEndCall!=null){
+      widget.dragEndCall!();
+    }
   }
 
   void _calculatePosition(Offset targetOffset) {

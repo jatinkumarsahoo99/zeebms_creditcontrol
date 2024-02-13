@@ -21,7 +21,7 @@ class SecondaryAsrunGridModel {
 class BindGrid {
   // dynamic? lstbookingdetail;
   List<LstAsRunBookingDetails>? lstAsRunBookingDetails;
-  List<dynamic>? lstFinalAsRun;
+  List<LstFinalAsRun>? lstFinalAsRun;
 
   BindGrid(
       {
@@ -36,6 +36,14 @@ class BindGrid {
         lstAsRunBookingDetails!.add(new LstAsRunBookingDetails.fromJson(v));
       });
     }
+
+    if (json['lstFinalAsRun'] != null) {
+      lstFinalAsRun = <LstFinalAsRun>[];
+      json['lstFinalAsRun'].forEach((v) {
+        lstFinalAsRun!.add(new LstFinalAsRun.fromJson(v));
+      });
+    }
+
   }
 
   Map<String, dynamic> toJson() {
@@ -44,6 +52,10 @@ class BindGrid {
     if (this.lstAsRunBookingDetails != null) {
       data['lstAsRunBookingDetails'] =
           this.lstAsRunBookingDetails!.map((v) => v.toJson()).toList();
+    }
+    if (this.lstFinalAsRun != null) {
+      data['lstFinalAsRun'] =
+          this.lstFinalAsRun!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -205,3 +217,68 @@ class LstAsRunBookingDetails {
     return data;
   }
 }
+
+class LstFinalAsRun {
+  String? exportTapeCode;
+  String? exportTapeCaption;
+  String? tapeDuration;
+  String? programname;
+  String? telecastTime;
+  String? spotStatus;
+  String? spotPosition;
+  String? segmentNumber;
+  String? programCode;
+
+  LstFinalAsRun(
+      {this.exportTapeCode,
+        this.exportTapeCaption,
+        this.tapeDuration,
+        this.programname,
+        this.telecastTime,
+        this.spotStatus,
+        this.spotPosition,
+        this.segmentNumber,
+        this.programCode});
+
+  LstFinalAsRun.fromJson(Map<String, dynamic> json) {
+    exportTapeCode = json['exportTapeCode'];
+    exportTapeCaption = json['exportTapeCaption'];
+    tapeDuration = (json['tapeDuration']??"0").toString();
+    programname = json['programname'];
+    telecastTime = json['telecastTime'];
+    spotStatus = json['spotStatus'];
+    spotPosition = json['spotPosition'];
+    segmentNumber = json['segmentNumber'];
+    programCode = json['programCode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['exportTapeCode'] = this.exportTapeCode;
+    data['exportTapeCaption'] = this.exportTapeCaption;
+    data['tapeDuration'] = this.tapeDuration;
+    data['programname'] = this.programname;
+    data['telecastTime'] = this.telecastTime;
+    data['spotStatus'] = this.spotStatus;
+    data['spotPosition'] = this.spotPosition;
+    data['segmentNumber'] = this.segmentNumber;
+    data['programCode'] = this.programCode;
+    return data;
+  }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['exportTapeCode'] = this.exportTapeCode;
+    data['exportTapeCaption'] = this.exportTapeCaption;
+    data['tapeDuration'] = (this.tapeDuration != null && this.tapeDuration != "")?int.parse(this.tapeDuration??"0"):0;
+    data['programname'] = this.programname;
+    data['telecastTime'] = this.telecastTime;
+    data['spotStatus'] = this.spotStatus;
+    data['spotPosition'] = this.spotPosition;
+    data['segmentNumber'] = this.segmentNumber;
+    data['programCode'] = this.programCode;
+    return data;
+  }
+
+}
+

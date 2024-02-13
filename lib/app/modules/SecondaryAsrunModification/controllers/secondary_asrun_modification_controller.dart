@@ -4,11 +4,17 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
+import '../../../../widgets/PlutoGrid/src/pluto_grid.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
+import '../../../providers/SizeDefine.dart';
+import '../../../providers/Utils.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 import '../SecondaryAsrunGridModel.dart';
 
 class SecondaryAsrunModificationController extends GetxController {
@@ -25,11 +31,24 @@ class SecondaryAsrunModificationController extends GetxController {
   DropDownValue? selectedChannel;
 
   PlutoGridStateManager? stateManager;
+  PlutoGridStateManager? stateManagerDialog;
 
   var canDialogShow = false.obs;
   Widget? dialogWidget;
   Rxn<int> initialOffset = Rxn<int>(null);
   Completer<bool>? completerDialog;
+
+  String? strTapeID = "";
+  String? strProgramName = "";
+  String? intTapeDuration = "0";
+
+  List<LstFinalAsRun>? lstFinalAsRunDataList = [];
+
+  TextEditingController tapeIdEditingController = TextEditingController();
+  TextEditingController finalProgramEditingController = TextEditingController();
+  TextEditingController finalMidPreEditingController = TextEditingController();
+  TextEditingController finalTelecastTimeEditingController = TextEditingController();
+  TextEditingController finalDurationEditingController = TextEditingController();
 
   Offset? getOffSetValue(BoxConstraints constraints) {
     switch (initialOffset.value) {
@@ -61,8 +80,6 @@ class SecondaryAsrunModificationController extends GetxController {
   }
 
   void increment() => count.value++;
-
-  formHandler(String text) {}
 
   closeDialogIfOpen() {
     if (Get.isDialogOpen ?? false) {
@@ -133,9 +150,9 @@ class SecondaryAsrunModificationController extends GetxController {
     LoadingDialog.call();
     try {
       Map<String, dynamic> postData = {
-        "locationcode": selectedLocation?.key??"",
-        "channelcode": selectedChannel?.key??"",
-        "scheduledate":logDateController.text?? ""
+        "locationcode": selectedLocation?.key ?? "",
+        "channelcode": selectedChannel?.key ?? "",
+        "scheduledate": Utils.getMMDDYYYYFromDDMMYYYYInString4(logDateController.text)
       };
 
       Get.find<ConnectorControl>().POSTMETHOD(
@@ -144,24 +161,378 @@ class SecondaryAsrunModificationController extends GetxController {
           // "https://jsonkeeper.com/b/D537"
           fun: (map) {
             closeDialogIfOpen();
-            if(map is Map && map['bindGrid'] != null){
-              secondaryAsrunGridModel = SecondaryAsrunGridModel.fromJson(map as Map<String,dynamic>);
+            if (map is Map && map['bindGrid'] != null) {
+              secondaryAsrunGridModel =
+                  SecondaryAsrunGridModel.fromJson(map as Map<String, dynamic>);
+              lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun;
               update(['grid']);
-            }else{
+            } else {
               secondaryAsrunGridModel = null;
+              lstFinalAsRunDataList = [];
               update(['grid']);
             }
           },
           failed: (map) {
             closeDialogIfOpen();
             secondaryAsrunGridModel = null;
+            lstFinalAsRunDataList = [];
             update(['grid']);
           });
-
     } catch (e) {
       closeDialogIfOpen();
       secondaryAsrunGridModel = null;
+      lstFinalAsRunDataList = [];
       update(['grid']);
+    }
+  }
+
+  onDoubleClick(int? index, PlutoGridOnRowDoubleTapEvent? event) {
+    if (index != null && index != -1 && event != null) {
+      strTapeID = stateManager?.rows[index].cells['tapeID']?.value ?? "";
+      strProgramName = stateManager?.rows[index].cells['programName']?.value ?? "";
+      intTapeDuration = (stateManager?.rows[index].cells['tapeDuration']?.value ?? "0").toString();
+
+      LoadingDialog.modify3("Want to change the status to NOT TELECASTED", () {
+        telFun(index);
+      }, () {}, confirmTitle: "Yes", cancelTitle: "No");
+    }
+  }
+
+  telFun(int index) {
+    bool? blnRowUpdated = false;
+    lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun;
+
+    for (int i = 0; i < (stateManager?.rows.length ?? 0); i++) {
+      if (index == i) {
+        for (int j = 0; j < (secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun?.length ?? 0); j++) {
+          if (((stateManager?.rows[i].cells['tapeID']?.value) ==
+                  secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun?[j].exportTapeCode) &&
+              ((stateManager?.rows[i].cells['tapeDuration']?.value) ==
+                  secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun?[j].tapeDuration) &&
+              ((stateManager?.rows[i].cells['telecastTime']?.value) ==
+                  secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun?[j].telecastTime)) {
+            secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun?[j].spotStatus = "U";
+            lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun;
+            blnRowUpdated = true;
+          }
+        }
+
+        if (blnRowUpdated == false) {
+          if ((secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun?.length ?? 0) > 0) {
+            lstFinalAsRunDataList?.add(LstFinalAsRun(
+                exportTapeCode: stateManager?.rows[i].cells['tapeID']?.value,
+                exportTapeCaption: stateManager?.rows[i].cells['tapeID']?.value,
+                tapeDuration:
+                    (stateManager?.rows[i].cells['tapeDuration']?.value ?? "0").toString(),
+                programname: stateManager?.rows[i].cells['programName']?.value,
+                telecastTime: stateManager?.rows[i].cells['telecastTime']?.value,
+                spotStatus: "U",
+                spotPosition: stateManager?.rows[i].cells['spotPositionShortName']?.value,
+                programCode: "",
+                segmentNumber: ""));
+          } else {
+            lstFinalAsRunDataList = [];
+            lstFinalAsRunDataList?.add(LstFinalAsRun(
+                exportTapeCode: stateManager?.rows[i].cells['tapeID']?.value,
+                exportTapeCaption: stateManager?.rows[i].cells['tapeID']?.value,
+                tapeDuration:
+                    (stateManager?.rows[i].cells['tapeDuration']?.value ?? "0").toString(),
+                programname: stateManager?.rows[i].cells['programName']?.value,
+                telecastTime: stateManager?.rows[i].cells['telecastTime']?.value,
+                spotStatus: "U",
+                spotPosition: stateManager?.rows[i].cells['spotPositionShortName']?.value,
+                programCode: "",
+                segmentNumber: ""));
+          }
+        }
+
+        stateManager?.rows[index].cells['spotStatus']?.value = "NOT TELECASTED";
+        stateManager?.rows[index].cells['modifyStatus']?.value = "M";
+        stateManager?.rows[index].cells['telecastDuration']?.value = "";
+        stateManager?.rows[index].cells['telecastDuration']?.value = "";
+        stateManager?.rows[index].cells['telecastTime']?.value = "";
+        stateManager?.rows[index].cells['telprogname']?.value = "";
+        stateManager?.rows[index].cells['telpos']?.value = "";
+        stateManager?.notifyListeners();
+
+        // stateManager.
+      }
+    }
+  }
+
+  dialogOkClick() {
+    print(
+        ">>>>>>>>>>>>>>>>>val${tapeIdEditingController.text}${strTapeID}${finalDurationEditingController.text}"
+        "${intTapeDuration}${finalProgramEditingController.text}${strProgramName}");
+
+    if ((tapeIdEditingController.text.toString().trim() != strTapeID.toString().trim()) ||
+        (finalDurationEditingController.text.toString().trim() !=
+            intTapeDuration.toString().trim())) {
+      print(">>>>>>>>>>>in if");
+
+      Get.defaultDialog(
+          title: "",
+          barrierDismissible: false,
+          contentPadding: EdgeInsets.only(
+            left: SizeDefine.popupMarginHorizontal,
+            right: SizeDefine.popupMarginHorizontal,
+            bottom: 16,
+          ),
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.error_outline, color: Colors.red, size: 55),
+              const SizedBox(height: 10),
+              Text(
+                "Telecast Tape Id / Duration not matching with booking. Please\ncorrect accordingly",
+                style: TextStyle(color: Colors.black, fontSize: SizeDefine.popupTxtSize),
+              )
+            ],
+          ),
+          confirm: DailogCloseButton(
+            autoFocus: true,
+            callback: () {
+              Get.back();
+            },
+            btnText: "OK",
+          ));
+
+      LoadingDialog.showErrorDialog(
+        "Telecast Tape Id / Duration not matching with booking. Please\ncorrect accordingly",
+      );
+    } else {
+      if (finalProgramEditingController.text.toString().trim() !=
+          strProgramName.toString().trim()) {
+        print(">>>>>>>>>>>>>in else if");
+        LoadingDialog.modify3("Program name not matching. Do you want to still continue?", () {},
+            () {
+          return;
+        }, confirmTitle: "Yes", cancelTitle: "No");
+      }
+
+      stateManager?.rows[stateManager?.currentRowIdx ?? 0].cells['telecastDuration']?.value =
+          finalDurationEditingController.text;
+      stateManager?.rows[stateManager?.currentRowIdx ?? 0].cells['telecastTime']?.value =
+          finalTelecastTimeEditingController.text;
+      stateManager?.rows[stateManager?.currentRowIdx ?? 0].cells['telprogname']?.value =
+          finalProgramEditingController.text;
+      stateManager?.rows[stateManager?.currentRowIdx ?? 0].cells['modifyStatus']?.value = "M";
+      stateManager?.rows[stateManager?.currentRowIdx ?? 0].cells['telecastProgramcode']?.value =
+          (stateManagerDialog
+                      ?.rows[stateManagerDialog?.currentRowIdx ?? 0].cells['programCode']?.value ??
+                  "")
+              .toString();
+      btnOkApiCall(val: Uri.encodeComponent(finalMidPreEditingController.text ?? ""));
+
+      stateManager?.rows[stateManager?.currentRowIdx ?? 0].cells['spotStatus']?.value =
+          "TELECASTED";
+      stateManagerDialog?.rows[stateManagerDialog?.currentRowIdx ?? 0].cells['spotStatus']?.value =
+          "T";
+
+      stateManagerDialog?.notifyListeners();
+      stateManager?.notifyListeners();
+    }
+  }
+
+  btnOkApiCall({String? val}) {
+    // "spotPositionTypeCode": "ZAMID00002",
+    // "spotPositionTypeName": "MID PROGRAM"
+    LoadingDialog.call();
+    try {
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: ApiFactory.SECONDARY_ASRUN_MODIFICATION_GET_OK + (val ?? ""),
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            closeDialogIfOpen();
+            // channelList.clear();
+            if (map is Map && map['okClick'] != null && map['okClick'].length > 0) {
+              map['okClick'].forEach((e) {
+                stateManager?.rows[stateManager?.currentRowIdx ?? 0].cells['telpos']?.value =
+                    e['spotPositionTypeName'];
+                stateManager?.rows[stateManager?.currentRowIdx ?? 0].cells['telecastMidPre']
+                    ?.value = e['spotPositionTypeCode'];
+              });
+              stateManager?.notifyListeners();
+              dialogWidget = null;
+              canDialogShow.value = false;
+            } else {
+              LoadingDialog.showErrorDialog1("Something went wrong", callback: () {
+                dialogWidget = null;
+                canDialogShow.value = false;
+              });
+            }
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+          });
+    } catch (e) {
+      closeDialogIfOpen();
+    }
+  }
+
+  postSave() {
+    if((stateManager?.rows.length??0) >0){
+      try {
+        LoadingDialog.call();
+        Map<String, dynamic> postData = {
+          "lstAsRunModification": getDataFromGrid(stateManager),
+          "lstFinalAsRun": getDataFromGrid1(stateManagerDialog),
+          "locationCode": selectedLocation?.key ?? "",
+          "channelCode": selectedChannel?.key ?? "",
+          "logDate": Utils.getMMDDYYYYFromDDMMYYYYInString3(logDateController.text) ?? ""
+        };
+
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.SECONDARY_ASRUN_MODIFICATION_SAVE,
+            json: postData,
+            // "https://jsonkeeper.com/b/D537"
+            fun: (map) {
+              closeDialogIfOpen();
+              if (map is Map && map['postSave'] != null) {
+                LoadingDialog.callDataSaved(msg:  map['postSave']['message'] ?? "Something went wrong",callback: (){
+                  clearAll();
+                });
+              } else {
+                LoadingDialog.showErrorDialog((map ?? "Something went wrong").toString());
+              }
+            },
+            failed: (map) {
+              closeDialogIfOpen();
+              LoadingDialog.showErrorDialog(("Something went wrong").toString());
+            });
+      } catch (e) {
+        closeDialogIfOpen();
+        LoadingDialog.showErrorDialog(("Something went wrong").toString());
+      }
+    }
+    else{
+      LoadingDialog.showErrorDialog(("Sorry! No record(s) to save."));
+    }
+
+  }
+
+  btnClearMisMatch() {
+    try {
+      LoadingDialog.call();
+      Map<String, dynamic> postData = {
+        "locationcode": selectedLocation?.key ?? "",
+        "channelcode":selectedChannel?.key ?? "",
+        "date": Utils.getMMDDYYYYFromDDMMYYYYInString3(logDateController.text) ?? "",
+        "lstTape": []
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.SECONDARY_ASRUN_MODIFICATION_GET_CLEAR_MISMATCH,
+          json: postData,
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            closeDialogIfOpen();
+            LoadingDialog.callDataSaved(msg:  map.toString(),callback: (){
+              clearAll();
+            });
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+            LoadingDialog.showErrorDialog(("Something went wrong").toString());
+          });
+    } catch (e) {
+      closeDialogIfOpen();
+      LoadingDialog.showErrorDialog(("Something went wrong").toString());
+    }
+  }
+
+  List<Map<String, dynamic>> getDataFromGrid(PlutoGridStateManager? statemanager) {
+    if (statemanager != null) {
+      statemanager.setFilter((element) => true);
+      statemanager.notifyListeners();
+      List<Map<String, dynamic>> mapList = [];
+      for (var row in statemanager.rows) {
+        Map<String, dynamic> rowMap = {};
+        for (var key in row.cells.keys) {
+          if ((key.toString().trim() == "tapeDuration") ||
+              (key.toString().trim() == "telecastDuration") ||
+              (key.toString().trim() == "bookingdetailcode") ||
+              (key.toString().trim() == "spotAmount") ||
+              (key.toString().trim() == "bookingDetailCode1") ||
+              (key.toString().trim() == "recordnumber")) {
+            if (row.cells[key]?.value != null &&
+                (row.cells[key]?.value ?? "").toString().trim() != "") {
+              try {
+                rowMap[key] = int.parse(row.cells[key]?.value);
+              } catch (e) {
+                rowMap[key] = double.parse(row.cells[key]?.value);
+              }
+            }
+            else {
+              // rowMap[key] = DateFormat("yyyy-MM-dd").format(DateTime.now()) + (row.cells[key]?.value ?? "");
+              rowMap[key] = 0;
+            }
+          } else {
+            rowMap[key] = row.cells[key]?.value ?? "";
+          }
+        }
+        mapList.add(rowMap);
+      }
+      return mapList;
+    } else {
+      return [];
+    }
+  }
+
+  List<Map<String, dynamic>> getDataFromGrid1(PlutoGridStateManager? statemanager) {
+    if (statemanager != null) {
+      statemanager.setFilter((element) => true);
+      statemanager.notifyListeners();
+      List<Map<String, dynamic>> mapList = [];
+      for (var row in statemanager.rows) {
+        Map<String, dynamic> rowMap = {};
+        for (var key in row.cells.keys) {
+          if ((key.toString().trim() == "tapeDuration")) {
+            if (row.cells[key]?.value != null &&
+                (row.cells[key]?.value ?? "").toString().trim() != "") {
+              try {
+                rowMap[key] = int.parse(row.cells[key]?.value);
+              } catch (e) {
+                rowMap[key] = double.parse(row.cells[key]?.value);
+              }
+            } else {
+              // rowMap[key] = DateFormat("yyyy-MM-dd").format(DateTime.now()) + (row.cells[key]?.value ?? "");
+              rowMap[key] = 0;
+            }
+          } else {
+            rowMap[key] = row.cells[key]?.value ?? "";
+          }
+        }
+        mapList.add(rowMap);
+      }
+      return mapList;
+    } else {
+      if (lstFinalAsRunDataList != null && (lstFinalAsRunDataList?.length ?? 0) > 0) {
+        return (lstFinalAsRunDataList!.map((e) => e.toJson1()).toList());
+      }
+      return [];
+    }
+  }
+
+  clearAll() {
+    Get.delete<SecondaryAsrunModificationController>();
+    Get.find<HomeController>().clearPage1();
+  }
+
+  formHandler(String text) {
+    if (text == "Clear") {
+      clearAll();
+    }
+    if (text == "Save") {
+      postSave();
+    }
+    if (text == "Search") {
+      Get.to(SearchPage(
+          key: Key("Secondary Asrun Modification"),
+          screenName: "Secondary Asrun Modification",
+          appBarName: "Secondary Asrun Modification",
+          strViewName: "vTesting",
+          isAppBarReq: true));
     }
   }
 }

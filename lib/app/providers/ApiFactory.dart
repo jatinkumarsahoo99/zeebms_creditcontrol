@@ -721,7 +721,7 @@ class ApiFactory {
       "$BASE_URL/api/SecondaryAsrunModi/GetBindGrid";
 
   static String get SECONDARY_ASRUN_MODIFICATION_GET_OK =>
-      "$BASE_URL/api/SecondaryAsrunModi/GetOkClick";
+      "$BASE_URL/api/SecondaryAsrunModi/GetOkClick?SpotPositionShortName=";
 
   static String get SECONDARY_ASRUN_MODIFICATION_GET_CLEAR_MISMATCH =>
       "$BASE_URL/api/SecondaryAsrunModi/GetClearmismatch";
