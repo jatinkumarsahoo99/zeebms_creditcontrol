@@ -1207,7 +1207,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                     "");
                                           }, "Account", .18,
                                               selected: controller.selectAccount?.value,
-                                              isEnable: controller.accountEnaSta.value
+                                              isEnable: controller.accountEnaSta.value,
+                                            inkWellFocusNode: controller.accountFocus
                                             // titleInLeft: true,
                                           );
                                         }),
@@ -1221,6 +1222,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             isEnable: controller.accountEnaSta.value,
                                             "Sub Type",
                                             .18,
+                                            inkWellFocusNode: controller.subTypeFocus
                                             // titleInLeft: true,
                                           );
                                         }),
@@ -1228,7 +1230,9 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             controller.spotTypeList.value ?? [], (data) {
                                           controller.selectSpotType?.value = data;
                                         }, "Spot Type", .18,
-                                            selected: controller.selectSpotType?.value
+                                            selected: controller.selectSpotType?.value,
+                                          inkWellFocusNode: controller.spotTypeFocus,
+
                                           // titleInLeft: true,
                                         ),
                                         SizedBox(
@@ -1239,18 +1243,22 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             context,
                                             title: "Program",
                                             url: "",
-                                            onchanged: (value) {},
+                                            onchanged: (data) {
+                                              controller.selectProgram?.value = data;
+                                            },
                                             selectedValue: controller.selectProgram?.value,
                                             // width: Get.width * 0.3,
                                             // titleInLeft: true,
                                             textSizeboxWidth: 60,
+                                            inkwellFocus: controller.programFocus
                                           ),
                                         ),
                                         DropDownField.formDropDown1WidthMap(
                                             controller.bandList.value ?? [], (data) {
                                           controller.selectBand?.value = data;
                                         }, "Band", .18,
-                                            selected: controller.selectBand?.value
+                                            selected: controller.selectBand?.value,
+                                          inkWellFocusNode: controller.bandFocus
                                           // titleInLeft: true,
                                         ),
                                       ],
@@ -1269,7 +1277,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                               controller.addInfoList.value ?? [], (data) {
                                             controller.selectAddInfo?.value = data;
                                           }, "AddInfo", .18,
-                                              selected: controller.selectAddInfo?.value
+                                              selected: controller.selectAddInfo?.value,
+                                            inkWellFocusNode: controller.addInfoFocus
                                             // titleInLeft: true,
                                           ),
                                           // Spacer(),
@@ -1280,7 +1289,9 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                               onChanged: (val) {
                                                 controller.weekEnd.value = val!;
                                                 controller.weekend(val);
-                                              }),
+                                              },
+                                            fn: controller.weekEndFocus,
+                                          ),
                                           sizedBoxWidth(20),
                                           CheckBoxOnRight(
                                               title: "Week Day",
@@ -1288,6 +1299,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                 controller.weekDay.value = val!;
                                                 controller.weekDayFun(val);
                                               },
+                                              fn: controller.weekDayFocus,
                                               value: controller.weekDay.value),
                                           sizedBoxWidth(20),
                                           CheckBoxOnRight(
@@ -1295,43 +1307,43 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                               value: controller.mon.value,
                                               onChanged: (val) {
                                                 controller.mon.value = val!;
-                                              }),
+                                              },fn: controller.monDayFocus),
                                           CheckBoxOnRight(
                                               title: "Tue",
                                               value: controller.tue.value,
                                               onChanged: (val) {
                                                 controller.tue.value = val!;
-                                              }),
+                                              },fn: controller.tueDayFocus),
                                           CheckBoxOnRight(
                                               title: "Wed",
                                               value: controller.wed.value,
                                               onChanged: (val) {
                                                 controller.wed.value = val!;
-                                              }),
+                                              },fn: controller.wedDayFocus),
                                           CheckBoxOnRight(
                                               title: "Thu",
                                               value: controller.thu.value,
                                               onChanged: (val) {
                                                 controller.thu.value = val!;
-                                              }),
+                                              },fn: controller.thuDayFocus),
                                           CheckBoxOnRight(
                                               title: "Fri",
                                               value: controller.fri.value,
                                               onChanged: (val) {
                                                 controller.fri.value = val!;
-                                              }),
+                                              },fn: controller.friDayFocus),
                                           CheckBoxOnRight(
                                               title: "Sat",
                                               value: controller.sat.value,
                                               onChanged: (val) {
                                                 controller.sat.value = val!;
-                                              }),
+                                              },fn: controller.satDayFocus),
                                           CheckBoxOnRight(
                                               title: "Sun",
                                               value: controller.sun.value,
                                               onChanged: (val) {
                                                 controller.sun.value = val!;
-                                              }),
+                                              },fn: controller.sunDayFocus),
                                           InputFields.formFieldNumberMask(
                                             hintTxt: "Start Time",
                                             controller: controller.startTime,
@@ -1341,6 +1353,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             onEditComplete: (val) {
                                               // controllerX.calculateDuration();
                                             },
+                                            textFieldFN: controller.startTimeFocus,
                                             // isTime: true,
                                             // isEnable: controller.isEnable.value,
                                             paddingLeft: 0,
@@ -1354,6 +1367,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             onEditComplete: (val) {
                                               // controllerX.calculateDuration();
                                             },
+                                            textFieldFN: controller.endTimeFocus,
                                             // isTime: true,
                                             // isEnable: controller.isEnable.value,
                                             paddingLeft: 0,
@@ -1385,6 +1399,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                               // titleInLeft: true,
                                               // titleSizeboxWidth: 45,
                                               fieldWidth: 0.1,
+
                                               padLeft: 0),
                                         ),
                                         SizedBox(
@@ -1443,7 +1458,9 @@ class ClientDealsView extends GetView<ClientDealsController> {
                             children: [
                               FormButton1(
                                 btnText: "Add",
-                                callback: () {},
+                                callback: () {
+                                  controller.addBtn();
+                                },
                               ),
                               FormButton1(
                                 btnText: "Clear",
@@ -1533,9 +1550,13 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       print(">>>>>doubletapClick");
                                       controller.doubleTap(selectedIndex: event?.rowIdx ?? -1);
                                     },
+                                    hideKeys: const [
+                                      "primaryEventCode","sponsorTypeCode",
+                                      "programCode","programCategoryCode","bandCode","revflag","subRevenueTypeCode"
+                                    ],
 
                                     mapData: (controller
-                                        .importGridList!
+                                        .importGridList
                                         .map((e) => e.toJson())
                                         .toList()),
                                     // mapData: (controllerX.dataList)!,

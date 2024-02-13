@@ -18,6 +18,8 @@ import '../../../data/DropDownValue.dart';
 import '../AgencyLeaveModel.dart';
 import '../ClientDealRetrieveModel.dart';
 
+part 'ImportExcelController.dart';
+
 class ClientDealsController extends GetxController {
   //TODO: Implement ClientDealsController
 
@@ -108,6 +110,28 @@ class ClientDealsController extends GetxController {
   FocusNode toFocus = FocusNode();
   FocusNode clientFocus = FocusNode();
   FocusNode agencyFocus = FocusNode();
+
+  FocusNode accountFocus = FocusNode();
+  FocusNode subTypeFocus = FocusNode();
+  FocusNode spotTypeFocus = FocusNode();
+  FocusNode programFocus = FocusNode();
+  FocusNode bandFocus = FocusNode();
+  FocusNode addInfoFocus = FocusNode();
+  FocusNode weekEndFocus = FocusNode();
+  FocusNode weekDayFocus = FocusNode();
+  FocusNode monDayFocus = FocusNode();
+  FocusNode tueDayFocus = FocusNode();
+  FocusNode wedDayFocus = FocusNode();
+  FocusNode thuDayFocus = FocusNode();
+  FocusNode friDayFocus = FocusNode();
+  FocusNode satDayFocus = FocusNode();
+  FocusNode sunDayFocus = FocusNode();
+  FocusNode startTimeFocus = FocusNode();
+  FocusNode endTimeFocus = FocusNode();
+  FocusNode secondsFocus = FocusNode();
+  FocusNode ratePerSeconds = FocusNode();
+  FocusNode amountFocus = FocusNode();
+  FocusNode valRateFocus = FocusNode();
 
   ScrollController scrollController = ScrollController();
   Rx<int> selectedDealNo = Rx<int>(0);
@@ -646,7 +670,7 @@ class ClientDealsController extends GetxController {
                   clientDealRetrieveModel?.agencyLeaveModel != null &&
                   clientDealRetrieveModel?.agencyLeaveModel?.newDetails != null &&
                   (clientDealRetrieveModel?.agencyLeaveModel?.newDetails?.length ?? 0) > 0) {
-                importGridList = clientDealRetrieveModel?.agencyLeaveModel?.newDetails;
+                importGridList = clientDealRetrieveModel?.agencyLeaveModel?.newDetails??[];
               }
               // linkedDealNumber
 
@@ -1007,7 +1031,7 @@ class ClientDealsController extends GetxController {
   }
 
   bool checkImport = false;
-  List<NewDetails>? importGridList = [];
+  List<NewDetails> importGridList = [];
 
   callValidationFun({List<Map<String, dynamic>>? excelData}) {
     LoadingDialog.modify("Do you wish to import file ?", () {}, () {
@@ -1015,289 +1039,7 @@ class ClientDealsController extends GetxController {
     }, cancelTitle: "Yes", deleteTitle: "No");
   }
 
-  Future<Map<String, dynamic>> getAllCode(
-      {String? sponsorTypeName,
-      String? programName,
-      String? timeBandName,
-      String? networkName,
-      String? accountName,
-      String? eventName}) {
-    Completer<Map<String, dynamic>> completer = Completer<Map<String, dynamic>>();
-    LoadingDialog.call();
-    try {
-      Map<String, dynamic> postData = {
-        "sponsorTypeName": sponsorTypeName,
-        "programName": programName,
-        "timeBand": timeBandName,
-        "netWorkName": networkName,
-        "accountname": accountName,
-        "eventname": eventName
-      };
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.Client_Deal_GET_EACH_VALUE_IMPORT,
-          json: postData,
-          fun: (map) {
-            closeDialogIfOpen();
-            if (map is Map && map['model'] != null) {
-              completer.complete(map as FutureOr<Map<String, dynamic>>?);
-            } else {
-              completer.complete({
-                "sponsorTypeCode": "",
-                "programCode": "",
-                "bandCode": "",
-                "netCode": "",
-                "accountCode": "",
-                "eventcode": ""
-              });
-            }
-          },
-          failed: (map) {
-            closeDialogIfOpen();
-            completer.complete({
-              "sponsorTypeCode": "",
-              "programCode": "",
-              "bandCode": "",
-              "netCode": "",
-              "accountCode": "",
-              "eventcode": ""
-            });
-          });
-    } catch (e) {
-      closeDialogIfOpen();
-      completer.complete({
-        "sponsorTypeCode": "",
-        "programCode": "",
-        "bandCode": "",
-        "netCode": "",
-        "accountCode": "",
-        "eventcode": ""
-      });
-    }
-    return completer.future;
-  }
-
   List<NewDetails>? importGridListNew = [];
-  btnImportClickWithCondition({List<Map<String, dynamic>>? excelDataNew}) async {
-    checkImport = false;
-    importGridListNew?.clear();
-    if (dealNoController.text.trim() == "") {
-      LoadingDialog.showErrorDialog("Deal Number Can't be blank");
-      return;
-    }
-    if (excelDataNew != null && excelDataNew.isNotEmpty) {
-      for (int i = 0; i < (excelDataNew.length); i++) {
-        if (excelDataNew[i]['SponsorTypeName'].toString().trim() == "") {
-          bool sta = await ignoreBlankRow();
-          if (sta == false) {
-            return;
-          }
-          // continue;
-        }
-        if (excelDataNew[i]['Rate'] == 0 &&
-            excelDataNew[i]['Seconds'] == 0 &&
-            excelDataNew[i]['Amount'] == 0 &&
-            excelDataNew[i]['ValuationRate'] == 0) {
-          return;
-        }
-
-        Map<String, dynamic> allCode = await getAllCode(
-            programName: excelDataNew[i]['ProgramName'],
-            accountName: excelDataNew[i]['Accountname'],
-            eventName: excelDataNew[i]['Eventname'],
-            networkName: excelDataNew[i]['NetWorkName'],
-            sponsorTypeName: excelDataNew[i]['SponsorTypeName'],
-            timeBandName: excelDataNew[i]['TimeBand']);
-
-        NewDetails newDetails = NewDetails(
-          primaryEventCode: (excelDataNew[i]['Amount'] != "") ? "1" : "0",
-          recordnumber: "",
-          sponsorTypeName: excelDataNew[i]['SponsorTypeName'],
-          programName: excelDataNew[i]['ProgramName'],
-          programCategoryCode: "",
-          starttime: "we need to check",
-          endTime: "we need to check",
-          seconds: excelDataNew[i]['Seconds'],
-          rate: excelDataNew[i]['Rate'],
-          amount: excelDataNew[i]['Amount'],
-          valuationRate: excelDataNew[i]['ValuationRate'],
-          bookedSeconds: excelDataNew[i]['BookedSeconds'],
-          programCode: allCode['programCode'],
-          sponsorTypeCode: allCode['sponsorTypeCode'],
-          balanceSeconds: excelDataNew[i]['BalanceSeconds'],
-          balanceAmount: excelDataNew[i]['BalanceAmount'],
-          timeBand: excelDataNew[i]['TimeBand'],
-          bandCode: allCode['bandCode'],
-          netWorkName: excelDataNew[i]['NetWorkName'],
-          sun: excelDataNew[i]['Sun'],
-          mon: excelDataNew[i]['Mon'],
-          tue: excelDataNew[i]['Tue'],
-          wed: excelDataNew[i]['Wed'],
-          thu: excelDataNew[i]['Thu'],
-          fri: excelDataNew[i]['Fri'],
-          sat: excelDataNew[i]['Sat'],
-          revflag: "",
-          spots: excelDataNew[i]['Spots'],
-          paymentmodecaption: excelDataNew[i]['Paymentmodecaption'],
-          revenueTypeCode: "",
-          revenueTypeName: excelDataNew[i]['RevenueTypeName'],
-          subRevenueTypeName: excelDataNew[i]['SubRevenueTypeName'],
-          subRevenueTypeCode: "",
-          countBased: excelDataNew[i]['CountBased'],
-          baseDuration: excelDataNew[i]['BaseDuration'],
-        );
-
-        if ((newDetails.sponsorTypeCode).toString().trim() == "") {
-          checkImport = true;
-        }
-
-        if ((newDetails.programName).toString().trim() != "") {
-          if ((newDetails.programCode).toString().trim() == "") {
-            checkImport = true;
-          }
-        }
-
-        if (newDetails.primaryEventCode.toString().trim() == "1") {
-          newDetails.accountname = excelDataNew[i]['Accountname'];
-          newDetails.accountCode = allCode['accountCode'];
-          if ((newDetails.accountCode).toString().trim() == "") {
-            checkImport = true;
-          }
-          newDetails.eventname = excelDataNew[i]['Eventname'];
-          newDetails.eventcode = allCode['eventcode'];
-          if ((newDetails.eventcode).toString().trim() == "") {
-            checkImport = true;
-          }
-        } else {
-          newDetails.accountname = "";
-          newDetails.accountCode = "";
-          newDetails.eventcode = "";
-          newDetails.eventname = "";
-        }
-        importGridListNew?.add(newDetails);
-      }
-    }
-  }
-
-  Future<bool> ignoreBlankRow() async {
-    Completer<bool> completer = Completer<bool>();
-    if (checkImport) {
-      // Goto DataNotAdded
-      completer.complete(false);
-      return completer.future;
-    }
-    // importGridList
-    for (int i = 0; i < (importGridListNew?.length ?? 0); i++) {
-      for (int k = 0; k < (importGridList?.length ?? 0); k++) {
-        if ((importGridList?.length ?? 0) > 0) {
-          if ((importGridListNew?[i].primaryEventCode == importGridList?[k].primaryEventCode) &&
-              (importGridListNew?[i].sponsorTypeCode == importGridList?[k].sponsorTypeCode) &&
-              (importGridListNew?[i].programCode == importGridList?[k].programCode) &&
-              (importGridListNew?[i].starttime == importGridList?[k].starttime) &&
-              (importGridListNew?[i].endTime == importGridList?[k].endTime) &&
-              (importGridListNew?[i].rate == importGridList?[k].rate) &&
-              (importGridListNew?[i].valuationRate == importGridList?[k].valuationRate) &&
-              (importGridListNew?[i].sun == importGridList?[k].sun) &&
-              (importGridListNew?[i].mon == importGridList?[k].mon) &&
-              (importGridListNew?[i].tue == importGridList?[k].tue) &&
-              (importGridListNew?[i].wed == importGridList?[k].wed) &&
-              (importGridListNew?[i].thu == importGridList?[k].thu) &&
-              (importGridListNew?[i].fri == importGridList?[k].fri) &&
-              (importGridListNew?[i].sat == importGridList?[k].sat) &&
-              (importGridListNew?[i].accountCode == importGridList?[k].accountCode) &&
-              (importGridListNew?[i].eventcode == importGridList?[k].eventcode)) {
-            bool sta = await LoadingDialog.modifyWithAsync(
-                "Similar entry already exists!\nDo you want to modify it?",
-                cancelTitle: "Yes",
-                deleteTitle: "No");
-            if (sta) {
-              bool reSta = await editRows(selectedOldIndex: 0, selectNewIndex: 0);
-            } else {
-              continue;
-            }
-          }
-        }
-      }
-    }
-    completer.complete(true);
-    return completer.future;
-  }
-
-  Future<bool> editRows({required int selectedOldIndex, required int selectNewIndex}) {
-    Completer<bool> completer = Completer<bool>();
-    try {
-      importGridList?[selectedOldIndex].primaryEventCode =
-          importGridListNew?[selectNewIndex].primaryEventCode;
-      importGridList?[selectedOldIndex].recordnumber = "${selectedOldIndex + 1}";
-      importGridList?[selectedOldIndex].sponsorTypeCode =
-          importGridListNew?[selectNewIndex].sponsorTypeCode;
-      importGridList?[selectedOldIndex].sponsorTypeName =
-          importGridListNew?[selectNewIndex].sponsorTypeName;
-      importGridList?[selectedOldIndex].programCode =
-          importGridListNew?[selectNewIndex].programCode;
-      importGridList?[selectedOldIndex].programName =
-          importGridListNew?[selectNewIndex].programName;
-      importGridList?[selectedOldIndex].programCategoryCode =
-          importGridListNew?[selectNewIndex].programCategoryCode;
-      importGridList?[selectedOldIndex].starttime = importGridListNew?[selectNewIndex].starttime;
-      importGridList?[selectedOldIndex].endTime = importGridListNew?[selectNewIndex].endTime;
-      importGridList?[selectedOldIndex].seconds = importGridListNew?[selectNewIndex].seconds;
-      importGridList?[selectedOldIndex].rate = importGridListNew?[selectNewIndex].rate;
-      importGridList?[selectedOldIndex].amount = importGridListNew?[selectNewIndex].amount;
-      importGridList?[selectedOldIndex].valuationRate =
-          importGridListNew?[selectNewIndex].valuationRate;
-      importGridList?[selectedOldIndex].bookedSeconds =
-          importGridListNew?[selectNewIndex].bookedSeconds;
-      importGridList?[selectedOldIndex].balanceSeconds =
-          importGridListNew?[selectNewIndex].balanceSeconds;
-      importGridList?[selectedOldIndex].balanceAmount =
-          importGridListNew?[selectNewIndex].balanceAmount;
-      importGridList?[selectedOldIndex].bandCode = importGridListNew?[selectNewIndex].bandCode;
-      importGridList?[selectedOldIndex].timeBand = importGridListNew?[selectNewIndex].timeBand;
-      importGridList?[selectedOldIndex].netCode = importGridListNew?[selectNewIndex].netCode;
-      importGridList?[selectedOldIndex].netWorkName =
-          importGridListNew?[selectNewIndex].netWorkName;
-      importGridList?[selectedOldIndex].sun = importGridListNew?[selectNewIndex].sun;
-      importGridList?[selectedOldIndex].mon = importGridListNew?[selectNewIndex].mon;
-      importGridList?[selectedOldIndex].tue = importGridListNew?[selectNewIndex].tue;
-      importGridList?[selectedOldIndex].wed = importGridListNew?[selectNewIndex].wed;
-      importGridList?[selectedOldIndex].thu = importGridListNew?[selectNewIndex].thu;
-      importGridList?[selectedOldIndex].fri = importGridListNew?[selectNewIndex].fri;
-      importGridList?[selectedOldIndex].sat = importGridListNew?[selectNewIndex].sat;
-      importGridList?[selectedOldIndex].revflag = importGridListNew?[selectNewIndex].revflag;
-      importGridList?[selectedOldIndex].accountCode =
-          importGridListNew?[selectNewIndex].accountCode;
-      importGridList?[selectedOldIndex].accountname =
-          importGridListNew?[selectNewIndex].accountname;
-      importGridList?[selectedOldIndex].eventcode = importGridListNew?[selectNewIndex].eventcode;
-      importGridList?[selectedOldIndex].eventname = importGridListNew?[selectNewIndex].eventname;
-      importGridList?[selectedOldIndex].spots = importGridListNew?[selectNewIndex].spots;
-      importGridList?[selectedOldIndex].paymentmodecaption =
-          importGridListNew?[selectNewIndex].paymentmodecaption;
-      importGridList?[selectedOldIndex].revenueTypeName =
-          importGridListNew?[selectNewIndex].revenueTypeName;
-      importGridList?[selectedOldIndex].revenueTypeCode =
-          importGridListNew?[selectNewIndex].revenueTypeCode;
-      importGridList?[selectedOldIndex].subRevenueTypeCode =
-          importGridListNew?[selectNewIndex].subRevenueTypeCode;
-      importGridList?[selectedOldIndex].subRevenueTypeName =
-          importGridListNew?[selectNewIndex].subRevenueTypeName;
-      importGridList?[selectedOldIndex].countBased = importGridListNew?[selectNewIndex].countBased;
-      importGridList?[selectedOldIndex].baseDuration =
-          importGridListNew?[selectNewIndex].baseDuration;
-
-      secondsController.text = colTotal("seconds");
-      amountController.text = colTotal("amount");
-
-      if (double.parse(amountController.text ?? "0") > 0) {
-        maxSpeedController.text = amountController.text;
-      }
-
-      completer.complete(true);
-    } catch (e) {
-      completer.complete(false);
-    }
-    return completer.future;
-  }
 
   String colTotal(String col) {
     double amt = 0;
@@ -1365,10 +1107,10 @@ class ClientDealsController extends GetxController {
           (stateManager?.rows[selectedIndex].cells['recordnumber']?.value ?? "").toString();
 
       sponsorTypeCode =
-          (stateManager?.rows[selectedIndex].cells['SponsorTypeCode']?.value ?? "").toString();
+          (stateManager?.rows[selectedIndex].cells['sponsorTypeCode']?.value ?? "").toString();
 
       selectSpotType?.value = DropDownValue(
-          key: (stateManager?.rows[selectedIndex].cells['SponsorTypeCode']?.value ?? "").toString(),
+          key: (stateManager?.rows[selectedIndex].cells['sponsorTypeCode']?.value ?? "").toString(),
           value:
               (stateManager?.rows[selectedIndex].cells['sponsorTypeName']?.value ?? "").toString());
 
@@ -1388,7 +1130,7 @@ class ClientDealsController extends GetxController {
           (stateManager?.rows[selectedIndex].cells['amount']?.value ?? "").toString();
       selectBand?.value = DropDownValue(
           value: (stateManager?.rows[selectedIndex].cells['timeBand']?.value ?? "").toString(),
-          key: (stateManager?.rows[selectedIndex].cells['bandcode']?.value ?? "").toString());
+          key: (stateManager?.rows[selectedIndex].cells['bandCode']?.value ?? "").toString());
 
       print(">>>>>>>>>>>>>>sat${stateManager?.rows[selectedIndex].cells['sun']?.value ?? ""}");
       print(">>>>>>>>>>>>>>amt${stateManager?.rows[selectedIndex].cells['Amount']?.value ?? ""}");
@@ -1513,8 +1255,8 @@ class ClientDealsController extends GetxController {
 
     if ((txtDRecordNumber.value ?? "").toString().trim() != "0") {
       LoadingDialog.modify2("This Record Already exists!\nDo you want to modify it?", () {
-        for (int i = 0; i < (importGridList?.length ?? 0); i++) {
-          if (importGridList?[i].recordnumber.toString().toLowerCase().trim() ==
+        for (int i = 0; i < (importGridList.length ?? 0); i++) {
+          if (importGridList[i].recordnumber.toString().toLowerCase().trim() ==
               (txtDRecordNumber.value ?? "0").toString().toLowerCase().trim()) {
             addEdit(i);
             break;
@@ -1524,85 +1266,61 @@ class ClientDealsController extends GetxController {
         return;
       }, deleteTitle: "Yes", cancelTitle: "No");
     } else {
-      for (int i = 0; i < (importGridList?.length ?? 0); i++) {
-        if ((getOneZero(sta: type.value) == importGridList?[i].primaryEventCode) &&
+      bool isIn = false;
+
+      for (int i = 0; i < (importGridList.length ?? 0); i++) {
+        if ((getOneZero(sta: type.value) == importGridList[i].primaryEventCode) &&
             ((selectSpotType?.value?.key ?? "").toString().trim() ==
-                (importGridList?[i].sponsorTypeCode ?? "").toString().trim()) &&
+                (importGridList[i].sponsorTypeCode ?? "").toString().trim()) &&
             ((selectProgram?.value?.key ?? "").toString().trim() ==
-                (importGridList?[i].programCode ?? "").toString().trim()) &&
-            (startTime.text == (importGridList?[i].starttime ?? "").toString().trim()) &&
-            (endTime.text == (importGridList?[i].endTime ?? "").toString().trim()) &&
+                (importGridList[i].programCode ?? "").toString().trim()) &&
+            (startTime.text == (importGridList[i].starttime ?? "").toString().trim()) &&
+            (endTime.text == (importGridList[i].endTime ?? "").toString().trim()) &&
             (ratePerTenSecondsController.text.toString().trim() ==
-                (importGridList?[i].rate ?? "").toString().trim()) &&
+                (importGridList[i].rate ?? "").toString().trim()) &&
             (valueRateController.text.toString().trim() ==
-                (importGridList?[i].valuationRate ?? "").toString().trim()) &&
-            (getOneZero(sta: sun.value) == (importGridList?[i].sun ?? "").toString().trim()) &&
-            (getOneZero(sta: mon.value) == (importGridList?[i].mon ?? "").toString().trim()) &&
-            (getOneZero(sta: tue.value) == (importGridList?[i].tue ?? "").toString().trim()) &&
-            (getOneZero(sta: wed.value) == (importGridList?[i].wed ?? "").toString().trim()) &&
-            (getOneZero(sta: thu.value) == (importGridList?[i].fri ?? "").toString().trim()) &&
-            (getOneZero(sta: sat.value) == (importGridList?[i].sat ?? "").toString().trim()) &&
+                (importGridList[i].valuationRate ?? "").toString().trim()) &&
+            (getOneZero(sta: sun.value) == (importGridList[i].sun ?? "").toString().trim()) &&
+            (getOneZero(sta: mon.value) == (importGridList[i].mon ?? "").toString().trim()) &&
+            (getOneZero(sta: tue.value) == (importGridList[i].tue ?? "").toString().trim()) &&
+            (getOneZero(sta: wed.value) == (importGridList[i].wed ?? "").toString().trim()) &&
+            (getOneZero(sta: thu.value) == (importGridList[i].fri ?? "").toString().trim()) &&
+            (getOneZero(sta: sat.value) == (importGridList[i].sat ?? "").toString().trim()) &&
             ((selectAccount?.value?.key).toString().trim() ==
-                (importGridList?[i].accountCode ?? "").toString().trim()) &&
+                (importGridList[i].accountCode ?? "").toString().trim()) &&
             ((selectSubType?.value?.key ?? "").toString().trim() ==
-                (importGridList?[i].eventcode ?? "").toString().trim())) {
+                (importGridList[i].eventcode ?? "").toString().trim())) {
+          isIn = true;
           bool sta = await LoadingDialog.modifyWithAsync(
               "Similar entry already exists!\nDo you want to modify it?",
               deleteTitle: "Yes",
               cancelTitle: "No");
           if (sta) {
-            // addEdit(i);
-            continue;
+            addEdit(i);
+            // continue;
           } else {
             bool sta1 = await LoadingDialog.modifyWithAsync("Do you want to duplicate this row?",
                 deleteTitle: "Yes", cancelTitle: "No");
             if (sta1) {
-              return;
+              addEdit(i,isNew: true);
             } else {
-              // addEdit(i);
-              continue;
+              // continue;
+              return;
             }
           }
           break;
         }
+        if((i == (importGridList.length ?? 0) -1) && isIn == false ){
+          addEdit(i+1,isNew: true);
+        }
+      }
 
-
+      if(importGridList.isEmpty){
+        addEdit(0,isNew: true);
       }
     }
   }
 
-  addEdit(int index) {
-    importGridList?[index].recordnumber = txtDRecordNumber.value;
-    importGridList?[index].sponsorTypeCode = selectSpotType?.value?.key ?? "";
-    importGridList?[index].sponsorTypeName = selectSpotType?.value?.value ?? "";
-    importGridList?[index].programCode = selectProgram?.value?.key ?? "";
-    importGridList?[index].programName = selectProgram?.value?.value ?? "";
-    importGridList?[index].starttime = startTime.text ?? "";
-    importGridList?[index].endTime = endTime.text ?? "";
-    importGridList?[index].seconds = secondsController2.text ?? "";
-    importGridList?[index].rate = ratePerTenSecondsController.text ?? "";
-    importGridList?[index].amount = amountController2.text ?? "";
-    importGridList?[index].bandCode = selectBand?.value?.key ?? "";
-    importGridList?[index].timeBand = selectBand?.value?.value ?? "";
-    importGridList?[index].valuationRate = valueRateController.text ?? "";
-    importGridList?[index].netCode = selectAddInfo?.value?.key ?? "";
-    importGridList?[index].netWorkName = selectAddInfo?.value?.key ?? "";
-    importGridList?[index].sun = getOneZero(sta: sun.value);
-    importGridList?[index].mon = getOneZero(sta: mon.value);
-    importGridList?[index].tue = getOneZero(sta: tue.value);
-    importGridList?[index].wed = getOneZero(sta: wed.value);
-    importGridList?[index].thu = getOneZero(sta: thu.value);
-    importGridList?[index].fri = getOneZero(sta: fri.value);
-    importGridList?[index].sat = getOneZero(sta: sat.value);
-    importGridList?[index].primaryEventCode = getOneZero(sta: type.value);
-    if (type.value == true) {
-      importGridList?[index].accountCode = selectAccount?.value?.key ?? "";
-      importGridList?[index].accountname = selectAccount?.value?.value ?? "";
-      importGridList?[index].eventcode = selectAccount?.value?.key ?? "";
-      importGridList?[index].eventname = selectAccount?.value?.value ?? "";
-    }
-    btnClearClick();
-  }
 
   getOneZero({bool? sta}) {
     if (sta ?? false) {
@@ -1620,6 +1338,38 @@ class ClientDealsController extends GetxController {
 
   @override
   void onClose() {
+
+     channelFocus.dispose();
+     locationFocus.dispose();
+     dealNoFocus.dispose();
+     dateFocus.dispose();
+     fromFocus.dispose();
+     toFocus.dispose();
+     clientFocus.dispose();
+     agencyFocus.dispose();
+
+     accountFocus.dispose();
+     subTypeFocus.dispose();
+     spotTypeFocus.dispose();
+     programFocus.dispose();
+     bandFocus.dispose();
+     addInfoFocus.dispose();
+     weekEndFocus.dispose();
+     weekDayFocus.dispose();
+     monDayFocus.dispose();
+     tueDayFocus.dispose();
+     wedDayFocus.dispose();
+     thuDayFocus.dispose();
+     friDayFocus.dispose();
+     satDayFocus.dispose();
+     sunDayFocus.dispose();
+     startTimeFocus.dispose();
+     endTimeFocus.dispose();
+     secondsFocus.dispose();
+     ratePerSeconds.dispose();
+     amountFocus.dispose();
+     valRateFocus.dispose();
+
     super.onClose();
   }
 

@@ -810,6 +810,9 @@ class ApiFactory {
   static String get Client_Deal_GET_AGENCY_ADDRESS =>
       "$BASE_URL/api/ClientDeals/GetAgencyAddress";
 
+  static String get Client_Deal_GET_PROGRAM =>
+      "$BASE_URL/api/ClientDeals/GetAgencyAddress";
+
   /// ////////////////////////////////End Client Deals ////////////////////////////////////
   ///
   ///
