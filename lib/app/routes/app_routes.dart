@@ -40,7 +40,7 @@ abstract class Routes {
   static const CURRENCY_TYPE_MASTER = _Paths.CURRENCY_TYPE_MASTER;
   static const EXPORT_BILLING_F_P_C = _Paths.EXPORT_BILLING_F_P_C;
   static const CLIENT_DEALS = _Paths.CLIENT_DEALS;
-  static const S_A_P_B_ILL_CHECK_REPORT = _Paths.S_A_P_B_ILL_CHECK_REPORT;
+  static const SAP_BILL_CHECK_REPORT = _Paths.S_A_P_B_ILL_CHECK_REPORT;
   static const GENERATE_BOOKING_REPORT = _Paths.GENERATE_BOOKING_REPORT;
   static const E_BILL_AGENCY_GROUP_MASTER = _Paths.E_BILL_AGENCY_GROUP_MASTER;
   static const ASRUN_SPECIFICATION_AD_REVENUE =
@@ -64,6 +64,7 @@ abstract class RoutesList {
     _Paths.CLIENT_EMBARGO,
     _Paths.EXPORT_BILLING_F_P_C,
     _Paths.G_S_T_PLANT_INFO,
+    _Paths.PLACE_TYPE_MASTER,
     _Paths.PLACE_MASTER,
     _Paths.STATION_MASTER,
     _Paths.CURRENCY_TYPE_MASTER,
@@ -73,6 +74,17 @@ abstract class RoutesList {
     _Paths.SPOTS_NOT_TELECASTED_REPORT,
     _Paths.CLIENT_GROUP_MASTER,
     _Paths.COMPANY_MASTER,
+    _Paths.READYTO_BILLS,
+    _Paths.ASRUN_IMPORT_SECONDARY_EVENTS,
+    _Paths.ASRUN_VERIFICATION,
+    _Paths.AGENCY_EMBARGO,
+    _Paths.CLIENT_EMBARGO,
+    _Paths.AGENCY_GROUP_MASTER,
+    _Paths.GENERATE_BOOKING_REPORT,
+    _Paths.S_A_P_B_ILL_CHECK_REPORT,
+    _Paths.E_BILL_AGENCY_GROUP_MASTER,
+    _Paths.ASRUN_SPECIFICATION_AD_REVENUE,
+    _Paths.SECONDARY_ASRUN_MODIFICATION,
   ];
 }
 
@@ -115,13 +127,13 @@ abstract class _Paths {
   static const EXPORT_BILLING_F_P_C = '/Frmcarrtoonnetworkasrun';
   static const CLIENT_DEALS = '/frmDealMaster';
   static const S_A_P_B_ILL_CHECK_REPORT = '/frmSapBillcheckreport';
-  static const GENERATE_BOOKING_REPORT = '/generate-booking-report';
+  static const GENERATE_BOOKING_REPORT = '/frmGenerateBookingReport';
   static const E_BILL_AGENCY_GROUP_MASTER = '/Skybreakpattern';
   static const ASRUN_SPECIFICATION_AD_REVENUE = '/frmAsrunSpecification';
   static const COMPANY_CHANNEL_LINK = '/frmCompanyChannelLink';
   static const TRAFFIC_ORDER_CORRECTION = '/frmTOCorrection';
   static const BILL_EXPORT = '/frmExportData';
-  static const L_M_S_MASTER_REPORT_NEW = '/l-m-s-master-report-new';
+  // static const L_M_S_MASTER_REPORT_NEW = '/l-m-s-master-report-new';
   static const SALES_EXECUTIVE_MASTER = '/frmExecutiveMaster';
   static const EMAIL_BILL_DETAILS = '/frmBilling';
 }

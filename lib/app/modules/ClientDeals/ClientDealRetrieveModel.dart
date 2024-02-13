@@ -112,8 +112,8 @@ class Remarks {
 }
 
 class NewDetails {
-  int? primaryEventCode;
-  int? recordnumber;
+  String? primaryEventCode;
+  String? recordnumber;
   String? sponsorTypeCode;
   String? sponsorTypeName;
   String? programCode;
@@ -121,37 +121,37 @@ class NewDetails {
   String? programCategoryCode;
   String? starttime;
   String? endTime;
-  int? seconds;
-  double? rate;
-  double? amount;
-  double? valuationRate;
-  int? bookedSeconds;
-  int? balanceSeconds;
-  double? balanceAmount;
+  String? seconds;
+  String? rate;
+  String? amount;
+  String? valuationRate;
+  String? bookedSeconds;
+  String? balanceSeconds;
+  String? balanceAmount;
   String? bandCode;
   String? timeBand;
-  int? netCode;
+  String? netCode;
   String? netWorkName;
-  int? sun;
-  int? mon;
-  int? tue;
-  int? wed;
-  int? thu;
-  int? fri;
-  int? sat;
-  int? revflag;
+  String? sun;
+  String? mon;
+  String? tue;
+  String? wed;
+  String? thu;
+  String? fri;
+  String? sat;
+  String? revflag;
   String? accountCode;
   String? accountname;
-  int? eventcode;
+  String? eventcode;
   String? eventname;
-  int? spots;
+  String? spots;
   String? paymentmodecaption;
   String? revenueTypeName;
   String? revenueTypeCode;
   String? subRevenueTypeName;
-  int? subRevenueTypeCode;
-  int? countBased;
-  int? baseDuration;
+  String? subRevenueTypeCode;
+  String? countBased;
+  String? baseDuration;
 
   NewDetails(
       {this.primaryEventCode,
@@ -196,8 +196,8 @@ class NewDetails {
         this.baseDuration});
 
   NewDetails.fromJson(Map<String, dynamic> json) {
-    primaryEventCode = json['primaryEventCode'];
-    recordnumber = json['recordnumber'];
+    primaryEventCode = (json['primaryEventCode']??"").toString();
+    recordnumber = (json['recordnumber']??"").toString();
     sponsorTypeCode = json['sponsorTypeCode'];
     sponsorTypeName = json['sponsorTypeName'];
     programCode = json['programCode'];
@@ -205,37 +205,37 @@ class NewDetails {
     programCategoryCode = json['programCategoryCode'];
     starttime = json['starttime'];
     endTime = json['endTime'];
-    seconds = json['seconds'];
-    rate = json['rate'];
-    amount = json['amount'];
-    valuationRate = json['valuationRate'];
-    bookedSeconds = json['bookedSeconds'];
-    balanceSeconds = json['balanceSeconds'];
-    balanceAmount = json['balanceAmount'];
+    seconds = (json['seconds']??"").toString();
+    rate = (json['rate']??"").toString();
+    amount = (json['amount']??"").toString();
+    valuationRate = (json['valuationRate']??"").toString();
+    bookedSeconds = (json['bookedSeconds']??"").toString();
+    balanceSeconds = (json['balanceSeconds']??"").toString();
+    balanceAmount = (json['balanceAmount']??"").toString();
     bandCode = json['bandCode'];
     timeBand = json['timeBand'];
-    netCode = json['netCode'];
+    netCode = (json['netCode']??"").toString();
     netWorkName = json['netWorkName'];
-    sun = json['sun'];
-    mon = json['mon'];
-    tue = json['tue'];
-    wed = json['wed'];
-    thu = json['thu'];
-    fri = json['fri'];
-    sat = json['sat'];
-    revflag = json['revflag'];
+    sun = (json['sun']??"").toString();
+    mon = (json['mon']??"").toString();
+    tue = (json['tue']??"").toString();
+    wed = (json['wed']??"").toString();
+    thu = (json['thu']??"").toString();
+    fri = (json['fri']??"").toString();
+    sat = (json['sat']??"").toString();
+    revflag = (json['revflag']??"").toString();
     accountCode = json['accountCode'];
     accountname = json['accountname'];
-    eventcode = json['eventcode'];
+    eventcode = (json['eventcode']??"").toString();
     eventname = json['eventname'];
-    spots = json['spots'];
+    spots = (json['spots']??"").toString();
     paymentmodecaption = json['paymentmodecaption'];
     revenueTypeName = json['revenueTypeName'];
     revenueTypeCode = json['revenueTypeCode'];
     subRevenueTypeName = json['subRevenueTypeName'];
-    subRevenueTypeCode = json['subRevenueTypeCode'];
-    countBased = json['countBased'];
-    baseDuration = json['baseDuration'];
+    subRevenueTypeCode = (json['subRevenueTypeCode']??"").toString();
+    countBased = (json['countBased']??"").toString();
+    baseDuration = (json['baseDuration']??"").toString();
   }
 
   Map<String, dynamic> toJson() {

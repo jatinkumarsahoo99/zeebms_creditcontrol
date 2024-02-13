@@ -4,154 +4,221 @@ import 'package:get/get.dart';
 
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
+import '../../../../widgets/PlutoGrid/src/pluto_grid.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../../widgets/sized_box_widget.dart';
 import '../../../controller/HomeController.dart';
+import '../../../data/user_data_settings_model.dart';
 import '../../../routes/app_pages.dart';
 import '../controllers/company_channel_link_controller.dart';
 
 class CompanyChannelLinkView extends GetView<CompanyChannelLinkController> {
   CompanyChannelLinkView({Key? key}) : super(key: key);
 
-  final controller = Get.put<CompanyChannelLinkController>(
+  CompanyChannelLinkController controller = Get.put<CompanyChannelLinkController>(
     CompanyChannelLinkController(),
   );
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: GetBuilder(
-      init: controller,
-      builder: (controller) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Row(
+        body: SizedBox(
+      width: double.maxFinite,
+      height: double.maxFinite,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            GetBuilder<CompanyChannelLinkController>(
+                id: "init",
+                init: controller,
+                builder: (logic) {
+                  return Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        flex:6,
+                        child: Column(
                           children: [
-                            Expanded(
-                              child: DropDownField.formDropDown1WidthMapExpand(
-                                [],
-                                (value) {},
-                                "Location Name",
-                                // .23,
-                                autoFocus: true,
-                                // titleInLeft: true,
-                              ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child:
+                                      DropDownField.formDropDown1WidthMapExpand(
+                                    controller.initData?.lstLocations ?? [],
+                                    (value) {
+                                      controller.selectLocation = value;
+                                      controller.getChannel();
+                                    },
+                                    "Location Name",
+                                    autoFocus: true,
+                                    selected: controller.selectLocation,
+                                  ),
+                                ),
+                                sizedBoxWidth(10),
+                                Expanded(
+                                  child:
+                                      DropDownField.formDropDown1WidthMapExpand(
+                                    controller.channelList ?? [],
+                                    (value) {
+                                      controller.selectChannel = value;
+                                    },
+                                    "Channel Name",
+                                    // .23,
+                                    // autoFocus: true,
+                                    selected: controller.selectChannel,
+                                    // titleInLeft: true,
+                                  ),
+                                ),
+                              ],
                             ),
-                            sizedBoxWidth(10),
-                            Expanded(
-                              child: DropDownField.formDropDown1WidthMapExpand(
-                                [],
-                                (value) {},
-                                "Channel Name",
+                            sizedBoxHeight(5),
+                            DropDownField.formDropDown1WidthMapExpand(
+                                controller.initData?.lstfillComboRes
+                                        ?.lstCollectionAgent ??
+                                    [], (value) {
+                              controller.selectCollAgent = value;
+                            }, "Collection Agent",
                                 // .23,
-                                autoFocus: true,
+                                // autoFocus: true,
+                                selected: controller.selectCollAgent
                                 // titleInLeft: true,
-                              ),
+                                ),
+                            sizedBoxHeight(5),
+                            DropDownField.formDropDown1WidthMapExpand(
+                                controller.initData?.lstfillComboRes
+                                        ?.lstParents ??
+                                    [], (value) {
+                              controller.selectParentCompany = value;
+                              controller.getSapProfile();
+                            }, "Parent Company",
+                                // .23,
+                                // autoFocus: true,
+                                selected: controller.selectParentCompany
+                                // titleInLeft: true,
+                                ),
+                            sizedBoxHeight(5),
+                            Obx(() {
+                              return DropDownField.formDropDown1WidthMapExpand(
+                                  controller.sapProfileList?.value ?? [],
+                                  (value) {
+                                controller.selectSapProfCen = value;
+                              }, "Sap Profit Center",
+                                  // .23,
+                                  autoFocus: true,
+                                  selected: controller.selectSapProfCen
+                                  // titleInLeft: true,
+                                  );
+                            }),
+                          ],
+                        ),
+                      ),
+                      sizedBoxWidth(10),
+                      Expanded(
+                        flex:4,
+                        child: Column(
+                          children: [
+                            DropDownField.formDropDown1WidthMapExpand(
+                                controller.initData?.lstfillComboRes
+                                        ?.lstPayRouteCategories ??
+                                    [], (value) {
+                              controller.selectPayrouteCat = value;
+                            }, "Payroute Category",
+                                // .23,
+                                // autoFocus: true,
+                                selected: controller.selectPayrouteCat
+                                // titleInLeft: true,
+                                ),
+                            sizedBoxHeight(5),
+                            DropDownField().formDropDownCheckBoxMapExpanded(
+                              controller.initData?.lstfillComboRes
+                                      ?.lstCurrencies ??
+                                  [],
+                              (value) {
+                                // controller.selectCurrency = value;
+                              },
+                              "Currency",
+                              // 0.16,
+                              onChanged: (index, selectValue) {
+                                // controller.locations[index].isSelected = selectValue;
+                                controller
+                                    .initData
+                                    ?.lstfillComboRes
+                                    ?.lstCurrencies![index]
+                                    .isSelected = selectValue;
+                              },
+                              // showData:
                             ),
                           ],
                         ),
-                        sizedBoxHeight(5),
-                        DropDownField.formDropDown1WidthMapExpand(
-                          [],
-                          (value) {},
-                          "Collection Agent",
-                          // .23,
-                          autoFocus: true,
-                          // titleInLeft: true,
-                        ),
-                        sizedBoxHeight(5),
-                        DropDownField.formDropDown1WidthMapExpand(
-                          [],
-                          (value) {},
-                          "Parent Company",
-                          // .23,
-                          autoFocus: true,
-                          // titleInLeft: true,
-                        ),
-                        sizedBoxHeight(5),
-                        DropDownField.formDropDown1WidthMapExpand(
-                          [],
-                          (value) {},
-                          "Sap Profit Center",
-                          // .23,
-                          autoFocus: true,
-                          // titleInLeft: true,
-                        ),
-                      ],
-                    ),
-                  ),
-                  sizedBoxWidth(10),
-                  SizedBox(
-                    width: Get.width * .4,
-                    child: Expanded(
-                      child: Column(
-                        children: [
-                          DropDownField.formDropDown1WidthMapExpand(
-                            [],
-                            (value) {},
-                            "Payroute Category",
-                            // .23,
-                            autoFocus: true,
-                            // titleInLeft: true,
-                          ),
-                          sizedBoxHeight(5),
-                          DropDownField().formDropDownCheckBoxMapExpanded(
-                            [],
-                            (value) {},
-                            "Currency",
-                            // 0.16,
-                            onChanged: (index, selectValue) {
-                              // controller.locations[index].isSelected = selectValue;
-                            },
-                            // showData:
-                          ),
-                        ],
                       ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              // Obx(
-              //   () =>
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                  ),
-                ),
-              ),
+                    ],
+                  );
+                }),
+            const SizedBox(height: 10),
+            // Obx(
+            //   () =>
+            GetBuilder<CompanyChannelLinkController>(
+                init: controller,
+                id: "grid",
+                builder: (logic) {
+                  return Expanded(
+                    child: (controller.initData != null &&
+                            controller.initData?.companyChannelLinkDatas !=
+                                null)
+                        ? DataGridFromMap(
+                            showSrNo: true,
+                            exportFileName: "Client Channel Link",
+                            mode: PlutoGridMode.normal,
+                            mapData: (controller
+                                .initData?.companyChannelLinkDatas
+                                ?.map((e) => e.toJson())
+                                .toList())!,
 
-              SizedBox(
-                // width: 40,
-                height: 10,
-              ),
+                            // mapData: (controllerX.dataList)!,
+                            widthRatio: Get.width / 9 - 1,
+                            onload: (PlutoGridOnLoadedEvent load) {
+                              controller.gridManager = load.stateManager;
+                            },
+                            widthSpecificColumn: (controller
+                                .userDataSettings?.userSetting
+                                ?.firstWhere(
+                                    (element) =>
+                                        element.controlName == "gridManager",
+                                    orElse: () => UserSetting())
+                                .userSettings),
+                          )
+                        : Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                            ),
+                          ),
+                  );
+                }),
 
-              // ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Get.find<HomeController>().getCommonButton(
-                  Routes.COMPANY_CHANNEL_LINK,
-                  // handleAutoClear: false,
-                  // disableBtns: ['Save', 'Refresh'],
-                  (btnName) {
-                    // controller.formHandler(btnName);
-                  },
-                ),
+            SizedBox(
+              // width: 40,
+              height: 10,
+            ),
+
+            // ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Get.find<HomeController>().getCommonButton(
+                Routes.COMPANY_CHANNEL_LINK,
+                // handleAutoClear: false,
+                // disableBtns: ['Save', 'Refresh'],
+                (btnName) {
+                  controller.formHandler(btnName);
+                },
               ),
-            ],
-          ),
-        );
-      },
+            ),
+          ],
+        ),
+      ),
     ));
   }
 }

@@ -2,14 +2,21 @@ class DropDownValue {
   String? value;
 
   String? key;
+  String? optional;
   int? selectedIndex = 0;
+  bool? isSelected = false;
 
-  DropDownValue({this.value, this.key,this.selectedIndex});
+  DropDownValue({this.value, this.key, this.selectedIndex, this.optional});
 
   DropDownValue.fromJson(Map<String, dynamic> json) {
     value = json['value'];
 
     key = json['key'];
+  }
+
+  DropDownValue.fromJson1(Map<String, dynamic> json) {
+    value = (json['locationName'] ?? json['name']).toString();
+    key = (json['locationCode'] ?? json['code']).toString();
   }
 
   DropDownValue.fromJsonDynamic(
@@ -25,6 +32,29 @@ class DropDownValue {
     data['value'] = value;
 
     data['key'] = key;
+    return data;
+  }
+  Map<String, dynamic> toJsonEbill() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = value;
+
+    data['key'] = key;
+    data[''] = key;
+    return data;
+  }
+
+  Map<String, dynamic> toJson1({String ? valueNew,String ? keyNew}) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data[valueNew??'value'] = value;
+    data[keyNew??'key'] = key;
+    return data;
+  }
+
+  Map<String, dynamic> toJsonCustom(key1,value1) {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data[value1] = value;
+
+    data[key1] = key;
     return data;
   }
 }

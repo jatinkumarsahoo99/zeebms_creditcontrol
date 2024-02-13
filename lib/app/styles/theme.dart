@@ -89,7 +89,15 @@ PlutoGridConfiguration plutoGridConfiguration({
             columnTextStyle: TextStyle(fontSize: SizeDefine.columnTitleFontSize, fontWeight: FontWeight.bold)),
         enterKeyAction: PlutoGridEnterKeyAction.none,
         tabKeyAction: PlutoGridTabKeyAction.moveToNextOnEdge,
-        scrollbar: const PlutoGridScrollbarConfig(draggableScrollbar: true, isAlwaysShown: true, hoverWidth: 15));
+      scrollbar: PlutoGridScrollbarConfig(
+        draggableScrollbar: true,
+        isAlwaysShown: true,
+        hoverWidth: 15,
+        scrollbarThickness: 15,
+        scrollbarThicknessWhileDragging: 15,
+        scrollbarRadius: Radius.circular(8),
+        scrollbarRadiusWhileDragging: Radius.circular(8),
+      ),);
 
 PlutoGridConfiguration plutoGridConfiguration2({
   Function(PlutoGridCellPosition index, bool isSpace)? actionOnPress,
@@ -145,7 +153,15 @@ PlutoGridConfiguration plutoGridConfiguration2({
             columnTextStyle: TextStyle(fontSize: SizeDefine.columnTitleFontSize, fontWeight: FontWeight.bold)),
         enterKeyAction: PlutoGridEnterKeyAction.none,
         tabKeyAction: PlutoGridTabKeyAction.moveToNextOnEdge,
-        scrollbar: const PlutoGridScrollbarConfig(draggableScrollbar: true, isAlwaysShown: true, hoverWidth: 15));
+      scrollbar: PlutoGridScrollbarConfig(
+        draggableScrollbar: true,
+        isAlwaysShown: true,
+        hoverWidth: 15,
+        scrollbarThickness: 15,
+        scrollbarThicknessWhileDragging: 15,
+        scrollbarRadius: Radius.circular(8),
+        scrollbarRadiusWhileDragging: Radius.circular(8),
+      ),);
 
 // Create a new class that inherits from PlutoGridShortcutAction
 // If the execute method is implemented,
