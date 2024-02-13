@@ -998,4 +998,18 @@ class ApiFactory {
 
   static String get CLEAR_SECONDARY_SPOTS_GET_ASTRO =>
       "$BASE_URL/api/ClearSecondarySpot/GetAstro";
+
+  /// //////////////////////////////// Company master ////////////////////////////////////
+
+  static String get COMPANY_MASTER_GETLOAD =>
+      "$BASE_URL/api/CompanyMaster/GetLoad";
+
+  static String COMPANY_MASTER_GET_GET_RETRIVE({
+    required String companyCode,
+    required String companyName,
+  }) =>
+      "$BASE_URL/api/CompanyMaster/GetRetrive?Companycode=$companyCode&companyName=$companyName";
+
+  static String get COMPANY_MASTER_ONSAVE =>
+      "$BASE_URL/api/CompanyMaster/PostSave";
 }

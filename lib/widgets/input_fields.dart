@@ -592,6 +592,7 @@ class InputFields {
   }
 
   static Widget formFieldExpand2({
+    TextInputType? keyboardType,
     String? Function(String?)? validator,
     required String hintTxt,
     required TextEditingController controller,
@@ -675,7 +676,7 @@ class InputFields {
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   onChanged: (onchanged != null) ? onchanged : null,
                   textAlignVertical: TextAlignVertical.top,
-                  keyboardType: TextInputType.datetime,
+                  keyboardType: keyboardType ?? TextInputType.datetime,
                   textAlign: TextAlign.start,
                   onFieldSubmitted: onFieldSubmitted,
                   inputFormatters: inputformatters.isEmpty
