@@ -107,7 +107,7 @@ abstract class _Paths {
   static const R_O_AUDIT = '/frmAuditStatus';
   static const AGENCY_MASTER = '/frmAgencyMaster';
   static const CLIENT_EMBARGO = '/frmClientEmbargo';
-  static const E_BILLS_FOR_BONUS_ACTIVITY = '/e-bills-for-bonus-activity';
+  static const E_BILLS_FOR_BONUS_ACTIVITY = '/frmEBiller_BA';
   static const SECONDARY_ASRUN_MODIFICATION = '/frmSecondaryAsRunModification';
   static const AGENCY_GROUP_MASTER = '/frmAgencyGroupMaster';
   static const DEAL_REPORT = '/frmdealreport';
