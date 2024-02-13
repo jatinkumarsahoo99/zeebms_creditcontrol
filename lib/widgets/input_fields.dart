@@ -592,6 +592,7 @@ class InputFields {
   }
 
   static Widget formFieldExpand2({
+    // TextInputType? keyboardType,
     String? Function(String?)? validator,
     required String hintTxt,
     required TextEditingController controller,

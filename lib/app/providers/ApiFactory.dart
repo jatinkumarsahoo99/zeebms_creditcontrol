@@ -1088,6 +1088,32 @@ class ApiFactory {
       "$BASE_URL/api/ClientMaster/PostSaveRecord";
 
   /// ////////////////////////// End CLIENT MASTER Model////////////////////////////////
+
+  /// //////////////////////////////// clear secondary spots ////////////////////////////////////
+  ///
+  static String get CLEAR_SECONDARY_SPOTS_GETLOAD =>
+      "$BASE_URL/api/ClearSecondarySpot/GetLoad";
+
+  static String get CLEAR_SECONDARY_SPOTS_GET_SCROLL =>
+      "$BASE_URL/api/ClearSecondarySpot/GetScroll";
+
+  static String get CLEAR_SECONDARY_SPOTS_GET_ASTRO =>
+      "$BASE_URL/api/ClearSecondarySpot/GetAstro";
+
+  /// //////////////////////////////// Company master ////////////////////////////////////
+
+  static String get COMPANY_MASTER_GETLOAD =>
+      "$BASE_URL/api/CompanyMaster/GetLoad";
+
+  static String COMPANY_MASTER_GET_GET_RETRIVE({
+    required String companyCode,
+    required String companyName,
+  }) =>
+      "$BASE_URL/api/CompanyMaster/GetRetrive?Companycode=$companyCode&companyName=$companyName";
+
+  static String get COMPANY_MASTER_ONSAVE =>
+      "$BASE_URL/api/CompanyMaster/PostSave";
+
   ///
   ///
   ///
@@ -1292,7 +1318,7 @@ class ApiFactory {
   static String get EBILL_AGENCY_GRP_LEAVE =>
       "$BASE_URL/api/EBillAgencyGroupMaster/GetGroupNameLeave?groupCode=";
 
-  static String EBILL_AGENCY_ADD_GRP(String grpCode,String agency) =>
+  static String EBILL_AGENCY_ADD_GRP(String grpCode, String agency) =>
       "$BASE_URL/api/EBillAgencyGroupMaster/GetAddNewGroup?groupCode=$grpCode&agency=$agency";
 
   static String get EBILL_AGENCY_REMOVE_GRP =>
