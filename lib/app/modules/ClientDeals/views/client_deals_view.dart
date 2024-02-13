@@ -1489,7 +1489,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                               FormButton1(
                                 btnText: "Import",
                                 callback: () async {
-                                  controller.pickFile();
+                                  // controller.pickFile();
                                   /*int siz = 6;
                                   for(int i=0;i<siz;i++){
                                     if(i == 2 || i== 4){
