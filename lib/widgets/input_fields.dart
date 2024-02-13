@@ -592,7 +592,9 @@ class InputFields {
   }
 
   static Widget formFieldExpand2({
+    // TextInputType? keyboardType,
     String? Function(String?)? validator,
+    double? bottomPaddingHeight,
     required String hintTxt,
     required TextEditingController controller,
     Function(String)? onchanged,
@@ -753,7 +755,7 @@ class InputFields {
           ],
         ),
         SizedBox(
-          height: bottomPadding ? 5 : 0,
+          height: bottomPaddingHeight ?? (bottomPadding ? 5 : 0),
         )
       ],
     );

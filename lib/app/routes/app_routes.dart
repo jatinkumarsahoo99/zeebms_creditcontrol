@@ -73,6 +73,7 @@ abstract class RoutesList {
     _Paths.CREDIT_RATE_MASTER,
     _Paths.SPOTS_NOT_TELECASTED_REPORT,
     _Paths.CLIENT_GROUP_MASTER,
+    _Paths.COMPANY_MASTER,
     _Paths.READYTO_BILLS,
     _Paths.ASRUN_IMPORT_SECONDARY_EVENTS,
     _Paths.ASRUN_VERIFICATION,
@@ -109,7 +110,7 @@ abstract class _Paths {
   static const R_O_AUDIT = '/frmAuditStatus';
   static const AGENCY_MASTER = '/frmAgencyMaster';
   static const CLIENT_EMBARGO = '/frmClientEmbargo';
-  static const E_BILLS_FOR_BONUS_ACTIVITY = '/e-bills-for-bonus-activity';
+  static const E_BILLS_FOR_BONUS_ACTIVITY = '/frmEBiller_BA';
   static const SECONDARY_ASRUN_MODIFICATION = '/frmSecondaryAsRunModification';
   static const AGENCY_GROUP_MASTER = '/frmAgencyGroupMaster';
   static const DEAL_REPORT = '/frmdealreport';
