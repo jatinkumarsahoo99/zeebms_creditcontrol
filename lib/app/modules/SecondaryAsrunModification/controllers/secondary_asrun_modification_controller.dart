@@ -462,7 +462,8 @@ class SecondaryAsrunModificationController extends GetxController {
               } catch (e) {
                 rowMap[key] = double.parse(row.cells[key]?.value);
               }
-            } else {
+            }
+            else {
               // rowMap[key] = DateFormat("yyyy-MM-dd").format(DateTime.now()) + (row.cells[key]?.value ?? "");
               rowMap[key] = 0;
             }
