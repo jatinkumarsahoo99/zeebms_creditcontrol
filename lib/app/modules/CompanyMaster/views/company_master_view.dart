@@ -21,6 +21,7 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
       backgroundColor: Colors.grey[200],
       body: Center(
         child: SizedBox(
+          // height: Get.height * 0.9,
           // width: MediaQuery.of(context).size.width * .55,
           child: Dialog(
             backgroundColor: Colors.grey[100],
@@ -39,7 +40,7 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                       ),
                       // const SizedBox(height: 20),
                       Padding(
-                        padding: const EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(8),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -51,35 +52,51 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                     children: [
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "Company Name",
                                           controller:
                                               controller.tecCompanyName.value,
                                           focusNode: controller.companyNameFN,
+                                          // bottomPadding: false,
                                           // titleInLeft: true,
                                         );
                                       }),
+
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "Short Name",
+                                          // bottomPadding: false,
+
                                           controller:
                                               controller.tecShortName.value,
                                           // titleInLeft: true,
                                         );
                                       }),
+
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "Corp Address",
+                                          // bottomPadding: false,
                                           controller:
                                               controller.tecCorpAddress.value,
                                           // titleInLeft: true,
                                         );
                                       }),
+
                                       InputFields.formFieldExpand2(
+                                        bottomPaddingHeight: 3,
                                         hintTxt: "",
                                         controller: controller.tecCorpAddress2,
+                                        // bottomPadding: false,
+
                                         // showTitle: false,
                                         // titleInLeft: true,
                                       ),
+                                      // SizedBox(
+                                      //   height: 5,
+                                      // ),
                                       Row(
                                         children: [
                                           Expanded(
@@ -94,11 +111,13 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                                   // titleInLeft: true,
                                                   selected:
                                                       controller.selectedCity,
+
                                                   titleSizeBoxWidth: 75,
                                                 )),
                                           ),
                                           // Expanded(
                                           //   child: InputFields.formFieldExpand2(
+                                          // bottomPaddingHeight: 3,
                                           //     hintTxt: "City",
                                           //     controller: TextEditingController(),
                                           // titleInLeft: true,
@@ -114,12 +133,17 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                                 hintTxt: "Pin",
                                                 controller:
                                                     controller.tecPin.value,
+                                                // bottomPadding: false,
+
                                                 // titleInLeft: true,
                                               );
                                             }),
                                           ),
                                         ],
                                       ),
+                                      // SizedBox(
+                                      //   height: 5,
+                                      // ),
                                       Row(
                                         children: [
                                           Expanded(
@@ -129,6 +153,9 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                                 hintTxt: "TelePhone",
                                                 controller: controller
                                                     .tecTelephone.value,
+                                                bottomPaddingHeight: 3,
+                                                // bottomPadding: false,
+
                                                 // titleInLeft: true,
                                               );
                                             }),
@@ -141,6 +168,10 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                               return InputFields
                                                   .formFieldExpand2(
                                                 hintTxt: "Fax",
+                                                bottomPaddingHeight: 3,
+
+                                                // bottomPadding: false,
+
                                                 controller:
                                                     controller.tecFax.value,
                                                 // titleInLeft: true,
@@ -149,28 +180,46 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                           ),
                                         ],
                                       ),
+                                      // SizedBox(
+                                      //   height: 5,
+                                      // ),
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "Regd. Address",
                                           controller:
                                               controller.tecRegdAddress.value,
+                                          // bottomPadding: false,
+
                                           // titleInLeft: true,
                                         );
                                       }),
+                                      // SizedBox(
+                                      //   height: 5,
+                                      // ),
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "",
                                           controller:
                                               controller.tecRegdAddress2.value,
+                                          // bottomPadding: false,
+
                                           // showTitle: false,
                                           // titleInLeft: true,
                                         );
                                       }),
+                                      // SizedBox(
+                                      //   height: 5,
+                                      // ),
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "Pan Card No",
                                           controller:
                                               controller.tecPanCardNo.value,
+                                          // bottomPadding: false,
+
                                           // titleInLeft: true,
                                         );
                                       }),
@@ -185,22 +234,35 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                     children: [
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "STC No",
                                           controller:
                                               controller.tecSTC_No.value,
+                                          // bottomPadding: false,
+
                                           // titleInLeft: true,
                                         );
                                       }),
+                                      // SizedBox(
+                                      //   height: 5,
+                                      // ),
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "Former Company",
                                           controller:
                                               controller.tecFormerCompany.value,
+                                          // bottomPadding: false,
+
                                           // titleInLeft: true,
                                         );
                                       }),
+                                      // SizedBox(
+                                      //   height: 5,
+                                      // ),
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "Email Address",
                                           controller:
                                               controller.tecEmailAdreess.value,
@@ -209,6 +271,7 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                       }),
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "Website",
                                           controller:
                                               controller.tecWebSite.value,
@@ -217,6 +280,7 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                       }),
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "CIN Number",
                                           controller:
                                               controller.tecCIN_Number.value,
@@ -225,6 +289,7 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                       }),
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "Logo File",
                                           controller:
                                               controller.tecLogoFile.value,
@@ -233,6 +298,7 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                       }),
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "SAP code",
                                           controller:
                                               controller.tecSAP_Code.value,
@@ -241,6 +307,7 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                       }),
                                       Obx(() {
                                         return InputFields.formFieldExpand2(
+                                          bottomPaddingHeight: 3,
                                           hintTxt: "Remarks",
                                           controller:
                                               controller.tecRemarks.value,
