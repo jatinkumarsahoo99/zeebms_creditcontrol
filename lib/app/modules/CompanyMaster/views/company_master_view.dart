@@ -244,7 +244,7 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                           hintTxt: "Remarks",
                                           controller:
                                               controller.tecRemarks.value,
-                                          keyboardType: TextInputType.multiline,
+                                          // keyboardType: TextInputType.multiline,
                                           inputformatters: [],
                                           height: 60,
                                           expands: true,
