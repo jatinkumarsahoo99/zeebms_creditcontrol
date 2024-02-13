@@ -27,8 +27,10 @@ class AsrunSpecificationAdRevenueView
     return Scaffold(
       body: Center(
         child: SizedBox(
-          width: Get.width * 0.54,
+          width: Get.width * 0.476,
           child: Dialog(
+            alignment: Alignment.topCenter,
+            insetPadding: EdgeInsets.zero,
             child: LayoutBuilder(
                 builder: (BuildContext context, BoxConstraints constraints) {
               return Padding(
@@ -46,22 +48,20 @@ class AsrunSpecificationAdRevenueView
                     ),
                     SingleChildScrollView(
                       child: SizedBox(
-                        height: Get.height * 0.79,
+                        height: Get.height * 0.85,
                         child: SingleChildScrollView(
                           child: Material(
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                GetBuilder<
-                                        AsrunSpecificationAdRevenueController>(
+                                GetBuilder<AsrunSpecificationAdRevenueController>(
                                     id: "init",
                                     init: controllerX,
                                     builder: (logic) {
                                       return Container(
                                         decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.grey),
+                                          border: Border.all(color: Colors.grey),
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.only(
@@ -81,44 +81,38 @@ class AsrunSpecificationAdRevenueView
                                               }, "Location ", .4,
                                                   // isEnable: controllerX.isEnable.value,
                                                   // selected: controllerX.selectedBMSVersionList,
-                                                  dialogHeight:
-                                                      Get.height * .35,
-                                                  autoFocus: true,
-                                                  selected: controllerX
-                                                      .selectLocation,
+                                                  dialogHeight: Get.height * .35,
+                                                  // autoFocus: true,
+                                                  selected:
+                                                      controllerX.selectLocation,
                                                   titleInLeft: true),
                                               SizedBox(
                                                 height: 4,
                                               ),
-                                              DropDownField
-                                                  .formDropDown1WidthMap(
-                                                      controllerX.lstChannel ??
-                                                          [], (value) {
-                                                controllerX.selectChannel =
-                                                    value;
+                                              DropDownField.formDropDown1WidthMap(
+                                                  controllerX.lstChannel ?? [],
+                                                  (value) {
+                                                controllerX.selectChannel = value;
                                               }, "Channel  ", .4,
-                                                      dialogHeight:
-                                                          Get.height * .35,
-                                                      selected: controllerX
-                                                          .selectChannel,
-                                                      titleInLeft: true),
+                                                  dialogHeight: Get.height * .35,
+                                                  selected:
+                                                      controllerX.selectChannel,
+                                                  titleInLeft: true),
                                               SizedBox(
                                                 height: 4,
                                               ),
-                                              DropDownField
-                                                  .formDropDown1WidthMap(
-                                                      controllerX.lstfiletype ??
-                                                          [], (value) {
+                                              DropDownField.formDropDown1WidthMap(
+                                                  controllerX.lstfiletype ?? [],
+                                                  (value) {
                                                 controllerX.selectFileType =
                                                     value;
                                                 controllerX.getPopulate();
                                                 controllerX.visibleSelected();
                                               }, "File Type ", .4,
-                                                      dialogHeight:
-                                                          Get.height * .35,
-                                                      selected: controllerX
-                                                          .selectFileType,
-                                                      titleInLeft: true),
+                                                  dialogHeight: Get.height * .35,
+                                                  selected:
+                                                      controllerX.selectFileType,
+                                                  titleInLeft: true),
                                             ],
                                           ),
                                         ),
@@ -161,8 +155,7 @@ class AsrunSpecificationAdRevenueView
                                 SizedBox(
                                   height: 6,
                                 ),
-                                GetBuilder<
-                                        AsrunSpecificationAdRevenueController>(
+                                GetBuilder<AsrunSpecificationAdRevenueController>(
                                     id: "main1",
                                     init: controllerX,
                                     builder: (logic) {
@@ -211,8 +204,7 @@ class AsrunSpecificationAdRevenueView
                                                   isEnable: controllerX
                                                       .isEnableLeftSide,
                                                   // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.telDt1),
+                                                  controller: controllerX.telDt1),
                                               SizedBox(
                                                 width: 10,
                                               ),
@@ -225,8 +217,7 @@ class AsrunSpecificationAdRevenueView
                                                   isEnable: controllerX
                                                       .isEnableRightSide,
                                                   // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.telDt2),
+                                                  controller: controllerX.telDt2),
                                             ],
                                           ),
                                           SizedBox(
@@ -307,8 +298,7 @@ class AsrunSpecificationAdRevenueView
                                                       .isEnableLeftSide,
                                                   showTitle: true,
                                                   // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.segNo1),
+                                                  controller: controllerX.segNo1),
                                               SizedBox(
                                                 width: 10,
                                               ),
@@ -321,8 +311,7 @@ class AsrunSpecificationAdRevenueView
                                                   isEnable: controllerX
                                                       .isEnableRightSide,
                                                   // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.segNo2),
+                                                  controller: controllerX.segNo2),
                                             ],
                                           ),
                                           SizedBox(
@@ -331,8 +320,7 @@ class AsrunSpecificationAdRevenueView
                                           Row(
                                             children: [
                                               InputFields.formField1WidthBox1(
-                                                  hintTxt:
-                                                      "Export Tape Caption",
+                                                  hintTxt: "Export Tape Caption",
                                                   widthRatio: 0.155,
                                                   // height: 70,
                                                   paddingLeft: 0,
@@ -460,15 +448,13 @@ class AsrunSpecificationAdRevenueView
                                 SizedBox(
                                   height: 5,
                                 ),
-                                GetBuilder<
-                                        AsrunSpecificationAdRevenueController>(
+                                GetBuilder<AsrunSpecificationAdRevenueController>(
                                     id: "main2",
                                     init: controllerX,
                                     builder: (logic) {
                                       return Container(
                                         decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.grey),
+                                          border: Border.all(color: Colors.grey),
                                         ),
                                         child: Padding(
                                           padding: const EdgeInsets.only(
@@ -494,8 +480,7 @@ class AsrunSpecificationAdRevenueView
                                                       DropDownValue(
                                                           key: "2", value: "-"),
                                                     ], (value) {
-                                                      controllerX
-                                                              .selectTimeDiff =
+                                                      controllerX.selectTimeDiff =
                                                           value;
                                                       // controllerX.getMatchDetails(programCode: value.key??"");
                                                     }, "Time Diff:", .12,
@@ -503,7 +488,7 @@ class AsrunSpecificationAdRevenueView
                                                         // selected: controllerX.selectedBMSVersionList,
                                                         dialogHeight:
                                                             Get.height * .2,
-                                                        autoFocus: true,
+                                                        // autoFocus: true,
                                                         selected: controllerX
                                                             .selectTimeDiff,
                                                         titleInLeft: false),
@@ -529,8 +514,8 @@ class AsrunSpecificationAdRevenueView
                                                               style: TextStyle(
                                                                 fontSize: SizeDefine
                                                                     .labelSize1,
-                                                                color: Colors
-                                                                    .black,
+                                                                color:
+                                                                    Colors.black,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500,
@@ -604,8 +589,7 @@ class AsrunSpecificationAdRevenueView
                                                                     .sapFlag),
                                                     InputFields
                                                         .formField1WidthBox(
-                                                            hintTxt:
-                                                                "New Format",
+                                                            hintTxt: "New Format",
                                                             widthRatio: 0.12,
                                                             // height: 70,
                                                             paddingLeft: 0,
@@ -631,28 +615,26 @@ class AsrunSpecificationAdRevenueView
                                                     Row(
                                                       children: [
                                                         Checkbox(
-                                                            value: controllerX
-                                                                .isFpc,
+                                                            value:
+                                                                controllerX.isFpc,
                                                             onChanged: (val) {
-                                                              controllerX
-                                                                      .isFpc =
+                                                              controllerX.isFpc =
                                                                   val ?? false;
+                                                              controllerX.update(
+                                                                  ["main2"]);
                                                             },
                                                             visualDensity:
                                                                 const VisualDensity(
-                                                                    vertical:
-                                                                        -4,
+                                                                    vertical: -4,
                                                                     horizontal:
                                                                         -4)),
                                                         Text("FPC",
                                                             style: TextStyle(
                                                               fontSize: SizeDefine
                                                                   .labelSize1,
-                                                              color:
-                                                                  Colors.black,
+                                                              color: Colors.black,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                                  FontWeight.w500,
                                                             )),
                                                       ],
                                                     ),
@@ -665,16 +647,16 @@ class AsrunSpecificationAdRevenueView
                                                               controllerX
                                                                       .isMarkSlot =
                                                                   val ?? false;
+                                                              controllerX.update(
+                                                                  ["main2"]);
                                                             }),
                                                         Text("Mark Slot",
                                                             style: TextStyle(
                                                               fontSize: SizeDefine
                                                                   .labelSize1,
-                                                              color:
-                                                                  Colors.black,
+                                                              color: Colors.black,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                                  FontWeight.w500,
                                                             )),
                                                       ],
                                                     ),
@@ -687,17 +669,17 @@ class AsrunSpecificationAdRevenueView
                                                               controllerX
                                                                       .isDontUpdate =
                                                                   val ?? false;
+                                                              controllerX.update(
+                                                                  ["main2"]);
                                                             }),
                                                         Text(
                                                             "Don't Update Exposure",
                                                             style: TextStyle(
                                                               fontSize: SizeDefine
                                                                   .labelSize1,
-                                                              color:
-                                                                  Colors.black,
+                                                              color: Colors.black,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                                  FontWeight.w500,
                                                             )),
                                                       ],
                                                     ),
@@ -709,18 +691,18 @@ class AsrunSpecificationAdRevenueView
                                                             onChanged: (val) {
                                                               controllerX
                                                                       .revRunOrder =
-                                                                  val!;
+                                                                  val ?? false;
+                                                              controllerX.update(
+                                                                  ["main2"]);
                                                             }),
                                                         Text(
                                                             "Reverse As Run Order",
                                                             style: TextStyle(
                                                               fontSize: SizeDefine
                                                                   .labelSize1,
-                                                              color:
-                                                                  Colors.black,
+                                                              color: Colors.black,
                                                               fontWeight:
-                                                                  FontWeight
-                                                                      .w500,
+                                                                  FontWeight.w500,
                                                             )),
                                                       ],
                                                     ),
