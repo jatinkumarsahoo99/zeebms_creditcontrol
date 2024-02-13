@@ -49,6 +49,14 @@ class Utils {
       return "";
     }
   }
+  static String getMMDDYYYYFromDDMMYYYYInString4(String? ddMMYYYY) {
+    if (ddMMYYYY != null && ddMMYYYY != "") {
+      return DateFormat("MM-dd-yyyy")
+          .format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
+    } else {
+      return "";
+    }
+  }
   static String getMMDDYYYYFromDDMMYYYYInString2(String? ddMMYYYY) {
     if(ddMMYYYY != null && ddMMYYYY != ""){
       return DateFormat("yyyy-MM-dd\'T\'HH:mm:ss.SSS").format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
