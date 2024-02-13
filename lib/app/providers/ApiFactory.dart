@@ -871,16 +871,20 @@ class ApiFactory {
   /// //////////////////// Place Type Master //////////////////////////
   static String get PLACE_TYPE_MASTER_GET_RETRIEVE_RECORD =>
       "$BASE_URL/api/PlaceTypeMaster/GetRetrieveRecord";
+
   static String get PLACE_TYPE_MASTER_POST_SAVE =>
       "$BASE_URL/api/PlaceTypeMaster/PostSave";
 
   /// //////////////// Deal Report //////////////////////
   static String get DEAL_REPORT_LOAD =>
       "$BASE_URL/api/DealReport/GetDealReportOnLoad";
+
   static String get DEAL_REPORT_CHANNEL_LEAVE =>
       "$BASE_URL/api/DealReport/GetChannelLeave";
+
   static String get DEAL_REPORT_CLIENT_LEAVE =>
       "$BASE_URL/api/DealReport/GetClientLeave";
+
   static String get DEAL_REPORT_CLIENT_GENERATE =>
       "$BASE_URL/api/DealReport/GetGenrate";
 
@@ -1288,7 +1292,7 @@ class ApiFactory {
   static String get EBILL_AGENCY_GRP_LEAVE =>
       "$BASE_URL/api/EBillAgencyGroupMaster/GetGroupNameLeave?groupCode=";
 
-  static String EBILL_AGENCY_ADD_GRP(String grpCode, String agency) =>
+  static String EBILL_AGENCY_ADD_GRP(String grpCode,String agency) =>
       "$BASE_URL/api/EBillAgencyGroupMaster/GetAddNewGroup?groupCode=$grpCode&agency=$agency";
 
   static String get EBILL_AGENCY_REMOVE_GRP =>
@@ -1309,4 +1313,19 @@ class ApiFactory {
   static String get EBILLS_POST_AGENCY => "$BASE_URL/api/Ebills/PostAgency";
 
   /// ////////////////////////// End EBILLS Model////////////////////////////////
+
+  /////////////////////////////// ASRUN SPECIFICATION AD REVENUE ////////////////////////////////
+  static String get ASRUN_AD_INIT =>
+      "$BASE_URL/api/AsrunSpecAdRevenue/GetAsrunSpecificationOnLoad";
+
+  static String get ASRUN_AD_CHANNEL_LEAVE =>
+      "$BASE_URL/api/AsrunSpecAdRevenue/GetChannel?LocationCode=";
+
+  static String ASRUN_AD_POPULATE(String locId, String chnlId) =>
+      "$BASE_URL/api/AsrunSpecAdRevenue/GetPouplateData?ChannelCode=$chnlId&LocationCode=$locId";
+
+  static String get ASRUN_AD_SAVE =>
+      "$BASE_URL/api/AsrunSpecAdRevenue/PostSave";
+
+///////////////////////////////End: ASRUN SPECIFICATION AD REVENUE ////////////////////////////////
 }
