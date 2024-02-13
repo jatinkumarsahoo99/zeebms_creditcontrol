@@ -73,6 +73,7 @@ abstract class RoutesList {
     _Paths.CREDIT_RATE_MASTER,
     _Paths.SPOTS_NOT_TELECASTED_REPORT,
     _Paths.CLIENT_GROUP_MASTER,
+    _Paths.COMPANY_MASTER,
     _Paths.READYTO_BILLS,
     _Paths.ASRUN_IMPORT_SECONDARY_EVENTS,
     _Paths.ASRUN_VERIFICATION,
@@ -82,6 +83,8 @@ abstract class RoutesList {
     _Paths.GENERATE_BOOKING_REPORT,
     _Paths.S_A_P_B_ILL_CHECK_REPORT,
     _Paths.E_BILL_AGENCY_GROUP_MASTER,
+    _Paths.ASRUN_SPECIFICATION_AD_REVENUE,
+    _Paths.SECONDARY_ASRUN_MODIFICATION,
   ];
 }
 

@@ -721,7 +721,7 @@ class ApiFactory {
       "$BASE_URL/api/SecondaryAsrunModi/GetBindGrid";
 
   static String get SECONDARY_ASRUN_MODIFICATION_GET_OK =>
-      "$BASE_URL/api/SecondaryAsrunModi/GetOkClick";
+      "$BASE_URL/api/SecondaryAsrunModi/GetOkClick?SpotPositionShortName=";
 
   static String get SECONDARY_ASRUN_MODIFICATION_GET_CLEAR_MISMATCH =>
       "$BASE_URL/api/SecondaryAsrunModi/GetClearmismatch";
@@ -871,16 +871,20 @@ class ApiFactory {
   /// //////////////////// Place Type Master //////////////////////////
   static String get PLACE_TYPE_MASTER_GET_RETRIEVE_RECORD =>
       "$BASE_URL/api/PlaceTypeMaster/GetRetrieveRecord";
+
   static String get PLACE_TYPE_MASTER_POST_SAVE =>
       "$BASE_URL/api/PlaceTypeMaster/PostSave";
 
   /// //////////////// Deal Report //////////////////////
   static String get DEAL_REPORT_LOAD =>
       "$BASE_URL/api/DealReport/GetDealReportOnLoad";
+
   static String get DEAL_REPORT_CHANNEL_LEAVE =>
       "$BASE_URL/api/DealReport/GetChannelLeave";
+
   static String get DEAL_REPORT_CLIENT_LEAVE =>
       "$BASE_URL/api/DealReport/GetClientLeave";
+
   static String get DEAL_REPORT_CLIENT_GENERATE =>
       "$BASE_URL/api/DealReport/GetGenrate";
 
@@ -1084,6 +1088,32 @@ class ApiFactory {
       "$BASE_URL/api/ClientMaster/PostSaveRecord";
 
   /// ////////////////////////// End CLIENT MASTER Model////////////////////////////////
+
+  /// //////////////////////////////// clear secondary spots ////////////////////////////////////
+  ///
+  static String get CLEAR_SECONDARY_SPOTS_GETLOAD =>
+      "$BASE_URL/api/ClearSecondarySpot/GetLoad";
+
+  static String get CLEAR_SECONDARY_SPOTS_GET_SCROLL =>
+      "$BASE_URL/api/ClearSecondarySpot/GetScroll";
+
+  static String get CLEAR_SECONDARY_SPOTS_GET_ASTRO =>
+      "$BASE_URL/api/ClearSecondarySpot/GetAstro";
+
+  /// //////////////////////////////// Company master ////////////////////////////////////
+
+  static String get COMPANY_MASTER_GETLOAD =>
+      "$BASE_URL/api/CompanyMaster/GetLoad";
+
+  static String COMPANY_MASTER_GET_GET_RETRIVE({
+    required String companyCode,
+    required String companyName,
+  }) =>
+      "$BASE_URL/api/CompanyMaster/GetRetrive?Companycode=$companyCode&companyName=$companyName";
+
+  static String get COMPANY_MASTER_ONSAVE =>
+      "$BASE_URL/api/CompanyMaster/PostSave";
+
   ///
   ///
   ///
@@ -1309,4 +1339,19 @@ class ApiFactory {
   static String get EBILLS_POST_AGENCY => "$BASE_URL/api/Ebills/PostAgency";
 
   /// ////////////////////////// End EBILLS Model////////////////////////////////
+
+  /////////////////////////////// ASRUN SPECIFICATION AD REVENUE ////////////////////////////////
+  static String get ASRUN_AD_INIT =>
+      "$BASE_URL/api/AsrunSpecAdRevenue/GetAsrunSpecificationOnLoad";
+
+  static String get ASRUN_AD_CHANNEL_LEAVE =>
+      "$BASE_URL/api/AsrunSpecAdRevenue/GetChannel?LocationCode=";
+
+  static String ASRUN_AD_POPULATE(String locId, String chnlId) =>
+      "$BASE_URL/api/AsrunSpecAdRevenue/GetPouplateData?ChannelCode=$chnlId&LocationCode=$locId";
+
+  static String get ASRUN_AD_SAVE =>
+      "$BASE_URL/api/AsrunSpecAdRevenue/PostSave";
+
+///////////////////////////////End: ASRUN SPECIFICATION AD REVENUE ////////////////////////////////
 }

@@ -9,6 +9,7 @@ import '../../../../widgets/PlutoGrid/src/pluto_grid.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/floating_dialog.dart';
 import '../../../../widgets/gridFromMap.dart';
+import '../../../../widgets/input_fields.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
@@ -21,18 +22,18 @@ class SecondaryAsrunModificationView extends StatelessWidget {
   SecondaryAsrunModificationController controllerX =
       Get.put<SecondaryAsrunModificationController>(SecondaryAsrunModificationController());
 
-  var rebuildKey = GlobalKey<ScaffoldState>();
+  var rebuildSecModKey = GlobalKey<ScaffoldState>();
 
   dragInfoDialog() {
     controllerX.initialOffset.value = 2;
     // Completer<bool> completer = Completer<bool>();
     controllerX.dialogWidget = Material(
       color: Colors.white,
-      borderOnForeground: false,
+      // borderOnForeground: false,
       child: Padding(
         padding: const EdgeInsets.all(5.0),
         child: SizedBox(
-          width: Get.width * 0.7,
+          width: Get.width * 0.86,
           height: Get.height * 0.65,
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.center,
@@ -73,14 +74,73 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                 height: 4,
               ),
               Expanded(
-                  child: Container(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: Container(),
-                ),
-              )),
+                // height: Get.height * 0.55,
+                child: GetBuilder<SecondaryAsrunModificationController>(
+                    id: "diaGrid",
+                    builder: (controllerX) {
+                      return Container(
+                        child: (controllerX.lstFinalAsRunDataList != null &&
+                                (controllerX.lstFinalAsRunDataList
+                                            ?.length ??
+                                        0) >
+                                    0)
+                            ? DataGridFromMap(
+                                showSrNo: true,
+                                hideCode: false,
+                                formatDate: false,
+                                columnAutoResize: true,
+                                doPasccal: true,
+                                colorCallback: (row) => (row.row.cells
+                                        .containsValue(controllerX.stateManagerDialog?.currentCell))
+                                    ? Colors.deepPurple.shade200
+                                    : Colors.white,
+                                exportFileName: "Secondary Asrun Modification",
+                                mode: PlutoGridMode.normal,
+                                onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                                  print(">>>>>>>>>>>onRowDoubleTapColField${event.cell.column.field ?? ""}");
+                                  print(">>>>>>>>>>>onRowDoubleTapColField${event.cell.row.cells['spotStatus']?.value ?? ""}");
+
+                                  try {
+                                    if (controllerX.stateManagerDialog?.rows[controllerX.stateManagerDialog?.currentRowIdx ?? 0].cells['spotStatus']?.value ==
+                                        "T") {
+                                      LoadingDialog.showErrorDialog("Sorry, clicked tape id is already mapped");
+                                    }else{
+                                      controllerX.dialogWidget = null;
+                                      controllerX.canDialogShow.value = false;
+                                      controllerX.tapeIdEditingController.text = event.cell.row.cells['exportTapeCode']?.value??"";
+                                      controllerX.finalProgramEditingController.text = event.cell.row.cells['programname']?.value??"";
+                                      controllerX.finalTelecastTimeEditingController.text = event.cell.row.cells['telecastTime']?.value??"";
+                                      controllerX.finalDurationEditingController.text = event.cell.row.cells['tapeDuration']?.value??"";
+
+                                      controllerX.finalMidPreEditingController.text = (event.cell.row.cells['spotPosition']?.value == "" ||
+                                          (event.cell.row.cells['spotPosition']?.value).toString().trim() == "null")?"MID":event.cell.row.cells['spotPosition']?.value;
+
+                                      dragInfoDialog2();
+                                    }
+                                  } catch (e) {
+                                    LoadingDialog.showErrorDialog("Something went wrong");
+
+                                  }
+
+                                  // spotStatus
+                                },
+                                mapData: controllerX
+                                    .lstFinalAsRunDataList!
+                                    .map((e) => e.toJson())
+                                    .toList(),
+                                // mapData: (controllerX.dataList)!,
+                                widthRatio: Get.width / 9 - 1,
+                                onload: (PlutoGridOnLoadedEvent load) {
+                                  controllerX.stateManagerDialog = load.stateManager;
+                                },
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                              )),
+                      );
+                    }),
+              ),
               SizedBox(
                 height: 3,
               ),
@@ -92,6 +152,8 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                     showIcon: false,
                     // isEnabled: btn['isDisabled'],
                     callback: () {
+                      controllerX.dialogWidget = null;
+                      controllerX.canDialogShow.value = false;
                       // controller.gridStateManagerLeft?.setFilter((element) => true);
                       // controller.gridStateManagerLeft?.notifyListeners();
                     },
@@ -106,16 +168,151 @@ class SecondaryAsrunModificationView extends StatelessWidget {
     controllerX.canDialogShow.value = true;
   }
 
+  dragInfoDialog2() {
+    controllerX.initialOffset.value = 2;
+    // Completer<bool> completer = Completer<bool>();
+    controllerX.dialogWidget = Material(
+      color: Colors.white,
+      // borderOnForeground: false,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: SizedBox(
+          width: Get.width * 0.4,
+          height: Get.height * 0.4,
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 30,
+                // color: Colors.grey[200],
+                child: Stack(
+                  fit: StackFit.expand,
+                  // alignment: Alignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Info',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        splashRadius: 20,
+                        onPressed: () {
+                          controllerX.dialogWidget = null;
+                          controllerX.canDialogShow.value = false;
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 4,
+              ),
+              InputFields.formField1(
+                hintTxt: "Tape Id",
+                controller: controllerX.tapeIdEditingController,
+                width: .38,
+                readOnly: true,
+                isEnable: false,
+              ),
+              InputFields.formField1(
+                hintTxt: "Final Program",
+                controller: controllerX.finalProgramEditingController,
+                width: .38,
+                readOnly: true,
+                isEnable: false,
+              ),
+              InputFields.formField1(
+                hintTxt: "Final MID/Pre",
+                controller: controllerX.finalMidPreEditingController,
+                width: .38,
+                readOnly: true,
+                isEnable: false,
+              ),
+              InputFields.formField1(
+                hintTxt: "Final Telecast Time",
+                controller: controllerX.finalTelecastTimeEditingController,
+                width: .38,
+                readOnly: true,
+                isEnable: false,
+              ),
+
+              SizedBox(
+                width: Get.width*0.38,
+                child: InputFields.numbers3(
+                  hintTxt: "Final Duration",
+                  controller: controllerX.finalDurationEditingController,
+                  width: .38,padLeft: 0,
+
+                  // readOnly: true,
+                  // isEnable: false,
+                ),
+              ),
+              SizedBox(
+                height: 3,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FormButtonWrapper(
+                    btnText: "OK",
+                    showIcon: false,
+                    // isEnabled: btn['isDisabled'],
+                    callback: () {
+
+                      controllerX.dialogOkClick();
+                      Get.back();
+
+                      // controller.gridStateManagerLeft?.setFilter((element) => true);
+                      // controller.gridStateManagerLeft?.notifyListeners();
+                    },
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  FormButtonWrapper(
+                    btnText: "Cancel",
+                    showIcon: false,
+                    // isEnabled: btn['isDisabled'],
+                    callback: () {
+                      controllerX.dialogWidget = null;
+                      controllerX.canDialogShow.value = false;
+                      // controller.gridStateManagerLeft?.setFilter((element) => true);
+                      // controller.gridStateManagerLeft?.notifyListeners();
+                    },
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+    controllerX.canDialogShow.value = true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
       return Scaffold(
-        key: rebuildKey,
+        key: rebuildSecModKey,
         floatingActionButton: Obx(() {
           return controllerX.canDialogShow.value
               ? DraggableFab(
                   initPosition: controllerX.getOffSetValue(constraints),
                   child: controllerX.dialogWidget!,
+                  dragEndCall: () {
+                    controllerX.update(['diaGrid']);
+                  },
                 )
               : const SizedBox();
         }),
@@ -189,7 +386,7 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                     child: FormButtonWrapper(
                       btnText: "Clear Mismatch",
                       callback: () {
-                        // controllerX.showApiCall();
+                        controllerX.btnClearMisMatch();
                       },
                       showIcon: true,
                     ),
@@ -239,7 +436,7 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                                               .toLowerCase()
                                               .trim() ==
                                           "telecasted") {
-                                        LoadingDialog.modify3(
+                                        /*LoadingDialog.modify3(
                                             "Want to change the status to NOT TELECASTED", () {
                                           controllerX
                                               .stateManager
@@ -247,7 +444,8 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                                               .cells['spotStatus']
                                               ?.value = "NOT TELECASTED";
                                           controllerX.stateManager?.notifyListeners();
-                                        }, () {}, cancelTitle: "No", confirmTitle: "Yes");
+                                        }, () {}, cancelTitle: "No", confirmTitle: "Yes");*/
+                                        controllerX.onDoubleClick(controllerX.stateManager?.currentRowIdx??-1,event);
                                       } else {
                                         dragInfoDialog();
                                       }
