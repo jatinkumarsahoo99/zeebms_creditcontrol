@@ -4,6 +4,7 @@ class DropDownValue {
   String? key;
   String? optional;
   int? selectedIndex = 0;
+  bool? isSelected = false;
 
   DropDownValue({this.value, this.key, this.selectedIndex, this.optional});
 
@@ -31,6 +32,14 @@ class DropDownValue {
     data['value'] = value;
 
     data['key'] = key;
+    return data;
+  }
+  Map<String, dynamic> toJsonEbill() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['value'] = value;
+
+    data['key'] = key;
+    data[''] = key;
     return data;
   }
 

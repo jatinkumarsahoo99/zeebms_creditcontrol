@@ -1,6 +1,6 @@
 import 'package:get/get.dart';
 
-import '../controllers/s_a_p_b_ill_check_report_controller.dart';
+import '../controllers/sap_bill_check_report_controller.dart';
 
 class SAPBIllCheckReportBinding extends Bindings {
   @override

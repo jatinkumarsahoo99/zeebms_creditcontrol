@@ -869,14 +869,20 @@ class ApiFactory {
       "$BASE_URL/api/GstPlantInfo/PostSave";
 
   /// //////////////////// Place Type Master //////////////////////////
-  static String get PLACE_TYPE_MASTER_GET_RETRIEVE_RECORD => "$BASE_URL/api/PlaceTypeMaster/GetRetrieveRecord";
-  static String get PLACE_TYPE_MASTER_POST_SAVE => "$BASE_URL/api/PlaceTypeMaster/PostSave";
+  static String get PLACE_TYPE_MASTER_GET_RETRIEVE_RECORD =>
+      "$BASE_URL/api/PlaceTypeMaster/GetRetrieveRecord";
+  static String get PLACE_TYPE_MASTER_POST_SAVE =>
+      "$BASE_URL/api/PlaceTypeMaster/PostSave";
 
   /// //////////////// Deal Report //////////////////////
-  static String get DEAL_REPORT_LOAD => "$BASE_URL/api/DealReport/GetDealReportOnLoad";
-  static String get DEAL_REPORT_CHANNEL_LEAVE => "$BASE_URL/api/DealReport/GetChannelLeave";
-  static String get DEAL_REPORT_CLIENT_LEAVE => "$BASE_URL/api/DealReport/GetClientLeave";
-  static String get DEAL_REPORT_CLIENT_GENERATE => "$BASE_URL/api/DealReport/GetGenrate";
+  static String get DEAL_REPORT_LOAD =>
+      "$BASE_URL/api/DealReport/GetDealReportOnLoad";
+  static String get DEAL_REPORT_CHANNEL_LEAVE =>
+      "$BASE_URL/api/DealReport/GetChannelLeave";
+  static String get DEAL_REPORT_CLIENT_LEAVE =>
+      "$BASE_URL/api/DealReport/GetClientLeave";
+  static String get DEAL_REPORT_CLIENT_GENERATE =>
+      "$BASE_URL/api/DealReport/GetGenrate";
 
   /// //////////////////////////END GST PLANT INFO //////////////////////////
   ///
@@ -1149,30 +1155,69 @@ class ApiFactory {
       "$BASE_URL/api/CompanyChannelLink/SaveRecords";
 
   ///////////////////////////////End: Client Channel Link///////////////////////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start ASRUN MODIFICATION  Model////////////////////////////////
+  static String get ASRUN_MODIFICATION_GET_LOCATION =>
+      "$BASE_URL/api/AsRunModification/GetLocation";
+  static String ASRUN_MODIFICATION_GET_CHANNEL(String location) =>
+      "$BASE_URL/api/AsRunModification/GetChannel?location=$location";
+  static String ASRUN_MODIFICATION_RETRIEVE(
+          String locationCode, String channelCode, String logDate) =>
+      "$BASE_URL/api/AsRunModification/Retrieve?LocationCode=$locationCode&ChannelCode=$channelCode&logDate=$logDate";
+  static String get ASRUN_MODIFICATION_SAVE =>
+      "$BASE_URL/api/AsRunModification/save";
+  static String get ASRUN_MODIFICATION_GET_PROGRAM =>
+      "$BASE_URL/api/AsRunModification/GetProgram?programName=";
 
+  /// ////////////////////////// End ASRUN MODIFICATION Model////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start AGENCY EMBARGO Model////////////////////////////////
+  static String get AGENCY_EMBARGO_ON_LOAD =>
+      "$BASE_URL/api/AgencyEmbargo/onLoad";
+  static String get AGENCY_EMBARGO_AGENCY_NAME =>
+      "$BASE_URL/api/AgencyEmbargo/GetAgency?agencyName=";
+  static String AGENCY_EMBARGO_GET_AGENCY_HISTORY(String agencyCode) =>
+      "$BASE_URL/api/AgencyEmbargo/GetAgencyHistory?agencyCode=$agencyCode";
+  static String get AGENCY_EMBARGO_SAVE => "$BASE_URL/api/AgencyEmbargo/Save";
 
-///  ///////////////////////////// CLIENT EMBARGO ////////////////////////////////
-  static String get CLIENT_EMBARGO_ON_LOAD => "$BASE_URL/api/ClientEmbargo/GetLoad";
-  static String get CLIENT_EMBARGO_GET_CLIENT => "$BASE_URL/api/ClientEmbargo/GetClient?SearchText=";
-  static String get CLIENT_EMBARGO_GET_CLIENT_NAME_CLICK => "$BASE_URL/api/ClientEmbargo/GetClientNameClick?ClientCode=";
-  static String get CLIENT_EMBARGO_POST=> "$BASE_URL/api/ClientEmbargo/PostSave";
+  /// ////////////////////////// End AGENCY_EMBARGO Model////////////////////////////////
 
+  ///  ///////////////////////////// CLIENT EMBARGO ////////////////////////////////
+  static String get CLIENT_EMBARGO_ON_LOAD =>
+      "$BASE_URL/api/ClientEmbargo/GetLoad";
+  static String get CLIENT_EMBARGO_GET_CLIENT =>
+      "$BASE_URL/api/ClientEmbargo/GetClient?SearchText=";
+  static String get CLIENT_EMBARGO_GET_CLIENT_NAME_CLICK =>
+      "$BASE_URL/api/ClientEmbargo/GetClientNameClick?ClientCode=";
+  static String get CLIENT_EMBARGO_POST =>
+      "$BASE_URL/api/ClientEmbargo/PostSave";
 
   /// ////////////////////////// AGENCY GROUP ///////////////////////////////////
 
-  static String get AGENCY_MASTER_ON_LOAD => "$BASE_URL/api/AgencyMasters/GetAgencyMasterLoad";
-  static String get AGENCY_MASTER_GET_AGENCY_NAME => "$BASE_URL/api/AgencyMasters/GetAngecyName?BMSAngecyName=";
-  static String get AGENCY_MASTER_GET_RETRIEVE_RECORD => "$BASE_URL/api/AgencyMasters/GetRetrieveRecord";
-  static String get AGENCY_MASTER_POST_BLOCK_AGENCY => "$BASE_URL/api/AgencyMasters/Postblockagency";
-  static String get AGENCY_MASTER_POST_UN_BLOCK_AGENCY => "$BASE_URL/api/AgencyMasters/Postunblockagency";
-  static String get AGENCY_MASTER_POST => "$BASE_URL/api/AgencyMasters/PostValidateAndSaveRecord";
-
+  static String get AGENCY_MASTER_ON_LOAD =>
+      "$BASE_URL/api/AgencyMasters/GetAgencyMasterLoad";
+  static String get AGENCY_MASTER_GET_AGENCY_NAME =>
+      "$BASE_URL/api/AgencyMasters/GetAngecyName?BMSAngecyName=";
+  static String get AGENCY_MASTER_GET_RETRIEVE_RECORD =>
+      "$BASE_URL/api/AgencyMasters/GetRetrieveRecord";
+  static String get AGENCY_MASTER_POST_BLOCK_AGENCY =>
+      "$BASE_URL/api/AgencyMasters/Postblockagency";
+  static String get AGENCY_MASTER_POST_UN_BLOCK_AGENCY =>
+      "$BASE_URL/api/AgencyMasters/Postunblockagency";
+  static String get AGENCY_MASTER_POST =>
+      "$BASE_URL/api/AgencyMasters/PostValidateAndSaveRecord";
 
   /// //////////////////  Agency Group Master ////////////////////////
-  static String get AGENCY_GROUP_MASTER_GET_RETRIEVE_RECORD => "$BASE_URL/api/AgencyGroupMaster/GetRetrieveRecord";
-  static String get AGENCY_GROUP_MASTER_GET_AGENCY => "$BASE_URL/api/AgencyGroupMaster/GetAgency?AgencyName=";
-  static String get AGENCY_GROUP_MASTER_POST => "$BASE_URL/api/AgencyGroupMaster/PostSave";
-
+  static String get AGENCY_GROUP_MASTER_GET_RETRIEVE_RECORD =>
+      "$BASE_URL/api/AgencyGroupMaster/GetRetrieveRecord";
+  static String get AGENCY_GROUP_MASTER_GET_AGENCY =>
+      "$BASE_URL/api/AgencyGroupMaster/GetAgency?AgencyName=";
+  static String get AGENCY_GROUP_MASTER_POST =>
+      "$BASE_URL/api/AgencyGroupMaster/PostSave";
 
   //////////////////////////////////Bill EXPORT /////////////////////////////////////////////////////
 
@@ -1218,4 +1263,50 @@ class ApiFactory {
 
   ///////////////////////////////End: Traffic Order Correction ////////////////////////////////
 
+  /////////////////////////////// SAP BILL CHECK REPORT ////////////////////////////////
+  static String SAP_BILL_CHECK_GENERATE(frmDt, toDt, r4) =>
+      "$BASE_URL/api/SAPBillCheckReport/GetGenrate?fromdate=$frmDt&todate=$toDt&R4_yn=$r4";
+
+///////////////////////////////End: SAP BILL CHECK REPORT ////////////////////////////////
+
+  /////////////////////////////// GENERATE BOOKING ACTIVITY AHDM ////////////////////////////////
+  static String get GENERATE_BOOKING_REPORT_INIT =>
+      "$BASE_URL/api/GenerateBookingReport/GetFromLoad";
+
+  static String get GENERATE_BOOKING_CHANNEL_LEAVE =>
+      "$BASE_URL/api/GenerateBookingReport/GetChannel?LocationCode=";
+
+  static String get GENERATE_BOOKING_GET_DETAILS =>
+      "$BASE_URL/api/GenerateBookingReport/GetRetrieve";
+
+///////////////////////////////End: GENERATE BOOKING ACTIVITY AHDM ////////////////////////////////
+
+  /////////////////////////////// EBILL AGENCY GRP MASTER ////////////////////////////////
+  static String get EBILL_AGENCY_INIT =>
+      "$BASE_URL/api/EBillAgencyGroupMaster/GetEBillAgencyFormload";
+
+  static String get EBILL_AGENCY_GRP_LEAVE =>
+      "$BASE_URL/api/EBillAgencyGroupMaster/GetGroupNameLeave?groupCode=";
+
+  static String EBILL_AGENCY_ADD_GRP(String grpCode, String agency) =>
+      "$BASE_URL/api/EBillAgencyGroupMaster/GetAddNewGroup?groupCode=$grpCode&agency=$agency";
+
+  static String get EBILL_AGENCY_REMOVE_GRP =>
+      "$BASE_URL/api/EBillAgencyGroupMaster/GetRemovefromGroup";
+
+  static String get EBILL_AGENCY_ADD_GRP_NAME =>
+      "$BASE_URL/api/EBillAgencyGroupMaster/GetButtonAdd?GroupName=";
+
+  static String get EBILL_AGENCY_SAVE =>
+      "$BASE_URL/api/EBillAgencyGroupMaster/PostSave";
+
+///////////////////////////////End: EBILL AGENCY GRP MASTER ////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start EBILLS  Model////////////////////////////////
+  static String get EBILLS_GET_LOAD => "$BASE_URL/api/Ebills/GetLoad";
+  static String get EBILLS_POST_AGENCY => "$BASE_URL/api/Ebills/PostAgency";
+
+  /// ////////////////////////// End EBILLS Model////////////////////////////////
 }

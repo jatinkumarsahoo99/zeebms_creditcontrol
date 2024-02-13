@@ -28,8 +28,9 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.SECONDARY_ASRUN_MODIFICATION +
-          "?personalNo=R9vVPL7er1Os%2FusemWG%2FIw%3D%3D&loginCode=0iGe3vK5h2KGjfSKZTpmsQ%3D%3D&formName=0JUkJLseCJROuXQJxWn0tvQx2tD7hbegZhslvSOuxHotg9L%2FT284%2FQNIMZExXr81");
+      : (Routes.EBILLS +
+          "?personalNo=A0NmrGES8VedCtmkduWVHQ%3D%3D&loginCode=CGZ1VNtmQbZsxGFoB2Ej%2BQ%3D%3D&formName=EPae7FbQeE9%2FiwymJtn6SgDfEl1o5%2BU49hmuEEUSB1M%3D");
+
   static final routes = [
     GetPage(
       name: _Paths.NO_FOUND,

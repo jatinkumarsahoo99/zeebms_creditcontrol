@@ -16,6 +16,7 @@ class EbillsView extends GetView<EbillsController> {
     return Scaffold(
         body: GetBuilder(
       init: controller,
+      id: 'init',
       builder: (controller) {
         return Padding(
           padding: const EdgeInsets.all(8.0),
@@ -28,28 +29,55 @@ class EbillsView extends GetView<EbillsController> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Obx(
-                    //   () =>
                     Expanded(
-                        child:
-                            // controller.showList.isEmpty
-                            //     ?
-                            Container(
-                      decoration:
-                          BoxDecoration(border: Border.all(color: Colors.grey)),
-                    )
-                        // : DataGridFromMap3(
-                        //     mapData: [],
-                        //     onload: (value) {
-                        //     },
-                        //     exportFileName: "Mix Master Delivery Status",
-                        //     witdthSpecificColumn: Get.find<HomeController>()
-                        //         .getGridWidthByKey(
-                        //             userGridSettingList:
-                        //                 controller.userGridSetting1?.value),
-                        //   ),
-                        ),
-                    // ),
+                      child: GetBuilder<EbillsController>(
+                          init: controller,
+                          id: "checkListCompany",
+                          builder: (context) {
+                            return (controller.lstCheckListCompany != null &&
+                                    (controller
+                                            .lstCheckListCompany?.isNotEmpty ??
+                                        false))
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.grey)),
+                                    child: ListView.builder(
+                                      itemBuilder: (c, i) {
+                                        return Row(
+                                          children: [
+                                            Checkbox(
+                                                value: controller
+                                                    .lstCheckListCompany![i]
+                                                    .isSelected,
+                                                onChanged: (v) {
+                                                  controller
+                                                      .lstCheckListCompany![i]
+                                                      .isSelected = v;
+                                                  controller.update(
+                                                      ["checkListCompany"]);
+                                                }),
+                                            Text(
+                                              controller.lstCheckListCompany![i]
+                                                      .value ??
+                                                  "",
+                                              style:
+                                                  const TextStyle(fontSize: 13),
+                                            )
+                                          ],
+                                        );
+                                      },
+                                      itemCount: controller
+                                              .lstCheckListCompany?.length ??
+                                          0,
+                                    ),
+                                  )
+                                : Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                    ),
+                                  );
+                          }),
+                    ),
                     const SizedBox(
                       height: 10,
                     ),
@@ -102,14 +130,18 @@ class EbillsView extends GetView<EbillsController> {
                         Obx(
                           () => FormButtonWrapper(
                             btnText: "Get Agency",
-                            callback: () {},
+                            callback: () {
+                              controller.postAgency();
+                            },
                             showIcon: false,
                             isEnabled: !controller.isConsolidated.value,
                           ),
                         ),
                         FormButtonWrapper(
                           btnText: "Clear",
-                          callback: () {},
+                          callback: () {
+                            controller.clear();
+                          },
                           showIcon: false,
                         ),
                         Row(),
@@ -161,12 +193,12 @@ class EbillsView extends GetView<EbillsController> {
                         }),
                         InputFields.formField1(
                           hintTxt: "To:",
-                          controller: controller.mailID,
+                          controller: controller.toTEC,
                           width: .32,
                         ),
                         InputFields.formField1(
                           hintTxt: "Cc:",
-                          controller: controller.mailID,
+                          controller: controller.ccTEC,
                           width: .32,
                         ),
                       ],
@@ -177,28 +209,49 @@ class EbillsView extends GetView<EbillsController> {
               const SizedBox(
                 width: 8,
               ),
-              // Obx(
-              //   () =>
               Expanded(
-                  child:
-                      // controller.showList.isEmpty
-                      //     ?
-                      Container(
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.grey)),
-              )
-                  // : DataGridFromMap3(
-                  //     mapData: [],
-                  //     onload: (value) {
-                  //     },
-                  //     exportFileName: "Mix Master Delivery Status",
-                  //     witdthSpecificColumn: Get.find<HomeController>()
-                  //         .getGridWidthByKey(
-                  //             userGridSettingList:
-                  //                 controller.userGridSetting1?.value),
-                  //   ),
-                  ),
-              // ),
+                  child: GetBuilder<EbillsController>(
+                      init: controller,
+                      id: "agencyGroupList",
+                      builder: (context) {
+                        return (controller.agencyGroupList != null &&
+                                (controller.agencyGroupList?.isNotEmpty ??
+                                    false))
+                            ? Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey)),
+                                child: ListView.builder(
+                                  itemBuilder: (c, i) {
+                                    return Row(
+                                      children: [
+                                        Checkbox(
+                                            value: controller
+                                                .agencyGroupList![i].isSelected,
+                                            onChanged: (v) {
+                                              controller.agencyGroupList![i]
+                                                  .isSelected = v;
+                                              controller
+                                                  .update(["agencyGroupList"]);
+                                            }),
+                                        Text(
+                                          controller
+                                                  .agencyGroupList![i].value ??
+                                              "",
+                                          style: const TextStyle(fontSize: 13),
+                                        )
+                                      ],
+                                    );
+                                  },
+                                  itemCount:
+                                      controller.agencyGroupList?.length ?? 0,
+                                ),
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.grey),
+                                ),
+                              );
+                      })),
               const SizedBox(
                 width: 8,
               ),

@@ -2,8 +2,12 @@ import 'package:bms_creditcontrol/app/controller/HomeController.dart';
 import 'package:bms_creditcontrol/app/routes/app_pages.dart';
 import 'package:bms_creditcontrol/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_creditcontrol/widgets/FormButton.dart';
+import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:bms_creditcontrol/widgets/dropdown.dart';
+import 'package:bms_creditcontrol/widgets/floating_dialog.dart';
+import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
@@ -17,81 +21,145 @@ class AsrunVerificationView extends GetView<AsrunVerificationController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: GetBuilder(
-      init: controller,
-      builder: (controller) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Wrap(
-                crossAxisAlignment: WrapCrossAlignment.end,
-                runSpacing: 5,
-                spacing: 5,
-                children: [
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (value) {},
-                    "Location",
-                    .23,
-                    autoFocus: true,
-                  ),
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (data) {},
-                    "Channel",
-                    .23,
-                  ),
-                  DateWithThreeTextField(
-                    title: "Log Date",
-                    mainTextController: controller.logDate,
-                    widthRation: .135,
-                  ),
-                  FormButtonWrapper(
-                    btnText: "Retrieve Data",
-                    callback: () {},
-                    showIcon: false,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              // Obx(
-              //   () =>
-              Expanded(
-                  child:
-                      // controller.showList.isEmpty
-                      //     ?
-                      Container(
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.grey)),
+        floatingActionButton: Obx(() => controller.drgabbleDialog.value != null
+            ? DraggableFab(
+                key: controller.valueKey,
+                child: controller.drgabbleDialog.value!,
               )
-                  // : DataGridFromMap3(
-                  //     mapData: [],
-                  //     onload: (value) {
-                  //     },
-                  //     exportFileName: "Mix Master Delivery Status",
-                  //     witdthSpecificColumn: Get.find<HomeController>()
-                  //         .getGridWidthByKey(
-                  //             userGridSettingList:
-                  //                 controller.userGridSetting1?.value),
-                  //   ),
-                  ),
-              // ),
-              Padding(
+            : const SizedBox()),
+        body: RawKeyboardListener(
+          focusNode: FocusNode(),
+          onKey: (value) {
+            if (value.isKeyPressed(LogicalKeyboardKey.escape)) {
+              controller.drgabbleDialog.value = null;
+            }
+          },
+          child: GetBuilder(
+            init: controller,
+            builder: (controller) {
+              return Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Get.find<HomeController>().getCommonButton(
-                  Routes.ASRUN_IMPORT_SECONDARY_EVENTS,
-                  handleAutoClear: false,
-                  (btnName) {
-                    controller.formHandler(btnName);
-                  },
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Wrap(
+                      crossAxisAlignment: WrapCrossAlignment.end,
+                      runSpacing: 5,
+                      spacing: 5,
+                      children: [
+                        Obx(
+                          () => DropDownField.formDropDown1WidthMap(
+                            controller.location.value,
+                            (value) {
+                              controller.selectLocation.value = value;
+                              controller.getChannel(value.key);
+                            },
+                            "Location",
+                            .23,
+                            autoFocus: true,
+                            selected: controller.selectLocation.value,
+                            isEnable: controller.isEnabel.value,
+                            inkWellFocusNode: controller.locationFN,
+                          ),
+                        ),
+                        Obx(
+                          () => DropDownField.formDropDown1WidthMap(
+                            controller.channel.value,
+                            (data) {
+                              controller.selectChannel.value = data;
+                            },
+                            "Channel",
+                            .23,
+                            selected: controller.selectChannel.value,
+                            isEnable: controller.isEnabel.value,
+                            inkWellFocusNode: controller.channelFN,
+                          ),
+                        ),
+                        Obx(
+                          () => DateWithThreeTextField(
+                            title: "Log Date",
+                            mainTextController: controller.logDate,
+                            widthRation: .135,
+                            isEnable: controller.isEnabel.value,
+                          ),
+                        ),
+                        Obx(
+                          () => FormButtonWrapper(
+                            btnText: "Retrieve Data",
+                            callback: () {
+                              controller.getRetrieve();
+                            },
+                            showIcon: false,
+                            isEnabled: controller.isEnabel.value,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Obx(
+                      () => Expanded(
+                        child: controller.asRunDataList.isEmpty
+                            ? Container(
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.grey)),
+                              )
+                            : DataGridFromMap3(
+                                mapData: controller.asRunDataList.value
+                                    .map((e) => e.toJson())
+                                    .toList(),
+                                onload: (value) {
+                                  controller.asRunDataGrid = value.stateManager;
+                                },
+                                colorCallback: (colorEvent) {
+                                  if (colorEvent.row.cells.containsValue(
+                                      controller.asRunDataGrid?.currentCell)) {
+                                    return Colors.deepPurple.shade100;
+                                  }
+                                  return Colors.white;
+                                },
+                                exportFileName: "As-Run Modification",
+                                columnAutoResize: false,
+                                hideCode: false,
+                                onRowDoubleTap: (event) {
+                                  controller.asRunDataGrid?.setCurrentCell(
+                                      event.cell, event.rowIdx);
+                                  if (event.cell.column.field.toString() ==
+                                      'spotStatus') {
+                                    if (event.row.cells['spotStatus']?.value ==
+                                        'TELECASTED') {
+                                      LoadingDialog.recordExists(
+                                          "Want to change the status to NOT TELECASTED?",
+                                          () {
+                                        controller.spotStatusChanged(event);
+                                      });
+                                    } else {
+                                      controller.notTelecastedFunction(event);
+                                    }
+                                  }
+                                },
+                                widthSpecificColumn: Get.find<HomeController>()
+                                    .getGridWidthByKey(
+                                        userGridSettingList:
+                                            controller.userGridSetting1?.value,
+                                        key: 'key1'),
+                              ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Get.find<HomeController>().getCommonButton(
+                        Routes.ASRUN_IMPORT_SECONDARY_EVENTS,
+                        handleAutoClear: false,
+                        (btnName) {
+                          controller.formHandler(btnName);
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              );
+            },
           ),
-        );
-      },
-    ));
+        ));
   }
 }

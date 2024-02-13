@@ -38,7 +38,7 @@ import '../modules/CompanyMaster/views/company_master_view.dart';
 import '../modules/CreditRateMaster/views/credit_rate_master_view.dart';
 import '../modules/InvoiceRevision/views/invoice_revision_view.dart';
 import '../modules/PayrouteCategoryMaster/views/payroute_category_master_view.dart';
-import '../modules/SAPBIllCheckReport/views/s_a_p_b_ill_check_report_view.dart';
+import '../modules/SAPBIllCheckReport/views/sap_bill_check_report_view.dart';
 import '../modules/SalesExecutiveMaster/views/sales_executive_master_view.dart';
 import '../modules/SpotsNotTelecastedReport/views/spots_not_telecasted_report_view.dart';
 import '../modules/StationMaster/views/station_master_view.dart';
@@ -234,7 +234,7 @@ class _AuthGuard1State extends State<AuthGuard> with WidgetsBindingObserver {
             case Routes.CLIENT_DEALS:
               currentWidget = ClientDealsView();
               break;
-            case Routes.S_A_P_B_ILL_CHECK_REPORT:
+            case Routes.SAP_BILL_CHECK_REPORT:
               currentWidget = SAPBIllCheckReportView();
               break;
             case Routes.GENERATE_BOOKING_REPORT:
