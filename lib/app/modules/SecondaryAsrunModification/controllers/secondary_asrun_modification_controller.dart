@@ -372,39 +372,49 @@ class SecondaryAsrunModificationController extends GetxController {
   }
 
   postSave() {
-    try {
-      Map<String, dynamic> postData = {
-        "lstAsRunModification": getDataFromGrid(stateManager),
-        "lstFinalAsRun": getDataFromGrid1(stateManagerDialog),
-        "locationCode": selectedLocation?.key ?? "",
-        "channelCode": selectedChannel?.key ?? "",
-        "logDate": Utils.getMMDDYYYYFromDDMMYYYYInString3(logDateController.text) ?? ""
-      };
+    if((stateManager?.rows.length??0) >0){
+      try {
+        LoadingDialog.call();
+        Map<String, dynamic> postData = {
+          "lstAsRunModification": getDataFromGrid(stateManager),
+          "lstFinalAsRun": getDataFromGrid1(stateManagerDialog),
+          "locationCode": selectedLocation?.key ?? "",
+          "channelCode": selectedChannel?.key ?? "",
+          "logDate": Utils.getMMDDYYYYFromDDMMYYYYInString3(logDateController.text) ?? ""
+        };
 
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.SECONDARY_ASRUN_MODIFICATION_SAVE,
-          json: postData,
-          // "https://jsonkeeper.com/b/D537"
-          fun: (map) {
-            closeDialogIfOpen();
-            if (map is Map && map['postSave'] != null) {
-              LoadingDialog.showErrorDialog(map['postSave']['message'] ?? "Something went wrong");
-            } else {
-              LoadingDialog.showErrorDialog((map ?? "Something went wrong").toString());
-            }
-          },
-          failed: (map) {
-            closeDialogIfOpen();
-            LoadingDialog.showErrorDialog(("Something went wrong").toString());
-          });
-    } catch (e) {
-      closeDialogIfOpen();
-      LoadingDialog.showErrorDialog(("Something went wrong").toString());
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.SECONDARY_ASRUN_MODIFICATION_SAVE,
+            json: postData,
+            // "https://jsonkeeper.com/b/D537"
+            fun: (map) {
+              closeDialogIfOpen();
+              if (map is Map && map['postSave'] != null) {
+                LoadingDialog.callDataSaved(msg:  map['postSave']['message'] ?? "Something went wrong",callback: (){
+                  clearAll();
+                });
+              } else {
+                LoadingDialog.showErrorDialog((map ?? "Something went wrong").toString());
+              }
+            },
+            failed: (map) {
+              closeDialogIfOpen();
+              LoadingDialog.showErrorDialog(("Something went wrong").toString());
+            });
+      } catch (e) {
+        closeDialogIfOpen();
+        LoadingDialog.showErrorDialog(("Something went wrong").toString());
+      }
     }
+    else{
+      LoadingDialog.showErrorDialog(("Sorry! No record(s) to save."));
+    }
+
   }
 
   btnClearMisMatch() {
     try {
+      LoadingDialog.call();
       Map<String, dynamic> postData = {
         "locationcode": selectedLocation?.key ?? "",
         "channelcode":selectedChannel?.key ?? "",

@@ -82,6 +82,7 @@ abstract class RoutesList {
     _Paths.GENERATE_BOOKING_REPORT,
     _Paths.S_A_P_B_ILL_CHECK_REPORT,
     _Paths.E_BILL_AGENCY_GROUP_MASTER,
+    _Paths.SECONDARY_ASRUN_MODIFICATION,
   ];
 }
 
