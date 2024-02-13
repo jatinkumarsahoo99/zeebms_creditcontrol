@@ -1165,17 +1165,13 @@ class ApiFactory {
   /// ////////////////////////// Start ASRUN MODIFICATION  Model////////////////////////////////
   static String get ASRUN_MODIFICATION_GET_LOCATION =>
       "$BASE_URL/api/AsRunModification/GetLocation";
-
   static String ASRUN_MODIFICATION_GET_CHANNEL(String location) =>
       "$BASE_URL/api/AsRunModification/GetChannel?location=$location";
-
   static String ASRUN_MODIFICATION_RETRIEVE(
           String locationCode, String channelCode, String logDate) =>
       "$BASE_URL/api/AsRunModification/Retrieve?LocationCode=$locationCode&ChannelCode=$channelCode&logDate=$logDate";
-
   static String get ASRUN_MODIFICATION_SAVE =>
       "$BASE_URL/api/AsRunModification/save";
-
   static String get ASRUN_MODIFICATION_GET_PROGRAM =>
       "$BASE_URL/api/AsRunModification/GetProgram?programName=";
 
@@ -1186,13 +1182,10 @@ class ApiFactory {
   /// ////////////////////////// Start AGENCY EMBARGO Model////////////////////////////////
   static String get AGENCY_EMBARGO_ON_LOAD =>
       "$BASE_URL/api/AgencyEmbargo/onLoad";
-
   static String get AGENCY_EMBARGO_AGENCY_NAME =>
       "$BASE_URL/api/AgencyEmbargo/GetAgency?agencyName=";
-
   static String AGENCY_EMBARGO_GET_AGENCY_HISTORY(String agencyCode) =>
       "$BASE_URL/api/AgencyEmbargo/GetAgencyHistory?agencyCode=$agencyCode";
-
   static String get AGENCY_EMBARGO_SAVE => "$BASE_URL/api/AgencyEmbargo/Save";
 
   /// ////////////////////////// End AGENCY_EMBARGO Model////////////////////////////////
@@ -1200,13 +1193,10 @@ class ApiFactory {
   ///  ///////////////////////////// CLIENT EMBARGO ////////////////////////////////
   static String get CLIENT_EMBARGO_ON_LOAD =>
       "$BASE_URL/api/ClientEmbargo/GetLoad";
-
   static String get CLIENT_EMBARGO_GET_CLIENT =>
       "$BASE_URL/api/ClientEmbargo/GetClient?SearchText=";
-
   static String get CLIENT_EMBARGO_GET_CLIENT_NAME_CLICK =>
       "$BASE_URL/api/ClientEmbargo/GetClientNameClick?ClientCode=";
-
   static String get CLIENT_EMBARGO_POST =>
       "$BASE_URL/api/ClientEmbargo/PostSave";
 
@@ -1214,29 +1204,22 @@ class ApiFactory {
 
   static String get AGENCY_MASTER_ON_LOAD =>
       "$BASE_URL/api/AgencyMasters/GetAgencyMasterLoad";
-
   static String get AGENCY_MASTER_GET_AGENCY_NAME =>
       "$BASE_URL/api/AgencyMasters/GetAngecyName?BMSAngecyName=";
-
   static String get AGENCY_MASTER_GET_RETRIEVE_RECORD =>
       "$BASE_URL/api/AgencyMasters/GetRetrieveRecord";
-
   static String get AGENCY_MASTER_POST_BLOCK_AGENCY =>
       "$BASE_URL/api/AgencyMasters/Postblockagency";
-
   static String get AGENCY_MASTER_POST_UN_BLOCK_AGENCY =>
       "$BASE_URL/api/AgencyMasters/Postunblockagency";
-
   static String get AGENCY_MASTER_POST =>
       "$BASE_URL/api/AgencyMasters/PostValidateAndSaveRecord";
 
   /// //////////////////  Agency Group Master ////////////////////////
   static String get AGENCY_GROUP_MASTER_GET_RETRIEVE_RECORD =>
       "$BASE_URL/api/AgencyGroupMaster/GetRetrieveRecord";
-
   static String get AGENCY_GROUP_MASTER_GET_AGENCY =>
       "$BASE_URL/api/AgencyGroupMaster/GetAgency?AgencyName=";
-
   static String get AGENCY_GROUP_MASTER_POST =>
       "$BASE_URL/api/AgencyGroupMaster/PostSave";
 
@@ -1309,7 +1292,7 @@ class ApiFactory {
   static String get EBILL_AGENCY_GRP_LEAVE =>
       "$BASE_URL/api/EBillAgencyGroupMaster/GetGroupNameLeave?groupCode=";
 
-  static String EBILL_AGENCY_ADD_GRP(String grpCode, String agency) =>
+  static String EBILL_AGENCY_ADD_GRP(String grpCode,String agency) =>
       "$BASE_URL/api/EBillAgencyGroupMaster/GetAddNewGroup?groupCode=$grpCode&agency=$agency";
 
   static String get EBILL_AGENCY_REMOVE_GRP =>
@@ -1322,6 +1305,14 @@ class ApiFactory {
       "$BASE_URL/api/EBillAgencyGroupMaster/PostSave";
 
 ///////////////////////////////End: EBILL AGENCY GRP MASTER ////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start EBILLS  Model////////////////////////////////
+  static String get EBILLS_GET_LOAD => "$BASE_URL/api/Ebills/GetLoad";
+  static String get EBILLS_POST_AGENCY => "$BASE_URL/api/Ebills/PostAgency";
+
+  /// ////////////////////////// End EBILLS Model////////////////////////////////
 
   /////////////////////////////// ASRUN SPECIFICATION AD REVENUE ////////////////////////////////
   static String get ASRUN_AD_INIT =>

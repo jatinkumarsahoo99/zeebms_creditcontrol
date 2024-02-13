@@ -666,13 +666,20 @@ class AsrunVerificationController extends GetxController {
           callOnChangedEvent: false,
           force: true,
         );
-        asRunDataList.value[asRunDataIndex.value].telecastTime =
-            finalTelecastTime.text;
+        isFinalProgramField.isTrue
+            ? asRunDataList.value[asRunDataIndex.value].telecastTime =
+                finalTelecastTime.text
+                    .substring(0, finalTelecastTime.text.lastIndexOf(":"))
+            : asRunDataList.value[asRunDataIndex.value].telecastTime =
+                finalTelecastTime.text;
         asRunDataGrid!.changeCellValue(
           asRunDataGrid!
               .getRowByIdx(asRunDataIndex.value)!
               .cells['telecastTime']!,
-          finalTelecastTime.text,
+          isFinalProgramField.isTrue
+              ? finalTelecastTime.text
+                  .substring(0, finalTelecastTime.text.lastIndexOf(":"))
+              : finalTelecastTime.text,
           callOnChangedEvent: false,
           force: true,
         );
