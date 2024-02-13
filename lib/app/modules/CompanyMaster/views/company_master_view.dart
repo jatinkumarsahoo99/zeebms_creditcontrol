@@ -39,7 +39,7 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                       ),
                       // const SizedBox(height: 20),
                       Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: const EdgeInsets.all(5),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -255,7 +255,7 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                 )
                               ],
                             ),
-                            SizedBox(height: 10),
+                            // SizedBox(height: 10),
                             Get.find<HomeController>()
                                 .getCommonButton<CompanyMasterController>(
                               Routes.COMPANY_MASTER,
