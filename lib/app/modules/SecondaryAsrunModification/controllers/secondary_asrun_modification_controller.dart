@@ -427,7 +427,9 @@ class SecondaryAsrunModificationController extends GetxController {
           // "https://jsonkeeper.com/b/D537"
           fun: (map) {
             closeDialogIfOpen();
-
+            LoadingDialog.callDataSaved(msg:  map.toString(),callback: (){
+              clearAll();
+            });
           },
           failed: (map) {
             closeDialogIfOpen();
@@ -436,7 +438,6 @@ class SecondaryAsrunModificationController extends GetxController {
     } catch (e) {
       closeDialogIfOpen();
       LoadingDialog.showErrorDialog(("Something went wrong").toString());
-
     }
   }
 
