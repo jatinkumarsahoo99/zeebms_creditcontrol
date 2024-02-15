@@ -1094,10 +1094,10 @@ class ApiFactory {
   static String get CLEAR_SECONDARY_SPOTS_GETLOAD =>
       "$BASE_URL/api/ClearSecondarySpot/GetLoad";
 
-  static String get CLEAR_SECONDARY_SPOTS_GET_SCROLL =>
+  static String get CLEAR_SECONDARY_SPOTS_SCROLL =>
       "$BASE_URL/api/ClearSecondarySpot/GetScroll";
 
-  static String get CLEAR_SECONDARY_SPOTS_GET_ASTRO =>
+  static String get CLEAR_SECONDARY_SPOTS_ASTRO =>
       "$BASE_URL/api/ClearSecondarySpot/GetAstro";
 
   /// //////////////////////////////// Company master ////////////////////////////////////
@@ -1354,4 +1354,31 @@ class ApiFactory {
       "$BASE_URL/api/AsrunSpecAdRevenue/PostSave";
 
 ///////////////////////////////End: ASRUN SPECIFICATION AD REVENUE ////////////////////////////////
+  ///
+/////////////////////////////// start: Invoice Revision ////////////////////////////////
+
+  static String get INVOICE_REVISION_SEARCH_CLIENT =>
+      "$BASE_URL/api/InvoiceRevision/GetClient?SearchNewClient=";
+
+  static String get INVOICE_REVISION_GET_LOCATION =>
+      "$BASE_URL/api/InvoiceRevision/GetLocation";
+
+  static String INVOICE_REVISION_GET_CHANNEL({required String locationCode}) =>
+      "$BASE_URL/api/InvoiceRevision/GetChannel?LocationCode=$locationCode";
+
+  // static String get INVOICE_REVISION_GET_CHANNEL =>
+  //     "$BASE_URL/api/InvoiceRevision/GetChannel";
+
+  static String INVOICE_REVISION_RETRIEVE({
+    required String locationCode,
+    required String channelCode,
+    required String fromDate,
+  }) =>
+      "$BASE_URL/api/InvoiceRevision/GetRetrieve?LocationCode=$locationCode&ChannelCode=$channelCode&FromDate=<string>";
+
+  static String get INVOICE_REVISION_SAVE =>
+      "$BASE_URL/api/InvoiceRevision/PostSave";
+
+/////////////////////////////// end: Invoice Revision ////////////////////////////////
+  ///
 }
