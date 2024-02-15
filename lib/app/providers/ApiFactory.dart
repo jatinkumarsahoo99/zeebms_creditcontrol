@@ -1355,26 +1355,47 @@ class ApiFactory {
 
 ///////////////////////////////End: ASRUN SPECIFICATION AD REVENUE ////////////////////////////////
   ///
-/////////////////////////////// start: Invoice Revision ////////////////////////////////
+  ///
+  ///
+  /// ////////////////////////// Start EBILLS BONUS ACTIVITY Model////////////////////////////////
+  static String get EBILLS_BONUS_ACTIVITY_PAGE_LOAD =>
+      "$BASE_URL/api/EbillerBonusActivity/PageLoad";
+  static String get EBILLS_BONUS_ACTIVITY_FETCH_AGENCY_LIST =>
+      "$BASE_URL/api/EbillerBonusActivity/FetchAgencyList";
 
-  static String get INVOICE_REVISION_SEARCH_CLIENT =>
-      "$BASE_URL/api/InvoiceRevision/GetClient?SearchNewClient=";
+  /// ////////////////////////// End EBILLS BONUS ACTIVITY Model////////////////////////////////
+  ///
+  ///
+/////////////////////////////// start: Invoice Revision ////////////////////////////////
 
   static String get INVOICE_REVISION_GET_LOCATION =>
       "$BASE_URL/api/InvoiceRevision/GetLocation";
 
-  static String INVOICE_REVISION_GET_CHANNEL({required String locationCode}) =>
+  static String get INVOICE_REVISION_SEARCH_CLIENT =>
+      "$BASE_URL/api/InvoiceRevision/GetClient?SearchNewClient=";
+
+  static String INVOICE_REVISION_GET_CHANNEL(String locationCode) =>
       "$BASE_URL/api/InvoiceRevision/GetChannel?LocationCode=$locationCode";
 
-  // static String get INVOICE_REVISION_GET_CHANNEL =>
-  //     "$BASE_URL/api/InvoiceRevision/GetChannel";
+  static String INVOICE_REVISION_RETRIEVE(
+    String locationCode,
+    String channelCode,
+    String fromDate,
+  ) =>
+      "$BASE_URL/api/InvoiceRevision/GetRetrieve?LocationCode=$locationCode&ChannelCode=$channelCode&FromDate=$fromDate";
 
-  static String INVOICE_REVISION_RETRIEVE({
-    required String locationCode,
-    required String channelCode,
-    required String fromDate,
-  }) =>
-      "$BASE_URL/api/InvoiceRevision/GetRetrieve?LocationCode=$locationCode&ChannelCode=$channelCode&FromDate=<string>";
+  static String INVOICE_REVISION_CLIENT_LEAVE(
+    String locationCode,
+    String channelCode,
+    String clientCode,
+  ) =>
+      "$BASE_URL/api/InvoiceRevision/GetNewClientLeave?LocationCode=$locationCode&ChannelCode=$channelCode&ClientCode=$clientCode";
+
+  static String INVOICE_REVISION_BILL_DETAIL(
+    String locationCode,
+    String channelCode,
+  ) =>
+      "$BASE_URL/api/InvoiceRevision/GetDgvBillDetail?LocationCode=$locationCode&ChannelCode=$channelCode";
 
   static String get INVOICE_REVISION_SAVE =>
       "$BASE_URL/api/InvoiceRevision/PostSave";

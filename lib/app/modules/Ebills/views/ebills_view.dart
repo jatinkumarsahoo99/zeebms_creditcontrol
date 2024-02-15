@@ -389,105 +389,128 @@ class EbillsView extends GetView<EbillsController> {
               const SizedBox(
                 width: 8,
               ),
-              GetBuilder(
-                init: controller,
-                id: 'eBills',
-                builder: (controller) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+              Column(
+                children: [
+                  Stack(
                     children: [
-                      const Text(
-                        "Agency/Group",
-                        style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black),
+                      Container(
+                        margin: const EdgeInsets.fromLTRB(1, 10, 1, 5),
+                        padding: const EdgeInsets.only(bottom: 5),
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey)),
+                        child: GetBuilder(
+                          init: controller,
+                          id: 'eBills',
+                          builder: (controller) {
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                Obx(() {
+                                  return CheckBoxWidget1(
+                                    title: "All",
+                                    value: controller.isAll.value,
+                                    onChanged: (val) {
+                                      controller.checkAll();
+                                    },
+                                  );
+                                }),
+                                Obx(() {
+                                  return CheckBoxWidget1(
+                                    title: "Bills",
+                                    value: controller.isBills.value,
+                                    onChanged: (val) {
+                                      if (controller.isAll.isTrue) {
+                                        controller.checkAll();
+                                      } else {
+                                        controller.isBills.value = true;
+                                      }
+                                      if (controller.isBills.isTrue &&
+                                          controller.isTC.isTrue &&
+                                          controller.isSummary.isTrue) {
+                                        controller.isAll.value = true;
+                                      }
+                                    },
+                                  );
+                                }),
+                                Obx(() {
+                                  return CheckBoxWidget1(
+                                    title: "TC",
+                                    value: controller.isTC.value,
+                                    onChanged: (val) {
+                                      if (controller.isAll.isTrue) {
+                                        controller.checkAll();
+                                      } else {
+                                        controller.isTC.value = true;
+                                      }
+                                      if (controller.isBills.isTrue &&
+                                          controller.isTC.isTrue &&
+                                          controller.isSummary.isTrue) {
+                                        controller.isAll.value = true;
+                                      }
+                                    },
+                                  );
+                                }),
+                                Obx(() {
+                                  return CheckBoxWidget1(
+                                    title: "Summary",
+                                    value: controller.isSummary.value,
+                                    onChanged: (val) {
+                                      if (controller.isAll.isTrue) {
+                                        controller.checkAll();
+                                      } else {
+                                        controller.isSummary.value = true;
+                                      }
+                                      if (controller.isBills.isTrue &&
+                                          controller.isTC.isTrue &&
+                                          controller.isSummary.isTrue) {
+                                        controller.isAll.value = true;
+                                      }
+                                    },
+                                  );
+                                }),
+                                Obx(() {
+                                  return CheckBoxWidget1(
+                                    title: "Consolidated",
+                                    value: controller.isConsolidated.value,
+                                    onChanged: (val) {
+                                      controller.isConsolidated.value =
+                                          !(controller.isConsolidated.value);
+                                    },
+                                  );
+                                }),
+                              ],
+                            );
+                          },
+                        ),
                       ),
-                      Row(),
-                      Obx(() {
-                        return CheckBoxWidget1(
-                          title: "All",
-                          value: controller.isAll.value,
-                          onChanged: (val) {
-                            controller.checkAll();
-                          },
-                        );
-                      }),
-                      Obx(() {
-                        return CheckBoxWidget1(
-                          title: "Bills",
-                          value: controller.isBills.value,
-                          onChanged: (val) {
-                            if (controller.isAll.isTrue) {
-                              controller.checkAll();
-                            } else {
-                              controller.isBills.value = true;
-                            }
-                            if (controller.isBills.isTrue &&
-                                controller.isTC.isTrue &&
-                                controller.isSummary.isTrue) {
-                              controller.isAll.value = true;
-                            }
-                          },
-                        );
-                      }),
-                      Obx(() {
-                        return CheckBoxWidget1(
-                          title: "TC",
-                          value: controller.isTC.value,
-                          onChanged: (val) {
-                            if (controller.isAll.isTrue) {
-                              controller.checkAll();
-                            } else {
-                              controller.isTC.value = true;
-                            }
-                            if (controller.isBills.isTrue &&
-                                controller.isTC.isTrue &&
-                                controller.isSummary.isTrue) {
-                              controller.isAll.value = true;
-                            }
-                          },
-                        );
-                      }),
-                      Obx(() {
-                        return CheckBoxWidget1(
-                          title: "Summary",
-                          value: controller.isSummary.value,
-                          onChanged: (val) {
-                            if (controller.isAll.isTrue) {
-                              controller.checkAll();
-                            } else {
-                              controller.isSummary.value = true;
-                            }
-                            if (controller.isBills.isTrue &&
-                                controller.isTC.isTrue &&
-                                controller.isSummary.isTrue) {
-                              controller.isAll.value = true;
-                            }
-                          },
-                        );
-                      }),
-                      Obx(() {
-                        return CheckBoxWidget1(
-                          title: "Consolidated",
-                          value: controller.isConsolidated.value,
-                          onChanged: (val) {
-                            controller.isConsolidated.value =
-                                !(controller.isConsolidated.value);
-                          },
-                        );
-                      }),
-                      const SizedBox(
-                        height: 70,
-                      ),
-                      FormButtonWrapper(
-                        btnText: "Create Xml",
-                        callback: () {},
-                        showIcon: false,
+                      Positioned(
+                        left: 12,
+                        top: 3,
+                        child: Container(
+                          color: Colors.white,
+                          child: const Text(
+                            "Agency/Group",
+                            style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black),
+                          ),
+                        ),
                       ),
                     ],
-                  );
-                },
+                  ),
+                  const SizedBox(
+                    height: 80,
+                  ),
+                  FormButtonWrapper(
+                    btnText: "Create Xml",
+                    callback: () {},
+                    showIcon: true,
+                  ),
+                ],
               ),
               const SizedBox(
                 width: 8,
