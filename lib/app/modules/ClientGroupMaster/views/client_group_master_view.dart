@@ -39,7 +39,7 @@ class ClientGroupMasterView extends GetView<ClientGroupMasterController> {
                           centerTitle: true,
                           backgroundColor: Colors.deepPurple,
                         ),
-                        const SizedBox(height: 20),
+                        // const SizedBox(height: 20),
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(

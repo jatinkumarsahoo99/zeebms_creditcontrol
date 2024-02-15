@@ -133,6 +133,7 @@ class CompanyMasterView extends GetView<CompanyMasterController> {
                                                 hintTxt: "Pin",
                                                 controller:
                                                     controller.tecPin.value,
+                                                bottomPaddingHeight: 3,
                                                 // bottomPadding: false,
 
                                                 // titleInLeft: true,
