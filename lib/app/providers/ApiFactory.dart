@@ -1354,4 +1354,12 @@ class ApiFactory {
       "$BASE_URL/api/AsrunSpecAdRevenue/PostSave";
 
 ///////////////////////////////End: ASRUN SPECIFICATION AD REVENUE ////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start EBILLS BONUS ACTIVITY Model////////////////////////////////
+  static String get EBILLS_BONUS_ACTIVITY_PAGE_LOAD =>
+      "$BASE_URL/api/EbillerBonusActivity/PageLoad";
+
+  /// ////////////////////////// End EBILLS BONUS ACTIVITY Model////////////////////////////////
 }

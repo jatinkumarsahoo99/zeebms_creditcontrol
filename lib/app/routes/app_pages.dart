@@ -28,8 +28,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.COMPANY_MASTER +
-          "?personalNo=ces%2FeKicpwo5mz%2FYFOQDvw%3D%3D&loginCode=zWc5qlvs%2BXZUagqFBqBN0A%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
+      : (Routes.E_BILLS_FOR_BONUS_ACTIVITY +
+          "?personalNo=A0NmrGES8VedCtmkduWVHQ%3D%3D&loginCode=CGZ1VNtmQbZsxGFoB2Ej%2BQ%3D%3D&formName=EPae7FbQeE9%2FiwymJtn6SgDfEl1o5%2BU49hmuEEUSB1M%3D");
 
   static final routes = [
     GetPage(
@@ -94,8 +94,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.E_BILLS_FOR_BONUS_ACTIVITY,
-      page: () => const EBillsForBonusActivityView(),
-      binding: EBillsForBonusActivityBinding(),
+      page: () => AuthGuard(childName: _Paths.E_BILLS_FOR_BONUS_ACTIVITY),
+      // binding: EBillsForBonusActivityBinding(),
     ),
     GetPage(
       name: _Paths.SECONDARY_ASRUN_MODIFICATION,

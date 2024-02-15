@@ -23,17 +23,8 @@ class EbillsController extends GetxController {
   List<DropDownValue>? filterListCompany;
   List<DropDownValue>? agencyGroupList;
 
-  List<String> selectionTypes = [
-    "Agency",
-    "Group",
-  ];
-
-  List<String> sendingTypes = [
-    "Domestic",
-    "ATL",
-  ];
-  RxnString selectionCurrentType = RxnString();
-  RxnString sendingCurrentType = RxnString();
+  RxnString selectionCurrentType = RxnString('Group');
+  RxnString sendingCurrentType = RxnString('Domestic');
 
   @override
   void onInit() {
@@ -43,8 +34,6 @@ class EbillsController extends GetxController {
   @override
   void onReady() {
     super.onReady();
-    selectionCurrentType.value = 'Group';
-    sendingCurrentType.value = 'Domestic';
     getOnLoad();
   }
 
