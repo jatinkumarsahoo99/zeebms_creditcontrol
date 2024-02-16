@@ -30,13 +30,16 @@ class Utils {
   }
 
   static toDateFormat4(String? date) {
-    String? formatter;
+    String? formatter = "";
     if (date != null && date != "") {
-      formatter = DateFormat("dd-MM-yyyy").format(
-          DateFormat("yyyy-MM-ddTHH:mm:ss")
-              .parse((date ?? DateTime.now()).toString()));
+      try{
+        formatter = DateFormat("dd-MM-yyyy").format(
+            DateFormat("yyyy-MM-ddTHH:mm:ss")
+                .parse((date ?? DateTime.now()).toString()));
+      }catch(e){
+        formatter = "";
+      }
     }
-
     // log(">>>>>>"+formatter.toString());
     return formatter;
   }
@@ -44,6 +47,14 @@ class Utils {
   static String getMMDDYYYYFromDDMMYYYYInString1(String? ddMMYYYY) {
     if (ddMMYYYY != null && ddMMYYYY != "") {
       return DateFormat("MM/dd/yyyy")
+          .format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
+    } else {
+      return "";
+    }
+  }
+  static String getMMDDYYYYFromDDMMYYYYInString4(String? ddMMYYYY) {
+    if (ddMMYYYY != null && ddMMYYYY != "") {
+      return DateFormat("MM-dd-yyyy")
           .format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
     } else {
       return "";

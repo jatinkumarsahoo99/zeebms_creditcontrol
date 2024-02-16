@@ -19,9 +19,9 @@ class SecondaryAsrunGridModel {
 }
 
 class BindGrid {
-  // dynamic? lstbookingdetail;
+  List<Lstbookingdetail>? lstbookingdetail;
   List<LstAsRunBookingDetails>? lstAsRunBookingDetails;
-  List<dynamic>? lstFinalAsRun;
+  List<LstFinalAsRun>? lstFinalAsRun;
 
   BindGrid(
       {
@@ -29,21 +29,46 @@ class BindGrid {
         this.lstAsRunBookingDetails, this.lstFinalAsRun});
 
   BindGrid.fromJson(Map<String, dynamic> json) {
-    // lstbookingdetail = json['lstbookingdetail'];
+
+    if (json['lstbookingdetail'] != null) {
+      lstbookingdetail = <Lstbookingdetail>[];
+      json['lstbookingdetail'].forEach((v) {
+        lstbookingdetail!.add(new Lstbookingdetail.fromJson(v));
+      });
+    }
+
     if (json['lstAsRunBookingDetails'] != null) {
       lstAsRunBookingDetails = <LstAsRunBookingDetails>[];
       json['lstAsRunBookingDetails'].forEach((v) {
         lstAsRunBookingDetails!.add(new LstAsRunBookingDetails.fromJson(v));
       });
     }
+
+    if (json['lstFinalAsRun'] != null) {
+      lstFinalAsRun = <LstFinalAsRun>[];
+      json['lstFinalAsRun'].forEach((v) {
+        lstFinalAsRun!.add(new LstFinalAsRun.fromJson(v));
+      });
+    }
+
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     // data['lstbookingdetail'] = this.lstbookingdetail;
+
+    if (this.lstbookingdetail != null) {
+      data['lstbookingdetail'] =
+          this.lstbookingdetail!.map((v) => v.toJson()).toList();
+    }
+
     if (this.lstAsRunBookingDetails != null) {
       data['lstAsRunBookingDetails'] =
           this.lstAsRunBookingDetails!.map((v) => v.toJson()).toList();
+    }
+    if (this.lstFinalAsRun != null) {
+      data['lstFinalAsRun'] =
+          this.lstFinalAsRun!.map((v) => v.toJson()).toList();
     }
     return data;
   }
@@ -205,3 +230,88 @@ class LstAsRunBookingDetails {
     return data;
   }
 }
+
+class LstFinalAsRun {
+  String? exportTapeCode;
+  String? exportTapeCaption;
+  String? tapeDuration;
+  String? programname;
+  String? telecastTime;
+  String? spotStatus;
+  String? spotPosition;
+  String? segmentNumber;
+  String? programCode;
+
+  LstFinalAsRun(
+      {this.exportTapeCode,
+        this.exportTapeCaption,
+        this.tapeDuration,
+        this.programname,
+        this.telecastTime,
+        this.spotStatus,
+        this.spotPosition,
+        this.segmentNumber,
+        this.programCode});
+
+  LstFinalAsRun.fromJson(Map<String, dynamic> json) {
+    exportTapeCode = json['exportTapeCode'];
+    exportTapeCaption = json['exportTapeCaption'];
+    tapeDuration = (json['tapeDuration']??"0").toString();
+    programname = json['programname'];
+    telecastTime = json['telecastTime'];
+    spotStatus = json['spotStatus'];
+    spotPosition = json['spotPosition'];
+    segmentNumber = json['segmentNumber'];
+    programCode = json['programCode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['exportTapeCode'] = this.exportTapeCode;
+    data['exportTapeCaption'] = this.exportTapeCaption;
+    data['tapeDuration'] = this.tapeDuration;
+    data['programname'] = this.programname;
+    data['telecastTime'] = this.telecastTime;
+    data['spotStatus'] = this.spotStatus;
+    data['spotPosition'] = this.spotPosition;
+    data['segmentNumber'] = this.segmentNumber;
+    data['programCode'] = this.programCode;
+    return data;
+  }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['exportTapeCode'] = this.exportTapeCode;
+    data['exportTapeCaption'] = this.exportTapeCaption;
+    data['tapeDuration'] = (this.tapeDuration != null && this.tapeDuration != "")?int.parse(this.tapeDuration??"0"):0;
+    data['programname'] = this.programname;
+    data['telecastTime'] = this.telecastTime;
+    data['spotStatus'] = this.spotStatus;
+    data['spotPosition'] = this.spotPosition;
+    data['segmentNumber'] = this.segmentNumber;
+    data['programCode'] = this.programCode;
+    return data;
+  }
+
+}
+
+
+class Lstbookingdetail {
+  String? tapecode;
+  String? schtime;
+
+  Lstbookingdetail({this.tapecode, this.schtime});
+
+  Lstbookingdetail.fromJson(Map<String, dynamic> json) {
+    tapecode = json['tapecode'];
+    schtime = json['schtime'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['tapecode'] = this.tapecode;
+    data['schtime'] = this.schtime;
+    return data;
+  }
+}
+

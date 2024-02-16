@@ -4,6 +4,7 @@ import 'package:bms_creditcontrol/app/modules/AsrunImportSecondaryEvents/views/a
 import 'package:bms_creditcontrol/app/modules/AsrunVerification/views/asrun_verification_view.dart';
 import 'package:bms_creditcontrol/app/modules/ClientGroupMaster/views/client_group_master_view.dart';
 import 'package:bms_creditcontrol/app/modules/ComboDealEntry/views/combo_deal_entry_view.dart';
+import 'package:bms_creditcontrol/app/modules/EBillsForBonusActivity/views/e_bills_for_bonus_activity_view.dart';
 import 'package:bms_creditcontrol/app/modules/Ebills/views/ebills_view.dart';
 import 'package:bms_creditcontrol/app/modules/EmailBillDetails/views/email_bill_details_view.dart';
 import 'package:bms_creditcontrol/app/modules/PaymentRouteMaster/views/payment_route_master_view.dart';
@@ -159,7 +160,9 @@ class _AuthGuard1State extends State<AuthGuard> with WidgetsBindingObserver {
             case Routes.EBILLS:
               currentWidget = EbillsView();
               break;
-
+            case Routes.E_BILLS_FOR_BONUS_ACTIVITY:
+              currentWidget = EBillsForBonusActivityView();
+              break;
             case Routes.UNDO_CANCELATION:
               currentWidget = UndoCancelationView();
               break;

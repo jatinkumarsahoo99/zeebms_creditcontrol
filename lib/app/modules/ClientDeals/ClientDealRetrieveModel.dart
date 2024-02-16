@@ -18,8 +18,27 @@ class ClientDealRetrieveModel {
   }
 }
 
+class PaymentModels {
+  String? paymentmodecaption;
+  String? paymentmodecode;
+
+  PaymentModels({this.paymentmodecaption, this.paymentmodecode});
+
+  PaymentModels.fromJson(Map<String, dynamic> json) {
+    paymentmodecaption = json['paymentmodecaption'];
+    paymentmodecode = json['paymentmodecode'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['paymentmodecaption'] = this.paymentmodecaption;
+    data['paymentmodecode'] = this.paymentmodecode;
+    return data;
+  }
+}
+
 class AgencyLeaveModel {
-  dynamic paymentModels;
+  List<PaymentModels>? paymentModels;
   List<Remarks>? remarks;
   List<NewDetails>? newDetails;
   List<Retrieve>? retrieve;
@@ -41,7 +60,12 @@ class AgencyLeaveModel {
         this.totalSecondsUsed});
 
   AgencyLeaveModel.fromJson(Map<String, dynamic> json) {
-    paymentModels = json['paymentModels'];
+    if (json['paymentModels'] != null) {
+      paymentModels = <PaymentModels>[];
+      json['paymentModels'].forEach((v) {
+        paymentModels!.add( PaymentModels.fromJson(v));
+      });
+    }
     if (json['remarks'] != null) {
       remarks = <Remarks>[];
       json['remarks'].forEach((v) {
@@ -74,7 +98,10 @@ class AgencyLeaveModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['paymentModels'] = this.paymentModels;
+    if (this.paymentModels != null) {
+      data['paymentModels'] =
+          this.paymentModels!.map((v) => v.toJson()).toList();
+    }
     if (this.remarks != null) {
       data['remarks'] = this.remarks!.map((v) => v.toJson()).toList();
     }
