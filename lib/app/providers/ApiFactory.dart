@@ -810,6 +810,21 @@ class ApiFactory {
   static String get Client_Deal_GET_AGENCY_ADDRESS =>
       "$BASE_URL/api/ClientDeals/GetAgencyAddress";
 
+  static String get Client_Deal_GET_PROGRAM =>
+      "$BASE_URL/api/ClientDeals/GetAgencyAddress";
+
+  static String get Client_Deal_GET_LINK_DEAL_RETRIVE =>
+      "$BASE_URL/api/ClientDeals/LinkDealRetrive?GroupNumber=";
+
+  static String get Client_Deal_LINK_DEAL_DOUBLE_CLICK =>
+      "$BASE_URL/api/ClientDeals/LinkDealDoubleClick";
+
+  static String get Client_Deal_LINK_DEAL_SAVE =>
+      "$BASE_URL/api/ClientDeals/LinkDealSave";
+
+  static String get Client_Deal_LINK_DEAL_COMPARE =>
+      "$BASE_URL/api/ClientDeals/compare";
+
   /// ////////////////////////////////End Client Deals ////////////////////////////////////
   ///
   ///

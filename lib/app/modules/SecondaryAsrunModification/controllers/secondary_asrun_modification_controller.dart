@@ -372,7 +372,7 @@ class SecondaryAsrunModificationController extends GetxController {
   }
 
   postSave() {
-    if((stateManager?.rows.length??0) >0){
+    if ((stateManager?.rows.length ?? 0) > 0) {
       try {
         LoadingDialog.call();
         Map<String, dynamic> postData = {
@@ -390,9 +390,11 @@ class SecondaryAsrunModificationController extends GetxController {
             fun: (map) {
               closeDialogIfOpen();
               if (map is Map && map['postSave'] != null) {
-                LoadingDialog.callDataSaved(msg:  map['postSave']['message'] ?? "Something went wrong",callback: (){
-                  clearAll();
-                });
+                LoadingDialog.callDataSaved(
+                    msg: map['postSave']['message'] ?? "Something went wrong",
+                    callback: () {
+                      clearAll();
+                    });
               } else {
                 LoadingDialog.showErrorDialog((map ?? "Something went wrong").toString());
               }
@@ -405,36 +407,39 @@ class SecondaryAsrunModificationController extends GetxController {
         closeDialogIfOpen();
         LoadingDialog.showErrorDialog(("Something went wrong").toString());
       }
-    }
-    else{
+    } else {
       LoadingDialog.showErrorDialog(("Sorry! No record(s) to save."));
     }
-
   }
 
   btnClearMisMatch() {
     try {
-      LoadingDialog.call();
-      Map<String, dynamic> postData = {
-        "locationcode": selectedLocation?.key ?? "",
-        "channelcode":selectedChannel?.key ?? "",
-        "date": Utils.getMMDDYYYYFromDDMMYYYYInString3(logDateController.text) ?? "",
-        "lstTape": []
-      };
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.SECONDARY_ASRUN_MODIFICATION_GET_CLEAR_MISMATCH,
-          json: postData,
-          // "https://jsonkeeper.com/b/D537"
-          fun: (map) {
-            closeDialogIfOpen();
-            LoadingDialog.callDataSaved(msg:  map.toString(),callback: (){
-              clearAll();
+      if (secondaryAsrunGridModel != null &&
+          secondaryAsrunGridModel?.bindGrid != null &&
+          secondaryAsrunGridModel?.bindGrid?.lstbookingdetail != null &&
+          (secondaryAsrunGridModel?.bindGrid?.lstbookingdetail?.length ?? 0) > 0) {
+        LoadingDialog.call();
+        Map<String, dynamic> postData = {
+          "locationcode": selectedLocation?.key ?? "",
+          "channelcode": selectedChannel?.key ?? "",
+          "date": Utils.getMMDDYYYYFromDDMMYYYYInString3(logDateController.text) ?? "",
+          "lstTape": secondaryAsrunGridModel?.bindGrid?.lstbookingdetail?.map((e) => e.toJson()).toList()
+        };
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.SECONDARY_ASRUN_MODIFICATION_GET_CLEAR_MISMATCH,
+            json: postData,
+            // "https://jsonkeeper.com/b/D537"
+            fun: (map) {
+              closeDialogIfOpen();
+              getBindData();
+            },
+            failed: (map) {
+              closeDialogIfOpen();
+              LoadingDialog.showErrorDialog(("Something went wrong").toString());
             });
-          },
-          failed: (map) {
-            closeDialogIfOpen();
-            LoadingDialog.showErrorDialog(("Something went wrong").toString());
-          });
+      }
+
+
     } catch (e) {
       closeDialogIfOpen();
       LoadingDialog.showErrorDialog(("Something went wrong").toString());
@@ -462,8 +467,7 @@ class SecondaryAsrunModificationController extends GetxController {
               } catch (e) {
                 rowMap[key] = double.parse(row.cells[key]?.value);
               }
-            }
-            else {
+            } else {
               // rowMap[key] = DateFormat("yyyy-MM-dd").format(DateTime.now()) + (row.cells[key]?.value ?? "");
               rowMap[key] = 0;
             }
