@@ -1489,7 +1489,9 @@ class ClientDealsController extends GetxController {
       }
 
       if((valuationAmount - billingAmount ) > 100){
-       bool sta =  await LoadingDialog.modifyWithAsync("The difference between the billing and valuation amount is ${((valuationAmount - billingAmount ).toStringAsFixed(2))}\nDo you want to save?");
+       bool sta =  await LoadingDialog.modifyWithAsync("The difference between the billing and valuation amount is ${((valuationAmount - billingAmount ).toStringAsFixed(2))}\nDo you want to save?",
+       cancelTitle:"Ok" ,deleteTitle: "Cancel"
+       );
        if(!sta){
          return;
        }else{
