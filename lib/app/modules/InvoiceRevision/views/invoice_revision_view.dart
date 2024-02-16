@@ -1,3 +1,5 @@
+import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
+import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -13,13 +15,14 @@ import '../controllers/invoice_revision_controller.dart';
 class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
   InvoiceRevisionView({Key? key}) : super(key: key);
 
-  final controller =
+  InvoiceRevisionController controller =
       Get.put<InvoiceRevisionController>(InvoiceRevisionController());
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         body: GetBuilder(
+      id: "init",
       init: controller,
       builder: (controller) {
         return Padding(
@@ -33,232 +36,278 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                 spacing: 5,
                 children: [
                   DropDownField.formDropDown1WidthMap(
-                    [],
-                    (value) {},
+                    controller.location,
+                    (value) {
+                      controller.selectLocation.value = value;
+                      controller.getChannel(value.key);
+                    },
                     "Location",
                     .23,
+                    selected: controller.selectLocation.value,
                     autoFocus: true,
-                    // titleInLeft: true,
+                    inkWellFocusNode: controller.locationFN,
+                    isEnable: controller.isEnable,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
-                  DropDownField.formDropDown1WidthMap(
-                    [],
-                    (data) {},
-                    "Channel",
-                    // titleInLeft: true,
-                    .23,
+                  Obx(
+                    () => DropDownField.formDropDown1WidthMap(
+                      controller.channel,
+                      (data) {
+                        controller.selectChannel.value = data;
+                      },
+                      "Channel",
+                      .23,
+                      selected: controller.selectChannel.value,
+                      inkWellFocusNode: controller.channelFN,
+                      isEnable: controller.isEnable,
+                    ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 5,
                   ),
                   DateWithThreeTextField(
                     title: "From Date",
-                    mainTextController: TextEditingController(),
+                    mainTextController: controller.fromDate,
                     widthRation: .135,
-                    // titleInLeft: true,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
                   FormButtonWrapper(
                     btnText: "Retrieve",
                     callback: () {
-                      // controller.pickFile();
+                      controller.getRetrieve();
                     },
                     showIcon: false,
                   ),
                 ],
               ),
               const SizedBox(height: 10),
-              // Obx(
-              //   () =>
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                  ),
-                ),
+                child: controller.retrieveList.isEmpty
+                    ? Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey)),
+                      )
+                    : DataGridFromMap3(
+                        mapData: controller.retrieveList
+                            .map((e) => e.toJson())
+                            .toList(),
+                        hideKeys: const ['currencytype'],
+                        onload: (value) {
+                          controller.stateManager = value.stateManager;
+                        },
+                        colorCallback: (colorEvent) {
+                          if (colorEvent.row.cells.containsValue(
+                              controller.stateManager?.currentCell)) {
+                            return Colors.deepPurple.shade100;
+                          }
+                          return Colors.white;
+                        },
+                        onRowDoubleTap: (event) {
+                          controller.stateManager
+                              ?.setCurrentCell(event.cell, event.rowIdx);
+                          controller.fillGridData(event);
+                        },
+                        exportFileName: "Invoice Revision",
+                        widthSpecificColumn: Get.find<HomeController>()
+                            .getGridWidthByKey(
+                                userGridSettingList:
+                                    controller.userGridSetting1?.value),
+                      ),
               ),
 
-              SizedBox(
+              const SizedBox(
                 // width: 40,
                 height: 10,
               ),
 
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: Column(
+              GetBuilder(
+                  id: "textFieldUpdate",
+                  init: controller,
+                  builder: (controller) {
+                    return Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: InputFields.formFieldExpand2(
-                                hintTxt: "Location",
-                                controller: TextEditingController(),
-                                // titleInLeft: true,
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: InputFields.formFieldExpand2(
+                                      hintTxt: "Location",
+                                      controller: controller.locationTEC,
+                                      isEnable: false,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                    width: 300,
+                                    child: InputFields.formFieldExpand2(
+                                      hintTxt: "Channel",
+                                      controller: controller.channelTEC,
+                                      isEnable: false,
+                                      titleSizeboxWidth: 55,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            SizedBox(
-                              width: 300,
-                              child: InputFields.formFieldExpand2(
-                                hintTxt: "Channel",
-                                controller: TextEditingController(),
-                                // titleInLeft: true,
-                                titleSizeboxWidth: 55,
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Expanded(
+                                    child: InputFields.formFieldExpand2(
+                                      hintTxt: "SAP Invoice No",
+                                      controller: controller.invoice,
+                                      isEnable: false,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                    width: 300,
+                                    child: DateWithThreeTextField(
+                                      title: "Bill Date",
+                                      mainTextController: controller.billDate,
+                                      widthRation: .135,
+                                      isEnable: false,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: InputFields.formFieldExpand2(
-                                hintTxt: "SAP Invoice No",
-                                controller: TextEditingController(),
-                                // titleInLeft: true,
+                              InputFields.formFieldExpand2(
+                                hintTxt: "Client",
+                                controller: controller.client,
+                                isEnable: false,
                               ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            SizedBox(
-                              width: 300,
-                              child: DateWithThreeTextField(
-                                title: "Bill Date",
-                                mainTextController: TextEditingController(),
-                                widthRation: .135,
-                                // titleInLeft: true,
+                              InputFields.formFieldExpand2(
+                                hintTxt: "Agency",
+                                controller: controller.agencyTEC,
+                                isEnable: false,
                               ),
-                            ),
-                            // Expanded(
-                            //   child: InputFields.formFieldExpand2(
-                            //     hintTxt: "Channel",
-                            //     controller: TextEditingController(),
-                            // titleInLeft: true,
-                            //   ),
-                            // ),
-                          ],
+                              InputFields.formFieldExpand2(
+                                hintTxt: "Pay Route",
+                                controller: controller.payRoute,
+                                isEnable: false,
+                              ),
+                            ],
+                          ),
                         ),
-                        // InputFields.formFieldExpand2(
-                        //   hintTxt: "Short Name",
-                        //   controller: TextEditingController(),
-                        // titleInLeft: true,
-                        // ),
-                        InputFields.formFieldExpand2(
-                          hintTxt: "Client",
-                          controller: TextEditingController(),
-                          // titleInLeft: true,
+                        const SizedBox(
+                          width: 10,
                         ),
-                        InputFields.formFieldExpand2(
-                          hintTxt: "Agency",
-                          controller: TextEditingController(),
-                          // titleInLeft: true,
-                        ),
-                        InputFields.formFieldExpand2(
-                          hintTxt: "Pay Route",
-                          controller: TextEditingController(),
-                          // titleInLeft: true,
-                        ),
+                        Expanded(
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: InputFields.formFieldExpand2(
+                                      hintTxt: "Booking No",
+                                      controller: controller.bookingNo,
+                                      isEnable: false,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    width: 10,
+                                  ),
+                                  SizedBox(
+                                    width: 300,
+                                    child: InputFields.formFieldExpand2(
+                                      hintTxt: "Booking Amt",
+                                      controller: controller.bookingAmt,
+                                      isEnable: false,
+                                      titleSizeboxWidth: 55,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              DropDownField.formDropDown1WidthMapExpand(
+                                [],
+                                (value) {},
+                                "Brand",
+                                autoFocus: true,
+                                titleSizeBoxWidth: 75,
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Obx(
+                                () =>
+                                    DropDownField.formDropDownSearchAPI2Expand(
+                                  GlobalKey(),
+                                  context,
+                                  title: "New Client",
+                                  parseKeyForKey: "ClientCode",
+                                  parseKeyForValue: "ClientName",
+                                  url:
+                                      ApiFactory.INVOICE_REVISION_SEARCH_CLIENT,
+                                  onchanged: (value) {
+                                    controller.selectNewClient.value = value;
+                                    controller.clientLeave();
+                                  },
+                                  textSizeboxWidth: 85,
+                                  selectedValue:
+                                      controller.selectNewClient.value,
+                                  dialogHeight: 200,
+                                  inkwellFocus: controller.newClientFN,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Obx(
+                                () => DropDownField.formDropDown1WidthMapExpand(
+                                  controller.agency,
+                                  (value) {
+                                    controller.selectAgency.value = value;
+                                  },
+                                  "New Agency",
+                                  autoFocus: true,
+                                  titleSizeBoxWidth: 75,
+                                  selected: controller.selectAgency.value,
+                                  inkWellFocusNode: controller.agencyFN,
+                                  dialogHeight: 200,
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 5,
+                              ),
+                              Obx(
+                                () => DropDownField.formDropDown1WidthMapExpand(
+                                  controller.payroute,
+                                  (value) {
+                                    controller.selectPayroute.value = value;
+                                  },
+                                  "New Payroute",
+                                  autoFocus: true,
+                                  titleSizeBoxWidth: 75,
+                                  selected: controller.selectPayroute.value,
+                                  inkWellFocusNode: controller.payrouteFN,
+                                  dialogHeight: 200,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
                       ],
-                    ),
-                  ),
-                  SizedBox(
-                    width: 10,
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Expanded(
-                              child: InputFields.formFieldExpand2(
-                                hintTxt: "Booking No",
-                                controller: TextEditingController(),
-                                // titleInLeft: true,
-                              ),
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            SizedBox(
-                              width: 300,
-                              child: InputFields.formFieldExpand2(
-                                hintTxt: "Booking Amt",
-                                controller: TextEditingController(),
-                                // titleInLeft: true,
-                                titleSizeboxWidth: 55,
-                              ),
-                            ),
-                          ],
-                        ),
-                        DropDownField.formDropDown1WidthMapExpand(
-                          [],
-                          (value) {},
-                          "Brand",
-                          // .23,
-                          autoFocus: true,
-                          // titleInLeft: true,
-                          titleSizeBoxWidth: 75,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        DropDownField.formDropDownSearchAPI2Expand(
-                          GlobalKey(),
-                          context,
-                          title: "New Client",
-                          url: "",
-                          onchanged: (value) {},
-                          // titleInLeft: true,
-                          textSizeboxWidth: 85,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        DropDownField.formDropDown1WidthMapExpand(
-                          [],
-                          (value) {},
-                          "New Agency",
-                          // .23,
-                          autoFocus: true,
-                          // titleInLeft: true,
-                          titleSizeBoxWidth: 75,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        DropDownField.formDropDown1WidthMapExpand(
-                          [],
-                          (value) {},
-                          "New Payroute",
-                          // .23,
-                          autoFocus: true,
-                          // titleInLeft: true,
-                          titleSizeBoxWidth: 75,
-                        ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
+                    );
+                  }),
 
               // ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Get.find<HomeController>().getCommonButton(
                   Routes.INVOICE_REVISION,
-                  // handleAutoClear: false,
-                  // disableBtns: ['Save', 'Refresh'],
+                  handleAutoClear: false,
                   (btnName) {
-                    // controller.formHandler(btnName);
+                    controller.formHandler(btnName);
                   },
                 ),
               ),

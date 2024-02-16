@@ -85,6 +85,7 @@ abstract class RoutesList {
     _Paths.E_BILL_AGENCY_GROUP_MASTER,
     _Paths.ASRUN_SPECIFICATION_AD_REVENUE,
     _Paths.SECONDARY_ASRUN_MODIFICATION,
+    _Paths.INVOICE_REVISION,
   ];
 }
 

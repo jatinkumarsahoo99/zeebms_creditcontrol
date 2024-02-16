@@ -1109,10 +1109,10 @@ class ApiFactory {
   static String get CLEAR_SECONDARY_SPOTS_GETLOAD =>
       "$BASE_URL/api/ClearSecondarySpot/GetLoad";
 
-  static String get CLEAR_SECONDARY_SPOTS_GET_SCROLL =>
+  static String get CLEAR_SECONDARY_SPOTS_SCROLL =>
       "$BASE_URL/api/ClearSecondarySpot/GetScroll";
 
-  static String get CLEAR_SECONDARY_SPOTS_GET_ASTRO =>
+  static String get CLEAR_SECONDARY_SPOTS_ASTRO =>
       "$BASE_URL/api/ClearSecondarySpot/GetAstro";
 
   /// //////////////////////////////// Company master ////////////////////////////////////
@@ -1369,4 +1369,52 @@ class ApiFactory {
       "$BASE_URL/api/AsrunSpecAdRevenue/PostSave";
 
 ///////////////////////////////End: ASRUN SPECIFICATION AD REVENUE ////////////////////////////////
+  ///
+  ///
+  ///
+  /// ////////////////////////// Start EBILLS BONUS ACTIVITY Model////////////////////////////////
+  static String get EBILLS_BONUS_ACTIVITY_PAGE_LOAD =>
+      "$BASE_URL/api/EbillerBonusActivity/PageLoad";
+  static String get EBILLS_BONUS_ACTIVITY_FETCH_AGENCY_LIST =>
+      "$BASE_URL/api/EbillerBonusActivity/FetchAgencyList";
+
+  /// ////////////////////////// End EBILLS BONUS ACTIVITY Model////////////////////////////////
+  ///
+  ///
+/////////////////////////////// start: Invoice Revision ////////////////////////////////
+
+  static String get INVOICE_REVISION_GET_LOCATION =>
+      "$BASE_URL/api/InvoiceRevision/GetLocation";
+
+  static String get INVOICE_REVISION_SEARCH_CLIENT =>
+      "$BASE_URL/api/InvoiceRevision/GetClient?SearchNewClient=";
+
+  static String INVOICE_REVISION_GET_CHANNEL(String locationCode) =>
+      "$BASE_URL/api/InvoiceRevision/GetChannel?LocationCode=$locationCode";
+
+  static String INVOICE_REVISION_RETRIEVE(
+    String locationCode,
+    String channelCode,
+    String fromDate,
+  ) =>
+      "$BASE_URL/api/InvoiceRevision/GetRetrieve?LocationCode=$locationCode&ChannelCode=$channelCode&FromDate=$fromDate";
+
+  static String INVOICE_REVISION_CLIENT_LEAVE(
+    String locationCode,
+    String channelCode,
+    String clientCode,
+  ) =>
+      "$BASE_URL/api/InvoiceRevision/GetNewClientLeave?LocationCode=$locationCode&ChannelCode=$channelCode&ClientCode=$clientCode";
+
+  static String INVOICE_REVISION_BILL_DETAIL(
+    String locationCode,
+    String channelCode,
+  ) =>
+      "$BASE_URL/api/InvoiceRevision/GetDgvBillDetail?LocationCode=$locationCode&ChannelCode=$channelCode";
+
+  static String get INVOICE_REVISION_SAVE =>
+      "$BASE_URL/api/InvoiceRevision/PostSave";
+
+/////////////////////////////// end: Invoice Revision ////////////////////////////////
+  ///
 }

@@ -94,8 +94,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.E_BILLS_FOR_BONUS_ACTIVITY,
-      page: () => const EBillsForBonusActivityView(),
-      binding: EBillsForBonusActivityBinding(),
+      page: () => AuthGuard(childName: _Paths.E_BILLS_FOR_BONUS_ACTIVITY),
+      // binding: EBillsForBonusActivityBinding(),
     ),
     GetPage(
       name: _Paths.SECONDARY_ASRUN_MODIFICATION,
