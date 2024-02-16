@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bms_creditcontrol/widgets/PlutoGrid/pluto_grid.dart';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -15,10 +16,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../data/DropDownValue.dart';
+import '../../CommonDocs/controllers/common_docs_controller.dart';
+import '../../CommonDocs/views/common_docs_view.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 import '../AgencyLeaveModel.dart';
 import '../ClientDealRetrieveModel.dart';
+import '../CompareModelList.dart';
+import '../LinkDealDoubleClickModel.dart';
+import '../LinkDealRetrieveModel.dart';
+import '../LinkDealRetrieveModel.dart' as ld;
 
 part 'ImportExcelController.dart';
+part 'ImportExcelController2.dart';
+part 'compareBtnController.dart';
+part 'linkDealController.dart';
 
 class ClientDealsController extends GetxController {
   //TODO: Implement ClientDealsController
@@ -45,6 +56,7 @@ class ClientDealsController extends GetxController {
   RxList<DropDownValue> locationList2 = RxList([]);
   RxList<DropDownValue> dealType = RxList([]);
   RxList<DropDownValue> channelList2 = RxList([]);
+  RxList<DropDownValue> dialogAgencyList = RxList([]);
   RxList<AddInfo> infoDiaLogList = RxList([]);
   RxList<dynamic> dealNoList = RxList([]);
   RxList<dynamic> remarkList = RxList([]);
@@ -67,6 +79,8 @@ class ClientDealsController extends GetxController {
   Rxn<DropDownValue>? selectSpotType = Rxn<DropDownValue>(null);
   Rxn<DropDownValue>? selectProgram = Rxn<DropDownValue>(null);
   Rxn<DropDownValue>? selectAddInfo = Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectedDialogAgency = Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectedDialogClient = Rxn<DropDownValue>(null);
 
   TextEditingController dealNoController = TextEditingController();
   TextEditingController dateController = TextEditingController();
@@ -88,6 +102,11 @@ class ClientDealsController extends GetxController {
   TextEditingController valueRateController = TextEditingController();
   TextEditingController remarkDiaController = TextEditingController();
 
+  TextEditingController dialogGroupNoController = TextEditingController();
+  TextEditingController dialogDateController = TextEditingController();
+
+  int intNewEntry = 0;
+
   Rx<bool> effectiveRate = Rx<bool>(false);
   Rx<bool> type = Rx<bool>(false);
   Rx<bool> weekDay = Rx<bool>(false);
@@ -99,6 +118,7 @@ class ClientDealsController extends GetxController {
   Rx<bool> fri = Rx<bool>(false);
   Rx<bool> sat = Rx<bool>(false);
   Rx<bool> sun = Rx<bool>(false);
+  Rx<bool> showSelected = Rx<bool>(false);
 
   Rx<bool> accountEnaSta = Rx<bool>(false);
 
@@ -138,6 +158,9 @@ class ClientDealsController extends GetxController {
   PlutoGridStateManager? stateManager;
   PlutoGridStateManager? remarkStateManager;
   PlutoGridStateManager? addInfoStateManager;
+  PlutoGridStateManager? dealStateManager;
+  PlutoGridStateManager? compareStateManager;
+  PlutoGridStateManager? linkDealStateManager;
   List<Map<String, Map<String, double>>>? userGridSetting1 = [];
   Rx<String> agencyGstNumber = Rx<String>("");
   Rx<String> agencyPanNumber = Rx<String>("");
@@ -153,10 +176,85 @@ class ClientDealsController extends GetxController {
   Completer<bool>? completerDialog;
   AgencyLeaveDataModel? agencyLeaveDataModel;
 
+  CompareModelList? compareModelList;
+
   fetchUserSetting1() async {
     userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
     update(["grid"]);
   }
+
+  clearAll() {
+    Get.delete<ClientDealsController>();
+    Get.find<HomeController>().clearPage1();
+  }
+
+  dialogDocs() async {
+    String documentKey = "";
+    if (dealCode == "" || dealCode == '0') {
+      documentKey = "";
+    } else {
+      documentKey = "Linkeddeal $dealCode";
+    }
+    if (documentKey == "") {
+      return;
+    }
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
+    });
+  }
+
+  docs() async {
+    String documentKey = "";
+    if (selectedChannel?.value == null ||
+        selectedLocation?.value == null ||
+        dealNoController.text == "") {
+      documentKey = "";
+    } else {
+      documentKey =
+          "Deal ${selectedLocation?.value?.key}${selectedChannel?.value?.key}${dealNoController.text}";
+    }
+    if (documentKey == "") {
+      return;
+    }
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
+    });
+  }
+
+  formHandler(String text) {
+    if (text == "Clear") {
+      clearAll();
+    }
+    if (text == "Search") {
+      Get.to(SearchPage(
+          key: Key("Secondary Asrun Modification"),
+          screenName: "Secondary Asrun Modification",
+          appBarName: "Secondary Asrun Modification",
+          strViewName: "bms_search_NewDealDetail",
+          isAppBarReq: true));
+    }
+
+    if (text == "Docs") {
+      docs();
+    }
+    if(text == "Save"){
+      postSaveFunCall();
+    }
+  }
+
+
+
+  LinkDealRetrieveModel? linkDealRetrieveModel;
+  LinkDealDoubleClickModel? linkDealDoubleClickModel;
+  String dealCode = "0";
+
+
 
   getAllLoadData() {
     LoadingDialog.call();
@@ -640,7 +738,8 @@ class ClientDealsController extends GetxController {
   }
 
   ClientDealRetrieveModel? clientDealRetrieveModel;
-  Rx<String> linkedDealNumber = Rx<String>("sssssss");
+  Rx<String> linkedDealNumberWithText = Rx<String>("sssssss");
+  Rx<String> linkedDealNumber = Rx<String>("0");
   Rx<String> clientEmb = Rx<String>("sssssss");
   retrieveRecord(
       {String? locationCode,
@@ -665,14 +764,33 @@ class ClientDealsController extends GetxController {
             if (map is Map) {
               clientDealRetrieveModel =
                   ClientDealRetrieveModel.fromJson(map as Map<String, dynamic>);
-              importGridList?.clear();
+              importGridList.clear();
+
+              payMode.clear();
+              RxList<DropDownValue> dataList = RxList([]);
+              clientDealRetrieveModel?.agencyLeaveModel?.paymentModels?.forEach((e) {
+                dataList.add(DropDownValue.fromJsonDynamic(e.toJson(), "paymentmodecode", "paymentmodecaption"));
+                print("in side payment list");
+              });
+              payMode.addAll(dataList);
+              payMode.refresh();
+              if(payMode.isNotEmpty){
+                selectPayMode?.value = DropDownValue(key:payMode[0].key ,value:payMode[0].value );
+                selectPayMode?.refresh();
+              }
+
+              print("in side payment list$payMode");
+
               if (clientDealRetrieveModel != null &&
                   clientDealRetrieveModel?.agencyLeaveModel != null &&
                   clientDealRetrieveModel?.agencyLeaveModel?.newDetails != null &&
                   (clientDealRetrieveModel?.agencyLeaveModel?.newDetails?.length ?? 0) > 0) {
-                importGridList = clientDealRetrieveModel?.agencyLeaveModel?.newDetails??[];
+                importGridList = clientDealRetrieveModel?.agencyLeaveModel?.newDetails ?? [];
               }
+
+
               // linkedDealNumber
+              intNewEntry = 1;
 
               if (clientDealRetrieveModel != null &&
                   clientDealRetrieveModel?.agencyLeaveModel != null) {
@@ -827,16 +945,18 @@ class ClientDealsController extends GetxController {
 
               if (clientDealRetrieveModel?.agencyLeaveModel?.linkedDealNumber != null &&
                   clientDealRetrieveModel?.agencyLeaveModel?.linkedDealNumber != "") {
-                linkedDealNumber.value =
+                linkedDealNumberWithText.value =
                     "Linked Deal Number  ${clientDealRetrieveModel?.agencyLeaveModel?.linkedDealNumber}";
+                linkedDealNumber.value =
+                    clientDealRetrieveModel?.agencyLeaveModel?.linkedDealNumber ?? "0";
                 clientEmb.value = "Client Emb";
                 clientEmb.refresh();
-                linkedDealNumber.refresh();
+                linkedDealNumberWithText.refresh();
               } else {
-                linkedDealNumber.value = "sssssss";
+                linkedDealNumberWithText.value = "sssssss";
                 clientEmb.value = "sssssss";
                 clientEmb.refresh();
-                linkedDealNumber.refresh();
+                linkedDealNumberWithText.refresh();
               }
 
               update(["grid"]);
@@ -929,113 +1049,14 @@ class ClientDealsController extends GetxController {
     }
   }
 
-  pickFile() async {
-    LoadingDialog.call();
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowedExtensions: ['xlsx', 'xls'],
-      type: FileType.custom,
-    );
-    closeDialogIfOpen();
-    if (result != null && result.files.single != null) {
-      // print(">>>>>>filename"+(result.files[0].name.toString()));
-      // pathController.text = result.files[0].name.toString();
 
-      loadBtn(result);
-    } else {
-      LoadingDialog.showErrorDialog("Please try again");
-      // User canceled the pic5ker
-      print(">>>>dataCancel");
-    }
-  }
-
-  loadBtn(FilePickerResult result) {
-    LoadingDialog.call();
-    var jsonData = <String, dynamic>{};
-    try {
-      Uint8List? fileBytes = result.files.first.bytes;
-      var excel = Excel.decodeBytes(result.files.first.bytes as List<int>);
-      List<dynamic> headers = [];
-      int sheet = 0;
-      var excelDataList = <Map<String, dynamic>>[];
-      for (var table in excel.tables.keys) {
-        var tableData = <Map<String, dynamic>>[];
-        sheet = sheet + 1;
-        // Extract headers from the first row
-        headers = excel.tables[table]!.row(0).map((cell) => cell?.value.toString()).toList();
-
-        print(">>>>>" + headers.toString());
-
-        for (var rowIdx = 1; rowIdx <= excel.tables[table]!.maxRows; rowIdx++) {
-          var rowData = <String, dynamic>{};
-          var row = excel.tables[table]!.row(rowIdx);
-          for (var colIdx = 0; colIdx < row.length; colIdx++) {
-            var header = headers[colIdx];
-            var cellValue = row[colIdx]?.value.toString();
-            rowData[header ?? ""] = cellValue;
-          }
-          if (rowData.isNotEmpty) {
-            tableData.add(rowData);
-          }
-        }
-        jsonData['S${sheet}'] = tableData;
-        excelDataList = tableData;
-        print(">>>>jsonData $jsonData");
-        closeDialogIfOpen();
-      }
-      List<String> sourceList = [
-        "Recordnumber",
-        "SponsorTypeName",
-        "ProgramName",
-        "Starttime",
-        "EndTime",
-        "Seconds",
-        "Rate",
-        "Amount",
-        "ValuationRate",
-        "BookedSeconds",
-        "BalanceSeconds",
-        "BalanceAmount",
-        "TimeBand",
-        "NetWorkName",
-        "Sun",
-        "Mon",
-        "Tue",
-        "Wed",
-        "Thu",
-        "Fri",
-        "Sat",
-        "Accountname",
-        "Eventname",
-        "Spots",
-        "Paymentmodecaption",
-        "RevenueTypeName",
-        "SubRevenueTypeName",
-        "CountBased",
-        "BaseDuration"
-      ];
-      // List<String> list2 = [ "ku","jks"];
-      List<dynamic> sta = Utils.listCompare(sourceList: sourceList, compareLst: headers);
-      print(">>>>>>>>>sta$sta");
-      if (!sta[0]) {
-        LoadingDialog.showErrorDialog(sta[1] ?? "");
-      } else {
-        callValidationFun(excelData: excelDataList);
-      }
-    } catch (e) {
-      print(">>>>" + e.toString());
-      // gridData = RateCardFromDealWorkFlowModel(export: []);
-      closeDialogIfOpen();
-      update(['grid']);
-      LoadingDialog.showErrorDialog(e.toString());
-    }
-  }
 
   bool checkImport = false;
   List<NewDetails> importGridList = [];
 
   callValidationFun({List<Map<String, dynamic>>? excelData}) {
     LoadingDialog.modify("Do you wish to import file ?", () {}, () {
-      btnImportClickWithCondition(excelDataNew: excelData);
+      newImportedDataListCheckingSimilarity(excelDataN: excelData);
     }, cancelTitle: "Yes", deleteTitle: "No");
   }
 
@@ -1302,7 +1323,7 @@ class ClientDealsController extends GetxController {
             bool sta1 = await LoadingDialog.modifyWithAsync("Do you want to duplicate this row?",
                 deleteTitle: "Yes", cancelTitle: "No");
             if (sta1) {
-              addEdit(i,isNew: true);
+              addEdit(i, isNew: true);
             } else {
               // continue;
               return;
@@ -1310,17 +1331,16 @@ class ClientDealsController extends GetxController {
           }
           break;
         }
-        if((i == (importGridList.length ?? 0) -1) && isIn == false ){
-          addEdit(i+1,isNew: true);
+        if ((i == (importGridList.length ?? 0) - 1) && isIn == false) {
+          addEdit(i + 1, isNew: true);
         }
       }
 
-      if(importGridList.isEmpty){
-        addEdit(0,isNew: true);
+      if (importGridList.isEmpty) {
+        addEdit(0, isNew: true);
       }
     }
   }
-
 
   getOneZero({bool? sta}) {
     if (sta ?? false) {
@@ -1338,40 +1358,195 @@ class ClientDealsController extends GetxController {
 
   @override
   void onClose() {
+    channelFocus.dispose();
+    locationFocus.dispose();
+    dealNoFocus.dispose();
+    dateFocus.dispose();
+    fromFocus.dispose();
+    toFocus.dispose();
+    clientFocus.dispose();
+    agencyFocus.dispose();
 
-     channelFocus.dispose();
-     locationFocus.dispose();
-     dealNoFocus.dispose();
-     dateFocus.dispose();
-     fromFocus.dispose();
-     toFocus.dispose();
-     clientFocus.dispose();
-     agencyFocus.dispose();
-
-     accountFocus.dispose();
-     subTypeFocus.dispose();
-     spotTypeFocus.dispose();
-     programFocus.dispose();
-     bandFocus.dispose();
-     addInfoFocus.dispose();
-     weekEndFocus.dispose();
-     weekDayFocus.dispose();
-     monDayFocus.dispose();
-     tueDayFocus.dispose();
-     wedDayFocus.dispose();
-     thuDayFocus.dispose();
-     friDayFocus.dispose();
-     satDayFocus.dispose();
-     sunDayFocus.dispose();
-     startTimeFocus.dispose();
-     endTimeFocus.dispose();
-     secondsFocus.dispose();
-     ratePerSeconds.dispose();
-     amountFocus.dispose();
-     valRateFocus.dispose();
+    accountFocus.dispose();
+    subTypeFocus.dispose();
+    spotTypeFocus.dispose();
+    programFocus.dispose();
+    bandFocus.dispose();
+    addInfoFocus.dispose();
+    weekEndFocus.dispose();
+    weekDayFocus.dispose();
+    monDayFocus.dispose();
+    tueDayFocus.dispose();
+    wedDayFocus.dispose();
+    thuDayFocus.dispose();
+    friDayFocus.dispose();
+    satDayFocus.dispose();
+    sunDayFocus.dispose();
+    startTimeFocus.dispose();
+    endTimeFocus.dispose();
+    secondsFocus.dispose();
+    ratePerSeconds.dispose();
+    amountFocus.dispose();
+    valRateFocus.dispose();
 
     super.onClose();
   }
 
   void increment() => count.value++;
+
+  List<Map<String, dynamic>> getDataFromGrid(PlutoGridStateManager? statemanager) {
+    if (statemanager != null) {
+      statemanager.setFilter((element) => true);
+      statemanager.notifyListeners();
+      List<Map<String, dynamic>> mapList = [];
+      for (var row in statemanager.rows) {
+        Map<String, dynamic> rowMap = {};
+        for (var key in row.cells.keys) {
+          rowMap[key] = row.cells[key]?.value ?? "";
+        }
+        mapList.add(rowMap);
+      }
+      return mapList;
+    } else {
+      return [];
+    }
+  }
+
+  List<Map<String, dynamic>> getDataFromGrid2(PlutoGridStateManager? statemanager) {
+    if (statemanager != null) {
+      statemanager.setFilter((element) => true);
+      statemanager.notifyListeners();
+      List<Map<String, dynamic>> mapList = [];
+      for (var row in statemanager.rows) {
+        Map<String, dynamic> rowMap = {};
+        for (var key in row.cells.keys) {
+          if ((key.toString().trim() == "primaryEventCode") ||
+              (key.toString().trim() == "recordnumber") ||
+              (key.toString().trim() == "seconds") ||
+              (key.toString().trim() == "rate") ||
+              (key.toString().trim() == "amount") ||
+              (key.toString().trim() == "valuationRate") ||
+              (key.toString().trim() == "netCode") ||
+              (key.toString().trim() == "sun") ||
+              (key.toString().trim() == "mon") ||
+              (key.toString().trim() == "tue") ||
+              (key.toString().trim() == "wed") ||
+              (key.toString().trim() == "thu") ||
+              (key.toString().trim() == "fri") ||
+              (key.toString().trim() == "sat") ||
+              (key.toString().trim() == "eventcode") ||
+              (key.toString().trim() == "dealCode") ||
+              (key.toString().trim() == "dealDetailCode") ||
+              (key.toString().trim() == "primaryEventCode") ||
+              (key.toString().trim() == "recordnumber") ||
+              (key.toString().trim() == "groupValuationRate") ||
+              (key.toString().trim() == "isrequired")
+          ) {
+            try{
+              rowMap[key] = int.parse( row.cells[key]?.value ?? "0");
+            }catch(e){
+              rowMap[key] = double.parse( row.cells[key]?.value ?? "0");
+            }
+          } else {
+            rowMap[key] = row.cells[key]?.value ?? "";
+          }
+
+        }
+        mapList.add(rowMap);
+      }
+      return mapList;
+    } else {
+      return [];
+    }
+  }
+
+  postSaveFunCall() async {
+    try {
+
+      if(selectedLocation?.value == null || selectedChannel?.value == null ||
+          dealNoController.text == "" || selectedClient?.value == null ||
+          selectAgency?.value == null || selectCurrency?.value == null || selectPayMode?.value == null){
+        return;
+      }else if(importGridList.isEmpty){
+        LoadingDialog.showErrorDialog1("No details to add",callback: (){
+          return;
+        });
+        return;
+      }
+
+      double valuationAmount =0,billingAmount = 0;
+
+      for(int i=0;i<importGridList.length;i++){
+        valuationAmount =  valuationAmount + ((importGridList[i].seconds != null &&
+            importGridList[i].seconds != "")?int.parse(importGridList[i].seconds??"0"):0) *
+            ((importGridList[i].valuationRate != null &&
+            importGridList[i].valuationRate != "")?int.parse(importGridList[i].valuationRate??"0"):0) ;
+
+        billingAmount =  billingAmount + ((importGridList[i].seconds != null &&
+            importGridList[i].seconds != "")?int.parse(importGridList[i].seconds??"0"):0) *
+            ((importGridList[i].rate != null &&
+                importGridList[i].rate != "")?int.parse(importGridList[i].rate??"0"):0) ;
+      }
+
+      if((valuationAmount - billingAmount ) > 100){
+       bool sta =  await LoadingDialog.modifyWithAsync("The difference between the billing and valuation amount is ${((valuationAmount - billingAmount ).toStringAsFixed(2))}\nDo you want to save?");
+       if(!sta){
+         return;
+       }else{
+         callSaveApi();
+       }
+      }
+    } catch (e) {}
+  }
+
+  callSaveApi(){
+    try{
+      LoadingDialog.call();
+      Map<String, dynamic> postData = {
+        "remarks": getDataFromGrid(remarkStateManager) ?? [],
+        "addInfo": getDataFromGrid2(addInfoStateManager) ?? [],
+        "newDetails": getDataFromGrid2(stateManager) ?? [],
+        "newEntry": intNewEntry,
+        "locationcode": selectedLocation?.value?.key ?? "",
+        "channelCode": selectedChannel?.value?.key ?? "",
+        "dealNumber": dealNoController.text ?? "",
+        "dealDate": dateController.text ?? "",
+        "referenceNumber": referenceController.text ?? "",
+        "referenceDate": referenceDateController.text ?? "",
+        "clientcode": selectedClient?.value?.key ?? "",
+        "agencyCode": selectAgency?.value?.key ?? "",
+        "brandCode": selectBrand?.value?.key ?? "",
+        "currencytypecode": selectCurrency?.value?.key ?? "ZARUP00003",
+        "seconds": (secondsController.text.trim() != "") ? int.parse(secondsController.text) : 0,
+        "dealAmount": (amountController.text.trim() != "") ? int.parse(amountController.text) : 0,
+        "fromDate": fromDateController.text ?? "",
+        "todate": toDateController.text ?? "",
+        "secondused": (secondsController2.text.trim() != "")
+            ? int.parse(secondsController2.text)
+            : 0,
+        "bookedamount": (amountController2.text.trim() != "")
+            ? int.parse(amountController2.text)
+            : 0,
+        "paymentmodecode": selectPayMode?.value?.key ?? "",
+        "maxspend": (maxSpeedController.text.trim() != "")
+            ? int.parse(maxSpeedController.text)
+            : 0,
+        "dealTypeCode": selectDealType?.value?.key ?? "",
+        "effectiveRate_YN": getOneZero(sta: effectiveRate.value)
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+        api:ApiFactory.Client_Deal_LINK_DEAL_SAVE,
+        json: postData,
+        fun: (map){
+          closeDialogIfOpen();
+        },
+        failed: (map){
+          closeDialogIfOpen();
+        }
+      );
+    }catch(e){
+      closeDialogIfOpen();
+    }
+  }
+
 }
