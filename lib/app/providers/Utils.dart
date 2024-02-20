@@ -30,13 +30,16 @@ class Utils {
   }
 
   static toDateFormat4(String? date) {
-    String? formatter;
+    String? formatter = "";
     if (date != null && date != "") {
-      formatter = DateFormat("dd-MM-yyyy").format(
-          DateFormat("yyyy-MM-ddTHH:mm:ss")
-              .parse((date ?? DateTime.now()).toString()));
+      try{
+        formatter = DateFormat("dd-MM-yyyy").format(
+            DateFormat("yyyy-MM-ddTHH:mm:ss")
+                .parse((date ?? DateTime.now()).toString()));
+      }catch(e){
+        formatter = "";
+      }
     }
-
     // log(">>>>>>"+formatter.toString());
     return formatter;
   }

@@ -97,6 +97,7 @@ class EBillAgencyGroupMasterController extends GetxController {
                     key: e["agencycode"].toString(), value: e["agencyname"]));
               });
             }
+            update(['billMaster']);
           }
         });
   }
@@ -127,6 +128,7 @@ class EBillAgencyGroupMasterController extends GetxController {
                     key: e["agencycode"].toString(), value: e["agencyname"]));
               });
             }
+            update(['billMaster']);
           }
         },
         json: jsonMap);
