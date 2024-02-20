@@ -174,7 +174,7 @@ extension ImportExcelController2 on ClientDealsController {
     importGridList[index].timeBand = selectBand?.value?.value ?? "";
     importGridList[index].valuationRate = valueRateController.text ?? "";
     importGridList[index].netCode = selectAddInfo?.value?.key ?? "";
-    importGridList[index].netWorkName = selectAddInfo?.value?.key ?? "";
+    importGridList[index].netWorkName = selectAddInfo?.value?.value ?? "";
     importGridList[index].sun = getOneZero(sta: sun.value);
     importGridList[index].mon = getOneZero(sta: mon.value);
     importGridList[index].tue = getOneZero(sta: tue.value);

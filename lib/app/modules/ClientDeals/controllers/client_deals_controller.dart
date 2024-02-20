@@ -593,7 +593,7 @@ class ClientDealsController extends GetxController {
                 addInfoList.addAll(dataList);
                 if (netCode != "") {
                   for (var element in addInfoList) {
-                    if (element.key.toString().trim() == netCode.toString().trim()) {
+                    if (element.value.toString().trim() == netCode.toString().trim()) {
                       selectAddInfo?.value = DropDownValue(key: element.key, value: element.value);
                       selectAddInfo?.refresh();
                       break;
@@ -1112,16 +1112,16 @@ class ClientDealsController extends GetxController {
           type.value = true;
           type.refresh();
           secondsController2.text =
-              (stateManager?.rows[selectedIndex].cells['seconds']?.value ?? "").toString();
+              (stateManager?.rows[selectedIndex].cells['spots']?.value ?? "").toString();
           primarySecondaryEvent(type.value);
         }
       }
 
       print("I am from controller");
-      channelLeave(netCode: stateManager?.rows[selectedIndex].cells['netCode']?.value ?? "");
+      channelLeave(netCode: stateManager?.rows[selectedIndex].cells['netWorkName']?.value ?? "");
 
-      txtDRecordNumber.value =
-          (stateManager?.rows[selectedIndex].cells['recordnumber']?.value ?? "").toString();
+      txtDRecordNumber.value = (stateManager?.rows[selectedIndex].cells['recordnumber']?.value ?? "").toString();
+      secondsController2.text = (stateManager?.rows[selectedIndex].cells['seconds']?.value ?? "").toString();
 
       sponsorTypeCode =
           (stateManager?.rows[selectedIndex].cells['sponsorTypeCode']?.value ?? "").toString();
@@ -1185,10 +1185,14 @@ class ClientDealsController extends GetxController {
             value: stateManager?.rows[selectedIndex].cells['eventname']?.value ?? "",
             key: stateManager?.rows[selectedIndex].cells['eventcode']?.value ?? "");
 
+        // selectAddInfo?.value = DropDownValue(value:stateManager?.rows[selectedIndex].cells['netWorkName']?.value ?? "" ,
+        //     key:stateManager?.rows[selectedIndex].cells['netCode']?.value ?? "" );
+
         selectSubType?.refresh();
         selectAccount?.refresh();
+        selectAddInfo?.refresh();
       }
-
+      setValues();
       update(['middle']);
       completer.complete("");
       return completer.future;
@@ -1223,7 +1227,11 @@ class ClientDealsController extends GetxController {
     amountController2.text = "0";
     valueRateController.text = "0";
     txtDRecordNumber.value = "0";
+     label24 = Rx<String>("Seconds");
+     label25 = Rx<String>("Rate per 10 seconds");
     type.refresh();
+    label24.refresh();
+    label25.refresh();
     update(['middle']);
   }
 
@@ -1521,7 +1529,7 @@ class ClientDealsController extends GetxController {
         "dealNumber": dealNoController.text ?? "",
         "dealDate": Utils.getMMDDYYYYFromDDMMYYYYInString( dateController.text ?? ""),
         "referenceNumber": referenceController.text ?? "",
-        "referenceDate": referenceDateController.text ?? "",
+        "referenceDate":Utils.getMMDDYYYYFromDDMMYYYYInString( referenceDateController.text ?? ""),
         "clientcode": selectedClient?.value?.key ?? "",
         "agencyCode": selectAgency?.value?.key ?? "",
         "brandCode": selectBrand?.value?.key ?? "",
@@ -1548,6 +1556,19 @@ class ClientDealsController extends GetxController {
         json: postData,
         fun: (map){
           closeDialogIfOpen();
+          if(map is Map && map['dealNumber'] != null){
+            if(map['dealNumber'].toString().trim() != dealNoController.text.toString().trim()){
+              // clearAll();
+              dealNoController.text = map['dealNumber']??"";
+              retrieveRecord();
+              LoadingDialog.callDataSavedMessage(map['save']??"");
+            }else{
+              clearAll();
+            }
+            // LoadingDialog.callDataSavedMessage(map['save']??"");
+          }else{
+            clearAll();
+          }
         },
         failed: (map){
           closeDialogIfOpen();
@@ -1559,4 +1580,38 @@ class ClientDealsController extends GetxController {
     }
   }
 
+  Rx<String> label24 = Rx<String>("Seconds");
+  Rx<String> label25 = Rx<String>("Rate per 10 seconds");
+
+  setValues(){
+    if(selectSubType?.value != null){
+      Get.find<ConnectorControl>().GETMETHODCALL(
+        api:ApiFactory.Client_Deal_LINK_DEAL_Set_Values+(selectSubType?.value?.key??""),
+        fun: (map){
+          if(map is Map && map['model'] != null){
+            label24.value = map['model']['secondOrExpo'];
+            label25.value = map['model']['rateSecondOrExpo'];
+            label24.refresh();
+            label25.refresh();
+          }
+
+        },
+        failed: (map){
+          label24 = Rx<String>("Seconds");
+          label25 = Rx<String>("Rate per 10 seconds");
+          label24.refresh();
+          label25.refresh();
+        }
+
+      );
+    }else{
+      label24 = Rx<String>("Seconds");
+      label25 = Rx<String>("Rate per 10 seconds");
+      label24.refresh();
+      label25.refresh();
+    }
+  }
+
 }
+
+// bk - booked

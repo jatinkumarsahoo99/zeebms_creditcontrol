@@ -287,7 +287,9 @@ extension ImportExcelController on ClientDealsController {
               timeBandName: excelDataNew[i]['TimeBand']);
 
           NewDetails newDetails = NewDetails(
-            primaryEventCode: (excelDataNew[i]['Amount'] != "") ? "1" : "0",
+            primaryEventCode: (excelDataNew[i]['accountname'] != null &&
+                excelDataNew[i]['accountname'] != "null" &&
+                excelDataNew[i]['accountname'] !="") ? "1" : "0",
             recordnumber: "",
             sponsorTypeName: excelDataNew[i]['SponsorTypeName'],
             programName: excelDataNew[i]['ProgramName'],

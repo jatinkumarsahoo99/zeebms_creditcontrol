@@ -828,6 +828,9 @@ class ApiFactory {
   static String get Client_Deal_LINK_DEAL_COMPARE =>
       "$BASE_URL/api/ClientDeals/compare";
 
+  static String get Client_Deal_LINK_DEAL_Set_Values=>
+      "$BASE_URL/api/ClientDeals/setValues?eventCode=";
+
 
   /// ////////////////////////////////End Client Deals ////////////////////////////////////
   ///
