@@ -507,7 +507,9 @@ class EbillsView extends GetView<EbillsController> {
                   ),
                   FormButtonWrapper(
                     btnText: "Create Xml",
-                    callback: () {},
+                    callback: () {
+                      controller.createXML();
+                    },
                     showIcon: true,
                   ),
                 ],

@@ -1337,6 +1337,8 @@ class ApiFactory {
   /// ////////////////////////// Start EBILLS  Model////////////////////////////////
   static String get EBILLS_GET_LOAD => "$BASE_URL/api/Ebills/GetLoad";
   static String get EBILLS_POST_AGENCY => "$BASE_URL/api/Ebills/PostAgency";
+  static String get EBILLS_CREATE_XML_CLICK =>
+      "$BASE_URL/api/Ebills/CreateXmlClick";
 
   /// ////////////////////////// End EBILLS Model////////////////////////////////
 
