@@ -1660,11 +1660,14 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                               GlobalKey(),
                                               context,
                                               title: "Program",
-                                              url: "",
+                                              url:ApiFactory.Client_Deal_GET_PROGRAM,
                                               onchanged: (data) {
                                                 controller.selectProgram?.value = data;
                                               },
                                               selectedValue: controller.selectProgram?.value,
+                                              customInData: "model",
+                                              parseKeyForKey: "programcode",
+                                              parseKeyForValue: "programname",
                                               // width: Get.width * 0.3,
                                               // titleInLeft: true,
                                               textSizeboxWidth: 60,

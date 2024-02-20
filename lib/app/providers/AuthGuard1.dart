@@ -14,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
+import '../modules/AuditReschedule/views/audit_reschedule_view.dart';
 import '../modules/BillExport/views/bill_export_view.dart';
 import '../modules/AsrunSpecificationAdRevenue/views/asrun_specification_ad_revenue_view.dart';
 import '../modules/ClearSecondarySpots/views/clear_secondary_spots_view.dart';
@@ -263,6 +264,9 @@ class _AuthGuard1State extends State<AuthGuard> with WidgetsBindingObserver {
               break;
             case Routes.EMAIL_BILL_DETAILS:
               currentWidget = EmailBillDetailsView();
+              break;
+            case Routes.AUDIT_RESCHEDULE:
+              currentWidget = AuditRescheduleView();
               break;
             default:
               currentWidget = const NoDataFoundPage();

@@ -77,8 +77,16 @@ class Utils {
   }
 
   static String getMMDDYYYYFromDDMMYYYYInString(String ddMMYYYY) {
-    return DateFormat("yyyy-MM-dd")
-        .format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
+    try {
+      if (ddMMYYYY != null && ddMMYYYY != "") {
+        return DateFormat("yyyy-MM-dd")
+            .format(DateFormat('dd-MM-yyyy').parse(ddMMYYYY));
+      } else {
+        return "";
+      }
+    }catch(e){
+      return "";
+    }
   }
 
 

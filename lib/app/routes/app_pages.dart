@@ -6,6 +6,8 @@ import '../../widgets/NoDataFoundPage.dart';
 import '../modules/AgencyGroupMaster/bindings/agency_group_master_binding.dart';
 import '../modules/AgencyMaster/bindings/agency_master_binding.dart';
 import '../modules/AsrunSpecificationAdRevenue/bindings/asrun_specification_ad_revenue_binding.dart';
+import '../modules/AuditReschedule/bindings/audit_reschedule_binding.dart';
+import '../modules/AuditReschedule/views/audit_reschedule_view.dart';
 import '../modules/ClientEmbargo/bindings/client_embargo_binding.dart';
 import '../modules/ClientMaster/bindings/client_master_binding.dart';
 import '../modules/DealReport/bindings/deal_report_binding.dart';
@@ -246,6 +248,12 @@ class AppPages {
     GetPage(
       name: _Paths.TRAFFIC_ORDER_CORRECTION,
       page: () => AuthGuard(childName: _Paths.TRAFFIC_ORDER_CORRECTION),
+    ),
+    GetPage(
+      name: _Paths.AUDIT_RESCHEDULE,
+      // page: () =>  AuditRescheduleView(),
+      page: () => AuthGuard(childName: _Paths.AUDIT_RESCHEDULE),
+      binding: AuditRescheduleBinding(),
     ),
   ];
 }
