@@ -1916,17 +1916,10 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                 btnText: "Import",
                                 callback: () async {
                                   // controller.pickFile();
-                                  /*int siz = 6;
-                                  for(int i=0;i<siz;i++){
-                                    if(i == 2 || i== 4){
-                                     bool sta =  await LoadingDialog.modifyWithAsync(
-                                          "Similar entry already exists!\nDo you want to modify it?",
-                                          cancelTitle: "Yes", deleteTitle: "No");
-                                    }else{
 
-                                    }
-
-                                  }*/
+                                  LoadingDialog.modify("Do you wish to import file ?", () {}, () {
+                                    controller.pickFile();
+                                  }, cancelTitle: "Yes", deleteTitle: "No");
                                 },
                               ),
                               Obx(() {
@@ -1983,7 +1976,11 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       "programCategoryCode",
                                       "bandCode",
                                       "revflag",
-                                      "subRevenueTypeCode"
+                                      "subRevenueTypeCode",
+                                      "netCode",
+                                      "accountCode",
+                                      "eventcode",
+                                      "revenueTypeCode"
                                     ],
 
                                     mapData: (controller

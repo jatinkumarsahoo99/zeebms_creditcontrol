@@ -822,6 +822,9 @@ class ApiFactory {
   static String get Client_Deal_LINK_DEAL_SAVE =>
       "$BASE_URL/api/ClientDeals/LinkDealSave";
 
+  static String get Client_Deal_SAVE =>
+      "$BASE_URL/api/ClientDeals/save";
+
   static String get Client_Deal_LINK_DEAL_COMPARE =>
       "$BASE_URL/api/ClientDeals/compare";
 

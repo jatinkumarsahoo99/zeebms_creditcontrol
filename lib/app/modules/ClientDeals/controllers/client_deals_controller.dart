@@ -1054,11 +1054,7 @@ class ClientDealsController extends GetxController {
   bool checkImport = false;
   List<NewDetails> importGridList = [];
 
-  callValidationFun({List<Map<String, dynamic>>? excelData}) {
-    LoadingDialog.modify("Do you wish to import file ?", () {}, () {
-      newImportedDataListCheckingSimilarity(excelDataN: excelData);
-    }, cancelTitle: "Yes", deleteTitle: "No");
-  }
+
 
   List<NewDetails>? importGridListNew = [];
 
@@ -1394,7 +1390,7 @@ class ClientDealsController extends GetxController {
 
   void increment() => count.value++;
 
-  List<Map<String, dynamic>> getDataFromGrid(PlutoGridStateManager? statemanager) {
+  List<dynamic> getDataFromGrid(PlutoGridStateManager? statemanager, {String? gridName}) {
     if (statemanager != null) {
       statemanager.setFilter((element) => true);
       statemanager.notifyListeners();
@@ -1407,12 +1403,14 @@ class ClientDealsController extends GetxController {
         mapList.add(rowMap);
       }
       return mapList;
+    }else if(gridName != null && gridName !="" && gridName == "remark"){
+      return remarkList.value ;
     } else {
       return [];
     }
   }
 
-  List<Map<String, dynamic>> getDataFromGrid2(PlutoGridStateManager? statemanager) {
+  List<Map<String, dynamic>> getDataFromGrid2(PlutoGridStateManager? statemanager,{String? gridName}) {
     if (statemanager != null) {
       statemanager.setFilter((element) => true);
       statemanager.notifyListeners();
@@ -1442,11 +1440,16 @@ class ClientDealsController extends GetxController {
               (key.toString().trim() == "groupValuationRate") ||
               (key.toString().trim() == "isrequired")
           ) {
-            try{
-              rowMap[key] = int.parse( row.cells[key]?.value ?? "0");
-            }catch(e){
-              rowMap[key] = double.parse( row.cells[key]?.value ?? "0");
+            if(row.cells[key]?.value != null && row.cells[key]?.value != ""){
+              try{
+                rowMap[key] = int.parse( row.cells[key]?.value ?? "0");
+              }catch(e){
+                rowMap[key] = double.parse( row.cells[key]?.value ?? "0");
+              }
+            }else{
+              rowMap[key] =  0;
             }
+
           } else {
             rowMap[key] = row.cells[key]?.value ?? "";
           }
@@ -1455,7 +1458,11 @@ class ClientDealsController extends GetxController {
         mapList.add(rowMap);
       }
       return mapList;
-    } else {
+    }
+    else if(gridName != null && gridName != "" && gridName == "addInfo"){
+       return (clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.map((e) => e.toJson()).toList() )??[];
+    }
+    else {
       return [];
     }
   }
@@ -1505,14 +1512,14 @@ class ClientDealsController extends GetxController {
     try{
       LoadingDialog.call();
       Map<String, dynamic> postData = {
-        "remarks": getDataFromGrid(remarkStateManager) ?? [],
-        "addInfo": getDataFromGrid2(addInfoStateManager) ?? [],
+        "remarks": getDataFromGrid(remarkStateManager,gridName: "remark") ?? [],
+        "addInfo": getDataFromGrid2(addInfoStateManager,gridName: "addInfo") ?? [],
         "newDetails": getDataFromGrid2(stateManager) ?? [],
         "newEntry": intNewEntry,
         "locationcode": selectedLocation?.value?.key ?? "",
         "channelCode": selectedChannel?.value?.key ?? "",
         "dealNumber": dealNoController.text ?? "",
-        "dealDate": dateController.text ?? "",
+        "dealDate": Utils.getMMDDYYYYFromDDMMYYYYInString( dateController.text ?? ""),
         "referenceNumber": referenceController.text ?? "",
         "referenceDate": referenceDateController.text ?? "",
         "clientcode": selectedClient?.value?.key ?? "",
@@ -1521,8 +1528,8 @@ class ClientDealsController extends GetxController {
         "currencytypecode": selectCurrency?.value?.key ?? "ZARUP00003",
         "seconds": (secondsController.text.trim() != "") ? int.parse(secondsController.text) : 0,
         "dealAmount": (amountController.text.trim() != "") ? int.parse(amountController.text) : 0,
-        "fromDate": fromDateController.text ?? "",
-        "todate": toDateController.text ?? "",
+        "fromDate":Utils.getMMDDYYYYFromDDMMYYYYInString( fromDateController.text ?? ""),
+        "todate":Utils.getMMDDYYYYFromDDMMYYYYInString( toDateController.text ?? ""),
         "secondused": (secondsController2.text.trim() != "")
             ? int.parse(secondsController2.text)
             : 0,
@@ -1537,7 +1544,7 @@ class ClientDealsController extends GetxController {
         "effectiveRate_YN": getOneZero(sta: effectiveRate.value)
       };
       Get.find<ConnectorControl>().POSTMETHOD(
-        api:ApiFactory.Client_Deal_LINK_DEAL_SAVE,
+        api:ApiFactory.Client_Deal_SAVE,
         json: postData,
         fun: (map){
           closeDialogIfOpen();
@@ -1548,6 +1555,7 @@ class ClientDealsController extends GetxController {
       );
     }catch(e){
       closeDialogIfOpen();
+      LoadingDialog.showErrorDialog("Something went wrong${e}");
     }
   }
 
