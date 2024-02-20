@@ -51,6 +51,7 @@ abstract class Routes {
   static const SALES_EXECUTIVE_MASTER = _Paths.SALES_EXECUTIVE_MASTER;
   static const EMAIL_BILL_DETAILS = _Paths.EMAIL_BILL_DETAILS;
   // static const PAYROUTE_CATEGORY_MASTER = _Paths.PAYROUTE_CATEGORY_MASTER;
+  static const AUDIT_RESCHEDULE = _Paths.AUDIT_RESCHEDULE;
 }
 
 abstract class RoutesList {
@@ -137,4 +138,5 @@ abstract class _Paths {
   // static const L_M_S_MASTER_REPORT_NEW = '/l-m-s-master-report-new';
   static const SALES_EXECUTIVE_MASTER = '/frmExecutiveMaster';
   static const EMAIL_BILL_DETAILS = '/frmBilling';
+  static const AUDIT_RESCHEDULE = '/audit-reschedule';
 }

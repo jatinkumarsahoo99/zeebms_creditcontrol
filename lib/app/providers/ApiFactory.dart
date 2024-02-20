@@ -811,7 +811,7 @@ class ApiFactory {
       "$BASE_URL/api/ClientDeals/GetAgencyAddress";
 
   static String get Client_Deal_GET_PROGRAM =>
-      "$BASE_URL/api/ClientDeals/GetAgencyAddress";
+      "$BASE_URL/api/ClientDeals/GetProgram?programName=";
 
   static String get Client_Deal_GET_LINK_DEAL_RETRIVE =>
       "$BASE_URL/api/ClientDeals/LinkDealRetrive?GroupNumber=";
@@ -822,8 +822,15 @@ class ApiFactory {
   static String get Client_Deal_LINK_DEAL_SAVE =>
       "$BASE_URL/api/ClientDeals/LinkDealSave";
 
+  static String get Client_Deal_SAVE =>
+      "$BASE_URL/api/ClientDeals/save";
+
   static String get Client_Deal_LINK_DEAL_COMPARE =>
       "$BASE_URL/api/ClientDeals/compare";
+
+  static String get Client_Deal_LINK_DEAL_Set_Values=>
+      "$BASE_URL/api/ClientDeals/setValues?eventCode=";
+
 
   /// ////////////////////////////////End Client Deals ////////////////////////////////////
   ///
@@ -1439,4 +1446,16 @@ class ApiFactory {
 
 /////////////////////////////// end: Invoice Revision ////////////////////////////////
   ///
+///
+///  /////////////////////// RO AUDIT ////////////////////////////
+
+  static String get RO_AUDIT_ON_LOAD => "$BASE_URL/api/ROAuditStatus/OnLoad";
+  static String get RO_AUDIT_ON_LOCATION_LEAVE => "$BASE_URL/api/ROAuditStatus/OnLocationLeave?LocationCode=";
+  static String get RO_AUDIT_SHOW_DETAILS => "$BASE_URL/api/ROAuditStatus/ShowDetails";
+  static String get RO_AUDIT_ADDITION_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/AdditionsCellDoubleClick";
+  static String get RO_AUDIT_RESCHEDULE_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/RescheduleCellDoubleClick";
+  static String get RO_AUDIT_CANCELLATION_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/CancellationCellDoubleClick";
+  static String get RO_AUDIT_DEAL_APPROVAL_CELL_DOUBLE_CLICK => "$BASE_URL/api/ROAuditStatus/DealApprovalCellDoubleClick";
+
+
 }

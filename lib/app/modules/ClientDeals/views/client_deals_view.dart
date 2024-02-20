@@ -277,250 +277,274 @@ class ClientDealsView extends GetView<ClientDealsController> {
                 return GetBuilder<ClientDealsController>
                   (id: "all",
                     builder: (controller) {
-                  return Column(
-                    // crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        height: 30,
-                        // color: Colors.grey[200],
-                        child: Stack(
-                          fit: StackFit.expand,
-                          // alignment: Alignment.center,
-                          children: [
-                            Align(
-                              alignment: Alignment.center,
-                              child: Text(
-                                'Link Deal',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                ),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: IconButton(
-                                splashRadius: 20,
-                                onPressed: () {
-                                  controller.dialogWidget = null;
-                                  controller.canDialogShow.value = false;
-                                },
-                                icon: const Icon(Icons.close),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 4,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      return Column(
+                        // crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          SizedBox(
-                            width: Get.width*0.4,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          Container(
+                            height: 30,
+                            // color: Colors.grey[200],
+                            child: Stack(
+                              fit: StackFit.expand,
+                              // alignment: Alignment.center,
                               children: [
-                                InputFields.numbers(
-                                    hintTxt: "Group No",
-                                    controller: controller.dialogGroupNoController,
-                                    width: 0.15,
-                                    padLeft: 0,
-                                    isEnabled: false
-
-                                  // titleInLeft: true,
-                                  // titleSizeboxWidth: 45,
-
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Text(
+                                    'Link Deal',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      color: Colors.black,
+                                      fontSize: 20,
+                                    ),
+                                  ),
                                 ),
-                                SizedBox(
-                                  width: 8,
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: IconButton(
+                                    splashRadius: 20,
+                                    onPressed: () {
+                                      controller.dialogWidget = null;
+                                      controller.canDialogShow.value = false;
+                                    },
+                                    icon: const Icon(Icons.close),
+                                  ),
                                 ),
-                                DateWithThreeTextField(
-                                  title: "Date",
-                                  mainTextController: controller.dialogDateController,
-                                  widthRation: .15,
-                                  isEnable: false,
-                                  // isEnable: controllerX.isEnable.value,
-                                ),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                CheckBoxOnRight(
-                                  title: "Show Selected",
-                                  value: controller.showSelected.value,
-                                  onChanged: (val) {
-                                    controller.showSelected.value = val!;
-                                    // controller.weekend(val);
-                                  },
-                                  // fn: controller.weekEndFocus,
-                                ),
-
                               ],
                             ),
                           ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
                           SizedBox(
-                            width: Get.width * .4,
-                            child: DropDownField
-                                .formDropDownSearchAPI2Expand(
-                              GlobalKey(),
-                              context,
-                              title: "Client",
-                              url: "",
-                              isEnable: false,
-                              onchanged: (data) {
-                                controller.selectedDialogClient?.value = data;
+                            height: 4,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width: Get.width * 0.4,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    InputFields.numbers(
+                                        hintTxt: "Group No",
+                                        controller: controller.dialogGroupNoController,
+                                        width: 0.15,
+                                        padLeft: 0,
+                                        isEnabled: false
+
+                                      // titleInLeft: true,
+                                      // titleSizeboxWidth: 45,
+
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    DateWithThreeTextField(
+                                      title: "Date",
+                                      mainTextController: controller.dialogDateController,
+                                      widthRation: .15,
+                                      isEnable: false,
+                                      // isEnable: controllerX.isEnable.value,
+                                    ),
+                                    SizedBox(
+                                      width: 8,
+                                    ),
+                                    CheckBoxOnRight(
+                                      title: "Show Selected",
+                                      value: controller.showSelected.value,
+                                      onChanged: (val) {
+                                        controller.showSelected.value = val!;
+                                        // controller.weekend(val);
+                                      },
+                                      // fn: controller.weekEndFocus,
+                                    ),
+
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              SizedBox(
+                                width: Get.width * .4,
+                                child: DropDownField
+                                    .formDropDownSearchAPI2Expand(
+                                  GlobalKey(),
+                                  context,
+                                  title: "Client",
+                                  url: "",
+                                  isEnable: false,
+                                  onchanged: (data) {
+                                    controller.selectedDialogClient?.value = data;
+                                  },
+                                  selectedValue: controller.selectedDialogClient?.value,
+                                  // width: Get.width * 0.3,
+                                  // titleInLeft: true,
+                                  textSizeboxWidth: 60,
+                                  // inkwellFocus: controller.programFocus
+                                ),
+                              ),
+                              DropDownField.formDropDown1WidthMap(
+                                [], (data) {
+                                controller.selectedDialogAgency?.value = data;
+                              }, "Agency", .4,
+                                selected: controller.selectedDialogAgency?.value,
+                                // inkWellFocusNode: controller.addInfoFocus
+                                // titleInLeft: true,
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 6,
+                          ),
+                          Expanded(child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                            ),
+                            child: (controller.linkDealRetrieveModel != null &&
+                                controller.linkDealRetrieveModel?.model != null &&
+                                controller.linkDealRetrieveModel?.model?.deals != null &&
+                                (controller.linkDealRetrieveModel?.model?.deals?.length ?? 0) > 0) ?
+                            DataGridFromMap3(
+                              showSrNo: true,
+                              hideCode: false,
+                              formatDate: false,
+                              columnAutoResize: true,
+                              doPasccal: true,
+                              colorCallback: (row) =>
+                              (row.row.cells
+                                  .containsValue(
+                                  controller.dealStateManager?.currentCell))
+                                  ? Colors.deepPurple.shade200
+                                  : Colors.white,
+                              exportFileName: "Client Deals",
+                              mode: PlutoGridMode.normal,
+                              noEditcheckBoxColumnKey: ["selected"],
+                              checkBoxStrComparison: true,
+                              uncheckCheckBoxStr: false,
+                              checkBoxColumnKey: const ["selected"],
+                              onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                                controller.linkDealDialogFirstGridDoubleClick(event);
                               },
-                              selectedValue: controller.selectedDialogClient?.value,
-                              // width: Get.width * 0.3,
-                              // titleInLeft: true,
-                              textSizeboxWidth: 60,
-                              // inkwellFocus: controller.programFocus
+                              // checkRow: true,
+                              // checkRowKey: "selected",
+                              // checkRowKey: "selected",
+                              // checkRow: true,
+
+
+                              // hideKeys: ["isrequired", "allowedvalues"],
+                              mapData: controller.linkDealRetrieveModel!.model!.deals!.
+                              map((e) => e.toJson()).toList(),
+                              // mapData: (controllerX.dataList)!,
+                              widthRatio: Get.width / 9 - 1,
+                              onload: (PlutoGridOnLoadedEvent load) {
+                                controller.dealStateManager =
+                                    load.stateManager;
+                              },
+                            ) : Container(),
+                          )),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          Expanded(child: Container(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.grey),
+                              ),
+                              child: (controller.linkDealRetrieveModel != null &&
+                                  controller.linkDealRetrieveModel?.model != null &&
+                                  controller.linkDealRetrieveModel?.model?.linkedDeal != null &&
+                                  (controller.linkDealRetrieveModel?.model?.linkedDeal?.length ??
+                                      0) > 0) ?
+                              DataGridFromMap3(
+                                showSrNo: true,
+                                hideCode: false,
+                                formatDate: false,
+                                columnAutoResize: true,
+                                doPasccal: true,
+                                colorCallback: (row) =>
+                                (row.row.cells
+                                    .containsValue(
+                                    controller.linkDealStateManager?.currentCell))
+                                    ? Colors.deepPurple.shade200
+                                    : Colors.white,
+                                exportFileName: "Client Deals",
+                                mode: PlutoGridMode.normal,
+                                hideKeys: const [
+                                  "locationname",
+                                  "channelName",
+                                  "dealCode",
+                                  "dealDetailCode",
+                                  "primaryEventCode",
+                                  "locationcode",
+                                  "channelcode",
+                                  "sponsorTypeCode",
+                                  "programCode",
+                                  "programCategoryCode",
+                                  "bandcode",
+                                  "timeband",
+                                  "netcode",
+                                  "networkname",
+                                  "sun",
+                                  "mun",
+                                  "tue",
+                                  "wed",
+                                  "thu",
+                                  "fri",
+                                  "sat",
+                                  "revflag",
+                                  "accountCode",
+                                  "accountname",
+                                  "eventcode",
+                                  "eventname",
+                                  "spots"
+                                ],
+                                // noEditcheckBoxColumnKey: ["selected"],
+                                // checkBoxStrComparison: true,
+                                // uncheckCheckBoxStr: false,
+                                // checkBoxColumnKey: ["selected"],
+                                // checkRow: true,
+                                // checkRowKey: "selected",
+                                // checkRowKey: "selected",
+                                // checkRow: true,
+
+
+                                // hideKeys: ["isrequired", "allowedvalues"],
+                                mapData: controller.linkDealRetrieveModel!.model!.linkedDeal!.
+                                map((e) => e.toJson()).toList(),
+                                onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+
+                                },
+                                // mapData: (controllerX.dataList)!,
+                                widthRatio: Get.width / 9 - 1,
+                                onload: (PlutoGridOnLoadedEvent load) {
+                                  controller.linkDealStateManager =
+                                      load.stateManager;
+                                },
+                              ) : Container(),
+                            ),
+                          )),
+                          SizedBox(
+                            height: 3,
+                          ),
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 3.0, bottom: 3),
+                              child: Get.find<HomeController>()
+                                  .getCommonButton(
+                                Routes.CLIENT_DEALS,
+                                // handleAutoClear: false,
+                                // disableBtns: ['Save', 'Refresh'],
+                                    (btnName) {
+                                  controller.dialogFormHandler(btnName);
+                                },
+                              ),
                             ),
                           ),
-                          DropDownField.formDropDown1WidthMap(
-                               [], (data) {
-                            controller.selectedDialogAgency?.value = data;
-                          }, "Agency", .4,
-                              selected: controller.selectedDialogAgency?.value,
-                              // inkWellFocusNode: controller.addInfoFocus
-                            // titleInLeft: true,
-                          ),
                         ],
-                      ),
-                      SizedBox(
-                        height: 6,
-                      ),
-                      Expanded(child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                        ),
-                        child:(controller.linkDealRetrieveModel != null &&
-                            controller.linkDealRetrieveModel?.model != null &&
-                            controller.linkDealRetrieveModel?.model?.deals != null &&
-                            (controller.linkDealRetrieveModel?.model?.deals?.length??0) > 0)?
-                        DataGridFromMap3(
-                          showSrNo: true,
-                          hideCode: false,
-                          formatDate: false,
-                          columnAutoResize: true,
-                          doPasccal: true,
-                          colorCallback: (row) =>
-                          (row.row.cells
-                              .containsValue(
-                              controller.dealStateManager?.currentCell))
-                              ? Colors.deepPurple.shade200
-                              : Colors.white,
-                          exportFileName: "Client Deals",
-                          mode: PlutoGridMode.normal,
-                          noEditcheckBoxColumnKey: ["selected"],
-                          checkBoxStrComparison: true,
-                          uncheckCheckBoxStr: false,
-                          checkBoxColumnKey: const ["selected"],
-                          onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event){
-                           controller.linkDealDialogFirstGridDoubleClick(event);
-                          },
-                          // checkRow: true,
-                          // checkRowKey: "selected",
-                          // checkRowKey: "selected",
-                          // checkRow: true,
-
-
-                          // hideKeys: ["isrequired", "allowedvalues"],
-                          mapData: controller.linkDealRetrieveModel!.model!.deals!.
-                          map((e) => e.toJson()).toList(),
-                          // mapData: (controllerX.dataList)!,
-                          widthRatio: Get.width / 9 - 1,
-                          onload: (PlutoGridOnLoadedEvent load) {
-                            controller.dealStateManager =
-                                load.stateManager;
-                          },
-                        ):Container(),
-                      )),
-                      SizedBox(
-                        height: 3,
-                      ),
-                      Expanded(child: Container(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                          ),
-                          child:(controller.linkDealRetrieveModel != null &&
-                              controller.linkDealRetrieveModel?.model != null &&
-                              controller.linkDealRetrieveModel?.model?.linkedDeal != null &&
-                              (controller.linkDealRetrieveModel?.model?.linkedDeal?.length??0) > 0)?
-                          DataGridFromMap3(
-                            showSrNo: true,
-                            hideCode: false,
-                            formatDate: false,
-                            columnAutoResize: true,
-                            doPasccal: true,
-                            colorCallback: (row) =>
-                            (row.row.cells
-                                .containsValue(
-                                controller.linkDealStateManager?.currentCell))
-                                ? Colors.deepPurple.shade200
-                                : Colors.white,
-                            exportFileName: "Client Deals",
-                            mode: PlutoGridMode.normal,
-                            hideKeys: const ["locationname","channelName","dealCode",
-                              "dealDetailCode","primaryEventCode","locationcode",
-                              "channelcode","sponsorTypeCode","programCode",
-                              "programCategoryCode","bandcode","timeband","netcode","networkname",
-                              "sun","mun","tue","wed","thu","fri","sat","revflag","accountCode",
-                              "accountname","eventcode","eventname","spots"],
-                            // noEditcheckBoxColumnKey: ["selected"],
-                            // checkBoxStrComparison: true,
-                            // uncheckCheckBoxStr: false,
-                            // checkBoxColumnKey: ["selected"],
-                            // checkRow: true,
-                            // checkRowKey: "selected",
-                            // checkRowKey: "selected",
-                            // checkRow: true,
-
-
-                            // hideKeys: ["isrequired", "allowedvalues"],
-                            mapData: controller.linkDealRetrieveModel!.model!.linkedDeal!.
-                            map((e) => e.toJson()).toList(),
-                            onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event){
-
-                            },
-                            // mapData: (controllerX.dataList)!,
-                            widthRatio: Get.width / 9 - 1,
-                            onload: (PlutoGridOnLoadedEvent load) {
-                              controller.linkDealStateManager =
-                                  load.stateManager;
-                            },
-                          ):Container(),
-                        ),
-                      )),
-                      SizedBox(
-                        height: 3,
-                      ),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 3.0,bottom: 3),
-                          child: Get.find<HomeController>()
-                              .getCommonButton(
-                            Routes.CLIENT_DEALS,
-                            // handleAutoClear: false,
-                            // disableBtns: ['Save', 'Refresh'],
-                                (btnName) {
-                              controller.dialogFormHandler(btnName);
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
-                  );
-                });
+                      );
+                    });
               }
           ),
         ),
@@ -587,9 +611,9 @@ class ClientDealsView extends GetView<ClientDealsController> {
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey),
                             ),
-                            child:(controller.compareModelList != null &&
+                            child: (controller.compareModelList != null &&
                                 controller.compareModelList?.model != null &&
-                                (controller.compareModelList?.model?.length??0) > 0)?
+                                (controller.compareModelList?.model?.length ?? 0) > 0) ?
                             DataGridFromMap3(
                               showSrNo: true,
                               hideCode: false,
@@ -608,7 +632,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                               checkBoxStrComparison: true,
                               uncheckCheckBoxStr: false,
                               checkBoxColumnKey: const ["selected"],
-                              onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event){
+                              onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
                                 controller.linkDealDialogFirstGridDoubleClick(event);
                               },
                               // checkRow: true,
@@ -626,7 +650,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                 controller.compareStateManager =
                                     load.stateManager;
                               },
-                            ):Container(),
+                            ) : Container(),
                           )),
                           SizedBox(
                             height: 3,
@@ -670,7 +694,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                     ? DraggableFab(
                   initPosition: controller.getOffSetValue(constraints),
                   child: controller.dialogWidget!,
-                  dragEndCall: (){
+                  dragEndCall: () {
                     controller.update(['all']);
                   },
                 )
@@ -1381,20 +1405,36 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                           width: Get.width * 0.17,
                                           child: InkWell(
                                             onTap: () {
-                                              controller.getLinkDealRetriveApiCall(groupNumber:controller.linkedDealNumber.value ).then((value) {
-                                                if(value == true && controller.linkDealRetrieveModel != null &&
-                                                    controller.linkDealRetrieveModel?.model != null ){
-                                                  controller.dialogGroupNoController.text = (controller.linkDealRetrieveModel?.model?.dealcode??"").toString() ;
-                                                  controller.dialogDateController.text =Utils.toDateFormat4( (controller.linkDealRetrieveModel?.model?.groupdate??"").toString()) ;
-                                                  controller.selectedDialogClient?.value = DropDownValue(value:controller.linkDealRetrieveModel?.model?.clientName??"" ,
-                                                      key:controller.linkDealRetrieveModel?.model?.clientCode??"" );
-                                                  controller.selectedDialogAgency?.value = DropDownValue(value:controller.linkDealRetrieveModel?.model?.agencyName??"" ,
-                                                      key:controller.linkDealRetrieveModel?.model?.agencyCode??"" );
+                                              controller.getLinkDealRetriveApiCall(
+                                                  groupNumber: controller.linkedDealNumber.value)
+                                                  .then((value) {
+                                                if (value == true &&
+                                                    controller.linkDealRetrieveModel != null &&
+                                                    controller.linkDealRetrieveModel?.model !=
+                                                        null) {
+                                                  controller.dialogGroupNoController.text =
+                                                      (controller.linkDealRetrieveModel?.model
+                                                          ?.dealcode ?? "").toString();
+                                                  controller.dialogDateController.text =
+                                                      Utils.toDateFormat4(
+                                                          (controller.linkDealRetrieveModel?.model
+                                                              ?.groupdate ?? "").toString());
+                                                  controller.selectedDialogClient?.value =
+                                                      DropDownValue(
+                                                          value: controller.linkDealRetrieveModel
+                                                              ?.model?.clientName ?? "",
+                                                          key: controller.linkDealRetrieveModel
+                                                              ?.model?.clientCode ?? "");
+                                                  controller.selectedDialogAgency?.value =
+                                                      DropDownValue(
+                                                          value: controller.linkDealRetrieveModel
+                                                              ?.model?.agencyName ?? "",
+                                                          key: controller.linkDealRetrieveModel
+                                                              ?.model?.agencyCode ?? "");
                                                   dragInfoDialogLinkDeal();
-                                                }else{
+                                                } else {
                                                   LoadingDialog.showErrorDialog("Data not found");
                                                 }
-
                                               });
                                             },
                                             child: Padding(
@@ -1660,11 +1700,14 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                               GlobalKey(),
                                               context,
                                               title: "Program",
-                                              url: "",
+                                              url: ApiFactory.Client_Deal_GET_PROGRAM,
                                               onchanged: (data) {
                                                 controller.selectProgram?.value = data;
                                               },
                                               selectedValue: controller.selectProgram?.value,
+                                              customInData: "model",
+                                              parseKeyForKey: "programcode",
+                                              parseKeyForValue: "programname",
                                               // width: Get.width * 0.3,
                                               // titleInLeft: true,
                                               textSizeboxWidth: 60,
@@ -1811,14 +1854,16 @@ class ClientDealsView extends GetView<ClientDealsController> {
 
                                         SizedBox(
                                           width: Get.width * 0.18,
-                                          child: InputFields.numbers4(
-                                              hintTxt: "Seconds",
-                                              controller: controller.secondsController2,
-                                              // titleInLeft: true,
-                                              // titleSizeboxWidth: 45,
-                                              fieldWidth: 0.1,
+                                          child: Obx(() {
+                                            return InputFields.numbers4(
+                                                hintTxt: controller.label24.value ?? "Seconds",
+                                                controller: controller.secondsController2,
+                                                // titleInLeft: true,
+                                                // titleSizeboxWidth: 45,
+                                                fieldWidth: 0.1,
 
-                                              padLeft: 0),
+                                                padLeft: 0);
+                                          }),
                                         ),
                                         SizedBox(
                                           width: 5,
@@ -1826,14 +1871,16 @@ class ClientDealsView extends GetView<ClientDealsController> {
 
                                         SizedBox(
                                           width: Get.width * 0.18,
-                                          child: InputFields.numbers4(
-                                            hintTxt: "Rate per 100 seconds",
-                                            controller: controller
-                                                .ratePerTenSecondsController,
-                                            // titleInLeft: true,
-                                            // titleSizeboxWidth: 45,
-                                            fieldWidth: 0.15,
-                                          ),
+                                          child: Obx(() {
+                                            return InputFields.numbers4(
+                                              hintTxt:controller.label25.value ?? "Rate per 100 seconds",
+                                              controller: controller
+                                                  .ratePerTenSecondsController,
+                                              // titleInLeft: true,
+                                              // titleSizeboxWidth: 45,
+                                              fieldWidth: 0.15,
+                                            );
+                                          }),
                                         ),
                                         SizedBox(
                                           width: 5,
@@ -1913,17 +1960,10 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                 btnText: "Import",
                                 callback: () async {
                                   // controller.pickFile();
-                                  /*int siz = 6;
-                                  for(int i=0;i<siz;i++){
-                                    if(i == 2 || i== 4){
-                                     bool sta =  await LoadingDialog.modifyWithAsync(
-                                          "Similar entry already exists!\nDo you want to modify it?",
-                                          cancelTitle: "Yes", deleteTitle: "No");
-                                    }else{
 
-                                    }
-
-                                  }*/
+                                  LoadingDialog.modify("Do you wish to import file ?", () {}, () {
+                                    controller.pickFile();
+                                  }, cancelTitle: "Yes", deleteTitle: "No");
                                 },
                               ),
                               Obx(() {
@@ -1980,7 +2020,11 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       "programCategoryCode",
                                       "bandCode",
                                       "revflag",
-                                      "subRevenueTypeCode"
+                                      "subRevenueTypeCode",
+                                      "netCode",
+                                      "accountCode",
+                                      "eventcode",
+                                      "revenueTypeCode"
                                     ],
 
                                     mapData: (controller
