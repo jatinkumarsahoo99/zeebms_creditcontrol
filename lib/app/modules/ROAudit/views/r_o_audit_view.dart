@@ -198,7 +198,9 @@ class ROAuditView extends StatelessWidget {
                           : Colors.white,
                       exportFileName: "Secondary Asrun Modification",
                       mode: PlutoGridMode.normal,
-                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {},
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                        Get.toNamed(Routes.AUDIT_BOOKINGS);
+                      },
                       // hideKeys: const [],
                       mapData: controllerX
                           .roAuditRetrieveModel!.infoBindList!.lstAdditions!
@@ -242,7 +244,9 @@ class ROAuditView extends StatelessWidget {
                           : Colors.white,
                       exportFileName: "Secondary Asrun Modification",
                       mode: PlutoGridMode.normal,
-                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {},
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                        Get.toNamed(Routes.AUDIT_CANCELLATION);
+                      },
                       // hideKeys: const [],
                       mapData: controllerX
                           .roAuditRetrieveModel!.infoBindList!.lstCancellation!
