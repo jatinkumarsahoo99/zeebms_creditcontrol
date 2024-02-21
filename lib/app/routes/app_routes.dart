@@ -53,6 +53,7 @@ abstract class Routes {
   // static const PAYROUTE_CATEGORY_MASTER = _Paths.PAYROUTE_CATEGORY_MASTER;
   static const AUDIT_BOOKINGS = _Paths.AUDIT_BOOKINGS;
   static const AUDIT_RESCHEDULE = _Paths.AUDIT_RESCHEDULE;
+  static const AUDIT_CANCELLATION = _Paths.AUDIT_CANCELLATION;
 }
 
 abstract class RoutesList {
@@ -143,4 +144,5 @@ abstract class _Paths {
   static const EMAIL_BILL_DETAILS = '/frmBilling';
   static const AUDIT_BOOKINGS = '/audit-bookings';
   static const AUDIT_RESCHEDULE = '/audit-reschedule';
+  static const AUDIT_CANCELLATION = '/audit-cancellation';
 }
