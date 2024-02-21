@@ -4,6 +4,7 @@ import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class EBillsForBonusActivityController extends GetxController {
   TextEditingController telecastPeriod = TextEditingController(),
@@ -107,6 +108,92 @@ class EBillsForBonusActivityController extends GetxController {
               update(["init", "agencyGroupList"]);
             }
           });
+    }
+  }
+
+  domesticClick() {
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.EBILLS_BONUS_ACTIVITY_RD_BILLING_MUMBAI_CHECK('true'),
+        fun: (Map map) {
+          Get.back();
+          if (map != null && map.containsKey('infoBillingMum')) {
+            // Mail ID
+            mailID.text = map['infoBillingMum'];
+          }
+        });
+  }
+
+  asiaClick() {
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.EBILLS_BONUS_ACTIVITY_RD_BILLING_ASIA_CHECK('false'),
+        fun: (Map map) {
+          Get.back();
+          if (map != null && map.containsKey('infoBillingAsia')) {
+            // Mail ID
+            mailID.text = map['infoBillingAsia'];
+          }
+        });
+  }
+
+  createXML() {
+    // if (filterListCompany!.isNotEmpty) {
+    var payload = {
+      "consolidated": "<integer>",
+      "lstCompanyList": filterListCompany!
+          .map((e) => e.toJsonCustom('companyCode', 'companyName'))
+          .toList(),
+      "txt_TcStartDT": telecastPeriod.text,
+      "txt_StartDT": telecastPeriod2.text,
+      "chk_Is_Consolidated": "<boolean>",
+      "lstAgent": [
+        {"code": "<string>", "name": "<string>"},
+      ],
+      "rDbt_Agency": selectExportType.value == "Agency" ? true : false,
+      "isBillExist": false,
+      "isTcExist": false,
+      "chk_OnlyBills": true,
+      "chk_OnlySummary": true,
+      "chk_TC": true,
+      "rdBtn_BillingMumbai": false,
+      "testMail": isTestMail.value,
+      "additionalTo": false,
+      "additionalCc": false,
+      "isConsolidated": false,
+      "code": "<string>",
+      "agencyNM": "<string>",
+      "txtAddTo": toTEC.text,
+      "txtAddCc": ccTEC.text,
+      "txt_FromMailID": mailID.text,
+      "companyName": "<string>"
+    };
+    LoadingDialog.call();
+    Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.EBILLS_BONUS_ACTIVITY_CREATE_XML,
+        json: payload,
+        fun: (Map map) {
+          Get.back();
+          if (map != null && map.containsKey('ebAgencyGroup')) {
+            update(["init", "agencyGroupList"]);
+          }
+        });
+    // }
+  }
+
+  manageBillingPeriod() {
+    var day = DateFormat('dd')
+        .format(DateFormat('dd-MM-yyyy').parse(telecastPeriod.text));
+    var month = DateFormat('MM')
+        .format(DateFormat('dd-MM-yyyy').parse(telecastPeriod.text));
+    var year = DateFormat('yyyy')
+        .format(DateFormat('dd-MM-yyyy').parse(telecastPeriod.text));
+    int noOfDaysInMonth =
+        DateTime(int.parse(year), int.parse(month) + 1, 0).day;
+    if (num.parse(day) <= 14) {
+      telecastPeriod2.text = "15-$month-$year";
+    } else {
+      telecastPeriod2.text = "$noOfDaysInMonth-$month-$year";
     }
   }
 }

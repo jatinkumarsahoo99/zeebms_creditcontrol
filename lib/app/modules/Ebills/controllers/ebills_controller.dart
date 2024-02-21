@@ -4,6 +4,7 @@ import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class EbillsController extends GetxController {
   TextEditingController billingPeriod = TextEditingController(),
@@ -184,10 +185,26 @@ class EbillsController extends GetxController {
           json: payload,
           fun: (Map map) {
             Get.back();
-            if (map != null && map.containsKey('ebAgencyGroup')) {
-              // update(["init", "agencyGroupList"]);
+            if (map != null && map.containsKey('ebCreateXml')) {
+              LoadingDialog.callDataSaved(msg: map['ebCreateXml']['message']);
             }
           });
+    }
+  }
+
+  manageBillingPeriod() {
+    var day = DateFormat('dd')
+        .format(DateFormat('dd-MM-yyyy').parse(billingPeriod.text));
+    var month = DateFormat('MM')
+        .format(DateFormat('dd-MM-yyyy').parse(billingPeriod.text));
+    var year = DateFormat('yyyy')
+        .format(DateFormat('dd-MM-yyyy').parse(billingPeriod.text));
+    int noOfDaysInMonth =
+        DateTime(int.parse(year), int.parse(month) + 1, 0).day;
+    if (num.parse(day) <= 14) {
+      billingPeriod2.text = "15-$month-$year";
+    } else {
+      billingPeriod2.text = "$noOfDaysInMonth-$month-$year";
     }
   }
 

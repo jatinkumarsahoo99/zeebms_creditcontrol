@@ -87,7 +87,7 @@ class AsRunDetails {
     final Map<String, dynamic> _data = <String, dynamic>{};
     _data["programName"] = programName;
     _data["telecastdate"] = dateConvertToddMMyyyy(telecastdate!);
-    _data["telecasttime"] = dateConvertToddMMyyyy(telecasttime!);
+    _data["telecasttime"] = dateConvertToddMMyyyyHHmm(telecasttime!);
     _data["tapeid"] = tapeid;
     _data["segmentnumber"] = segmentnumber;
     _data["caption"] = caption;
@@ -102,5 +102,10 @@ class AsRunDetails {
 
 String dateConvertToddMMyyyy(String date) {
   return (DateFormat('dd-MM-yyyy')
+      .format(DateFormat('yyyy-MM-ddThh:mm:ss').parse(date)));
+}
+
+String dateConvertToddMMyyyyHHmm(String date) {
+  return (DateFormat('dd-MM-yyyy h:mm a')
       .format(DateFormat('yyyy-MM-ddThh:mm:ss').parse(date)));
 }
