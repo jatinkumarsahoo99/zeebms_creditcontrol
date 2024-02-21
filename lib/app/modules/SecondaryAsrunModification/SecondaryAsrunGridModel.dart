@@ -19,7 +19,7 @@ class SecondaryAsrunGridModel {
 }
 
 class BindGrid {
-  // dynamic? lstbookingdetail;
+  List<Lstbookingdetail>? lstbookingdetail;
   List<LstAsRunBookingDetails>? lstAsRunBookingDetails;
   List<LstFinalAsRun>? lstFinalAsRun;
 
@@ -29,7 +29,14 @@ class BindGrid {
         this.lstAsRunBookingDetails, this.lstFinalAsRun});
 
   BindGrid.fromJson(Map<String, dynamic> json) {
-    // lstbookingdetail = json['lstbookingdetail'];
+
+    if (json['lstbookingdetail'] != null) {
+      lstbookingdetail = <Lstbookingdetail>[];
+      json['lstbookingdetail'].forEach((v) {
+        lstbookingdetail!.add(new Lstbookingdetail.fromJson(v));
+      });
+    }
+
     if (json['lstAsRunBookingDetails'] != null) {
       lstAsRunBookingDetails = <LstAsRunBookingDetails>[];
       json['lstAsRunBookingDetails'].forEach((v) {
@@ -49,6 +56,12 @@ class BindGrid {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     // data['lstbookingdetail'] = this.lstbookingdetail;
+
+    if (this.lstbookingdetail != null) {
+      data['lstbookingdetail'] =
+          this.lstbookingdetail!.map((v) => v.toJson()).toList();
+    }
+
     if (this.lstAsRunBookingDetails != null) {
       data['lstAsRunBookingDetails'] =
           this.lstAsRunBookingDetails!.map((v) => v.toJson()).toList();
@@ -280,5 +293,25 @@ class LstFinalAsRun {
     return data;
   }
 
+}
+
+
+class Lstbookingdetail {
+  String? tapecode;
+  String? schtime;
+
+  Lstbookingdetail({this.tapecode, this.schtime});
+
+  Lstbookingdetail.fromJson(Map<String, dynamic> json) {
+    tapecode = json['tapecode'];
+    schtime = json['schtime'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['tapecode'] = this.tapecode;
+    data['schtime'] = this.schtime;
+    return data;
+  }
 }
 

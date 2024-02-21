@@ -8,6 +8,8 @@ import '../modules/AgencyMaster/bindings/agency_master_binding.dart';
 import '../modules/AsrunSpecificationAdRevenue/bindings/asrun_specification_ad_revenue_binding.dart';
 // import '../modules/AuditBookings/bindings/audit_bookings_binding.dart';
 // import '../modules/AuditBookings/views/audit_bookings_view.dart';
+import '../modules/AuditReschedule/bindings/audit_reschedule_binding.dart';
+import '../modules/AuditReschedule/views/audit_reschedule_view.dart';
 import '../modules/ClientEmbargo/bindings/client_embargo_binding.dart';
 import '../modules/ClientMaster/bindings/client_master_binding.dart';
 import '../modules/DealReport/bindings/deal_report_binding.dart';
@@ -97,8 +99,8 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.E_BILLS_FOR_BONUS_ACTIVITY,
-      page: () => const EBillsForBonusActivityView(),
-      binding: EBillsForBonusActivityBinding(),
+      page: () => AuthGuard(childName: _Paths.E_BILLS_FOR_BONUS_ACTIVITY),
+      // binding: EBillsForBonusActivityBinding(),
     ),
     GetPage(
       name: _Paths.SECONDARY_ASRUN_MODIFICATION,
@@ -253,6 +255,11 @@ class AppPages {
     GetPage(
       name: _Paths.AUDIT_BOOKINGS,
       page: () => AuthGuard(childName: _Paths.AUDIT_BOOKINGS),
+    ),
+    GetPage(
+      name: _Paths.AUDIT_RESCHEDULE,
+      page: () => AuthGuard(childName: _Paths.AUDIT_RESCHEDULE),
+      binding: AuditRescheduleBinding(),
     ),
   ];
 }

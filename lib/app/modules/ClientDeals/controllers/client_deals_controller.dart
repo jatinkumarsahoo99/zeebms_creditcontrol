@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:bms_creditcontrol/widgets/PlutoGrid/pluto_grid.dart';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -15,8 +16,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 
 import '../../../data/DropDownValue.dart';
+import '../../CommonDocs/controllers/common_docs_controller.dart';
+import '../../CommonDocs/views/common_docs_view.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 import '../AgencyLeaveModel.dart';
 import '../ClientDealRetrieveModel.dart';
+import '../CompareModelList.dart';
+import '../LinkDealDoubleClickModel.dart';
+import '../LinkDealRetrieveModel.dart';
+import '../LinkDealRetrieveModel.dart' as ld;
+
+part 'ImportExcelController.dart';
+part 'ImportExcelController2.dart';
+part 'compareBtnController.dart';
+part 'linkDealController.dart';
 
 class ClientDealsController extends GetxController {
   //TODO: Implement ClientDealsController
@@ -43,6 +56,7 @@ class ClientDealsController extends GetxController {
   RxList<DropDownValue> locationList2 = RxList([]);
   RxList<DropDownValue> dealType = RxList([]);
   RxList<DropDownValue> channelList2 = RxList([]);
+  RxList<DropDownValue> dialogAgencyList = RxList([]);
   RxList<AddInfo> infoDiaLogList = RxList([]);
   RxList<dynamic> dealNoList = RxList([]);
   RxList<dynamic> remarkList = RxList([]);
@@ -65,6 +79,8 @@ class ClientDealsController extends GetxController {
   Rxn<DropDownValue>? selectSpotType = Rxn<DropDownValue>(null);
   Rxn<DropDownValue>? selectProgram = Rxn<DropDownValue>(null);
   Rxn<DropDownValue>? selectAddInfo = Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectedDialogAgency = Rxn<DropDownValue>(null);
+  Rxn<DropDownValue>? selectedDialogClient = Rxn<DropDownValue>(null);
 
   TextEditingController dealNoController = TextEditingController();
   TextEditingController dateController = TextEditingController();
@@ -86,6 +102,11 @@ class ClientDealsController extends GetxController {
   TextEditingController valueRateController = TextEditingController();
   TextEditingController remarkDiaController = TextEditingController();
 
+  TextEditingController dialogGroupNoController = TextEditingController();
+  TextEditingController dialogDateController = TextEditingController();
+
+  int intNewEntry = 0;
+
   Rx<bool> effectiveRate = Rx<bool>(false);
   Rx<bool> type = Rx<bool>(false);
   Rx<bool> weekDay = Rx<bool>(false);
@@ -97,6 +118,7 @@ class ClientDealsController extends GetxController {
   Rx<bool> fri = Rx<bool>(false);
   Rx<bool> sat = Rx<bool>(false);
   Rx<bool> sun = Rx<bool>(false);
+  Rx<bool> showSelected = Rx<bool>(false);
 
   Rx<bool> accountEnaSta = Rx<bool>(false);
 
@@ -109,11 +131,36 @@ class ClientDealsController extends GetxController {
   FocusNode clientFocus = FocusNode();
   FocusNode agencyFocus = FocusNode();
 
+  FocusNode accountFocus = FocusNode();
+  FocusNode subTypeFocus = FocusNode();
+  FocusNode spotTypeFocus = FocusNode();
+  FocusNode programFocus = FocusNode();
+  FocusNode bandFocus = FocusNode();
+  FocusNode addInfoFocus = FocusNode();
+  FocusNode weekEndFocus = FocusNode();
+  FocusNode weekDayFocus = FocusNode();
+  FocusNode monDayFocus = FocusNode();
+  FocusNode tueDayFocus = FocusNode();
+  FocusNode wedDayFocus = FocusNode();
+  FocusNode thuDayFocus = FocusNode();
+  FocusNode friDayFocus = FocusNode();
+  FocusNode satDayFocus = FocusNode();
+  FocusNode sunDayFocus = FocusNode();
+  FocusNode startTimeFocus = FocusNode();
+  FocusNode endTimeFocus = FocusNode();
+  FocusNode secondsFocus = FocusNode();
+  FocusNode ratePerSeconds = FocusNode();
+  FocusNode amountFocus = FocusNode();
+  FocusNode valRateFocus = FocusNode();
+
   ScrollController scrollController = ScrollController();
   Rx<int> selectedDealNo = Rx<int>(0);
   PlutoGridStateManager? stateManager;
   PlutoGridStateManager? remarkStateManager;
   PlutoGridStateManager? addInfoStateManager;
+  PlutoGridStateManager? dealStateManager;
+  PlutoGridStateManager? compareStateManager;
+  PlutoGridStateManager? linkDealStateManager;
   List<Map<String, Map<String, double>>>? userGridSetting1 = [];
   Rx<String> agencyGstNumber = Rx<String>("");
   Rx<String> agencyPanNumber = Rx<String>("");
@@ -129,10 +176,85 @@ class ClientDealsController extends GetxController {
   Completer<bool>? completerDialog;
   AgencyLeaveDataModel? agencyLeaveDataModel;
 
+  CompareModelList? compareModelList;
+
   fetchUserSetting1() async {
     userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
     update(["grid"]);
   }
+
+  clearAll() {
+    Get.delete<ClientDealsController>();
+    Get.find<HomeController>().clearPage1();
+  }
+
+  dialogDocs() async {
+    String documentKey = "";
+    if (dealCode == "" || dealCode == '0') {
+      documentKey = "";
+    } else {
+      documentKey = "Linkeddeal $dealCode";
+    }
+    if (documentKey == "") {
+      return;
+    }
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
+    });
+  }
+
+  docs() async {
+    String documentKey = "";
+    if (selectedChannel?.value == null ||
+        selectedLocation?.value == null ||
+        dealNoController.text == "") {
+      documentKey = "";
+    } else {
+      documentKey =
+          "Deal ${selectedLocation?.value?.key}${selectedChannel?.value?.key}${dealNoController.text}";
+    }
+    if (documentKey == "") {
+      return;
+    }
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
+    });
+  }
+
+  formHandler(String text) {
+    if (text == "Clear") {
+      clearAll();
+    }
+    if (text == "Search") {
+      Get.to(SearchPage(
+          key: Key("Secondary Asrun Modification"),
+          screenName: "Secondary Asrun Modification",
+          appBarName: "Secondary Asrun Modification",
+          strViewName: "bms_search_NewDealDetail",
+          isAppBarReq: true));
+    }
+
+    if (text == "Docs") {
+      docs();
+    }
+    if(text == "Save"){
+      postSaveFunCall();
+    }
+  }
+
+
+
+  LinkDealRetrieveModel? linkDealRetrieveModel;
+  LinkDealDoubleClickModel? linkDealDoubleClickModel;
+  String dealCode = "0";
+
+
 
   getAllLoadData() {
     LoadingDialog.call();
@@ -471,7 +593,7 @@ class ClientDealsController extends GetxController {
                 addInfoList.addAll(dataList);
                 if (netCode != "") {
                   for (var element in addInfoList) {
-                    if (element.key.toString().trim() == netCode.toString().trim()) {
+                    if (element.value.toString().trim() == netCode.toString().trim()) {
                       selectAddInfo?.value = DropDownValue(key: element.key, value: element.value);
                       selectAddInfo?.refresh();
                       break;
@@ -616,7 +738,8 @@ class ClientDealsController extends GetxController {
   }
 
   ClientDealRetrieveModel? clientDealRetrieveModel;
-  Rx<String> linkedDealNumber = Rx<String>("sssssss");
+  Rx<String> linkedDealNumberWithText = Rx<String>("sssssss");
+  Rx<String> linkedDealNumber = Rx<String>("0");
   Rx<String> clientEmb = Rx<String>("sssssss");
   retrieveRecord(
       {String? locationCode,
@@ -641,14 +764,33 @@ class ClientDealsController extends GetxController {
             if (map is Map) {
               clientDealRetrieveModel =
                   ClientDealRetrieveModel.fromJson(map as Map<String, dynamic>);
-              importGridList?.clear();
+              importGridList.clear();
+
+              payMode.clear();
+              RxList<DropDownValue> dataList = RxList([]);
+              clientDealRetrieveModel?.agencyLeaveModel?.paymentModels?.forEach((e) {
+                dataList.add(DropDownValue.fromJsonDynamic(e.toJson(), "paymentmodecode", "paymentmodecaption"));
+                print("in side payment list");
+              });
+              payMode.addAll(dataList);
+              payMode.refresh();
+              if(payMode.isNotEmpty){
+                selectPayMode?.value = DropDownValue(key:payMode[0].key ,value:payMode[0].value );
+                selectPayMode?.refresh();
+              }
+
+              print("in side payment list$payMode");
+
               if (clientDealRetrieveModel != null &&
                   clientDealRetrieveModel?.agencyLeaveModel != null &&
                   clientDealRetrieveModel?.agencyLeaveModel?.newDetails != null &&
                   (clientDealRetrieveModel?.agencyLeaveModel?.newDetails?.length ?? 0) > 0) {
-                importGridList = clientDealRetrieveModel?.agencyLeaveModel?.newDetails;
+                importGridList = clientDealRetrieveModel?.agencyLeaveModel?.newDetails ?? [];
               }
+
+
               // linkedDealNumber
+              intNewEntry = 1;
 
               if (clientDealRetrieveModel != null &&
                   clientDealRetrieveModel?.agencyLeaveModel != null) {
@@ -803,16 +945,18 @@ class ClientDealsController extends GetxController {
 
               if (clientDealRetrieveModel?.agencyLeaveModel?.linkedDealNumber != null &&
                   clientDealRetrieveModel?.agencyLeaveModel?.linkedDealNumber != "") {
-                linkedDealNumber.value =
+                linkedDealNumberWithText.value =
                     "Linked Deal Number  ${clientDealRetrieveModel?.agencyLeaveModel?.linkedDealNumber}";
+                linkedDealNumber.value =
+                    clientDealRetrieveModel?.agencyLeaveModel?.linkedDealNumber ?? "0";
                 clientEmb.value = "Client Emb";
                 clientEmb.refresh();
-                linkedDealNumber.refresh();
+                linkedDealNumberWithText.refresh();
               } else {
-                linkedDealNumber.value = "sssssss";
+                linkedDealNumberWithText.value = "sssssss";
                 clientEmb.value = "sssssss";
                 clientEmb.refresh();
-                linkedDealNumber.refresh();
+                linkedDealNumberWithText.refresh();
               }
 
               update(["grid"]);
@@ -905,399 +1049,14 @@ class ClientDealsController extends GetxController {
     }
   }
 
-  pickFile() async {
-    LoadingDialog.call();
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowedExtensions: ['xlsx', 'xls'],
-      type: FileType.custom,
-    );
-    closeDialogIfOpen();
-    if (result != null && result.files.single != null) {
-      // print(">>>>>>filename"+(result.files[0].name.toString()));
-      // pathController.text = result.files[0].name.toString();
 
-      loadBtn(result);
-    } else {
-      LoadingDialog.showErrorDialog("Please try again");
-      // User canceled the pic5ker
-      print(">>>>dataCancel");
-    }
-  }
-
-  loadBtn(FilePickerResult result) {
-    LoadingDialog.call();
-    var jsonData = <String, dynamic>{};
-    try {
-      Uint8List? fileBytes = result.files.first.bytes;
-      var excel = Excel.decodeBytes(result.files.first.bytes as List<int>);
-      List<dynamic> headers = [];
-      int sheet = 0;
-      var excelDataList = <Map<String, dynamic>>[];
-      for (var table in excel.tables.keys) {
-        var tableData = <Map<String, dynamic>>[];
-        sheet = sheet + 1;
-        // Extract headers from the first row
-        headers = excel.tables[table]!.row(0).map((cell) => cell?.value.toString()).toList();
-
-        print(">>>>>" + headers.toString());
-
-        for (var rowIdx = 1; rowIdx <= excel.tables[table]!.maxRows; rowIdx++) {
-          var rowData = <String, dynamic>{};
-          var row = excel.tables[table]!.row(rowIdx);
-          for (var colIdx = 0; colIdx < row.length; colIdx++) {
-            var header = headers[colIdx];
-            var cellValue = row[colIdx]?.value.toString();
-            rowData[header ?? ""] = cellValue;
-          }
-          if (rowData.isNotEmpty) {
-            tableData.add(rowData);
-          }
-        }
-        jsonData['S${sheet}'] = tableData;
-        excelDataList = tableData;
-        print(">>>>jsonData $jsonData");
-        closeDialogIfOpen();
-      }
-      List<String> sourceList = [
-        "Recordnumber",
-        "SponsorTypeName",
-        "ProgramName",
-        "Starttime",
-        "EndTime",
-        "Seconds",
-        "Rate",
-        "Amount",
-        "ValuationRate",
-        "BookedSeconds",
-        "BalanceSeconds",
-        "BalanceAmount",
-        "TimeBand",
-        "NetWorkName",
-        "Sun",
-        "Mon",
-        "Tue",
-        "Wed",
-        "Thu",
-        "Fri",
-        "Sat",
-        "Accountname",
-        "Eventname",
-        "Spots",
-        "Paymentmodecaption",
-        "RevenueTypeName",
-        "SubRevenueTypeName",
-        "CountBased",
-        "BaseDuration"
-      ];
-      // List<String> list2 = [ "ku","jks"];
-      List<dynamic> sta = Utils.listCompare(sourceList: sourceList, compareLst: headers);
-      print(">>>>>>>>>sta$sta");
-      if (!sta[0]) {
-        LoadingDialog.showErrorDialog(sta[1] ?? "");
-      } else {
-        callValidationFun(excelData: excelDataList);
-      }
-    } catch (e) {
-      print(">>>>" + e.toString());
-      // gridData = RateCardFromDealWorkFlowModel(export: []);
-      closeDialogIfOpen();
-      update(['grid']);
-      LoadingDialog.showErrorDialog(e.toString());
-    }
-  }
 
   bool checkImport = false;
-  List<NewDetails>? importGridList = [];
+  List<NewDetails> importGridList = [];
 
-  callValidationFun({List<Map<String, dynamic>>? excelData}) {
-    LoadingDialog.modify("Do you wish to import file ?", () {}, () {
-      btnImportClickWithCondition(excelDataNew: excelData);
-    }, cancelTitle: "Yes", deleteTitle: "No");
-  }
 
-  Future<Map<String, dynamic>> getAllCode(
-      {String? sponsorTypeName,
-      String? programName,
-      String? timeBandName,
-      String? networkName,
-      String? accountName,
-      String? eventName}) {
-    Completer<Map<String, dynamic>> completer = Completer<Map<String, dynamic>>();
-    LoadingDialog.call();
-    try {
-      Map<String, dynamic> postData = {
-        "sponsorTypeName": sponsorTypeName,
-        "programName": programName,
-        "timeBand": timeBandName,
-        "netWorkName": networkName,
-        "accountname": accountName,
-        "eventname": eventName
-      };
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.Client_Deal_GET_EACH_VALUE_IMPORT,
-          json: postData,
-          fun: (map) {
-            closeDialogIfOpen();
-            if (map is Map && map['model'] != null) {
-              completer.complete(map as FutureOr<Map<String, dynamic>>?);
-            } else {
-              completer.complete({
-                "sponsorTypeCode": "",
-                "programCode": "",
-                "bandCode": "",
-                "netCode": "",
-                "accountCode": "",
-                "eventcode": ""
-              });
-            }
-          },
-          failed: (map) {
-            closeDialogIfOpen();
-            completer.complete({
-              "sponsorTypeCode": "",
-              "programCode": "",
-              "bandCode": "",
-              "netCode": "",
-              "accountCode": "",
-              "eventcode": ""
-            });
-          });
-    } catch (e) {
-      closeDialogIfOpen();
-      completer.complete({
-        "sponsorTypeCode": "",
-        "programCode": "",
-        "bandCode": "",
-        "netCode": "",
-        "accountCode": "",
-        "eventcode": ""
-      });
-    }
-    return completer.future;
-  }
 
   List<NewDetails>? importGridListNew = [];
-  btnImportClickWithCondition({List<Map<String, dynamic>>? excelDataNew}) async {
-    checkImport = false;
-    importGridListNew?.clear();
-    if (dealNoController.text.trim() == "") {
-      LoadingDialog.showErrorDialog("Deal Number Can't be blank");
-      return;
-    }
-    if (excelDataNew != null && excelDataNew.isNotEmpty) {
-      for (int i = 0; i < (excelDataNew.length); i++) {
-        if (excelDataNew[i]['SponsorTypeName'].toString().trim() == "") {
-          bool sta = await ignoreBlankRow();
-          if (sta == false) {
-            return;
-          }
-          // continue;
-        }
-        if (excelDataNew[i]['Rate'] == 0 &&
-            excelDataNew[i]['Seconds'] == 0 &&
-            excelDataNew[i]['Amount'] == 0 &&
-            excelDataNew[i]['ValuationRate'] == 0) {
-          return;
-        }
-
-        Map<String, dynamic> allCode = await getAllCode(
-            programName: excelDataNew[i]['ProgramName'],
-            accountName: excelDataNew[i]['Accountname'],
-            eventName: excelDataNew[i]['Eventname'],
-            networkName: excelDataNew[i]['NetWorkName'],
-            sponsorTypeName: excelDataNew[i]['SponsorTypeName'],
-            timeBandName: excelDataNew[i]['TimeBand']);
-
-        NewDetails newDetails = NewDetails(
-          primaryEventCode: (excelDataNew[i]['Amount'] != "") ? "1" : "0",
-          recordnumber: "",
-          sponsorTypeName: excelDataNew[i]['SponsorTypeName'],
-          programName: excelDataNew[i]['ProgramName'],
-          programCategoryCode: "",
-          starttime: "we need to check",
-          endTime: "we need to check",
-          seconds: excelDataNew[i]['Seconds'],
-          rate: excelDataNew[i]['Rate'],
-          amount: excelDataNew[i]['Amount'],
-          valuationRate: excelDataNew[i]['ValuationRate'],
-          bookedSeconds: excelDataNew[i]['BookedSeconds'],
-          programCode: allCode['programCode'],
-          sponsorTypeCode: allCode['sponsorTypeCode'],
-          balanceSeconds: excelDataNew[i]['BalanceSeconds'],
-          balanceAmount: excelDataNew[i]['BalanceAmount'],
-          timeBand: excelDataNew[i]['TimeBand'],
-          bandCode: allCode['bandCode'],
-          netWorkName: excelDataNew[i]['NetWorkName'],
-          sun: excelDataNew[i]['Sun'],
-          mon: excelDataNew[i]['Mon'],
-          tue: excelDataNew[i]['Tue'],
-          wed: excelDataNew[i]['Wed'],
-          thu: excelDataNew[i]['Thu'],
-          fri: excelDataNew[i]['Fri'],
-          sat: excelDataNew[i]['Sat'],
-          revflag: "",
-          spots: excelDataNew[i]['Spots'],
-          paymentmodecaption: excelDataNew[i]['Paymentmodecaption'],
-          revenueTypeCode: "",
-          revenueTypeName: excelDataNew[i]['RevenueTypeName'],
-          subRevenueTypeName: excelDataNew[i]['SubRevenueTypeName'],
-          subRevenueTypeCode: "",
-          countBased: excelDataNew[i]['CountBased'],
-          baseDuration: excelDataNew[i]['BaseDuration'],
-        );
-
-        if ((newDetails.sponsorTypeCode).toString().trim() == "") {
-          checkImport = true;
-        }
-
-        if ((newDetails.programName).toString().trim() != "") {
-          if ((newDetails.programCode).toString().trim() == "") {
-            checkImport = true;
-          }
-        }
-
-        if (newDetails.primaryEventCode.toString().trim() == "1") {
-          newDetails.accountname = excelDataNew[i]['Accountname'];
-          newDetails.accountCode = allCode['accountCode'];
-          if ((newDetails.accountCode).toString().trim() == "") {
-            checkImport = true;
-          }
-          newDetails.eventname = excelDataNew[i]['Eventname'];
-          newDetails.eventcode = allCode['eventcode'];
-          if ((newDetails.eventcode).toString().trim() == "") {
-            checkImport = true;
-          }
-        } else {
-          newDetails.accountname = "";
-          newDetails.accountCode = "";
-          newDetails.eventcode = "";
-          newDetails.eventname = "";
-        }
-        importGridListNew?.add(newDetails);
-      }
-    }
-  }
-
-  Future<bool> ignoreBlankRow() async {
-    Completer<bool> completer = Completer<bool>();
-    if (checkImport) {
-      // Goto DataNotAdded
-      completer.complete(false);
-      return completer.future;
-    }
-    // importGridList
-    for (int i = 0; i < (importGridListNew?.length ?? 0); i++) {
-      for (int k = 0; k < (importGridList?.length ?? 0); k++) {
-        if ((importGridList?.length ?? 0) > 0) {
-          if ((importGridListNew?[i].primaryEventCode == importGridList?[k].primaryEventCode) &&
-              (importGridListNew?[i].sponsorTypeCode == importGridList?[k].sponsorTypeCode) &&
-              (importGridListNew?[i].programCode == importGridList?[k].programCode) &&
-              (importGridListNew?[i].starttime == importGridList?[k].starttime) &&
-              (importGridListNew?[i].endTime == importGridList?[k].endTime) &&
-              (importGridListNew?[i].rate == importGridList?[k].rate) &&
-              (importGridListNew?[i].valuationRate == importGridList?[k].valuationRate) &&
-              (importGridListNew?[i].sun == importGridList?[k].sun) &&
-              (importGridListNew?[i].mon == importGridList?[k].mon) &&
-              (importGridListNew?[i].tue == importGridList?[k].tue) &&
-              (importGridListNew?[i].wed == importGridList?[k].wed) &&
-              (importGridListNew?[i].thu == importGridList?[k].thu) &&
-              (importGridListNew?[i].fri == importGridList?[k].fri) &&
-              (importGridListNew?[i].sat == importGridList?[k].sat) &&
-              (importGridListNew?[i].accountCode == importGridList?[k].accountCode) &&
-              (importGridListNew?[i].eventcode == importGridList?[k].eventcode)) {
-            bool sta = await LoadingDialog.modifyWithAsync(
-                "Similar entry already exists!\nDo you want to modify it?",
-                cancelTitle: "Yes",
-                deleteTitle: "No");
-            if (sta) {
-              bool reSta = await editRows(selectedOldIndex: 0, selectNewIndex: 0);
-            } else {
-              continue;
-            }
-          }
-        }
-      }
-    }
-    completer.complete(true);
-    return completer.future;
-  }
-
-  Future<bool> editRows({required int selectedOldIndex, required int selectNewIndex}) {
-    Completer<bool> completer = Completer<bool>();
-    try {
-      importGridList?[selectedOldIndex].primaryEventCode =
-          importGridListNew?[selectNewIndex].primaryEventCode;
-      importGridList?[selectedOldIndex].recordnumber = "${selectedOldIndex + 1}";
-      importGridList?[selectedOldIndex].sponsorTypeCode =
-          importGridListNew?[selectNewIndex].sponsorTypeCode;
-      importGridList?[selectedOldIndex].sponsorTypeName =
-          importGridListNew?[selectNewIndex].sponsorTypeName;
-      importGridList?[selectedOldIndex].programCode =
-          importGridListNew?[selectNewIndex].programCode;
-      importGridList?[selectedOldIndex].programName =
-          importGridListNew?[selectNewIndex].programName;
-      importGridList?[selectedOldIndex].programCategoryCode =
-          importGridListNew?[selectNewIndex].programCategoryCode;
-      importGridList?[selectedOldIndex].starttime = importGridListNew?[selectNewIndex].starttime;
-      importGridList?[selectedOldIndex].endTime = importGridListNew?[selectNewIndex].endTime;
-      importGridList?[selectedOldIndex].seconds = importGridListNew?[selectNewIndex].seconds;
-      importGridList?[selectedOldIndex].rate = importGridListNew?[selectNewIndex].rate;
-      importGridList?[selectedOldIndex].amount = importGridListNew?[selectNewIndex].amount;
-      importGridList?[selectedOldIndex].valuationRate =
-          importGridListNew?[selectNewIndex].valuationRate;
-      importGridList?[selectedOldIndex].bookedSeconds =
-          importGridListNew?[selectNewIndex].bookedSeconds;
-      importGridList?[selectedOldIndex].balanceSeconds =
-          importGridListNew?[selectNewIndex].balanceSeconds;
-      importGridList?[selectedOldIndex].balanceAmount =
-          importGridListNew?[selectNewIndex].balanceAmount;
-      importGridList?[selectedOldIndex].bandCode = importGridListNew?[selectNewIndex].bandCode;
-      importGridList?[selectedOldIndex].timeBand = importGridListNew?[selectNewIndex].timeBand;
-      importGridList?[selectedOldIndex].netCode = importGridListNew?[selectNewIndex].netCode;
-      importGridList?[selectedOldIndex].netWorkName =
-          importGridListNew?[selectNewIndex].netWorkName;
-      importGridList?[selectedOldIndex].sun = importGridListNew?[selectNewIndex].sun;
-      importGridList?[selectedOldIndex].mon = importGridListNew?[selectNewIndex].mon;
-      importGridList?[selectedOldIndex].tue = importGridListNew?[selectNewIndex].tue;
-      importGridList?[selectedOldIndex].wed = importGridListNew?[selectNewIndex].wed;
-      importGridList?[selectedOldIndex].thu = importGridListNew?[selectNewIndex].thu;
-      importGridList?[selectedOldIndex].fri = importGridListNew?[selectNewIndex].fri;
-      importGridList?[selectedOldIndex].sat = importGridListNew?[selectNewIndex].sat;
-      importGridList?[selectedOldIndex].revflag = importGridListNew?[selectNewIndex].revflag;
-      importGridList?[selectedOldIndex].accountCode =
-          importGridListNew?[selectNewIndex].accountCode;
-      importGridList?[selectedOldIndex].accountname =
-          importGridListNew?[selectNewIndex].accountname;
-      importGridList?[selectedOldIndex].eventcode = importGridListNew?[selectNewIndex].eventcode;
-      importGridList?[selectedOldIndex].eventname = importGridListNew?[selectNewIndex].eventname;
-      importGridList?[selectedOldIndex].spots = importGridListNew?[selectNewIndex].spots;
-      importGridList?[selectedOldIndex].paymentmodecaption =
-          importGridListNew?[selectNewIndex].paymentmodecaption;
-      importGridList?[selectedOldIndex].revenueTypeName =
-          importGridListNew?[selectNewIndex].revenueTypeName;
-      importGridList?[selectedOldIndex].revenueTypeCode =
-          importGridListNew?[selectNewIndex].revenueTypeCode;
-      importGridList?[selectedOldIndex].subRevenueTypeCode =
-          importGridListNew?[selectNewIndex].subRevenueTypeCode;
-      importGridList?[selectedOldIndex].subRevenueTypeName =
-          importGridListNew?[selectNewIndex].subRevenueTypeName;
-      importGridList?[selectedOldIndex].countBased = importGridListNew?[selectNewIndex].countBased;
-      importGridList?[selectedOldIndex].baseDuration =
-          importGridListNew?[selectNewIndex].baseDuration;
-
-      secondsController.text = colTotal("seconds");
-      amountController.text = colTotal("amount");
-
-      if (double.parse(amountController.text ?? "0") > 0) {
-        maxSpeedController.text = amountController.text;
-      }
-
-      completer.complete(true);
-    } catch (e) {
-      completer.complete(false);
-    }
-    return completer.future;
-  }
 
   String colTotal(String col) {
     double amt = 0;
@@ -1353,22 +1112,22 @@ class ClientDealsController extends GetxController {
           type.value = true;
           type.refresh();
           secondsController2.text =
-              (stateManager?.rows[selectedIndex].cells['seconds']?.value ?? "").toString();
+              (stateManager?.rows[selectedIndex].cells['spots']?.value ?? "").toString();
           primarySecondaryEvent(type.value);
         }
       }
 
       print("I am from controller");
-      channelLeave(netCode: stateManager?.rows[selectedIndex].cells['netCode']?.value ?? "");
+      channelLeave(netCode: stateManager?.rows[selectedIndex].cells['netWorkName']?.value ?? "");
 
-      txtDRecordNumber.value =
-          (stateManager?.rows[selectedIndex].cells['recordnumber']?.value ?? "").toString();
+      txtDRecordNumber.value = (stateManager?.rows[selectedIndex].cells['recordnumber']?.value ?? "").toString();
+      secondsController2.text = (stateManager?.rows[selectedIndex].cells['seconds']?.value ?? "").toString();
 
       sponsorTypeCode =
-          (stateManager?.rows[selectedIndex].cells['SponsorTypeCode']?.value ?? "").toString();
+          (stateManager?.rows[selectedIndex].cells['sponsorTypeCode']?.value ?? "").toString();
 
       selectSpotType?.value = DropDownValue(
-          key: (stateManager?.rows[selectedIndex].cells['SponsorTypeCode']?.value ?? "").toString(),
+          key: (stateManager?.rows[selectedIndex].cells['sponsorTypeCode']?.value ?? "").toString(),
           value:
               (stateManager?.rows[selectedIndex].cells['sponsorTypeName']?.value ?? "").toString());
 
@@ -1388,7 +1147,7 @@ class ClientDealsController extends GetxController {
           (stateManager?.rows[selectedIndex].cells['amount']?.value ?? "").toString();
       selectBand?.value = DropDownValue(
           value: (stateManager?.rows[selectedIndex].cells['timeBand']?.value ?? "").toString(),
-          key: (stateManager?.rows[selectedIndex].cells['bandcode']?.value ?? "").toString());
+          key: (stateManager?.rows[selectedIndex].cells['bandCode']?.value ?? "").toString());
 
       print(">>>>>>>>>>>>>>sat${stateManager?.rows[selectedIndex].cells['sun']?.value ?? ""}");
       print(">>>>>>>>>>>>>>amt${stateManager?.rows[selectedIndex].cells['Amount']?.value ?? ""}");
@@ -1426,10 +1185,14 @@ class ClientDealsController extends GetxController {
             value: stateManager?.rows[selectedIndex].cells['eventname']?.value ?? "",
             key: stateManager?.rows[selectedIndex].cells['eventcode']?.value ?? "");
 
+        // selectAddInfo?.value = DropDownValue(value:stateManager?.rows[selectedIndex].cells['netWorkName']?.value ?? "" ,
+        //     key:stateManager?.rows[selectedIndex].cells['netCode']?.value ?? "" );
+
         selectSubType?.refresh();
         selectAccount?.refresh();
+        selectAddInfo?.refresh();
       }
-
+      setValues();
       update(['middle']);
       completer.complete("");
       return completer.future;
@@ -1464,7 +1227,11 @@ class ClientDealsController extends GetxController {
     amountController2.text = "0";
     valueRateController.text = "0";
     txtDRecordNumber.value = "0";
+     label24 = Rx<String>("Seconds");
+     label25 = Rx<String>("Rate per 10 seconds");
     type.refresh();
+    label24.refresh();
+    label25.refresh();
     update(['middle']);
   }
 
@@ -1513,8 +1280,8 @@ class ClientDealsController extends GetxController {
 
     if ((txtDRecordNumber.value ?? "").toString().trim() != "0") {
       LoadingDialog.modify2("This Record Already exists!\nDo you want to modify it?", () {
-        for (int i = 0; i < (importGridList?.length ?? 0); i++) {
-          if (importGridList?[i].recordnumber.toString().toLowerCase().trim() ==
+        for (int i = 0; i < (importGridList.length ?? 0); i++) {
+          if (importGridList[i].recordnumber.toString().toLowerCase().trim() ==
               (txtDRecordNumber.value ?? "0").toString().toLowerCase().trim()) {
             addEdit(i);
             break;
@@ -1524,84 +1291,59 @@ class ClientDealsController extends GetxController {
         return;
       }, deleteTitle: "Yes", cancelTitle: "No");
     } else {
-      for (int i = 0; i < (importGridList?.length ?? 0); i++) {
-        if ((getOneZero(sta: type.value) == importGridList?[i].primaryEventCode) &&
+      bool isIn = false;
+
+      for (int i = 0; i < (importGridList.length ?? 0); i++) {
+        if ((getOneZero(sta: type.value) == importGridList[i].primaryEventCode) &&
             ((selectSpotType?.value?.key ?? "").toString().trim() ==
-                (importGridList?[i].sponsorTypeCode ?? "").toString().trim()) &&
+                (importGridList[i].sponsorTypeCode ?? "").toString().trim()) &&
             ((selectProgram?.value?.key ?? "").toString().trim() ==
-                (importGridList?[i].programCode ?? "").toString().trim()) &&
-            (startTime.text == (importGridList?[i].starttime ?? "").toString().trim()) &&
-            (endTime.text == (importGridList?[i].endTime ?? "").toString().trim()) &&
+                (importGridList[i].programCode ?? "").toString().trim()) &&
+            (startTime.text == (importGridList[i].starttime ?? "").toString().trim()) &&
+            (endTime.text == (importGridList[i].endTime ?? "").toString().trim()) &&
             (ratePerTenSecondsController.text.toString().trim() ==
-                (importGridList?[i].rate ?? "").toString().trim()) &&
+                (importGridList[i].rate ?? "").toString().trim()) &&
             (valueRateController.text.toString().trim() ==
-                (importGridList?[i].valuationRate ?? "").toString().trim()) &&
-            (getOneZero(sta: sun.value) == (importGridList?[i].sun ?? "").toString().trim()) &&
-            (getOneZero(sta: mon.value) == (importGridList?[i].mon ?? "").toString().trim()) &&
-            (getOneZero(sta: tue.value) == (importGridList?[i].tue ?? "").toString().trim()) &&
-            (getOneZero(sta: wed.value) == (importGridList?[i].wed ?? "").toString().trim()) &&
-            (getOneZero(sta: thu.value) == (importGridList?[i].fri ?? "").toString().trim()) &&
-            (getOneZero(sta: sat.value) == (importGridList?[i].sat ?? "").toString().trim()) &&
+                (importGridList[i].valuationRate ?? "").toString().trim()) &&
+            (getOneZero(sta: sun.value) == (importGridList[i].sun ?? "").toString().trim()) &&
+            (getOneZero(sta: mon.value) == (importGridList[i].mon ?? "").toString().trim()) &&
+            (getOneZero(sta: tue.value) == (importGridList[i].tue ?? "").toString().trim()) &&
+            (getOneZero(sta: wed.value) == (importGridList[i].wed ?? "").toString().trim()) &&
+            (getOneZero(sta: thu.value) == (importGridList[i].fri ?? "").toString().trim()) &&
+            (getOneZero(sta: sat.value) == (importGridList[i].sat ?? "").toString().trim()) &&
             ((selectAccount?.value?.key).toString().trim() ==
-                (importGridList?[i].accountCode ?? "").toString().trim()) &&
+                (importGridList[i].accountCode ?? "").toString().trim()) &&
             ((selectSubType?.value?.key ?? "").toString().trim() ==
-                (importGridList?[i].eventcode ?? "").toString().trim())) {
+                (importGridList[i].eventcode ?? "").toString().trim())) {
+          isIn = true;
           bool sta = await LoadingDialog.modifyWithAsync(
               "Similar entry already exists!\nDo you want to modify it?",
               deleteTitle: "Yes",
               cancelTitle: "No");
           if (sta) {
-            // addEdit(i);
-            continue;
+            addEdit(i);
+            // continue;
           } else {
             bool sta1 = await LoadingDialog.modifyWithAsync("Do you want to duplicate this row?",
                 deleteTitle: "Yes", cancelTitle: "No");
             if (sta1) {
-              return;
+              addEdit(i, isNew: true);
             } else {
-              // addEdit(i);
-              continue;
+              // continue;
+              return;
             }
           }
           break;
         }
+        if ((i == (importGridList.length ?? 0) - 1) && isIn == false) {
+          addEdit(i + 1, isNew: true);
+        }
+      }
 
-
+      if (importGridList.isEmpty) {
+        addEdit(0, isNew: true);
       }
     }
-  }
-
-  addEdit(int index) {
-    importGridList?[index].recordnumber = txtDRecordNumber.value;
-    importGridList?[index].sponsorTypeCode = selectSpotType?.value?.key ?? "";
-    importGridList?[index].sponsorTypeName = selectSpotType?.value?.value ?? "";
-    importGridList?[index].programCode = selectProgram?.value?.key ?? "";
-    importGridList?[index].programName = selectProgram?.value?.value ?? "";
-    importGridList?[index].starttime = startTime.text ?? "";
-    importGridList?[index].endTime = endTime.text ?? "";
-    importGridList?[index].seconds = secondsController2.text ?? "";
-    importGridList?[index].rate = ratePerTenSecondsController.text ?? "";
-    importGridList?[index].amount = amountController2.text ?? "";
-    importGridList?[index].bandCode = selectBand?.value?.key ?? "";
-    importGridList?[index].timeBand = selectBand?.value?.value ?? "";
-    importGridList?[index].valuationRate = valueRateController.text ?? "";
-    importGridList?[index].netCode = selectAddInfo?.value?.key ?? "";
-    importGridList?[index].netWorkName = selectAddInfo?.value?.key ?? "";
-    importGridList?[index].sun = getOneZero(sta: sun.value);
-    importGridList?[index].mon = getOneZero(sta: mon.value);
-    importGridList?[index].tue = getOneZero(sta: tue.value);
-    importGridList?[index].wed = getOneZero(sta: wed.value);
-    importGridList?[index].thu = getOneZero(sta: thu.value);
-    importGridList?[index].fri = getOneZero(sta: fri.value);
-    importGridList?[index].sat = getOneZero(sta: sat.value);
-    importGridList?[index].primaryEventCode = getOneZero(sta: type.value);
-    if (type.value == true) {
-      importGridList?[index].accountCode = selectAccount?.value?.key ?? "";
-      importGridList?[index].accountname = selectAccount?.value?.value ?? "";
-      importGridList?[index].eventcode = selectAccount?.value?.key ?? "";
-      importGridList?[index].eventname = selectAccount?.value?.value ?? "";
-    }
-    btnClearClick();
   }
 
   getOneZero({bool? sta}) {
@@ -1620,8 +1362,256 @@ class ClientDealsController extends GetxController {
 
   @override
   void onClose() {
+    channelFocus.dispose();
+    locationFocus.dispose();
+    dealNoFocus.dispose();
+    dateFocus.dispose();
+    fromFocus.dispose();
+    toFocus.dispose();
+    clientFocus.dispose();
+    agencyFocus.dispose();
+
+    accountFocus.dispose();
+    subTypeFocus.dispose();
+    spotTypeFocus.dispose();
+    programFocus.dispose();
+    bandFocus.dispose();
+    addInfoFocus.dispose();
+    weekEndFocus.dispose();
+    weekDayFocus.dispose();
+    monDayFocus.dispose();
+    tueDayFocus.dispose();
+    wedDayFocus.dispose();
+    thuDayFocus.dispose();
+    friDayFocus.dispose();
+    satDayFocus.dispose();
+    sunDayFocus.dispose();
+    startTimeFocus.dispose();
+    endTimeFocus.dispose();
+    secondsFocus.dispose();
+    ratePerSeconds.dispose();
+    amountFocus.dispose();
+    valRateFocus.dispose();
+
     super.onClose();
   }
 
   void increment() => count.value++;
+
+  List<dynamic> getDataFromGrid(PlutoGridStateManager? statemanager, {String? gridName}) {
+    if (statemanager != null) {
+      statemanager.setFilter((element) => true);
+      statemanager.notifyListeners();
+      List<Map<String, dynamic>> mapList = [];
+      for (var row in statemanager.rows) {
+        Map<String, dynamic> rowMap = {};
+        for (var key in row.cells.keys) {
+          rowMap[key] = row.cells[key]?.value ?? "";
+        }
+        mapList.add(rowMap);
+      }
+      return mapList;
+    }else if(gridName != null && gridName !="" && gridName == "remark"){
+      return remarkList.value ;
+    } else {
+      return [];
+    }
+  }
+
+  List<Map<String, dynamic>> getDataFromGrid2(PlutoGridStateManager? statemanager,{String? gridName}) {
+    if (statemanager != null) {
+      statemanager.setFilter((element) => true);
+      statemanager.notifyListeners();
+      List<Map<String, dynamic>> mapList = [];
+      for (var row in statemanager.rows) {
+        Map<String, dynamic> rowMap = {};
+        for (var key in row.cells.keys) {
+          if ((key.toString().trim() == "primaryEventCode") ||
+              (key.toString().trim() == "recordnumber") ||
+              (key.toString().trim() == "seconds") ||
+              (key.toString().trim() == "rate") ||
+              (key.toString().trim() == "amount") ||
+              (key.toString().trim() == "valuationRate") ||
+              (key.toString().trim() == "netCode") ||
+              (key.toString().trim() == "sun") ||
+              (key.toString().trim() == "mon") ||
+              (key.toString().trim() == "tue") ||
+              (key.toString().trim() == "wed") ||
+              (key.toString().trim() == "thu") ||
+              (key.toString().trim() == "fri") ||
+              (key.toString().trim() == "sat") ||
+              (key.toString().trim() == "eventcode") ||
+              (key.toString().trim() == "dealCode") ||
+              (key.toString().trim() == "dealDetailCode") ||
+              (key.toString().trim() == "primaryEventCode") ||
+              (key.toString().trim() == "recordnumber") ||
+              (key.toString().trim() == "groupValuationRate") ||
+              (key.toString().trim() == "isrequired")
+          ) {
+            if(row.cells[key]?.value != null && row.cells[key]?.value != ""){
+              try{
+                rowMap[key] = int.parse( row.cells[key]?.value ?? "0");
+              }catch(e){
+                rowMap[key] = double.parse( row.cells[key]?.value ?? "0");
+              }
+            }else{
+              rowMap[key] =  0;
+            }
+
+          } else {
+            rowMap[key] = row.cells[key]?.value ?? "";
+          }
+
+        }
+        mapList.add(rowMap);
+      }
+      return mapList;
+    }
+    else if(gridName != null && gridName != "" && gridName == "addInfo"){
+       return (clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.map((e) => e.toJson()).toList() )??[];
+    }
+    else {
+      return [];
+    }
+  }
+
+  postSaveFunCall() async {
+    try {
+
+      if(selectedLocation?.value == null || selectedChannel?.value == null ||
+          dealNoController.text == "" || selectedClient?.value == null ||
+          selectAgency?.value == null || selectCurrency?.value == null || selectPayMode?.value == null){
+        return;
+      }else if(importGridList.isEmpty){
+        LoadingDialog.showErrorDialog1("No details to add",callback: (){
+          return;
+        });
+        return;
+      }
+
+      double valuationAmount =0,billingAmount = 0;
+
+      for(int i=0;i<importGridList.length;i++){
+        valuationAmount =  valuationAmount + ((importGridList[i].seconds != null &&
+            importGridList[i].seconds != "")?int.parse(importGridList[i].seconds??"0"):0) *
+            ((importGridList[i].valuationRate != null &&
+            importGridList[i].valuationRate != "")?int.parse(importGridList[i].valuationRate??"0"):0) ;
+
+        billingAmount =  billingAmount + ((importGridList[i].seconds != null &&
+            importGridList[i].seconds != "")?int.parse(importGridList[i].seconds??"0"):0) *
+            ((importGridList[i].rate != null &&
+                importGridList[i].rate != "")?int.parse(importGridList[i].rate??"0"):0) ;
+      }
+
+      if((valuationAmount - billingAmount ) > 100){
+       bool sta =  await LoadingDialog.modifyWithAsync("The difference between the billing and valuation amount is ${((valuationAmount - billingAmount ).toStringAsFixed(2))}\nDo you want to save?",
+       cancelTitle:"Ok" ,deleteTitle: "Cancel"
+       );
+       if(!sta){
+         return;
+       }else{
+         callSaveApi();
+       }
+      }
+    } catch (e) {}
+  }
+
+  callSaveApi(){
+    try{
+      LoadingDialog.call();
+      Map<String, dynamic> postData = {
+        "remarks": getDataFromGrid(remarkStateManager,gridName: "remark") ?? [],
+        "addInfo": getDataFromGrid2(addInfoStateManager,gridName: "addInfo") ?? [],
+        "newDetails": getDataFromGrid2(stateManager) ?? [],
+        "newEntry": intNewEntry,
+        "locationcode": selectedLocation?.value?.key ?? "",
+        "channelCode": selectedChannel?.value?.key ?? "",
+        "dealNumber": dealNoController.text ?? "",
+        "dealDate": Utils.getMMDDYYYYFromDDMMYYYYInString( dateController.text ?? ""),
+        "referenceNumber": referenceController.text ?? "",
+        "referenceDate":Utils.getMMDDYYYYFromDDMMYYYYInString( referenceDateController.text ?? ""),
+        "clientcode": selectedClient?.value?.key ?? "",
+        "agencyCode": selectAgency?.value?.key ?? "",
+        "brandCode": selectBrand?.value?.key ?? "",
+        "currencytypecode": selectCurrency?.value?.key ?? "ZARUP00003",
+        "seconds": (secondsController.text.trim() != "") ? int.parse(secondsController.text) : 0,
+        "dealAmount": (amountController.text.trim() != "") ? int.parse(amountController.text) : 0,
+        "fromDate":Utils.getMMDDYYYYFromDDMMYYYYInString( fromDateController.text ?? ""),
+        "todate":Utils.getMMDDYYYYFromDDMMYYYYInString( toDateController.text ?? ""),
+        "secondused": (secondsController2.text.trim() != "")
+            ? int.parse(secondsController2.text)
+            : 0,
+        "bookedamount": (amountController2.text.trim() != "")
+            ? int.parse(amountController2.text)
+            : 0,
+        "paymentmodecode": selectPayMode?.value?.key ?? "",
+        "maxspend": (maxSpeedController.text.trim() != "")
+            ? int.parse(maxSpeedController.text)
+            : 0,
+        "dealTypeCode": selectDealType?.value?.key ?? "",
+        "effectiveRate_YN": getOneZero(sta: effectiveRate.value)
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+        api:ApiFactory.Client_Deal_SAVE,
+        json: postData,
+        fun: (map){
+          closeDialogIfOpen();
+          if(map is Map && map['dealNumber'] != null){
+            if(map['dealNumber'].toString().trim() != dealNoController.text.toString().trim()){
+              // clearAll();
+              dealNoController.text = map['dealNumber']??"";
+              retrieveRecord();
+              LoadingDialog.callDataSavedMessage(map['save']??"");
+            }else{
+              clearAll();
+            }
+            // LoadingDialog.callDataSavedMessage(map['save']??"");
+          }else{
+            clearAll();
+          }
+        },
+        failed: (map){
+          closeDialogIfOpen();
+        }
+      );
+    }catch(e){
+      closeDialogIfOpen();
+      LoadingDialog.showErrorDialog("Something went wrong${e}");
+    }
+  }
+
+  Rx<String> label24 = Rx<String>("Seconds");
+  Rx<String> label25 = Rx<String>("Rate per 10 seconds");
+
+  setValues(){
+    if(selectSubType?.value != null){
+      Get.find<ConnectorControl>().GETMETHODCALL(
+        api:ApiFactory.Client_Deal_LINK_DEAL_Set_Values+(selectSubType?.value?.key??""),
+        fun: (map){
+          if(map is Map && map['model'] != null){
+            label24.value = map['model']['secondOrExpo'];
+            label25.value = map['model']['rateSecondOrExpo'];
+            label24.refresh();
+            label25.refresh();
+          }
+
+        },
+        failed: (map){
+          label24 = Rx<String>("Seconds");
+          label25 = Rx<String>("Rate per 10 seconds");
+          label24.refresh();
+          label25.refresh();
+        }
+
+      );
+    }else{
+      label24 = Rx<String>("Seconds");
+      label25 = Rx<String>("Rate per 10 seconds");
+      label24.refresh();
+      label25.refresh();
+    }
+  }
+
 }
+
+// bk - booked

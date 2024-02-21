@@ -810,6 +810,28 @@ class ApiFactory {
   static String get Client_Deal_GET_AGENCY_ADDRESS =>
       "$BASE_URL/api/ClientDeals/GetAgencyAddress";
 
+  static String get Client_Deal_GET_PROGRAM =>
+      "$BASE_URL/api/ClientDeals/GetProgram?programName=";
+
+  static String get Client_Deal_GET_LINK_DEAL_RETRIVE =>
+      "$BASE_URL/api/ClientDeals/LinkDealRetrive?GroupNumber=";
+
+  static String get Client_Deal_LINK_DEAL_DOUBLE_CLICK =>
+      "$BASE_URL/api/ClientDeals/LinkDealDoubleClick";
+
+  static String get Client_Deal_LINK_DEAL_SAVE =>
+      "$BASE_URL/api/ClientDeals/LinkDealSave";
+
+  static String get Client_Deal_SAVE =>
+      "$BASE_URL/api/ClientDeals/save";
+
+  static String get Client_Deal_LINK_DEAL_COMPARE =>
+      "$BASE_URL/api/ClientDeals/compare";
+
+  static String get Client_Deal_LINK_DEAL_Set_Values=>
+      "$BASE_URL/api/ClientDeals/setValues?eventCode=";
+
+
   /// ////////////////////////////////End Client Deals ////////////////////////////////////
   ///
   ///
@@ -1196,13 +1218,17 @@ class ApiFactory {
   /// ////////////////////////// Start ASRUN MODIFICATION  Model////////////////////////////////
   static String get ASRUN_MODIFICATION_GET_LOCATION =>
       "$BASE_URL/api/AsRunModification/GetLocation";
+
   static String ASRUN_MODIFICATION_GET_CHANNEL(String location) =>
       "$BASE_URL/api/AsRunModification/GetChannel?location=$location";
+
   static String ASRUN_MODIFICATION_RETRIEVE(
           String locationCode, String channelCode, String logDate) =>
       "$BASE_URL/api/AsRunModification/Retrieve?LocationCode=$locationCode&ChannelCode=$channelCode&logDate=$logDate";
+
   static String get ASRUN_MODIFICATION_SAVE =>
       "$BASE_URL/api/AsRunModification/save";
+
   static String get ASRUN_MODIFICATION_GET_PROGRAM =>
       "$BASE_URL/api/AsRunModification/GetProgram?programName=";
 
@@ -1213,10 +1239,13 @@ class ApiFactory {
   /// ////////////////////////// Start AGENCY EMBARGO Model////////////////////////////////
   static String get AGENCY_EMBARGO_ON_LOAD =>
       "$BASE_URL/api/AgencyEmbargo/onLoad";
+
   static String get AGENCY_EMBARGO_AGENCY_NAME =>
       "$BASE_URL/api/AgencyEmbargo/GetAgency?agencyName=";
+
   static String AGENCY_EMBARGO_GET_AGENCY_HISTORY(String agencyCode) =>
       "$BASE_URL/api/AgencyEmbargo/GetAgencyHistory?agencyCode=$agencyCode";
+
   static String get AGENCY_EMBARGO_SAVE => "$BASE_URL/api/AgencyEmbargo/Save";
 
   /// ////////////////////////// End AGENCY_EMBARGO Model////////////////////////////////
@@ -1224,10 +1253,13 @@ class ApiFactory {
   ///  ///////////////////////////// CLIENT EMBARGO ////////////////////////////////
   static String get CLIENT_EMBARGO_ON_LOAD =>
       "$BASE_URL/api/ClientEmbargo/GetLoad";
+
   static String get CLIENT_EMBARGO_GET_CLIENT =>
       "$BASE_URL/api/ClientEmbargo/GetClient?SearchText=";
+
   static String get CLIENT_EMBARGO_GET_CLIENT_NAME_CLICK =>
       "$BASE_URL/api/ClientEmbargo/GetClientNameClick?ClientCode=";
+
   static String get CLIENT_EMBARGO_POST =>
       "$BASE_URL/api/ClientEmbargo/PostSave";
 
@@ -1235,22 +1267,29 @@ class ApiFactory {
 
   static String get AGENCY_MASTER_ON_LOAD =>
       "$BASE_URL/api/AgencyMasters/GetAgencyMasterLoad";
+
   static String get AGENCY_MASTER_GET_AGENCY_NAME =>
       "$BASE_URL/api/AgencyMasters/GetAngecyName?BMSAngecyName=";
+
   static String get AGENCY_MASTER_GET_RETRIEVE_RECORD =>
       "$BASE_URL/api/AgencyMasters/GetRetrieveRecord";
+
   static String get AGENCY_MASTER_POST_BLOCK_AGENCY =>
       "$BASE_URL/api/AgencyMasters/Postblockagency";
+
   static String get AGENCY_MASTER_POST_UN_BLOCK_AGENCY =>
       "$BASE_URL/api/AgencyMasters/Postunblockagency";
+
   static String get AGENCY_MASTER_POST =>
       "$BASE_URL/api/AgencyMasters/PostValidateAndSaveRecord";
 
   /// //////////////////  Agency Group Master ////////////////////////
   static String get AGENCY_GROUP_MASTER_GET_RETRIEVE_RECORD =>
       "$BASE_URL/api/AgencyGroupMaster/GetRetrieveRecord";
+
   static String get AGENCY_GROUP_MASTER_GET_AGENCY =>
       "$BASE_URL/api/AgencyGroupMaster/GetAgency?AgencyName=";
+
   static String get AGENCY_GROUP_MASTER_POST =>
       "$BASE_URL/api/AgencyGroupMaster/PostSave";
 
@@ -1295,6 +1334,10 @@ class ApiFactory {
 
   static String TO_PAYROUTE_LEAVE(locationId, channelId, payrouteId) =>
       "$BASE_URL/api/TOCorrection/PayRouteLeave?LocationCode=$locationId&ChannelCode=$channelId&PayRouteCode=$payrouteId";
+
+  static String TO_PAYROUTE_GET_DETAILS(
+          locationId, channelId, bookNo, frmDt, toDt) =>
+      "$BASE_URL/api/TOCorrection/ShowDetails?LocationCode=$locationId&ChannelCode=$channelId&BookingNumber=$bookNo&FromDate=$frmDt&ToDate=$toDt";
 
   ///////////////////////////////End: Traffic Order Correction ////////////////////////////////
 
@@ -1341,6 +1384,7 @@ class ApiFactory {
   ///
   /// ////////////////////////// Start EBILLS  Model////////////////////////////////
   static String get EBILLS_GET_LOAD => "$BASE_URL/api/Ebills/GetLoad";
+
   static String get EBILLS_POST_AGENCY => "$BASE_URL/api/Ebills/PostAgency";
 
   /// ////////////////////////// End EBILLS Model////////////////////////////////
@@ -1360,30 +1404,63 @@ class ApiFactory {
 
 ///////////////////////////////End: ASRUN SPECIFICATION AD REVENUE ////////////////////////////////
   ///
-/////////////////////////////// start: Invoice Revision ////////////////////////////////
+  ///
+  ///
+  /// ////////////////////////// Start EBILLS BONUS ACTIVITY Model////////////////////////////////
+  static String get EBILLS_BONUS_ACTIVITY_PAGE_LOAD =>
+      "$BASE_URL/api/EbillerBonusActivity/PageLoad";
+  static String get EBILLS_BONUS_ACTIVITY_FETCH_AGENCY_LIST =>
+      "$BASE_URL/api/EbillerBonusActivity/FetchAgencyList";
 
-  static String get INVOICE_REVISION_SEARCH_CLIENT =>
-      "$BASE_URL/api/InvoiceRevision/GetClient?SearchNewClient=";
+  /// ////////////////////////// End EBILLS BONUS ACTIVITY Model////////////////////////////////
+  ///
+  ///
+/////////////////////////////// start: Invoice Revision ////////////////////////////////
 
   static String get INVOICE_REVISION_GET_LOCATION =>
       "$BASE_URL/api/InvoiceRevision/GetLocation";
 
-  static String INVOICE_REVISION_GET_CHANNEL({required String locationCode}) =>
+  static String get INVOICE_REVISION_SEARCH_CLIENT =>
+      "$BASE_URL/api/InvoiceRevision/GetClient?SearchNewClient=";
+
+  static String INVOICE_REVISION_GET_CHANNEL(String locationCode) =>
       "$BASE_URL/api/InvoiceRevision/GetChannel?LocationCode=$locationCode";
 
-  // static String get INVOICE_REVISION_GET_CHANNEL =>
-  //     "$BASE_URL/api/InvoiceRevision/GetChannel";
+  static String INVOICE_REVISION_RETRIEVE(
+    String locationCode,
+    String channelCode,
+    String fromDate,
+  ) =>
+      "$BASE_URL/api/InvoiceRevision/GetRetrieve?LocationCode=$locationCode&ChannelCode=$channelCode&FromDate=$fromDate";
 
-  static String INVOICE_REVISION_RETRIEVE({
-    required String locationCode,
-    required String channelCode,
-    required String fromDate,
-  }) =>
-      "$BASE_URL/api/InvoiceRevision/GetRetrieve?LocationCode=$locationCode&ChannelCode=$channelCode&FromDate=<string>";
+  static String INVOICE_REVISION_CLIENT_LEAVE(
+    String locationCode,
+    String channelCode,
+    String clientCode,
+  ) =>
+      "$BASE_URL/api/InvoiceRevision/GetNewClientLeave?LocationCode=$locationCode&ChannelCode=$channelCode&ClientCode=$clientCode";
+
+  static String INVOICE_REVISION_BILL_DETAIL(
+    String locationCode,
+    String channelCode,
+  ) =>
+      "$BASE_URL/api/InvoiceRevision/GetDgvBillDetail?LocationCode=$locationCode&ChannelCode=$channelCode";
 
   static String get INVOICE_REVISION_SAVE =>
       "$BASE_URL/api/InvoiceRevision/PostSave";
 
 /////////////////////////////// end: Invoice Revision ////////////////////////////////
   ///
+///
+///  /////////////////////// RO AUDIT ////////////////////////////
+
+  static String get RO_AUDIT_ON_LOAD => "$BASE_URL/api/ROAuditStatus/OnLoad";
+  static String get RO_AUDIT_ON_LOCATION_LEAVE => "$BASE_URL/api/ROAuditStatus/OnLocationLeave?LocationCode=";
+  static String get RO_AUDIT_SHOW_DETAILS => "$BASE_URL/api/ROAuditStatus/ShowDetails";
+  static String get RO_AUDIT_ADDITION_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/AdditionsCellDoubleClick";
+  static String get RO_AUDIT_RESCHEDULE_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/RescheduleCellDoubleClick";
+  static String get RO_AUDIT_CANCELLATION_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/CancellationCellDoubleClick";
+  static String get RO_AUDIT_DEAL_APPROVAL_CELL_DOUBLE_CLICK => "$BASE_URL/api/ROAuditStatus/DealApprovalCellDoubleClick";
+
+
 }

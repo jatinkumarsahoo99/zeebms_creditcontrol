@@ -1109,8 +1109,8 @@ class DataGridFromMap3 extends StatelessWidget {
   Function(PlutoGridOnLoadedEvent)? onload;
   final GlobalKey rebuildKey = GlobalKey();
   final List<String>? checkBoxColumnKey, noEditcheckBoxColumnKey;
-  final String? uncheckCheckBoxStr;
-  final String? checkBoxStrComparison;
+  final dynamic uncheckCheckBoxStr;
+  final dynamic checkBoxStrComparison;
   final void Function(String columnName)? onColumnHeaderDoubleTap;
   PlutoColumnSort sort;
   FocusNode? focusNode;
@@ -1181,6 +1181,8 @@ class DataGridFromMap3 extends StatelessWidget {
                 : key.toString(),
             enableRowChecked: false,
             renderer: ((rendererContext) {
+              // print(">>>>>>>>>>>.rendererContext.cell.value"+rendererContext.cell.value.toString());
+              // print(">>>>>>>>>>>.rendererContext.cell.value"+rendererContext.cell.value.runtimeType.toString());
               if (checkBoxColumnKey != null &&
                   checkBoxColumnKey!.isNotEmpty &&
                   checkBoxColumnKey!.contains(key)) {
@@ -1196,6 +1198,7 @@ class DataGridFromMap3 extends StatelessWidget {
                         if (showTitleInCheckBox != null &&
                             showTitleInCheckBox!.isNotEmpty) {
                           var temp = mapData[rendererContext.rowIdx][key];
+                          print(">>>>>>>>>>temp$temp");
                           temp['key'] =
                           (temp['key'] == checkBoxStrComparison)
                               ? uncheckCheckBoxStr
@@ -1286,7 +1289,8 @@ class DataGridFromMap3 extends StatelessWidget {
                     }
                   ],
                 );
-              } else {
+              }
+              else {
                 return GestureDetector(
                   onSecondaryTapDown: (detail) {
                     DataGridMenu().showGridMenu(
