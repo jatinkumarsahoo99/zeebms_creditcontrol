@@ -6,8 +6,8 @@ import '../../widgets/NoDataFoundPage.dart';
 import '../modules/AgencyGroupMaster/bindings/agency_group_master_binding.dart';
 import '../modules/AgencyMaster/bindings/agency_master_binding.dart';
 import '../modules/AsrunSpecificationAdRevenue/bindings/asrun_specification_ad_revenue_binding.dart';
-// import '../modules/AuditBookings/bindings/audit_bookings_binding.dart';
-// import '../modules/AuditBookings/views/audit_bookings_view.dart';
+import '../modules/ROAudit/AuditCancellation/bindings/audit_cancellation_binding.dart';
+import '../modules/ROAudit/AuditCancellation/views/audit_cancellation_view.dart';
 import '../modules/AuditReschedule/bindings/audit_reschedule_binding.dart';
 import '../modules/AuditReschedule/views/audit_reschedule_view.dart';
 import '../modules/ClientEmbargo/bindings/client_embargo_binding.dart';
@@ -26,6 +26,9 @@ import '../modules/SecondaryAsrunModification/bindings/secondary_asrun_modificat
 import '../modules/home/bindings/home_binding.dart';
 import '../providers/AuthGuard1.dart';
 
+// import '../modules/AuditBookings/bindings/audit_bookings_binding.dart';
+// import '../modules/AuditBookings/views/audit_bookings_view.dart';
+
 part 'app_routes.dart';
 
 class AppPages {
@@ -33,7 +36,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.AUDIT_BOOKINGS +
+      : (Routes.AUDIT_CANCELLATION +
           "?personalNo=ces%2FeKicpwo5mz%2FYFOQDvw%3D%3D&loginCode=zWc5qlvs%2BXZUagqFBqBN0A%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
 
   static final routes = [
@@ -260,6 +263,10 @@ class AppPages {
       name: _Paths.AUDIT_RESCHEDULE,
       page: () => AuthGuard(childName: _Paths.AUDIT_RESCHEDULE),
       binding: AuditRescheduleBinding(),
+    ),
+    GetPage(
+      name: _Paths.AUDIT_CANCELLATION,
+      page: () => AuthGuard(childName: _Paths.AUDIT_CANCELLATION),
     ),
   ];
 }

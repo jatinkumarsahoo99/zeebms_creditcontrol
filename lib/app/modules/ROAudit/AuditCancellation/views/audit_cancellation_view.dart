@@ -1,26 +1,28 @@
-import 'package:bms_creditcontrol/widgets/CheckBoxWidget.dart';
-import 'package:bms_creditcontrol/widgets/FormButton.dart';
-import 'package:bms_creditcontrol/widgets/sized_box_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../../widgets/CheckBoxWidget.dart';
 import '../../../../../widgets/DateTime/DateWithThreeTextField.dart';
+import '../../../../../widgets/FormButton.dart';
 import '../../../../../widgets/dropdown.dart';
 import '../../../../../widgets/gridFromMap.dart';
 import '../../../../../widgets/input_fields.dart';
+import '../../../../../widgets/sized_box_widget.dart';
 import '../../../../controller/HomeController.dart';
 import '../../../../routes/app_pages.dart';
-import '../controllers/audit_bookings_controller.dart';
+import '../controllers/audit_cancellation_controller.dart';
 
-class AuditBookingsView extends GetView<AuditBookingsController> {
-  AuditBookingsView({Key? key}) : super(key: key);
+class AuditCancellationView extends GetView<AuditCancellationController> {
+  AuditCancellationView({Key? key}) : super(key: key);
 
-  var controller = Get.put<AuditBookingsController>(AuditBookingsController());
+  var controller =
+      Get.put<AuditCancellationController>(AuditCancellationController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: GetBuilder<AuditBookingsController>(
+      body: GetBuilder<AuditCancellationController>(
         init: controller,
         id: "update",
         builder: (controller) {
@@ -91,10 +93,28 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                                   width: 10,
                                 ),
                                 Expanded(
-                                  child: DateWithThreeTextField(
-                                    title: "",
-                                    mainTextController: TextEditingController(),
-                                    isEnable: false,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: DateWithThreeTextField(
+                                          title: "Ref Date",
+                                          mainTextController:
+                                              TextEditingController(),
+                                          isEnable: false,
+                                        ),
+                                      ),
+                                      // SizedBox(
+                                      //   width: 10,
+                                      // ),
+                                      Expanded(
+                                        child: InputFields.formFieldExpand2(
+                                            hintTxt: "Book No",
+                                            controller: controller.tecBookNo,
+                                            autoFocus: true,
+                                            titleSizeboxWidth: 80,
+                                            bottomPadding: false),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],
@@ -142,51 +162,17 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                               textSizeboxWidth: 85,
                             ),
                             sizedBoxHeight(5),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                Expanded(
-                                  child: InputFields.formFieldExpand2(
-                                      hintTxt: "Executive",
-                                      controller: controller.tecRefNo,
-                                      autoFocus: true,
-                                      titleSizeboxWidth: 80,
-                                      bottomPadding: false),
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                FormButton(
-                                  btnText: "Deal",
-                                  showIcon: false,
-                                  isEnabled: true,
-                                  callback: () {},
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                FormButton(
-                                  btnText: "Validation",
-                                  showIcon: false,
-                                  isEnabled: true,
-                                  callback: () {},
-                                ),
-                                SizedBox(
-                                  width: 10,
-                                ),
-                                FormButton(
-                                  btnText: "Spots",
-                                  showIcon: false,
-                                  isEnabled: true,
-                                  callback: () {},
-                                ),
-                              ],
-                            ),
+                            InputFields.formFieldExpand2(
+                                hintTxt: "Executive",
+                                controller: controller.tecRefNo,
+                                autoFocus: true,
+                                titleSizeboxWidth: 80,
+                                bottomPadding: false),
                           ],
                         ),
                       ),
                       SizedBox(width: 5),
-                      GetBuilder<AuditBookingsController>(
+                      GetBuilder<AuditCancellationController>(
                           id: "updatePC",
                           builder: (controller) {
                             return Expanded(
@@ -218,8 +204,8 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                                     children: [
                                       Expanded(
                                         child: InputFields.formFieldExpand2(
-                                          hintTxt: "Booking No",
-                                          controller: controller.tecBookingNo,
+                                          hintTxt: "Cancel No",
+                                          controller: controller.tecCancelNo,
                                           autoFocus: true,
                                           titleSizeboxWidth: 80,
                                           bottomPadding: false,
@@ -267,6 +253,13 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                                   InputFields.formFieldExpand2(
                                     hintTxt: "Pay Mode",
                                     controller: controller.tecPayMode,
+                                    titleSizeboxWidth: 80,
+                                    bottomPadding: false,
+                                  ),
+                                  sizedBoxHeight(5),
+                                  InputFields.formFieldExpand2(
+                                    hintTxt: "Spot Amt",
+                                    controller: controller.tecSpotAmt,
                                     titleSizeboxWidth: 80,
                                     bottomPadding: false,
                                   ),
@@ -359,30 +352,8 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                       );
                     }),
                   ),
-                  sizedBoxHeight(5),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // FormButton1(btnText: "OS"),
-
-                      FormButton(
-                        btnText: "OS",
-                        showIcon: false,
-                        isEnabled: true,
-                        callback: () {},
-                      ),
-                      sizedBoxWidth(10),
-
-                      FormButton(
-                        btnText: "Mark As Un-Audit",
-                        showIcon: false,
-                        isEnabled: true,
-                        callback: () {},
-                      ),
-                    ],
-                  ),
                   Get.find<HomeController>().getCommonButton(
-                    Routes.AUDIT_BOOKINGS,
+                    Routes.AUDIT_CANCELLATION,
                     (btnName) {},
                   ),
                 ],

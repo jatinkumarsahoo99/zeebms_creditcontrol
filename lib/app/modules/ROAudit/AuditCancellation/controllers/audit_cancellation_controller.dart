@@ -3,10 +3,11 @@ import 'package:get/get.dart';
 
 import '../../../../data/DropDownValue.dart';
 
-class AuditBookingsController extends GetxController {
-  //TODO: Implement AuditBookingsController
+class AuditCancellationController extends GetxController {
+  //TODO: Implement AuditCancellationController
 
-  // final count = 0.obs;
+  final count = 0.obs;
+
   var gridData = [].obs;
 
   var locationList = <DropDownValue>[].obs;
@@ -22,13 +23,16 @@ class AuditBookingsController extends GetxController {
   final tecFpcDate = TextEditingController(),
       tecBookDate = TextEditingController(),
       tecBlankDate = TextEditingController(),
-      tecBookingNo = TextEditingController(),
+      tecBookNo = TextEditingController(),
       tecBlankYear = TextEditingController(),
       tecBlankCo_ordinate = TextEditingController(),
       tecDealNo = TextEditingController(),
       tecPayRoute = TextEditingController(),
       tecPayMode = TextEditingController(),
       tecExecutive = TextEditingController(),
+      tecRefDate = TextEditingController(),
+      tecCancelNo = TextEditingController(),
+      tecSpotAmt = TextEditingController(),
       tecRefNo = TextEditingController();
 
   @override
@@ -46,5 +50,5 @@ class AuditBookingsController extends GetxController {
     super.onClose();
   }
 
-  // void increment() => count.value++;
+  void increment() => count.value++;
 }
