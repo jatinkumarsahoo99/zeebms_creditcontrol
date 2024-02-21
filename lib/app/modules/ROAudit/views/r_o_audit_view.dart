@@ -6,14 +6,17 @@ import 'package:get/get.dart';
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/NeumorphismButtonList.dart';
+import '../../../../widgets/PlutoGrid/src/pluto_grid.dart';
 import '../../../../widgets/dropdown.dart';
+import '../../../../widgets/gridFromMap.dart';
 import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/Utils.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/r_o_audit_controller.dart';
 
-class ROAuditView extends GetView<ROAuditController> {
+class ROAuditView extends StatelessWidget {
   ROAuditView({Key? key}) : super(key: key);
 
   ROAuditController controllerX =
@@ -36,15 +39,15 @@ class ROAuditView extends GetView<ROAuditController> {
                   Obx(
                         () =>
                         DropDownField.formDropDown1WidthMap(
-                          controllerX.progTypeList.value ?? [],
+                          controllerX.locationList.value ?? [],
                               (value) {
-                            controllerX.selectedProgTypeList = value;
-                            // controllerX.getBMSVersion(programTypeCode: value.key??"");
+                            controllerX.selectLocation = value;
+                            controllerX.getChannel(locationCode: value.key);
                           },
                           "Location",
                           .17,
                           isEnable: controllerX.isEnable.value,
-                          selected: controllerX.selectedProgTypeList,
+                          selected: controllerX.selectLocation,
                           dialogHeight: Get.height * .35,
                           autoFocus: true,
                         ),
@@ -55,15 +58,15 @@ class ROAuditView extends GetView<ROAuditController> {
                   Obx(
                         () =>
                         DropDownField.formDropDown1WidthMap(
-                          controllerX.bmsVersionList.value ?? [],
+                          controllerX.channelList.value ?? [],
                               (value) {
-                            controllerX.selectedBMSVersionList = value;
+                            controllerX.selectChannel = value;
                             // controllerX.getMatchDetails(programCode: value.key??"");
                           },
                           "Channel",
                           .17,
                           isEnable: controllerX.isEnable.value,
-                          selected: controllerX.selectedBMSVersionList,
+                          selected: controllerX.selectChannel,
                           dialogHeight: Get.height * .35,
                           autoFocus: true,
                         ),
@@ -73,7 +76,7 @@ class ROAuditView extends GetView<ROAuditController> {
                   ),
                   DateWithThreeTextField(
                     title: "Schedule Date",
-                    mainTextController: controllerX.fromDateController,
+                    mainTextController: controllerX.scheduleDateController,
                     widthRation: .1,
                     isEnable: controllerX.isEnable.value,
                   ),
@@ -86,7 +89,7 @@ class ROAuditView extends GetView<ROAuditController> {
                     child: FormButtonWrapper(
                       btnText: "Show Details",
                       callback: () {
-                        // controllerX.showApiCall();
+                        controllerX.showDetails(name: controllerX.selectTab.value);
                       },
                       showIcon: true,
                     ),
@@ -96,52 +99,6 @@ class ROAuditView extends GetView<ROAuditController> {
               SizedBox(
                 height: 8,
               ),
-              /*  Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Obx(() {
-                      return GestureDetector(
-                        onTap: () {
-                          controllerX.additionClick.value =
-                              !(controllerX.additionClick.value);
-                          controllerX.additionClick.refresh();
-                        },
-                        child: Container(
-                          width: 150,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            color: controllerX.additionClick.value
-                                ? Colors.grey[300]
-                                : Colors.grey[200],
-                            borderRadius: BorderRadius.circular(2),
-                            boxShadow: [
-                              BoxShadow(
-                                  color: Colors.grey[
-                                      (controllerX.additionClick.value)
-                                          ? 500
-                                          : 300]!,
-                                  offset: Offset(2.0, 2.0),
-                                  blurRadius: 1.0,
-                                  spreadRadius: 1.0,
-                                  inset: controllerX.additionClick.value),
-                            ],
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Press me',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey[700],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-                  ],
-                ),
-              ),*/
               SizedBox(
                 // height: Get.height*0.13,
                   child: NeumorphismButtonList(
@@ -155,24 +112,14 @@ class ROAuditView extends GetView<ROAuditController> {
                     fun: (index, name) {
                       print(">>>>>>>>name&index" + name + index.toString());
                       controllerX.selectedInt.value = index;
+                      controllerX.selectTab.value = name;
                       controllerX.selectedInt.refresh();
+                      controllerX.showDetails(name: controllerX.selectTab.value);
                     },
                   )),
               SizedBox(
                 height: 8,
               ),
-              /*  Expanded(
-                // flex: 9,
-                child: Container(
-                  decoration:
-                      BoxDecoration(border: Border.all(color: Colors.grey)),
-                  child: GetBuilder<ROAuditController>(
-                      id: "grid",
-                      builder: (controllerX) {
-                        return Container();
-                      }),
-                ),
-              ),*/
               Obx(() {
                 return getSelectedWidget(index: controllerX.selectedInt.value);
               }),
@@ -235,7 +182,36 @@ class ROAuditView extends GetView<ROAuditController> {
                   return SizedBox(
                     width: Get.width * 0.99,
                     height: Get.height * 0.8,
-                    child: Center(child: Text("data not found0")),
+                    child:(controllerX.roAuditRetrieveModel != null &&
+                        controllerX.roAuditRetrieveModel?.infoBindList != null &&
+                        controllerX.roAuditRetrieveModel?.infoBindList?.lstAdditions != null &&
+                        (controllerX.roAuditRetrieveModel?.infoBindList?.lstAdditions?.length??0) >0
+                    )? DataGridFromMap6(
+                      showSrNo: true,
+                      hideCode: false,
+                      formatDate: false,
+                      columnAutoResize: true,
+                      doPasccal: true,
+                      colorCallback: (row) => (row.row.cells
+                          .containsValue(controllerX.stateManager?.currentCell))
+                          ? Colors.deepPurple.shade200
+                          : Colors.white,
+                      exportFileName: "Secondary Asrun Modification",
+                      mode: PlutoGridMode.normal,
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                        Get.toNamed(Routes.AUDIT_BOOKINGS);
+                      },
+                      // hideKeys: const [],
+                      mapData: controllerX
+                          .roAuditRetrieveModel!.infoBindList!.lstAdditions!
+                          .map((e) => e.toJson())
+                          .toList(),
+                      // mapData: (controllerX.dataList)!,
+                      widthRatio: Get.width / 9 - 1,
+                      onload: (PlutoGridOnLoadedEvent load) {
+                        controllerX.stateManager = load.stateManager;
+                      },
+                    ): Center(child: Text("data not found")),
                   );
                 }),
           ),
@@ -252,7 +228,36 @@ class ROAuditView extends GetView<ROAuditController> {
                   return SizedBox(
                     width: Get.width * 0.99,
                     height: Get.height * 0.8,
-                    child: Center(child: Text("data not found1")),
+                    child:(controllerX.roAuditRetrieveModel != null &&
+                        controllerX.roAuditRetrieveModel?.infoBindList != null &&
+                        controllerX.roAuditRetrieveModel?.infoBindList?.lstCancellation != null &&
+                        (controllerX.roAuditRetrieveModel?.infoBindList?.lstCancellation?.length??0) >0
+                    )? DataGridFromMap6(
+                      showSrNo: true,
+                      hideCode: false,
+                      formatDate: false,
+                      columnAutoResize: true,
+                      doPasccal: true,
+                      colorCallback: (row) => (row.row.cells
+                          .containsValue(controllerX.stateManager?.currentCell))
+                          ? Colors.deepPurple.shade200
+                          : Colors.white,
+                      exportFileName: "Secondary Asrun Modification",
+                      mode: PlutoGridMode.normal,
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                        Get.toNamed(Routes.AUDIT_CANCELLATION);
+                      },
+                      // hideKeys: const [],
+                      mapData: controllerX
+                          .roAuditRetrieveModel!.infoBindList!.lstCancellation!
+                          .map((e) => e.toJson())
+                          .toList(),
+                      // mapData: (controllerX.dataList)!,
+                      widthRatio: Get.width / 9 - 1,
+                      onload: (PlutoGridOnLoadedEvent load) {
+                        controllerX.stateManager = load.stateManager;
+                      },
+                    ): Center(child: Text("data not found")),
                   );
                 }),
           ),
@@ -269,7 +274,36 @@ class ROAuditView extends GetView<ROAuditController> {
                   return SizedBox(
                     width: Get.width * 0.99,
                     height: Get.height * 0.8,
-                    child: Center(child: Text("data not found2")),
+                    child:(controllerX.roAuditRetrieveModel != null &&
+                        controllerX.roAuditRetrieveModel?.infoBindList != null &&
+                        controllerX.roAuditRetrieveModel?.infoBindList?.lstReschedule != null &&
+                        (controllerX.roAuditRetrieveModel?.infoBindList?.lstReschedule?.length??0) >0
+                    )? DataGridFromMap6(
+                      showSrNo: true,
+                      hideCode: false,
+                      formatDate: false,
+                      columnAutoResize: true,
+                      doPasccal: true,
+                      colorCallback: (row) => (row.row.cells
+                          .containsValue(controllerX.stateManager?.currentCell))
+                          ? Colors.deepPurple.shade200
+                          : Colors.white,
+                      exportFileName: "Secondary Asrun Modification",
+                      mode: PlutoGridMode.normal,
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                        Get.toNamed(Routes.AUDIT_RESCHEDULE);
+                      },
+                      // hideKeys: const [],
+                      mapData: controllerX
+                          .roAuditRetrieveModel!.infoBindList!.lstReschedule!
+                          .map((e) => e.toJson())
+                          .toList(),
+                      // mapData: (controllerX.dataList)!,
+                      widthRatio: Get.width / 9 - 1,
+                      onload: (PlutoGridOnLoadedEvent load) {
+                        controllerX.stateManager = load.stateManager;
+                      },
+                    ): Center(child: Text("data not found")),
                   );
                 }),
           ),

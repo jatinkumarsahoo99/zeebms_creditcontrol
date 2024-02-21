@@ -593,7 +593,7 @@ class ClientDealsController extends GetxController {
                 addInfoList.addAll(dataList);
                 if (netCode != "") {
                   for (var element in addInfoList) {
-                    if (element.key.toString().trim() == netCode.toString().trim()) {
+                    if (element.value.toString().trim() == netCode.toString().trim()) {
                       selectAddInfo?.value = DropDownValue(key: element.key, value: element.value);
                       selectAddInfo?.refresh();
                       break;
@@ -1054,11 +1054,7 @@ class ClientDealsController extends GetxController {
   bool checkImport = false;
   List<NewDetails> importGridList = [];
 
-  callValidationFun({List<Map<String, dynamic>>? excelData}) {
-    LoadingDialog.modify("Do you wish to import file ?", () {}, () {
-      newImportedDataListCheckingSimilarity(excelDataN: excelData);
-    }, cancelTitle: "Yes", deleteTitle: "No");
-  }
+
 
   List<NewDetails>? importGridListNew = [];
 
@@ -1116,16 +1112,16 @@ class ClientDealsController extends GetxController {
           type.value = true;
           type.refresh();
           secondsController2.text =
-              (stateManager?.rows[selectedIndex].cells['seconds']?.value ?? "").toString();
+              (stateManager?.rows[selectedIndex].cells['spots']?.value ?? "").toString();
           primarySecondaryEvent(type.value);
         }
       }
 
       print("I am from controller");
-      channelLeave(netCode: stateManager?.rows[selectedIndex].cells['netCode']?.value ?? "");
+      channelLeave(netCode: stateManager?.rows[selectedIndex].cells['netWorkName']?.value ?? "");
 
-      txtDRecordNumber.value =
-          (stateManager?.rows[selectedIndex].cells['recordnumber']?.value ?? "").toString();
+      txtDRecordNumber.value = (stateManager?.rows[selectedIndex].cells['recordnumber']?.value ?? "").toString();
+      secondsController2.text = (stateManager?.rows[selectedIndex].cells['seconds']?.value ?? "").toString();
 
       sponsorTypeCode =
           (stateManager?.rows[selectedIndex].cells['sponsorTypeCode']?.value ?? "").toString();
@@ -1189,10 +1185,14 @@ class ClientDealsController extends GetxController {
             value: stateManager?.rows[selectedIndex].cells['eventname']?.value ?? "",
             key: stateManager?.rows[selectedIndex].cells['eventcode']?.value ?? "");
 
+        // selectAddInfo?.value = DropDownValue(value:stateManager?.rows[selectedIndex].cells['netWorkName']?.value ?? "" ,
+        //     key:stateManager?.rows[selectedIndex].cells['netCode']?.value ?? "" );
+
         selectSubType?.refresh();
         selectAccount?.refresh();
+        selectAddInfo?.refresh();
       }
-
+      setValues();
       update(['middle']);
       completer.complete("");
       return completer.future;
@@ -1227,7 +1227,11 @@ class ClientDealsController extends GetxController {
     amountController2.text = "0";
     valueRateController.text = "0";
     txtDRecordNumber.value = "0";
+     label24 = Rx<String>("Seconds");
+     label25 = Rx<String>("Rate per 10 seconds");
     type.refresh();
+    label24.refresh();
+    label25.refresh();
     update(['middle']);
   }
 
@@ -1394,7 +1398,7 @@ class ClientDealsController extends GetxController {
 
   void increment() => count.value++;
 
-  List<Map<String, dynamic>> getDataFromGrid(PlutoGridStateManager? statemanager) {
+  List<dynamic> getDataFromGrid(PlutoGridStateManager? statemanager, {String? gridName}) {
     if (statemanager != null) {
       statemanager.setFilter((element) => true);
       statemanager.notifyListeners();
@@ -1407,12 +1411,14 @@ class ClientDealsController extends GetxController {
         mapList.add(rowMap);
       }
       return mapList;
+    }else if(gridName != null && gridName !="" && gridName == "remark"){
+      return remarkList.value ;
     } else {
       return [];
     }
   }
 
-  List<Map<String, dynamic>> getDataFromGrid2(PlutoGridStateManager? statemanager) {
+  List<Map<String, dynamic>> getDataFromGrid2(PlutoGridStateManager? statemanager,{String? gridName}) {
     if (statemanager != null) {
       statemanager.setFilter((element) => true);
       statemanager.notifyListeners();
@@ -1442,11 +1448,16 @@ class ClientDealsController extends GetxController {
               (key.toString().trim() == "groupValuationRate") ||
               (key.toString().trim() == "isrequired")
           ) {
-            try{
-              rowMap[key] = int.parse( row.cells[key]?.value ?? "0");
-            }catch(e){
-              rowMap[key] = double.parse( row.cells[key]?.value ?? "0");
+            if(row.cells[key]?.value != null && row.cells[key]?.value != ""){
+              try{
+                rowMap[key] = int.parse( row.cells[key]?.value ?? "0");
+              }catch(e){
+                rowMap[key] = double.parse( row.cells[key]?.value ?? "0");
+              }
+            }else{
+              rowMap[key] =  0;
             }
+
           } else {
             rowMap[key] = row.cells[key]?.value ?? "";
           }
@@ -1455,7 +1466,11 @@ class ClientDealsController extends GetxController {
         mapList.add(rowMap);
       }
       return mapList;
-    } else {
+    }
+    else if(gridName != null && gridName != "" && gridName == "addInfo"){
+       return (clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.map((e) => e.toJson()).toList() )??[];
+    }
+    else {
       return [];
     }
   }
@@ -1505,24 +1520,24 @@ class ClientDealsController extends GetxController {
     try{
       LoadingDialog.call();
       Map<String, dynamic> postData = {
-        "remarks": getDataFromGrid(remarkStateManager) ?? [],
-        "addInfo": getDataFromGrid2(addInfoStateManager) ?? [],
+        "remarks": getDataFromGrid(remarkStateManager,gridName: "remark") ?? [],
+        "addInfo": getDataFromGrid2(addInfoStateManager,gridName: "addInfo") ?? [],
         "newDetails": getDataFromGrid2(stateManager) ?? [],
         "newEntry": intNewEntry,
         "locationcode": selectedLocation?.value?.key ?? "",
         "channelCode": selectedChannel?.value?.key ?? "",
         "dealNumber": dealNoController.text ?? "",
-        "dealDate": dateController.text ?? "",
+        "dealDate": Utils.getMMDDYYYYFromDDMMYYYYInString( dateController.text ?? ""),
         "referenceNumber": referenceController.text ?? "",
-        "referenceDate": referenceDateController.text ?? "",
+        "referenceDate":Utils.getMMDDYYYYFromDDMMYYYYInString( referenceDateController.text ?? ""),
         "clientcode": selectedClient?.value?.key ?? "",
         "agencyCode": selectAgency?.value?.key ?? "",
         "brandCode": selectBrand?.value?.key ?? "",
         "currencytypecode": selectCurrency?.value?.key ?? "ZARUP00003",
         "seconds": (secondsController.text.trim() != "") ? int.parse(secondsController.text) : 0,
         "dealAmount": (amountController.text.trim() != "") ? int.parse(amountController.text) : 0,
-        "fromDate": fromDateController.text ?? "",
-        "todate": toDateController.text ?? "",
+        "fromDate":Utils.getMMDDYYYYFromDDMMYYYYInString( fromDateController.text ?? ""),
+        "todate":Utils.getMMDDYYYYFromDDMMYYYYInString( toDateController.text ?? ""),
         "secondused": (secondsController2.text.trim() != "")
             ? int.parse(secondsController2.text)
             : 0,
@@ -1537,10 +1552,23 @@ class ClientDealsController extends GetxController {
         "effectiveRate_YN": getOneZero(sta: effectiveRate.value)
       };
       Get.find<ConnectorControl>().POSTMETHOD(
-        api:ApiFactory.Client_Deal_LINK_DEAL_SAVE,
+        api:ApiFactory.Client_Deal_SAVE,
         json: postData,
         fun: (map){
           closeDialogIfOpen();
+          if(map is Map && map['dealNumber'] != null){
+            if(map['dealNumber'].toString().trim() != dealNoController.text.toString().trim()){
+              // clearAll();
+              dealNoController.text = map['dealNumber']??"";
+              retrieveRecord();
+              LoadingDialog.callDataSavedMessage(map['save']??"");
+            }else{
+              clearAll();
+            }
+            // LoadingDialog.callDataSavedMessage(map['save']??"");
+          }else{
+            clearAll();
+          }
         },
         failed: (map){
           closeDialogIfOpen();
@@ -1548,7 +1576,42 @@ class ClientDealsController extends GetxController {
       );
     }catch(e){
       closeDialogIfOpen();
+      LoadingDialog.showErrorDialog("Something went wrong${e}");
+    }
+  }
+
+  Rx<String> label24 = Rx<String>("Seconds");
+  Rx<String> label25 = Rx<String>("Rate per 10 seconds");
+
+  setValues(){
+    if(selectSubType?.value != null){
+      Get.find<ConnectorControl>().GETMETHODCALL(
+        api:ApiFactory.Client_Deal_LINK_DEAL_Set_Values+(selectSubType?.value?.key??""),
+        fun: (map){
+          if(map is Map && map['model'] != null){
+            label24.value = map['model']['secondOrExpo'];
+            label25.value = map['model']['rateSecondOrExpo'];
+            label24.refresh();
+            label25.refresh();
+          }
+
+        },
+        failed: (map){
+          label24 = Rx<String>("Seconds");
+          label25 = Rx<String>("Rate per 10 seconds");
+          label24.refresh();
+          label25.refresh();
+        }
+
+      );
+    }else{
+      label24 = Rx<String>("Seconds");
+      label25 = Rx<String>("Rate per 10 seconds");
+      label24.refresh();
+      label25.refresh();
     }
   }
 
 }
+
+// bk - booked

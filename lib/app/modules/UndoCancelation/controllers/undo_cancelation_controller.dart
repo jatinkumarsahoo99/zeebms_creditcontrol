@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
 
@@ -253,7 +254,31 @@ class UndoCancelationController extends GetxController {
     super.onClose();
   }
 
-  formHandler(btn) {}
+  void formHandler(String btnName) {
+    switch (btnName) {
+      case "Save":
+        // saveData();
+        // validateData();
+        break;
+      case "Clear":
+        Get.delete<UndoCancelationController>();
+        Get.find<HomeController>().clearPage1();
+        break;
+      case "Exit":
+        // Get.find<HomeController>().postUserGridSetting2(listStateManager: [
+        //   {"gridManager": gridManager},
+        // ], formName: "frmCompanyChannelLink");
+        break;
+      case "Search":
+        // Get.to(SearchPage(
+        //     screenName: "Company Channel Link",
+        //     isAppBarReq: true,
+        //     isPopup: true,
+        //     appBarName: "Company Channel Link",
+        //     strViewName: "vTesting"));
+        break;
+    }
+  }
 
   void getChannelFocusOut() {}
 }

@@ -58,13 +58,13 @@ extension ImportExcelController on ClientDealsController {
         closeDialogIfOpen();
       }
       List<String> sourceList = [
-        "PrimaryEventCode",
+        // "PrimaryEventCode",
         "Recordnumber",
-        "SponsorTypeCode",
+        // "SponsorTypeCode",
         "SponsorTypeName",
-        "ProgramCode",
+        // "ProgramCode",
         "ProgramName",
-        "ProgramCategoryCode",
+        // "ProgramCategoryCode",
         "Starttime",
         "EndTime",
         "Seconds",
@@ -74,9 +74,9 @@ extension ImportExcelController on ClientDealsController {
         "BookedSeconds",
         "BalanceSeconds",
         "BalanceAmount",
-        "BandCode",
+        // "BandCode",
         "TimeBand",
-        "NetCode",
+        // "NetCode",
         "NetWorkName",
         "Sun",
         "Mon",
@@ -85,17 +85,17 @@ extension ImportExcelController on ClientDealsController {
         "Thu",
         "Fri",
         "Sat",
-        "Revflag",
-        "AccountCode",
+        // "Revflag",
+        // "AccountCode",
         "Accountname",
-        "Eventcode",
+        // "Eventcode",
         "Eventname",
         "Spots",
         "Paymentmodecaption",
-        "RevenueTypeCode",
+        // "RevenueTypeCode",
         "RevenueTypeName",
         "SubRevenueTypeName",
-        "SubRevenueTypeCode",
+        // "SubRevenueTypeCode",
         "CountBased",
         "BaseDuration"
       ];
@@ -105,7 +105,7 @@ extension ImportExcelController on ClientDealsController {
       if (!sta[0]) {
         LoadingDialog.showErrorDialog(sta[1] ?? "");
       } else {
-        callValidationFun(excelData: excelDataList);
+        newImportedDataListCheckingSimilarity(excelDataN: excelDataList);
       }
     } catch (e) {
       print(">>>>" + e.toString());
@@ -116,6 +116,7 @@ extension ImportExcelController on ClientDealsController {
     }
   }
 
+
   Future<Map<String, dynamic>> getAllCode(
       {String? sponsorTypeName,
       String? programName,
@@ -124,21 +125,21 @@ extension ImportExcelController on ClientDealsController {
       String? accountName,
       String? eventName}) {
     Completer<Map<String, dynamic>> completer = Completer<Map<String, dynamic>>();
-    LoadingDialog.call();
+    // LoadingDialog.call();
     try {
       Map<String, dynamic> postData = {
-        "sponsorTypeName": sponsorTypeName,
-        "programName": programName,
-        "timeBand": timeBandName,
-        "netWorkName": networkName,
-        "accountname": accountName,
-        "eventname": eventName
+        "sponsorTypeName": sponsorTypeName??"",
+        "programName": programName??"",
+        "timeBand": timeBandName??"",
+        "netWorkName": networkName??"",
+        "accountname": accountName??"",
+        "eventname": eventName??""
       };
       Get.find<ConnectorControl>().POSTMETHOD(
           api: ApiFactory.Client_Deal_GET_EACH_VALUE_IMPORT,
           json: postData,
           fun: (map) {
-            closeDialogIfOpen();
+            // closeDialogIfOpen();
             if (map is Map && map['model'] != null) {
               completer.complete(map as FutureOr<Map<String, dynamic>>?);
             } else {
@@ -153,7 +154,7 @@ extension ImportExcelController on ClientDealsController {
             }
           },
           failed: (map) {
-            closeDialogIfOpen();
+            // closeDialogIfOpen();
             completer.complete({
               "sponsorTypeCode": "",
               "programCode": "",
@@ -164,7 +165,7 @@ extension ImportExcelController on ClientDealsController {
             });
           });
     } catch (e) {
-      closeDialogIfOpen();
+      // closeDialogIfOpen();
       completer.complete({
         "sponsorTypeCode": "",
         "programCode": "",
@@ -178,6 +179,85 @@ extension ImportExcelController on ClientDealsController {
   }
 
 
+
+
+  newImportedDataListCheckingSimilarity({List<Map<String, dynamic>>? excelDataN}) {
+    // importGridList
+    btnImportClickWithConditionBmsWeb(excelDataNew: excelDataN).then((value) async {
+      print(">>>>>>>>>>>>>>>>>.exceldata${importGridListNew}");
+      if(value){
+        try {
+          List<NewDetails> extractExcelData = [] ;
+          if ((importGridListNew?.length ?? 0) > 0) {
+            if (importGridList.isNotEmpty) {
+
+              bool isLast = true;
+              for (int i = 0; i < (importGridListNew?.length ?? 0); i++) {
+                isLast = true;
+                for (int k = 0; k < importGridList.length; k++) {
+
+                  if ((importGridListNew?[i].primaryEventCode ==
+                      importGridList[k].primaryEventCode) &&
+                      (importGridListNew?[i].sponsorTypeCode == importGridList[k].sponsorTypeCode) &&
+                      (importGridListNew?[i].programCode == importGridList[k].programCode) &&
+                      (importGridListNew?[i].starttime == importGridList[k].starttime) &&
+                      (importGridListNew?[i].endTime == importGridList[k].endTime) &&
+                      (importGridListNew?[i].rate == importGridList[k].rate) &&
+                      (importGridListNew?[i].valuationRate == importGridList[k].valuationRate) &&
+                      (importGridListNew?[i].sun == importGridList[k].sun) &&
+                      (importGridListNew?[i].mon == importGridList[k].mon) &&
+                      (importGridListNew?[i].tue == importGridList[k].tue) &&
+                      (importGridListNew?[i].wed == importGridList[k].wed) &&
+                      (importGridListNew?[i].thu == importGridList[k].thu) &&
+                      (importGridListNew?[i].fri == importGridList[k].fri) &&
+                      (importGridListNew?[i].sat == importGridList[k].sat) &&
+                      (importGridListNew?[i].accountCode == importGridList[k].accountCode) &&
+                      (importGridListNew?[i].eventcode == importGridList[k].eventcode)) {
+                    isLast = false;
+                    bool sta = await LoadingDialog.modifyWithAsync(
+                        "Similar entry already exists!\nDo you want to modify it?",
+                        cancelTitle: "Yes",
+                        deleteTitle: "No");
+                    if (sta) {
+                      NewDetails data = importGridList[k];
+                      importGridListNew?[i].recordnumber = data.recordnumber??"";
+                      importGridList[k] = importGridListNew?[i] ?? data;
+                      // importGridListNew?.removeAt(i);
+                      break;
+                    } else {
+                      continue;
+                    }
+                  }
+
+                  else if ((k == importGridList.length - 1) && isLast == true) {
+                    importGridListNew![i].recordnumber = "${importGridList.length + i+1}";
+                    extractExcelData.add(importGridListNew![i]);
+                    // importGridListNew?.removeAt(i);
+                  }
+                  else {
+                    continue;
+                  }
+                }
+              }
+            }
+            else {
+              importGridList = importGridListNew ?? [];
+            }
+            importGridList.addAll(extractExcelData);
+            update(['grid']);
+          } else {
+            LoadingDialog.showErrorDialog("Invalid Data found in excel file please check");
+          }
+        } catch (e) {
+          LoadingDialog.showErrorDialog("Invalid Data found in excel file please check${e}");
+        }
+      }
+
+    });
+  }
+
+
+
   Future<bool> btnImportClickWithConditionBmsWeb({List<Map<String, dynamic>>? excelDataNew}) async {
     Completer<bool> completer = Completer<bool>();
     try {
@@ -185,7 +265,7 @@ extension ImportExcelController on ClientDealsController {
       importGridListNew?.clear();
       if (dealNoController.text.trim() == "") {
         LoadingDialog.showErrorDialog("Deal Number Can't be blank");
-        completer.complete(true);
+        completer.complete(false);
         return completer.future;
       }
       if (excelDataNew != null && excelDataNew.isNotEmpty) {
@@ -194,7 +274,7 @@ extension ImportExcelController on ClientDealsController {
               excelDataNew[i]['Seconds'] == 0 &&
               excelDataNew[i]['Amount'] == 0 &&
               excelDataNew[i]['ValuationRate'] == 0) {
-            completer.complete(true);
+            completer.complete(false);
             return completer.future;
           }
 
@@ -207,13 +287,15 @@ extension ImportExcelController on ClientDealsController {
               timeBandName: excelDataNew[i]['TimeBand']);
 
           NewDetails newDetails = NewDetails(
-            primaryEventCode: (excelDataNew[i]['Amount'] != "") ? "1" : "0",
+            primaryEventCode: (excelDataNew[i]['accountname'] != null &&
+                excelDataNew[i]['accountname'] != "null" &&
+                excelDataNew[i]['accountname'] !="") ? "1" : "0",
             recordnumber: "",
             sponsorTypeName: excelDataNew[i]['SponsorTypeName'],
             programName: excelDataNew[i]['ProgramName'],
             programCategoryCode: "",
-            starttime: "we need to check",
-            endTime: "we need to check",
+            starttime:excelDataNew[i]['Starttime']?? "",
+            endTime: excelDataNew[i]['EndTime']?? "",
             seconds: excelDataNew[i]['Seconds'],
             rate: excelDataNew[i]['Rate'],
             amount: excelDataNew[i]['Amount'],
@@ -280,77 +362,18 @@ extension ImportExcelController on ClientDealsController {
         }
         completer.complete(true);
         return completer.future;
-      } else {
+      }
+      else {
         importGridListNew?.clear();
-        completer.complete(true);
+        completer.complete(false);
         return completer.future;
       }
     } catch (e) {
+      print(">>>>>>>>>>>exception in here${e}");
       importGridListNew?.clear();
-      completer.complete(true);
+      completer.complete(false);
       return completer.future;
     }
-  }
-
-  newImportedDataListCheckingSimilarity({List<Map<String, dynamic>>? excelDataN}) {
-    // importGridList
-    btnImportClickWithConditionBmsWeb(excelDataNew: excelDataN).then((value) async {
-      try {
-        if ((importGridListNew?.length ?? 0) > 0) {
-          if (importGridList.isNotEmpty) {
-            bool isLast = true;
-            for (int i = 0; i < (importGridListNew?.length ?? 0); i++) {
-              for (int k = 0; k < importGridList.length; k++) {
-                if ((importGridListNew?[i].primaryEventCode ==
-                        importGridList[k].primaryEventCode) &&
-                    (importGridListNew?[i].sponsorTypeCode == importGridList[k].sponsorTypeCode) &&
-                    (importGridListNew?[i].programCode == importGridList[k].programCode) &&
-                    (importGridListNew?[i].starttime == importGridList[k].starttime) &&
-                    (importGridListNew?[i].endTime == importGridList[k].endTime) &&
-                    (importGridListNew?[i].rate == importGridList[k].rate) &&
-                    (importGridListNew?[i].valuationRate == importGridList[k].valuationRate) &&
-                    (importGridListNew?[i].sun == importGridList[k].sun) &&
-                    (importGridListNew?[i].mon == importGridList[k].mon) &&
-                    (importGridListNew?[i].tue == importGridList[k].tue) &&
-                    (importGridListNew?[i].wed == importGridList[k].wed) &&
-                    (importGridListNew?[i].thu == importGridList[k].thu) &&
-                    (importGridListNew?[i].fri == importGridList[k].fri) &&
-                    (importGridListNew?[i].sat == importGridList[k].sat) &&
-                    (importGridListNew?[i].accountCode == importGridList[k].accountCode) &&
-                    (importGridListNew?[i].eventcode == importGridList[k].eventcode)) {
-                  isLast = false;
-                  bool sta = await LoadingDialog.modifyWithAsync(
-                      "Similar entry already exists!\nDo you want to modify it?",
-                      cancelTitle: "Yes",
-                      deleteTitle: "No");
-                  if (sta) {
-                    NewDetails data = importGridList[k];
-                    importGridList[k] = importGridListNew?[i] ?? data;
-                    importGridListNew?.removeAt(i);
-                    break;
-                  } else {
-                    continue;
-                  }
-                }
-                else if ((k == importGridList.length - 1) && isLast == true) {
-                  importGridList.add(importGridListNew![i]);
-                  importGridListNew?.removeAt(i);
-                }
-                else {
-                  continue;
-                }
-              }
-            }
-          } else {
-            importGridList = importGridListNew ?? [];
-          }
-        } else {
-          LoadingDialog.showErrorDialog("Invalid Data found in excel file please check");
-        }
-      } catch (e) {
-        LoadingDialog.showErrorDialog("Invalid Data found in excel file please check");
-      }
-    });
   }
 
 }
