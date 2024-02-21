@@ -1386,6 +1386,8 @@ class ApiFactory {
   static String get EBILLS_GET_LOAD => "$BASE_URL/api/Ebills/GetLoad";
 
   static String get EBILLS_POST_AGENCY => "$BASE_URL/api/Ebills/PostAgency";
+  static String get EBILLS_CREATE_XML_CLICK =>
+      "$BASE_URL/api/Ebills/CreateXmlClick";
 
   /// ////////////////////////// End EBILLS Model////////////////////////////////
 
@@ -1411,6 +1413,14 @@ class ApiFactory {
       "$BASE_URL/api/EbillerBonusActivity/PageLoad";
   static String get EBILLS_BONUS_ACTIVITY_FETCH_AGENCY_LIST =>
       "$BASE_URL/api/EbillerBonusActivity/FetchAgencyList";
+  static String EBILLS_BONUS_ACTIVITY_RD_BILLING_MUMBAI_CHECK(
+          String rdBillingMumbai) =>
+      "$BASE_URL/api/EbillerBonusActivity/RdBillingMumbaiChk?RdBillingMumbai=$rdBillingMumbai";
+  static String EBILLS_BONUS_ACTIVITY_RD_BILLING_ASIA_CHECK(
+          String rdBillingMumbai) =>
+      "$BASE_URL/api/EbillerBonusActivity/RdBillingAsiaChk?RdBillingMumbai=$rdBillingMumbai";
+  static String get EBILLS_BONUS_ACTIVITY_CREATE_XML =>
+      "$BASE_URL/api/EbillerBonusActivity/btnCreateXML";
 
   /// ////////////////////////// End EBILLS BONUS ACTIVITY Model////////////////////////////////
   ///

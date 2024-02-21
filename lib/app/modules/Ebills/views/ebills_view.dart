@@ -111,6 +111,9 @@ class EbillsView extends GetView<EbillsController> {
                                           controller.billingPeriod,
                                       widthRation: 0.15,
                                       isEnable: true,
+                                      onFocusChange: (date) {
+                                        controller.manageBillingPeriod();
+                                      },
                                     ),
                                     DateWithThreeTextField(
                                       title: "",
@@ -507,7 +510,9 @@ class EbillsView extends GetView<EbillsController> {
                   ),
                   FormButtonWrapper(
                     btnText: "Create Xml",
-                    callback: () {},
+                    callback: () {
+                      controller.createXML();
+                    },
                     showIcon: true,
                   ),
                 ],
