@@ -1119,8 +1119,13 @@ class ApiFactory {
   static String get CLEAR_SECONDARY_SPOTS_SCROLL =>
       "$BASE_URL/api/ClearSecondarySpot/GetScroll";
 
-  static String get CLEAR_SECONDARY_SPOTS_ASTRO =>
-      "$BASE_URL/api/ClearSecondarySpot/GetAstro";
+  static String CLEAR_SECONDARY_SPOTS_ASTRO({
+    required String locationCode,
+    required String channelCode,
+    required String fromDate,
+    required String yaerMonth,
+  }) =>
+      "$BASE_URL/api/ClearSecondarySpot/GetAstro?locationcode=$locationCode&channelcode=$channelCode&fdate=$fromDate&yearmonth=$yaerMonth";
 
   /// //////////////////////////////// Company master ////////////////////////////////////
 

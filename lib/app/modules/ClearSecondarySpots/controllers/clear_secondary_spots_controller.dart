@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
 
@@ -49,6 +50,7 @@ class ClearSecondarySpotsController extends GetxController {
                   value: e["locationName"],
                 ));
               });
+              selectedLocation = locationList.first;
             }
 
             var channelData = map["cspLoad"]["lstChannel"];
@@ -59,6 +61,7 @@ class ClearSecondarySpotsController extends GetxController {
                   value: e["channelname"],
                 ));
               });
+              selectedChannel = channelList.first;
             }
 
             // map['cmLoad']["lstCMPlace"].forEach((e) {
@@ -68,35 +71,81 @@ class ClearSecondarySpotsController extends GetxController {
           }
         },
         failed: (map) {
+          closeDialogIfOpen();
+
           LoadingDialog.showErrorDialog(map);
         });
   }
 
   onScrollClick() {
-    var model = {
-      "locationcode": selectedLocation?.key ?? "",
-      "channelcode": selectedChannel?.key ?? "",
-      "fdate": dateFormat(tecTelecastDate.text),
-      "yearmonth": tecYearMonth.text,
-    };
+    if (tecYearMonth.text.isEmpty) {
+      LoadingDialog.showErrorDialog("YearMonth cannot be empty");
+    } else {
+      var model = {
+        "locationcode": selectedLocation?.key ?? "",
+        "channelcode": selectedChannel?.key ?? "",
+        "fdate": dateFormat(tecTelecastDate.text),
+        "yearmonth": tecYearMonth.text.isEmpty ? "" : "${tecYearMonth.text}%",
+      };
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.CLEAR_SECONDARY_SPOTS_SCROLL,
+          json: model,
+          fun: (resp) {
+            Get.back();
+            if (resp != null &&
+                resp is Map<String, dynamic> &&
+                resp.toString().contains("successfully")) {
+              LoadingDialog.callDataSaved(
+                msg: resp["scroll"],
+                callback: () {
+                  callClear();
+                },
+              );
+            }
+          },
+          failed: (resp) {
+            Get.back();
+            LoadingDialog.callDataSaved(
+              msg: resp,
+            );
+          });
+    }
+  }
+
+  onAstro() {
     LoadingDialog.call();
-    Get.find<ConnectorControl>().POSTMETHOD(
-      api: ApiFactory.CLEAR_SECONDARY_SPOTS_SCROLL,
-      json: model,
-      fun: (resp) {
-        Get.back();
-        // if (resp != null &&
-        //     resp is Map<String, dynamic> &&
-        //     resp.toString().contains("successfully")) {
-        //   LoadingDialog.callDataSaved(
-        //     msg: resp["message"],
-        //     callback: () {
-        //       callClear();
-        //     },
-        //   );
-        // }
-      },
-    );
+    Get.find<ConnectorControl>().GETMETHODCALL(
+        api: ApiFactory.CLEAR_SECONDARY_SPOTS_ASTRO(
+          locationCode: selectedLocation?.key ?? "",
+          channelCode: selectedChannel?.key ?? "",
+          fromDate: dateFormat(tecTelecastDate.text),
+          yaerMonth: tecYearMonth.text,
+        ),
+        // "https://jsonkeeper.com/b/D537"
+        fun: (resp) {
+          closeDialogIfOpen();
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp.toString().contains("successfully")) {
+            LoadingDialog.callDataSaved(
+              msg: resp["astro"],
+              callback: () {
+                // callClear();
+              },
+            );
+          }
+        },
+        failed: (map) {
+          closeDialogIfOpen();
+
+          LoadingDialog.showErrorDialog(map);
+        });
+  }
+
+  callClear() {
+    Get.delete<ClearSecondarySpotsController>();
+    Get.find<HomeController>().clearPage1();
   }
 
   String dateFormat(String? date) {
@@ -111,6 +160,40 @@ class ClearSecondarySpotsController extends GetxController {
   closeDialogIfOpen() {
     if (Get.isDialogOpen ?? false) {
       Get.back();
+    }
+  }
+
+  formHandler(btn) {
+    switch (btn) {
+      case "Save":
+        // onSaveRecord();
+        break;
+      case "Clear":
+        // Get.delete<CompanyMasterController>();
+        // Get.find<HomeController>().clearPage1();
+        callClear();
+        break;
+      case "Search":
+        // Get.to(
+        //   const SearchPage(
+        //     key: Key("Company Master"),
+        //     screenName: "Company Master",
+        //     appBarName: "Company Master",
+        //     strViewName: "vTesting",
+        //     isAppBarReq: true,
+        //   ),
+        // );
+        break;
+      case "Exit":
+        // print("Im in Exit");
+        // try {
+        //   Get.find<HomeController>().postUserGridSetting1(listStateManager: [
+        //     loadInwardGrid,
+        //   ]);
+        // } catch (e) {
+        //   print("Exit Error ===>" + e.toString());
+        // }
+        break;
     }
   }
 
