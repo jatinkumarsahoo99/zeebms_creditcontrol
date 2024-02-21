@@ -55,7 +55,7 @@ class ClearSecondarySpotsView extends GetView<ClearSecondarySpotsController> {
                                       children: [
                                         InputFields.formFieldExpand2(
                                           hintTxt: "YearMonth",
-                                          controller: TextEditingController(),
+                                          controller: controller.tecYearMonth,
                                           // titleInLeft: true,
                                           titleSizeboxWidth: 90,
                                           // bottomPadding: false,
@@ -63,9 +63,14 @@ class ClearSecondarySpotsView extends GetView<ClearSecondarySpotsController> {
                                         Obx(() => DropDownField
                                                 .formDropDown1WidthMapExpand(
                                               controller.locationList.value,
-                                              (value) {},
+                                              (value) {
+                                                controller.selectedLocation =
+                                                    value;
+                                              },
                                               "Location",
                                               dialogHeight: 200,
+                                              selected:
+                                                  controller.selectedLocation,
                                               // .23,
                                               // autoFocus: true,
                                               // titleInLeft: true,
@@ -75,9 +80,14 @@ class ClearSecondarySpotsView extends GetView<ClearSecondarySpotsController> {
                                         Obx(() => DropDownField
                                                 .formDropDown1WidthMapExpand(
                                               controller.channelList.value,
-                                              (value) {},
+                                              (value) {
+                                                controller.selectedChannel =
+                                                    value;
+                                              },
                                               "Channel",
                                               dialogHeight: 200,
+                                              selected:
+                                                  controller.selectedChannel,
                                               // .23,
                                               // autoFocus: true,
                                               // titleInLeft: true,
@@ -87,7 +97,8 @@ class ClearSecondarySpotsView extends GetView<ClearSecondarySpotsController> {
                                         DateWithThreeTextFieldExpanded(
                                           title: "Telecast Date",
                                           mainTextController:
-                                              TextEditingController(),
+                                              controller.tecTelecastDate,
+                                          // TextEditingController(),
                                           // widthRation: .135,
                                           // titleInLeft: true,
                                           titleInSizeBox: 85,
@@ -111,7 +122,9 @@ class ClearSecondarySpotsView extends GetView<ClearSecondarySpotsController> {
                                           width: 200,
                                           child: FormButton(
                                             btnText: "Scroll/Aston",
-                                            callback: () {},
+                                            callback: () {
+                                              controller.onScrollClick();
+                                            },
                                             showIcon: false,
                                           ),
                                         ),
@@ -120,7 +133,9 @@ class ClearSecondarySpotsView extends GetView<ClearSecondarySpotsController> {
                                           width: 200,
                                           child: FormButton(
                                             btnText: "Astro",
-                                            callback: () {},
+                                            callback: () {
+                                              controller.onAstro();
+                                            },
                                             showIcon: false,
                                           ),
                                         ),
@@ -183,7 +198,7 @@ class ClearSecondarySpotsView extends GetView<ClearSecondarySpotsController> {
                               //       width: 200,
                               //       // child: FormButton(
                               //       //   btnText: "Astro",
-                              //       //   callback: () {},
+                              //    au   //   callback: () {},
                               //       //   showIcon: false,
                               //       // ),
                               //     )
@@ -219,7 +234,9 @@ class ClearSecondarySpotsView extends GetView<ClearSecondarySpotsController> {
                               ),
                               Get.find<HomeController>().getCommonButton(
                                 Routes.CLEAR_SECONDARY_SPOTS,
-                                (btnName) {},
+                                (btnName) {
+                                  controller.formHandler(btnName);
+                                },
                               ),
                             ],
                           ),

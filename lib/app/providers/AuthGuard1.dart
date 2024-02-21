@@ -35,6 +35,8 @@ import '../modules/GenerateBookingReport/views/generate_booking_report_view.dart
 import '../modules/MovieUpdate/views/movie_update_view.dart';
 import '../modules/PlaceMaster/views/place_master_view.dart';
 import '../modules/PlaceTypeMaster/views/place_type_master_view.dart';
+import '../modules/ROAudit/AuditBookings/views/audit_bookings_view.dart';
+import '../modules/ROAudit/AuditCancellation/views/audit_cancellation_view.dart';
 import '../modules/ROAudit/views/r_o_audit_view.dart';
 import '../modules/CompanyMaster/views/company_master_view.dart';
 import '../modules/CreditRateMaster/views/credit_rate_master_view.dart';
@@ -265,8 +267,14 @@ class _AuthGuard1State extends State<AuthGuard> with WidgetsBindingObserver {
             case Routes.EMAIL_BILL_DETAILS:
               currentWidget = EmailBillDetailsView();
               break;
+            case Routes.AUDIT_BOOKINGS:
+              currentWidget = AuditBookingsView();
+              break;
             case Routes.AUDIT_RESCHEDULE:
               currentWidget = AuditRescheduleView();
+              break;
+            case Routes.AUDIT_CANCELLATION:
+              currentWidget = AuditCancellationView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
