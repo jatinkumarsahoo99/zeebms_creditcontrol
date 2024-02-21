@@ -30,7 +30,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.CLIENT_DEALS +
+      : (Routes.R_O_AUDIT +
           "?personalNo=%2F7i0zDr%2FLpXNOAIr8lUluw%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=a4Lfy%2FGb5Roxo9vLiBCqSQ%3D%3D");
 
   static final routes = [
