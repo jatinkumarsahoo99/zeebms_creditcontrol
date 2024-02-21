@@ -273,7 +273,9 @@ class UndoCancelationView extends GetView<UndoCancelationController> {
               padding: const EdgeInsets.all(8.0),
               child: Get.find<HomeController>().getCommonButton(
                 Routes.UNDO_CANCELATION,
-                (btnName) {},
+                (btnName) {
+                  controller.formHandler(btnName);
+                },
               ),
             ),
 

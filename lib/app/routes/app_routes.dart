@@ -89,6 +89,7 @@ abstract class RoutesList {
     _Paths.SECONDARY_ASRUN_MODIFICATION,
     _Paths.CLEAR_SECONDARY_SPOTS,
     _Paths.INVOICE_REVISION,
+    _Paths.UNDO_CANCELATION,
   ];
 }
 
