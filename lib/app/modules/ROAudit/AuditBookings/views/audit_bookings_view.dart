@@ -1,4 +1,6 @@
+import 'package:bms_creditcontrol/widgets/CheckBoxWidget.dart';
 import 'package:bms_creditcontrol/widgets/FormButton.dart';
+import 'package:bms_creditcontrol/widgets/sized_box_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -7,6 +9,8 @@ import '../../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../../widgets/dropdown.dart';
 import '../../../../../widgets/gridFromMap.dart';
 import '../../../../../widgets/input_fields.dart';
+import '../../../../controller/HomeController.dart';
+import '../../../../routes/app_pages.dart';
 import '../controllers/audit_bookings_controller.dart';
 
 class AuditBookingsView extends GetView<AuditBookingsController> {
@@ -101,16 +105,19 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                                 // ),
                               ],
                             ),
-
+                            sizedBoxHeight(5),
                             Row(
                               children: [
                                 Expanded(
                                   child: InputFields.formFieldExpand2(
-                                    hintTxt: "Ref No",
-                                    controller: controller.tecRefNo,
-                                    autoFocus: true,
-                                    titleSizeboxWidth: 80,
-                                  ),
+                                      hintTxt: "Ref No",
+                                      controller: controller.tecRefNo,
+                                      autoFocus: true,
+                                      titleSizeboxWidth: 80,
+                                      bottomPadding: false),
+                                ),
+                                SizedBox(
+                                  width: 10,
                                 ),
                                 Expanded(
                                   child: DateWithThreeTextField(
@@ -121,6 +128,7 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                                 ),
                               ],
                             ),
+                            sizedBoxHeight(5),
 
                             DropDownField.formDropDownSearchAPI2Expand(
                               GlobalKey(),
@@ -136,6 +144,7 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                               parseKeyForValue: "",
                               textSizeboxWidth: 85,
                             ),
+                            sizedBoxHeight(5),
 
                             DropDownField.formDropDownSearchAPI2Expand(
                               GlobalKey(),
@@ -151,6 +160,8 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                               parseKeyForValue: "",
                               textSizeboxWidth: 85,
                             ),
+                            sizedBoxHeight(5),
+
                             DropDownField.formDropDownSearchAPI2Expand(
                               GlobalKey(),
                               context,
@@ -165,33 +176,51 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                               parseKeyForValue: "",
                               textSizeboxWidth: 85,
                             ),
+                            sizedBoxHeight(5),
 
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 Expanded(
                                   child: InputFields.formFieldExpand2(
-                                    hintTxt: "Executive",
-                                    controller: controller.tecRefNo,
-                                    autoFocus: true,
-                                    titleSizeboxWidth: 80,
-                                  ),
+                                      hintTxt: "Executive",
+                                      controller: controller.tecRefNo,
+                                      autoFocus: true,
+                                      titleSizeboxWidth: 80,
+                                      bottomPadding: false),
                                 ),
 
-                                const FormButton(
+                                SizedBox(
+                                  width: 10,
+                                ),
+
+                                FormButton(
                                   btnText: "Deal",
                                   showIcon: false,
                                   isEnabled: true,
+                                  callback: () {},
                                 ),
 
-                                const FormButton(
+                                SizedBox(
+                                  width: 10,
+                                ),
+
+                                FormButton(
                                   btnText: "Validation",
                                   showIcon: false,
                                   isEnabled: true,
+                                  callback: () {},
                                 ),
-                                const FormButton(
+
+                                SizedBox(
+                                  width: 10,
+                                ),
+
+                                FormButton(
                                   btnText: "Spots",
                                   showIcon: false,
                                   isEnabled: true,
+                                  callback: () {},
                                 ),
 
                                 // Expanded(
@@ -365,254 +394,89 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                                   Row(
                                     children: [
                                       Expanded(
-                                          child:
-                                              // Obx(() {
-                                              //   return
-                                              DateWithThreeTextField(
-                                        title: "Voucher Date  ",
-                                        mainTextController:
-                                            TextEditingController(),
-                                        // controller
-                                        //     .tecVocherDate.value,
-                                        // titleInLeft: true,
-                                        // expand: true,
-                                        isEnable: false,
-                                      )
-                                          // }),
-                                          ),
+                                        child: DateWithThreeTextField(
+                                          title: "FPC Eff Dt",
+                                          mainTextController:
+                                              controller.tecFpcDate,
+                                          isEnable: false,
+                                        ),
+                                      ),
                                       SizedBox(width: 5),
                                       Expanded(
-                                          child:
-                                              // Obx(() {
-                                              //   return
-                                              InputFields.formFieldExpand2(
-                                        hintTxt: "Voucher No  ",
-                                        // titleInLeft: true,
-                                        controller: TextEditingController(),
-                                        // controller
-                                        //     .tecVoucherNo2.value,
-                                        isEnable: false,
-                                      )
-                                          // }),
-                                          ),
-                                      // SizedBox(width: 5),
-                                      // Expanded(
-                                      //     child:
-                                      //         // Obx(() {
-                                      //         //   return
-                                      //         DateWithThreeTextField(
-                                      //   title: "Voucher Date  ",
-                                      //   mainTextController:
-                                      //       TextEditingController(),
-                                      //   // controller
-                                      //   //     .tecVocherDate.value,
-                                      //   // titleInLeft: true,
-                                      //   // expand: true,
-                                      //   isEnable: false,
-                                      // )
-                                      //     // }),
-                                      //     ),
+                                        child: DateWithThreeTextField(
+                                          title: "Book Dt",
+                                          mainTextController:
+                                              controller.tecBookDate,
+                                          isEnable: false,
+                                        ),
+                                      ),
                                     ],
                                   ),
-                                  // SizedBox(height: 5),
-                                  // DropDownField
-                                  //     .formDropDownSearchAPI2Expand(
-                                  //   GlobalKey(),
-                                  //   context,
-                                  //   title: "Channel",
-                                  //   url: ApiFactory
-                                  //       .RETURNS_BLANK_TAPE_CHANNEL_SEARCH,
-                                  //   onchanged: (value) {
-                                  //     controller.selectedChannel = value;
-                                  //   },
-                                  //   // titleInLeft: true,
-                                  //   selectedValue:
-                                  //       controller.selectedChannel,
-                                  //   textSizeboxWidth: 80,
-                                  //   parseKeyForKey: "ChannelCode",
-                                  //   parseKeyForValue: "ChannelName",
-                                  // ),
-                                  // SizedBox(height: 5),
-                                  // DropDownField
-                                  //     .formDropDownSearchAPI2Expand(
-                                  //   GlobalKey(),
-                                  //   context,
-                                  //   title: "Program",
-                                  //   url: ApiFactory
-                                  //       .RETURNS_BLANK_TAPE_PROGRAM_SEARCH,
-                                  //   onchanged: (value) {
-                                  //     controller.selectedProgram = value;
-                                  //   },
-                                  //   // titleInLeft: true,
-                                  //   selectedValue:
-                                  //       controller.selectedProgram,
-                                  //   textSizeboxWidth: 80,
-                                  //   parseKeyForKey: "ProgramCode",
-                                  //   parseKeyForValue: "ProgramName",
-                                  // ),
-                                  // SizedBox(height: 5),
-                                  // Row(
-                                  //   children: [
-                                  //     Expanded(
-                                  //       child: Obx(() {
-                                  //         return InputFields
-                                  //             .formFieldExpand2(
-                                  //           hintTxt: "From Epi #",
-                                  //           controller: controller
-                                  //               .tecFromEpi.value,
-                                  //           // titleInLeft: true,
-                                  //           titleSizeboxWidth: 75,
-                                  //         );
-                                  //       }),
-                                  //     ),
-                                  //     SizedBox(width: 5),
-                                  //     Expanded(
-                                  //       child: Obx(() {
-                                  //         return InputFields
-                                  //             .formFieldExpand(
-                                  //           hintTxt: "Usage Duration",
-                                  //           // titleInLeft: true,
-                                  //           controller: controller
-                                  //               .tecUsageDuration.value,
-                                  //           inputformatters: [
-                                  //             FilteringTextInputFormatter
-                                  //                 .digitsOnly
-                                  //           ],
-                                  //         );
-                                  //       }),
-                                  //     ),
-                                  //     SizedBox(width: 10),
-                                  //     Expanded(
-                                  //       child: Obx(() {
-                                  //         return InputFields
-                                  //             .formFieldExpand(
-                                  //           hintTxt: "Scrap Reason",
-                                  //           controller: controller
-                                  //               .tecScrapReason.value,
-                                  //           // titleInLeft: true,
-                                  //         );
-                                  //       }),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  // SizedBox(height: 5),
-                                  // Row(
-                                  //   children: [
-                                  //     Expanded(
-                                  //       child: Obx(() {
-                                  //         return DropDownField
-                                  //             .formDropDown1WidthMapExpand(
-                                  //           controller
-                                  //               .returnTapeAsList.value,
-                                  //           (value) {
-                                  //             controller
-                                  //                     .selectedReturnTapeAs =
-                                  //                 value;
-                                  //           },
-                                  //           "Return Tape As",
-                                  //           // titleInLeft: true,
-                                  //           selected: controller
-                                  //               .selectedReturnTapeAs,
-                                  //           titleSizeBoxWidth: 70,
-                                  //         );
-                                  //       }),
-                                  //     ),
-                                  //     SizedBox(width: 5),
-                                  //     Expanded(
-                                  //       child: Obx(() {
-                                  //         return DropDownField
-                                  //             .formDropDown1WidthMapExpand(
-                                  //                 controller.tapeList
-                                  //                     .value, (value) {
-                                  //           controller.selectedTape =
-                                  //               value;
-                                  //         }, "Tape",
-                                  //                 // titleInLeft: true,
-                                  //                 selected: controller
-                                  //                     .selectedTape);
-                                  //       }),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  // SizedBox(height: 5),
-                                  // Row(
-                                  //   children: [
-                                  //     Expanded(
-                                  //       child: Obx(() {
-                                  //         return InputFields
-                                  //             .formFieldExpand2(
-                                  //           hintTxt: "Export Tape",
-                                  //           controller: controller
-                                  //               .tecExportTape.value,
-                                  //           // titleInLeft: true,
-                                  //           titleSizeboxWidth: 75,
-                                  //           inputformatters: [
-                                  //             FilteringTextInputFormatter
-                                  //                 .digitsOnly,
-                                  //           ],
-                                  //         );
-                                  //       }),
-                                  //     ),
-                                  //     SizedBox(width: 5),
-                                  //     Expanded(
-                                  //       child: Obx(() {
-                                  //         return InputFields
-                                  //             .formFieldExpand(
-                                  //           hintTxt: "Issued By",
-                                  //           // titleInLeft: true,
-                                  //           controller: controller
-                                  //               .tecIssuedBy.value,
-                                  //           isEnable: false,
-                                  //         );
-                                  //       }),
-                                  //     ),
-                                  //   ],
-                                  // ),
-                                  // SizedBox(height: 10),
-                                  // Row(
-                                  //   mainAxisAlignment:
-                                  //       MainAxisAlignment.spaceEvenly,
-                                  //   children: [
-                                  //     // SizedBox(width: 5),
-                                  //     SizedBox(
-                                  //       width: 150,
-                                  //       child: FormButton(
-                                  //         btnText: "Check Status",
-                                  //         callback: () {
-                                  //           controller.isVisibleLeft
-                                  //               .value = true;
-                                  //         },
-                                  //       ),
-                                  //     ),
-                                  //     // SizedBox(width: 5),
-                                  //     SizedBox(
-                                  //       width: 150,
-                                  //       child: FormButton(
-                                  //         btnText: "Add Record",
-                                  //         callback: () {
-                                  //           controller
-                                  //               .onAddRecordButton();
-                                  //         },
-                                  //       ),
-                                  //     ),
-                                  //     // SizedBox(width: 5),
-                                  //     // FormButton(btnText: "Remove Record"),
-                                  //     // SizedBox(width: 5),
-                                  //     // Expanded(
-                                  //     //   child: InputFields.formFieldExpand(
-                                  //     //     hintTxt: "",
-                                  //     //     controller: TextEditingController(),
-                                  //     //   ),
-                                  //     // ),
-                                  //   ],
-                                  // ),
+                                  sizedBoxHeight(5),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: InputFields.formFieldExpand2(
+                                          hintTxt: "Booking No",
+                                          controller: controller.tecBookingNo,
+                                          autoFocus: true,
+                                          titleSizeboxWidth: 80,
+                                          bottomPadding: false,
+                                        ),
+                                      ),
+                                      sizedBoxWidth(5),
+                                      SizedBox(
+                                        width: 100,
+                                        child: InputFields.formFieldExpand2(
+                                          hintTxt: "",
+                                          controller: controller.tecBlankYear,
+                                          // autoFocus: true,
+                                          titleSizeboxWidth: 80,
+                                          bottomPadding: false,
+                                        ),
+                                      ),
+                                      sizedBoxWidth(5),
+                                      SizedBox(
+                                        width: 150,
+                                        child: InputFields.formFieldExpand2(
+                                          hintTxt: "",
+                                          controller: controller.tecRefNo,
+                                          // autoFocus: true,
+                                          titleSizeboxWidth: 80,
+                                          bottomPadding: false,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  sizedBoxHeight(5),
+                                  InputFields.formFieldExpand2(
+                                    hintTxt: "Deal No",
+                                    controller: controller.tecDealNo,
+                                    titleSizeboxWidth: 80,
+                                    bottomPadding: false,
+                                  ),
+                                  sizedBoxHeight(5),
+                                  InputFields.formFieldExpand2(
+                                    hintTxt: "Pay route",
+                                    controller: controller.tecPayRoute,
+                                    titleSizeboxWidth: 80,
+                                    bottomPadding: false,
+                                  ),
+                                  sizedBoxHeight(5),
+                                  InputFields.formFieldExpand2(
+                                    hintTxt: "Pay Mode",
+                                    controller: controller.tecPayMode,
+                                    titleSizeboxWidth: 80,
+                                    bottomPadding: false,
+                                  ),
                                 ],
                               ),
                             );
                           }),
                     ],
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 5),
+                  CheckBoxWidget1(title: "Select All"),
                   Expanded(
                     child: Obx(() {
                       return DataGridFromMap3(
@@ -693,6 +557,32 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                         // ),
                       );
                     }),
+                  ),
+                  sizedBoxHeight(5),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      // FormButton1(btnText: "OS"),
+
+                      FormButton(
+                        btnText: "OS",
+                        showIcon: false,
+                        isEnabled: true,
+                        callback: () {},
+                      ),
+                      sizedBoxWidth(10),
+
+                      FormButton(
+                        btnText: "Mark As Un-Audit",
+                        showIcon: false,
+                        isEnabled: true,
+                        callback: () {},
+                      ),
+                    ],
+                  ),
+                  Get.find<HomeController>().getCommonButton(
+                    Routes.AUDIT_BOOKINGS,
+                    (btnName) {},
                   ),
                 ],
               ),
