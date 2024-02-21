@@ -13,6 +13,7 @@ import '../../../controller/HomeController.dart';
 import '../../../controller/MainController.dart';
 import '../../../data/PermissionModel.dart';
 import '../../../providers/Utils.dart';
+import '../../../routes/app_pages.dart';
 import '../controllers/r_o_audit_controller.dart';
 
 class ROAuditView extends StatelessWidget {
@@ -197,7 +198,9 @@ class ROAuditView extends StatelessWidget {
                           : Colors.white,
                       exportFileName: "Secondary Asrun Modification",
                       mode: PlutoGridMode.normal,
-                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {},
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                        Get.toNamed(Routes.AUDIT_BOOKINGS);
+                      },
                       // hideKeys: const [],
                       mapData: controllerX
                           .roAuditRetrieveModel!.infoBindList!.lstAdditions!
@@ -241,7 +244,9 @@ class ROAuditView extends StatelessWidget {
                           : Colors.white,
                       exportFileName: "Secondary Asrun Modification",
                       mode: PlutoGridMode.normal,
-                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {},
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                        Get.toNamed(Routes.AUDIT_CANCELLATION);
+                      },
                       // hideKeys: const [],
                       mapData: controllerX
                           .roAuditRetrieveModel!.infoBindList!.lstCancellation!
@@ -285,7 +290,9 @@ class ROAuditView extends StatelessWidget {
                           : Colors.white,
                       exportFileName: "Secondary Asrun Modification",
                       mode: PlutoGridMode.normal,
-                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {},
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                        Get.toNamed(Routes.AUDIT_RESCHEDULE);
+                      },
                       // hideKeys: const [],
                       mapData: controllerX
                           .roAuditRetrieveModel!.infoBindList!.lstReschedule!

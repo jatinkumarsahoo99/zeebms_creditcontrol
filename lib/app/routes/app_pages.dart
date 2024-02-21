@@ -8,8 +8,6 @@ import '../modules/AgencyMaster/bindings/agency_master_binding.dart';
 import '../modules/AsrunSpecificationAdRevenue/bindings/asrun_specification_ad_revenue_binding.dart';
 import '../modules/ROAudit/AuditCancellation/bindings/audit_cancellation_binding.dart';
 import '../modules/ROAudit/AuditCancellation/views/audit_cancellation_view.dart';
-import '../modules/AuditReschedule/bindings/audit_reschedule_binding.dart';
-import '../modules/AuditReschedule/views/audit_reschedule_view.dart';
 import '../modules/ClientEmbargo/bindings/client_embargo_binding.dart';
 import '../modules/ClientMaster/bindings/client_master_binding.dart';
 import '../modules/DealReport/bindings/deal_report_binding.dart';
@@ -20,6 +18,7 @@ import '../modules/GSTPlantInfo/bindings/g_s_t_plant_info_binding.dart';
 import '../modules/GenerateBookingReport/bindings/generate_booking_report_binding.dart';
 import '../modules/PlaceTypeMaster/bindings/place_type_master_binding.dart';
 import '../modules/ROAudit/AuditBookings/views/audit_bookings_view.dart';
+import '../modules/ROAudit/AuditReschedule/bindings/audit_reschedule_binding.dart';
 import '../modules/ROAudit/bindings/r_o_audit_binding.dart';
 import '../modules/SAPBIllCheckReport/bindings/s_a_p_b_ill_check_report_binding.dart';
 import '../modules/SecondaryAsrunModification/bindings/secondary_asrun_modification_binding.dart';
@@ -36,8 +35,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.AUDIT_CANCELLATION +
-          "?personalNo=ces%2FeKicpwo5mz%2FYFOQDvw%3D%3D&loginCode=zWc5qlvs%2BXZUagqFBqBN0A%3D%3D&formName=OI8ukDpPPVN0I2BEXu2h4nuFu%2BZm1ZRpvP8NL4XCXzQ%3D");
+      : (Routes.R_O_AUDIT +
+          "?personalNo=%2F7i0zDr%2FLpXNOAIr8lUluw%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=a4Lfy%2FGb5Roxo9vLiBCqSQ%3D%3D");
 
   static final routes = [
     GetPage(
