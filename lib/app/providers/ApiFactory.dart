@@ -811,7 +811,7 @@ class ApiFactory {
       "$BASE_URL/api/ClientDeals/GetAgencyAddress";
 
   static String get Client_Deal_GET_PROGRAM =>
-      "$BASE_URL/api/ClientDeals/GetAgencyAddress";
+      "$BASE_URL/api/ClientDeals/GetProgram?programName=";
 
   static String get Client_Deal_GET_LINK_DEAL_RETRIVE =>
       "$BASE_URL/api/ClientDeals/LinkDealRetrive?GroupNumber=";
@@ -822,8 +822,15 @@ class ApiFactory {
   static String get Client_Deal_LINK_DEAL_SAVE =>
       "$BASE_URL/api/ClientDeals/LinkDealSave";
 
+  static String get Client_Deal_SAVE =>
+      "$BASE_URL/api/ClientDeals/save";
+
   static String get Client_Deal_LINK_DEAL_COMPARE =>
       "$BASE_URL/api/ClientDeals/compare";
+
+  static String get Client_Deal_LINK_DEAL_Set_Values=>
+      "$BASE_URL/api/ClientDeals/setValues?eventCode=";
+
 
   /// ////////////////////////////////End Client Deals ////////////////////////////////////
   ///
@@ -1112,8 +1119,13 @@ class ApiFactory {
   static String get CLEAR_SECONDARY_SPOTS_SCROLL =>
       "$BASE_URL/api/ClearSecondarySpot/GetScroll";
 
-  static String get CLEAR_SECONDARY_SPOTS_ASTRO =>
-      "$BASE_URL/api/ClearSecondarySpot/GetAstro";
+  static String CLEAR_SECONDARY_SPOTS_ASTRO({
+    required String locationCode,
+    required String channelCode,
+    required String fromDate,
+    required String yaerMonth,
+  }) =>
+      "$BASE_URL/api/ClearSecondarySpot/GetAstro?locationcode=$locationCode&channelcode=$channelCode&fdate=$fromDate&yearmonth=$yaerMonth";
 
   /// //////////////////////////////// Company master ////////////////////////////////////
 
@@ -1374,6 +1386,8 @@ class ApiFactory {
   static String get EBILLS_GET_LOAD => "$BASE_URL/api/Ebills/GetLoad";
 
   static String get EBILLS_POST_AGENCY => "$BASE_URL/api/Ebills/PostAgency";
+  static String get EBILLS_CREATE_XML_CLICK =>
+      "$BASE_URL/api/Ebills/CreateXmlClick";
 
   /// ////////////////////////// End EBILLS Model////////////////////////////////
 
@@ -1399,6 +1413,14 @@ class ApiFactory {
       "$BASE_URL/api/EbillerBonusActivity/PageLoad";
   static String get EBILLS_BONUS_ACTIVITY_FETCH_AGENCY_LIST =>
       "$BASE_URL/api/EbillerBonusActivity/FetchAgencyList";
+  static String EBILLS_BONUS_ACTIVITY_RD_BILLING_MUMBAI_CHECK(
+          String rdBillingMumbai) =>
+      "$BASE_URL/api/EbillerBonusActivity/RdBillingMumbaiChk?RdBillingMumbai=$rdBillingMumbai";
+  static String EBILLS_BONUS_ACTIVITY_RD_BILLING_ASIA_CHECK(
+          String rdBillingMumbai) =>
+      "$BASE_URL/api/EbillerBonusActivity/RdBillingAsiaChk?RdBillingMumbai=$rdBillingMumbai";
+  static String get EBILLS_BONUS_ACTIVITY_CREATE_XML =>
+      "$BASE_URL/api/EbillerBonusActivity/btnCreateXML";
 
   /// ////////////////////////// End EBILLS BONUS ACTIVITY Model////////////////////////////////
   ///
@@ -1439,4 +1461,16 @@ class ApiFactory {
 
 /////////////////////////////// end: Invoice Revision ////////////////////////////////
   ///
+///
+///  /////////////////////// RO AUDIT ////////////////////////////
+
+  static String get RO_AUDIT_ON_LOAD => "$BASE_URL/api/ROAuditStatus/OnLoad";
+  static String get RO_AUDIT_ON_LOCATION_LEAVE => "$BASE_URL/api/ROAuditStatus/OnLocationLeave?LocationCode=";
+  static String get RO_AUDIT_SHOW_DETAILS => "$BASE_URL/api/ROAuditStatus/ShowDetails";
+  static String get RO_AUDIT_ADDITION_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/AdditionsCellDoubleClick";
+  static String get RO_AUDIT_RESCHEDULE_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/RescheduleCellDoubleClick";
+  static String get RO_AUDIT_CANCELLATION_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/CancellationCellDoubleClick";
+  static String get RO_AUDIT_DEAL_APPROVAL_CELL_DOUBLE_CLICK => "$BASE_URL/api/ROAuditStatus/DealApprovalCellDoubleClick";
+
+
 }

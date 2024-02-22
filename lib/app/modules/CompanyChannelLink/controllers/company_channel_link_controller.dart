@@ -116,13 +116,13 @@ class CompanyChannelLinkController extends GetxController {
   }
 
   clearData() {
-    selectLocation=null;
-    selectChannel=null;
-    selectPayrouteCat=null;
-    selectCollAgent=null;
-    selectCurrency=null;
-    selectParentCompany=null;
-    selectSapProfCen=null;
+    selectLocation = null;
+    selectChannel = null;
+    selectPayrouteCat = null;
+    selectCollAgent = null;
+    selectCurrency = null;
+    selectParentCompany = null;
+    selectSapProfCen = null;
     update(["init"]);
   }
 

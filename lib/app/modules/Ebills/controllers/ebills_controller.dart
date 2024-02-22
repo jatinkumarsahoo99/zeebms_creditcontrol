@@ -4,6 +4,7 @@ import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class EbillsController extends GetxController {
   TextEditingController billingPeriod = TextEditingController(),
@@ -22,6 +23,7 @@ class EbillsController extends GetxController {
   List<DropDownValue>? lstCheckListCompany;
   List<DropDownValue>? filterListCompany;
   List<DropDownValue>? agencyGroupList;
+  List<DropDownValue>? filterAgencyGroupList;
 
   RxnString selectionCurrentType = RxnString('Group');
   RxnString sendingCurrentType = RxnString('Domestic');
@@ -113,6 +115,96 @@ class EbillsController extends GetxController {
               update(["init", "agencyGroupList"]);
             }
           });
+    }
+  }
+
+  createXML() {
+    filterAgencyGroupList = [];
+    for (var i = 0; i < agencyGroupList!.length; i++) {
+      if (agencyGroupList![i].isSelected == true) {
+        filterAgencyGroupList!.add(DropDownValue(
+          key: agencyGroupList![i].key,
+          value: agencyGroupList![i].value,
+        ));
+      }
+    }
+    if (filterAgencyGroupList!.isNotEmpty) {
+      var payload =
+          // {
+          //   "lstCompany": [
+          //     {"companyCode": "ASIXX00004", "companyName": "ASIA TODAY LIMITED"},
+          //     {
+          //       "companyCode": "ZETEL00007",
+          //       "companyName": "ZEE ENTERTAINMENT ENTERPRISES LIMITED"
+          //     }
+          //   ],
+          //   "lsttblAgencyOrGroup": [
+          //     {"code": "59", "name": "ALLIANCE ADVTG"}
+          //   ],
+          //   "chkConsolidated": false,
+          //   "optAgency": false,
+          //   "chkOnlyBills": true,
+          //   "chkOnlySummary": false,
+          //   "chkTc": false,
+          //   "txtTcStartDate": "01-11-2023",
+          //   "txtStartDate": "15-11-2023",
+          //   "optBillingMumbai": true,
+          //   "chkAdditionalTo": true,
+          //   "chkAdditionalCc": true,
+          //   "txtAddTo": "vc.deven.bhole@zee.com",
+          //   "chkTestMail": true,
+          //   "txtAddCc": "vc.prasad.maddine@zee.com",
+          //   "txtFromMailId": "billing@zee.com"
+          // };
+          {
+        "lstCompany": filterListCompany!
+            .map((e) => e.toJsonCustom('companyCode', 'companyName'))
+            .toList(),
+        "lsttblAgencyOrGroup": filterAgencyGroupList!
+            .map((e) => e.toJsonCustom('code', 'name'))
+            .toList(),
+        "chkConsolidated": isConsolidated.value,
+        "optAgency": selectionCurrentType.value == "Agency" ? true : false,
+        "chkOnlyBills": isBills.value,
+        "chkOnlySummary": isSummary.value,
+        "chkTc": isTC.value,
+        "txtTcStartDate": billingPeriod.text,
+        "txtStartDate": billingPeriod2.text,
+        "optBillingMumbai":
+            sendingCurrentType.value == "Domestic" ? true : false,
+        "chkAdditionalTo": false,
+        "chkAdditionalCc": false,
+        "txtAddTo": toTEC.text,
+        "chkTestMail": isTestMail.value,
+        "txtAddCc": ccTEC.text,
+        "txtFromMailId": mailID.text,
+      };
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EBILLS_CREATE_XML_CLICK,
+          json: payload,
+          fun: (Map map) {
+            Get.back();
+            if (map != null && map.containsKey('ebCreateXml')) {
+              LoadingDialog.callDataSaved(msg: map['ebCreateXml']['message']);
+            }
+          });
+    }
+  }
+
+  manageBillingPeriod() {
+    var day = DateFormat('dd')
+        .format(DateFormat('dd-MM-yyyy').parse(billingPeriod.text));
+    var month = DateFormat('MM')
+        .format(DateFormat('dd-MM-yyyy').parse(billingPeriod.text));
+    var year = DateFormat('yyyy')
+        .format(DateFormat('dd-MM-yyyy').parse(billingPeriod.text));
+    int noOfDaysInMonth =
+        DateTime(int.parse(year), int.parse(month) + 1, 0).day;
+    if (num.parse(day) <= 14) {
+      billingPeriod2.text = "15-$month-$year";
+    } else {
+      billingPeriod2.text = "$noOfDaysInMonth-$month-$year";
     }
   }
 
