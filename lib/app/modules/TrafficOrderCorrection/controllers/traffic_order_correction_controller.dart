@@ -409,7 +409,7 @@ class TrafficOrderCorrectionController extends GetxController {
     gridManager?.currentRow?.cells["Caption"]?.value = tecCaption.text;
     gridManager?.currentRow?.cells["Duration"]?.value = tecDuration.text;
     gridManager?.currentRow?.cells["commercialCode"]?.value =
-        selectedTapeId?.value;
+        selectedTapeId?.key??"";
     gridManager?.currentRow?.cells["recordNumber"]?.value = gridRecordNo.text;
     gridManager?.currentRow?.cells["Spot Amount"]?.value = tecAmount.text;
 
@@ -418,7 +418,7 @@ class TrafficOrderCorrectionController extends GetxController {
     tecDuration.text = "";
     tecAmount.text = "";
     tecCaption.text = "";
-    tecRemarks.text = "";
+    // tecRemarks.text = "";
     gridManager?.notifyListeners();
     update(["main"]);
   }
