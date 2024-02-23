@@ -53,6 +53,7 @@ class CreditRateMasterView extends GetView<CreditRateMasterController> {
                                   // titleInLeft: true,
                                   titleSizeboxWidth: 90,
                                   focusNode: controller.descriptionFocus,
+                                  maxLen: 40,
                                   // capital: true,
                                   inputformatters: [
                                     UpperCaseTextFormatter(),
@@ -68,6 +69,7 @@ class CreditRateMasterView extends GetView<CreditRateMasterController> {
                                   controller: controller.tecGradeInShort.value,
                                   // titleInLeft: true,
                                   titleSizeboxWidth: 90,
+                                  maxLen: 2,
                                   // capital: true,
                                   inputformatters: [
                                     UpperCaseTextFormatter(),
@@ -82,10 +84,11 @@ class CreditRateMasterView extends GetView<CreditRateMasterController> {
                                   controller: controller.tecLowerLimit.value,
                                   // titleInLeft: true,
                                   titleSizeboxWidth: 90,
+                                  maxLen: 9,
                                   // bottomPadding: false,
                                   inputformatters: [
                                     FilteringTextInputFormatter.allow(
-                                        RegExp(r'^\d+\.?\d{0,2}'))
+                                        RegExp(r'^\d+\.?\d{0,4}'))
                                   ],
                                 ),
                               ),
@@ -95,9 +98,10 @@ class CreditRateMasterView extends GetView<CreditRateMasterController> {
                                   controller: controller.tecUpperLimit.value,
                                   // titleInLeft: true,
                                   titleSizeboxWidth: 90,
+                                  maxLen: 2,
                                   inputformatters: [
                                     FilteringTextInputFormatter.allow(
-                                        RegExp(r'^\d+\.?\d{0,2}'))
+                                        RegExp(r'^\d+\.?\d{0,4}'))
                                   ],
                                   // bottomPadding: false,
                                 ),
