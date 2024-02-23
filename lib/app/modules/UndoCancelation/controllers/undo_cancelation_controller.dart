@@ -91,7 +91,7 @@ class UndoCancelationController extends GetxController {
                 "locationName"));
           });
           locations.addAll(dataList);
-          selectLocation = locations.first;
+          // selectLocation = locations.first;
           getChannelList(selectLocation?.key ?? "");
           locations.refresh();
         } else {
@@ -190,6 +190,7 @@ class UndoCancelationController extends GetxController {
                 msg: map["undoSpot"],
                 callback: () {
                   // getFormLoad();
+                  getShow();
                 });
           }
         });
@@ -223,6 +224,14 @@ class UndoCancelationController extends GetxController {
                 responseData.value = map["show"]["lstBooked"];
               } else if (map["show"]["lstExposureaudit"] != null) {
                 responseData.value = map["show"]["lstExposureaudit"];
+              }
+              if (responseData.value.isNotEmpty) {
+                responseData.value.map((e) {
+                  e["scheduledate"] = DateFormat("dd-MM-yyyy").format(
+                      DateFormat("yyyy-MM-ddThh:mm:ss")
+                          .parse(e["scheduledate"]));
+                  return e;
+                }).toList();
               }
               update(["grid"]);
             }
