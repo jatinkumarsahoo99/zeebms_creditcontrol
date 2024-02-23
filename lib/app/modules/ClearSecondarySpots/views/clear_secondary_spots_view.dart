@@ -1,6 +1,7 @@
 import 'package:bms_creditcontrol/widgets/DateTime/DateWithThreeTextFieldExpanded.dart';
 import 'package:bms_creditcontrol/widgets/FormButton.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
@@ -31,217 +32,172 @@ class ClearSecondarySpotsView extends GetView<ClearSecondarySpotsController> {
               child: GetBuilder(
                   init: controller,
                   builder: (builder) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AppBar(
-                          title: const Text('Clear Secondary Spots'),
-                          centerTitle: true,
-                          backgroundColor: Colors.deepPurple,
-                        ),
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        InputFields.formFieldExpand2(
-                                          hintTxt: "YearMonth",
-                                          controller: controller.tecYearMonth,
-                                          // titleInLeft: true,
-                                          titleSizeboxWidth: 90,
-                                          // bottomPadding: false,
-                                        ),
-                                        Obx(() => DropDownField
-                                                .formDropDown1WidthMapExpand(
-                                              controller.locationList.value,
-                                              (value) {
-                                                controller.selectedLocation =
-                                                    value;
-                                              },
-                                              "Location",
-                                              dialogHeight: 200,
-                                              selected:
-                                                  controller.selectedLocation,
-                                              // .23,
-                                              // autoFocus: true,
-                                              // titleInLeft: true,
-                                              titleSizeBoxWidth: 85,
-                                            )),
-                                        sizedBoxHeight(5),
-                                        Obx(() => DropDownField
-                                                .formDropDown1WidthMapExpand(
-                                              controller.channelList.value,
-                                              (value) {
-                                                controller.selectedChannel =
-                                                    value;
-                                              },
-                                              "Channel",
-                                              dialogHeight: 200,
-                                              selected:
-                                                  controller.selectedChannel,
-                                              // .23,
-                                              // autoFocus: true,
-                                              // titleInLeft: true,
-                                              titleSizeBoxWidth: 85,
-                                            )),
-                                        sizedBoxHeight(5),
-                                        DateWithThreeTextFieldExpanded(
-                                          title: "Telecast Date",
-                                          mainTextController:
-                                              controller.tecTelecastDate,
-                                          // TextEditingController(),
-                                          // widthRation: .135,
-                                          // titleInLeft: true,
-                                          titleInSizeBox: 85,
-
-                                          // isExpanded: true,
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  SizedBox(
-                                    // width: 200,
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        sizedBoxHeight(18),
-                                        SizedBox(
-                                          width: 200,
-                                          child: FormButton(
-                                            btnText: "Scroll/Aston",
-                                            callback: () {
-                                              controller.onScrollClick();
-                                            },
-                                            showIcon: false,
-                                          ),
-                                        ),
-                                        sizedBoxHeight(20),
-                                        SizedBox(
-                                          width: 200,
-                                          child: FormButton(
-                                            btnText: "Astro",
-                                            callback: () {
-                                              controller.onAstro();
-                                            },
-                                            showIcon: false,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                              // SizedBox(
-                              //   height: 10,
-                              // ),
-                              // Row(
-                              //   crossAxisAlignment: CrossAxisAlignment.end,
-                              //   children: [
-                              //     Expanded(
-                              //       child: DropDownField.formDropDown1WidthMapExpand(
-                              //         [],
-                              //         (value) {},
-                              //         "Location",
-                              //         // .23,
-                              //         // autoFocus: true,
-                              //         // titleInLeft: true,
-                              //         titleSizeBoxWidth: 85,
-                              //       ),
-                              //     ),
-                              //     SizedBox(
-                              //       width: 10,
-                              //     ),
-                              //     SizedBox(
-                              //       width: 200,
-                              //       child: FormButton(
-                              //         btnText: "Astro",
-                              //         callback: () {},
-                              //         showIcon: false,
-                              //       ),
-                              //     )
-                              //   ],
-                              // ),
-
-                              // SizedBox(
-                              //   height: 10,
-                              // ),
-                              // Row(
-                              //   children: [
-                              //     Expanded(
-                              //       child: DropDownField.formDropDown1WidthMapExpand(
-                              //         [],
-                              //         (value) {},
-                              //         "Channel",
-                              //         // .23,
-                              //         // autoFocus: true,
-                              //         // titleInLeft: true,
-                              //         titleSizeBoxWidth: 85,
-                              //       ),
-                              //     ),
-                              //     SizedBox(
-                              //       width: 10,
-                              //     ),
-                              //     SizedBox(
-                              //       width: 200,
-                              //       // child: FormButton(
-                              //       //   btnText: "Astro",
-                              //    au   //   callback: () {},
-                              //       //   showIcon: false,
-                              //       // ),
-                              //     )
-                              //   ],
-                              // ),
-                              // SizedBox(
-                              //   height: 10,
-                              // ),
-                              // Row(
-                              //   children: [
-                              //     Expanded(
-                              //       child: DateWithThreeTextFieldExpanded(
-                              //         title: "Telecast Date",
-                              //         mainTextController: TextEditingController(),
-                              //         // widthRation: .135,
-                              //         // titleInLeft: true,
-                              //         titleInSizeBox: 85,
-
-                              //         // isExpanded: true,
-                              //       ),
-                              //     ),
-                              //     SizedBox(
-                              //       width: 10,
-                              //     ),
-                              //     SizedBox(
-                              //       width: 200,
-                              //     )
-                              //   ],
-                              // ),
-
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Get.find<HomeController>().getCommonButton(
-                                Routes.CLEAR_SECONDARY_SPOTS,
-                                (btnName) {
-                                  controller.formHandler(btnName);
-                                },
-                              ),
-                            ],
+                    return FocusTraversalGroup(
+                      policy: OrderedTraversalPolicy(),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          AppBar(
+                            title: const Text('Clear Secondary Spots'),
+                            centerTitle: true,
+                            backgroundColor: Colors.deepPurple,
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 20),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(
+                                      child: Column(
+                                        children: [
+                                          FocusTraversalOrder(
+                                            order: NumericFocusOrder(0),
+                                            child: InputFields.formFieldExpand2(
+                                              hintTxt: "YearMonth",
+                                              controller:
+                                                  controller.tecYearMonth,
+                                              // titleInLeft: true,
+                                              titleSizeboxWidth: 90,
+                                              inputformatters: [
+                                                FilteringTextInputFormatter
+                                                    .digitsOnly
+                                              ],
+                                              maxLen: 4,
+                                            ),
+                                          ),
+                                          Obx(() => FocusTraversalOrder(
+                                                order: NumericFocusOrder(1),
+                                                child: DropDownField
+                                                    .formDropDown1WidthMapExpand(
+                                                  controller.locationList.value,
+                                                  (value) {
+                                                    controller
+                                                            .selectedLocation =
+                                                        value;
+                                                    FocusScope.of(context)
+                                                        .nextFocus();
+                                                    // controller.channelFn
+                                                    //     .requestFocus();
+                                                  },
+                                                  "Location",
+                                                  dialogHeight: 200,
+                                                  selected: controller
+                                                      .selectedLocation,
+                                                  // .23,
+                                                  // autoFocus: true,
+                                                  // titleInLeft: true,
+                                                  titleSizeBoxWidth: 85,
+                                                ),
+                                              )),
+                                          sizedBoxHeight(5),
+                                          Obx(() => FocusTraversalOrder(
+                                                order: NumericFocusOrder(2),
+                                                child: DropDownField
+                                                    .formDropDown1WidthMapExpand(
+                                                  controller.channelList.value,
+                                                  (value) {
+                                                    controller.selectedChannel =
+                                                        value;
+                                                    FocusScope.of(context)
+                                                        .nextFocus();
+                                                  },
+                                                  "Channel",
+                                                  dialogHeight: 200,
+                                                  selected: controller
+                                                      .selectedChannel,
+                                                  // .23,
+                                                  // autoFocus: true,
+                                                  // titleInLeft: true,
+                                                  titleSizeBoxWidth: 85,
+                                                ),
+                                              )),
+                                          sizedBoxHeight(5),
+                                          FocusTraversalOrder(
+                                            order: NumericFocusOrder(3),
+                                            child:
+                                                DateWithThreeTextFieldExpanded(
+                                              title: "Telecast Date",
+                                              mainTextController:
+                                                  controller.tecTelecastDate,
+
+                                              // TextEditingController(),
+                                              // widthRation: .135,
+                                              // titleInLeft: true,
+                                              titleInSizeBox: 85,
+                                              // onFocusChange:  ,
+
+                                              // isExpanded: true,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
+                                    SizedBox(
+                                      // width: 200,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          sizedBoxHeight(18),
+                                          SizedBox(
+                                            width: 200,
+                                            child: FocusTraversalOrder(
+                                              order: NumericFocusOrder(4),
+                                              child: FormButton(
+                                                btnText: "Scroll/Aston",
+                                                callback: () {
+                                                  controller.onScrollClick();
+                                                },
+                                                showIcon: false,
+                                              ),
+                                            ),
+                                          ),
+                                          sizedBoxHeight(20),
+                                          SizedBox(
+                                            width: 200,
+                                            child: FocusTraversalOrder(
+                                              order: NumericFocusOrder(5),
+                                              child: FormButton(
+                                                btnText: "Astro",
+                                                callback: () {
+                                                  controller.onAstro();
+                                                },
+                                                showIcon: false,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                FocusTraversalOrder(
+                                  order: NumericFocusOrder(6),
+                                  child: Get.find<HomeController>()
+                                      .getCommonButton(
+                                    Routes.CLEAR_SECONDARY_SPOTS,
+                                    (btnName) {
+                                      controller.formHandler(btnName);
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   })),
         ),
