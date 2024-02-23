@@ -1,6 +1,8 @@
 import 'package:bms_creditcontrol/app/controller/HomeController.dart';
 import 'package:bms_creditcontrol/app/routes/app_pages.dart';
 import 'package:bms_creditcontrol/widgets/DateTime/DateWithThreeTextField.dart';
+import 'package:bms_creditcontrol/widgets/PlutoGrid/pluto_grid.dart';
+import 'package:bms_creditcontrol/widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import 'package:bms_creditcontrol/widgets/dropdown.dart';
 import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:flutter/material.dart';
@@ -89,9 +91,20 @@ class AsrunImportSecondaryEventsView
                           mapData: controller.asrunImportList.value
                               .map((e) => e.toJson())
                               .toList(),
-                          onload: (value) {
-                            controller.asrunGrid = value.stateManager;
+                          mode: PlutoGridMode.normal,
+                          onload: (load) {
+                            controller.asrunGrid = load.stateManager;
+                            load.stateManager
+                                .setSelectingMode(PlutoGridSelectingMode.row);
                           },
+                          colorCallback: (colorEvent) {
+                            if (colorEvent.row.cells.containsValue(
+                                controller.asrunGrid?.currentCell)) {
+                              return Colors.deepPurple.shade100;
+                            }
+                            return Colors.white;
+                          },
+                          hideCode: false,
                           exportFileName: "Asrun Import Secondary Events",
                           widthSpecificColumn: Get.find<HomeController>()
                               .getGridWidthByKey(

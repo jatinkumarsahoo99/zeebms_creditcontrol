@@ -1,16 +1,18 @@
+import 'package:bms_creditcontrol/widgets/dropdown.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
-import '../../../../widgets/CheckBoxWidget.dart';
-import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
-import '../../../../widgets/FormButton.dart';
-import '../../../../widgets/dropdown.dart';
-import '../../../../widgets/input_fields.dart';
-import '../../../controller/HomeController.dart';
-import '../../../controller/MainController.dart';
-import '../../../data/PermissionModel.dart';
-import '../../../providers/Utils.dart';
+
+import '../../../../../widgets/CheckBoxWidget.dart';
+import '../../../../../widgets/DateTime/DateWithThreeTextField.dart';
+import '../../../../../widgets/FormButton.dart';
+import '../../../../../widgets/input_fields.dart';
+import '../../../../controller/HomeController.dart';
+import '../../../../controller/MainController.dart';
+import '../../../../data/PermissionModel.dart';
+import '../../../../providers/Utils.dart';
+import '../../../../routes/app_pages.dart';
 import '../controllers/audit_reschedule_controller.dart';
 
 class AuditRescheduleView extends GetView<AuditRescheduleController> {
@@ -232,7 +234,12 @@ class AuditRescheduleView extends GetView<AuditRescheduleController> {
                 SizedBox(
                   height: 4,
                 ),
-                Align(
+
+                Get.find<HomeController>().getCommonButton(
+                  Routes.R_O_AUDIT,
+                      (btnName) {},
+                ),
+              /*  Align(
                   alignment: Alignment.topLeft,
                   child: GetBuilder<HomeController>(
                       id: "buttons",
@@ -264,7 +271,7 @@ class AuditRescheduleView extends GetView<AuditRescheduleController> {
                         }
                         return Container();
                       }),
-                )
+                )*/
               ],
             ),
           );

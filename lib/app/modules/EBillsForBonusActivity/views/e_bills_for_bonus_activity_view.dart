@@ -123,6 +123,9 @@ class EBillsForBonusActivityView
                                               controller.telecastPeriod,
                                           widthRation: 0.15,
                                           isEnable: true,
+                                          onFocusChange: (date) {
+                                            controller.manageBillingPeriod();
+                                          },
                                         ),
                                         DateWithThreeTextField(
                                           title: "",
@@ -287,6 +290,11 @@ class EBillsForBonusActivityView
                                                   // print("Response>>>" + val);
                                                   controller.selRadio.value =
                                                       val;
+                                                  if (val == "Domestic") {
+                                                    controller.domesticClick();
+                                                  } else {
+                                                    controller.asiaClick();
+                                                  }
                                                 },
                                               ),
                                             ),
