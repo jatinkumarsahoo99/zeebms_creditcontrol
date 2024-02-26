@@ -98,7 +98,11 @@ class AsrunImportSecondaryEventsController extends GetxController {
         Get.back();
       });
     } else {
-      FilePickerResult? result = await FilePicker.platform.pickFiles();
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        allowMultiple: false,
+        allowedExtensions: ['log'],
+        type: FileType.custom,
+      );
       if (result != null && result.files.single != null) {
         importfile(result.files[0]);
       } else {

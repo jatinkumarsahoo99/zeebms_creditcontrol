@@ -91,6 +91,7 @@ abstract class RoutesList {
     _Paths.CLEAR_SECONDARY_SPOTS,
     _Paths.INVOICE_REVISION,
     _Paths.UNDO_CANCELATION,
+    _Paths.PAYROUTE_CATEGORY_MASTER,
   ];
 }
 

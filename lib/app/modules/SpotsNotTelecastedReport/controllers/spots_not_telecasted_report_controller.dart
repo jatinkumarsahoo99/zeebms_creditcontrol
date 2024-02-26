@@ -63,9 +63,9 @@ class SpotsNotTelecastedReportController extends GetxController {
               locationList.add(DropDownValue(
                   key: e['locationCode'], value: e['locationName']));
             });
-            if (locationList.isNotEmpty) {
-              selectedLocation = locationList.first;
-            }
+            // if (locationList.isNotEmpty) {
+            //   selectedLocation = locationList.first;
+            // }
           }
 
           if (map["spotsNotTelecastedLoad"]['lstChannel'] != null) {
@@ -112,27 +112,6 @@ class SpotsNotTelecastedReportController extends GetxController {
               map["genrate"].isNotEmpty) {
             // //Year
             gridData.value = map["genrate"];
-            // if (map["dealChangeHistoryOnLoad"]['lstLocation'] != null) {
-            //   map["dealChangeHistoryOnLoad"]['lstLocation'].forEach((e) {
-            //     locationList.add(DropDownValue(
-            //         key: e['locationCode'], value: e['locationName']));
-            //   });
-            //   if (locationList.isNotEmpty) {
-            //     selectedLocation = locationList.first;
-            //   }
-            // }
-
-            // if (map["dealChangeHistoryOnLoad"]['lstChannel'] != null) {
-            //   map["dealChangeHistoryOnLoad"]['lstChannel'].forEach((e) {
-            //     channelList.add(DropDownValue(
-            //         key: e['channelcode'], value: e['channelname']));
-            //   });
-            //   // if (channelList.isNotEmpty) {
-            //   //   selectedChannel = channelList.first;
-            //   // }
-            // }
-          } else {
-            LoadingDialog.showErrorDialog(map);
           }
         },
         failed: (resp) {

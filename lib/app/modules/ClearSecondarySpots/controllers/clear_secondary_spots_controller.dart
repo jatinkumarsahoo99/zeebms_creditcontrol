@@ -50,7 +50,7 @@ class ClearSecondarySpotsController extends GetxController {
                   value: e["locationName"],
                 ));
               });
-              selectedLocation = locationList.first;
+              // selectedLocation = locationList.first;
             }
 
             var channelData = map["cspLoad"]["lstChannel"];
@@ -61,7 +61,7 @@ class ClearSecondarySpotsController extends GetxController {
                   value: e["channelname"],
                 ));
               });
-              selectedChannel = channelList.first;
+              // selectedChannel = channelList.first;
             }
 
             // map['cmLoad']["lstCMPlace"].forEach((e) {
