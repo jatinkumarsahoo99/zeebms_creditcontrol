@@ -48,11 +48,13 @@ class DataGridFromMap extends StatelessWidget {
     this.specificWidth,
     this.rowHeight = 25,
     this.headerHeight = 30,
+    this.minimumWidth,
     this.widthSpecificColumn,
   }) : super(key: key);
   final List mapData;
   final double rowHeight;
   final double headerHeight;
+  final double? minimumWidth;
   bool enableSort;
   final Map<String, double>? specificWidth;
   final bool? showSrNo;
@@ -181,7 +183,7 @@ class DataGridFromMap extends StatelessWidget {
                   key: key,
                   value: mapData[0][key].toString(),
                 ),*/
-                minWidth: 25,
+                minWidth: minimumWidth??25,
                 width: (widthSpecificColumn != null &&
                     widthSpecificColumn!.containsKey(key))
                     ? widthSpecificColumn![key]!
@@ -266,7 +268,7 @@ class DataGridFromMap extends StatelessWidget {
             enableDropToResize: true,
             enableContextMenu: false,
             // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
-            minWidth: 25,
+            minWidth:minimumWidth?? 25,
             width: (widthSpecificColumn != null &&
                 widthSpecificColumn!.containsKey(key))
                 ? widthSpecificColumn![key]!
@@ -385,6 +387,7 @@ class DataGridFromMap6 extends StatelessWidget {
     this.specificWidth,
     this.rowHeight = 25,
     this.headerHeight = 30,
+    this.minimumWidth ,
     this.widthSpecificColumn,
   }) : super(key: key);
   final List mapData;
@@ -408,6 +411,7 @@ class DataGridFromMap6 extends StatelessWidget {
   final List? hideKeys;
   final Function(PlutoGridOnSelectedEvent)? onSelected;
   final double? widthRatio;
+  final double? minimumWidth;
   final IconData? actionIcon;
   final String? actionIconKey;
   final bool columnAutoResize;
@@ -518,7 +522,7 @@ class DataGridFromMap6 extends StatelessWidget {
                   key: key,
                   value: mapData[0][key].toString(),
                 ),*/
-                minWidth: 130,
+                minWidth:minimumWidth?? 130,
                 width: (widthSpecificColumn != null &&
                     widthSpecificColumn!.containsKey(key))
                     ? widthSpecificColumn![key]!
@@ -603,7 +607,7 @@ class DataGridFromMap6 extends StatelessWidget {
             enableDropToResize: true,
             enableContextMenu: false,
             // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
-            minWidth: 130,
+            minWidth: minimumWidth??130,
             width: (widthSpecificColumn != null &&
                 widthSpecificColumn!.containsKey(key))
                 ? widthSpecificColumn![key]!
@@ -1065,6 +1069,7 @@ class DataGridFromMap3 extends StatelessWidget {
         this.gridStyle,
         this.specificWidth,
         this.rowHeight = 25,
+        this.minimumWidth,
         this.formateDateColumn,
         this.noEditcheckBoxColumnKey,
         this.removeKeysFromFile,
@@ -1098,6 +1103,7 @@ class DataGridFromMap3 extends StatelessWidget {
   final List? hideKeys;
   final Function(PlutoGridOnSelectedEvent)? onSelected;
   final double? widthRatio;
+  final double? minimumWidth;
   final List<IconData>? actionIcons;
   final List<String?>? actionIconKey;
   final bool columnAutoResize;
@@ -1314,7 +1320,7 @@ class DataGridFromMap3 extends StatelessWidget {
             enableEditingMode: editKeys != null && editKeys!.contains(key),
             enableDropToResize: true,
             enableContextMenu: false,
-            minWidth: 25,
+            minWidth: minimumWidth??25,
             width: (widthSpecificColumn != null &&
                 widthSpecificColumn!.containsKey(key))
                 ? widthSpecificColumn![key]!
