@@ -69,9 +69,9 @@ class ViewDealChangeHistoryController extends GetxController {
               locationList.add(DropDownValue(
                   key: e['locationCode'], value: e['locationName']));
             });
-            if (locationList.isNotEmpty) {
-              selectedLocation = locationList.first;
-            }
+            // if (locationList.isNotEmpty) {
+            //   selectedLocation = locationList.first;
+            // }
           }
 
           if (map["dealChangeHistoryOnLoad"]['lstChannel'] != null) {
@@ -177,8 +177,6 @@ class ViewDealChangeHistoryController extends GetxController {
             //     dealNoList.add(DropDownValue(key: "", value: e['dealnumber']));
             //   });
             // }
-          } else {
-            LoadingDialog.showErrorDialog(map.toString());
           }
         },
         failed: (resp) {

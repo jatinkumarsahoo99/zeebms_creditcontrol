@@ -34,7 +34,7 @@ class PayrouteCategoryMasterView
                   centerTitle: true,
                   backgroundColor: Colors.deepPurple,
                 ),
-                const SizedBox(height: 20),
+                // const SizedBox(height: 20),
                 Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GetBuilder(
@@ -43,14 +43,19 @@ class PayrouteCategoryMasterView
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Obx(() => InputFields.formFieldExpand2(
-                                  hintTxt: "Pay Route Category Name",
-                                  controller:
-                                      controller.tecPayRouteCategory.value,
-                                  // titleInLeft: true,
-                                  titleSizeboxWidth: null,
-                                  focusNode: controller.payRouteFocus
-                                  // bottomPadding: false,
+                              Obx(() => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                    ),
+                                    child: InputFields.formFieldExpand2(
+                                        hintTxt: "Pay Route Category Name",
+                                        controller: controller
+                                            .tecPayRouteCategory.value,
+                                        // titleInLeft: true,
+                                        titleSizeboxWidth: null,
+                                        focusNode: controller.payRouteFocus
+                                        // bottomPadding: false,
+                                        ),
                                   )),
                               Obx(() => CheckBoxWidget1(
                                     title: "Is R4 Yes/No",
@@ -63,12 +68,17 @@ class PayrouteCategoryMasterView
                               SizedBox(
                                 height: 10,
                               ),
-                              Get.find<HomeController>().getCommonButton(
-                                Routes.PAYROUTE_CATEGORY_MASTER,
-                                (btnName) {
-                                  // UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil);
-                                  controller.formHandler(btnName);
-                                },
+                              Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child:
+                                    Get.find<HomeController>().getCommonButton(
+                                  Routes.PAYROUTE_CATEGORY_MASTER,
+                                  (btnName) {
+                                    // UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil);
+                                    controller.formHandler(btnName);
+                                  },
+                                ),
                               ),
                             ],
                           );

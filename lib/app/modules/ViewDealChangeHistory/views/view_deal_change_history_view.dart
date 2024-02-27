@@ -101,12 +101,15 @@ class ViewDealChangeHistoryView
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  FormButtonWrapper(
-                    btnText: "Show Deal History",
-                    callback: () {
-                      controller.getDealHistory();
-                    },
-                    showIcon: false,
+                  SizedBox(
+                    width: 200,
+                    child: FormButtonWrapper(
+                      btnText: "Show Deal History",
+                      callback: () {
+                        controller.getDealHistory();
+                      },
+                      showIcon: false,
+                    ),
                   ),
                 ],
               ),
@@ -135,6 +138,7 @@ class ViewDealChangeHistoryView
                     onload: (event) {
                       controller.sm = event.stateManager;
                     },
+                    keyMapping: const {"rowNO": "Row No", "dealNO": "Deal No"},
                     widthSpecificColumn:
                         Get.find<HomeController>().getGridWidthByKey(
                       userGridSettingList: controller.userGridSetting1?.value,
