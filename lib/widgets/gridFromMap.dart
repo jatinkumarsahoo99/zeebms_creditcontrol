@@ -48,11 +48,13 @@ class DataGridFromMap extends StatelessWidget {
     this.specificWidth,
     this.rowHeight = 25,
     this.headerHeight = 30,
+    this.minimumWidth,
     this.widthSpecificColumn,
   }) : super(key: key);
   final List mapData;
   final double rowHeight;
   final double headerHeight;
+  final double? minimumWidth;
   bool enableSort;
   final Map<String, double>? specificWidth;
   final bool? showSrNo;
@@ -180,7 +182,7 @@ class DataGridFromMap extends StatelessWidget {
                   key: key,
                   value: mapData[0][key].toString(),
                 ),*/
-                minWidth: 25,
+                minWidth: minimumWidth??25,
                 width: (widthSpecificColumn != null &&
                         widthSpecificColumn!.containsKey(key))
                     ? widthSpecificColumn![key]!
@@ -263,7 +265,7 @@ class DataGridFromMap extends StatelessWidget {
             enableDropToResize: true,
             enableContextMenu: false,
             // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
-            minWidth: 25,
+            minWidth:minimumWidth?? 25,
             width: (widthSpecificColumn != null &&
                     widthSpecificColumn!.containsKey(key))
                 ? widthSpecificColumn![key]!
@@ -382,6 +384,7 @@ class DataGridFromMap6 extends StatelessWidget {
     this.specificWidth,
     this.rowHeight = 25,
     this.headerHeight = 30,
+    this.minimumWidth ,
     this.widthSpecificColumn,
   }) : super(key: key);
   final List mapData;
@@ -405,6 +408,7 @@ class DataGridFromMap6 extends StatelessWidget {
   final List? hideKeys;
   final Function(PlutoGridOnSelectedEvent)? onSelected;
   final double? widthRatio;
+  final double? minimumWidth;
   final IconData? actionIcon;
   final String? actionIconKey;
   final bool columnAutoResize;
@@ -514,7 +518,7 @@ class DataGridFromMap6 extends StatelessWidget {
                   key: key,
                   value: mapData[0][key].toString(),
                 ),*/
-                minWidth: 130,
+                minWidth:minimumWidth?? 130,
                 width: (widthSpecificColumn != null &&
                         widthSpecificColumn!.containsKey(key))
                     ? widthSpecificColumn![key]!
@@ -597,7 +601,7 @@ class DataGridFromMap6 extends StatelessWidget {
             enableDropToResize: true,
             enableContextMenu: false,
             // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
-            minWidth: 130,
+            minWidth: minimumWidth??130,
             width: (widthSpecificColumn != null &&
                     widthSpecificColumn!.containsKey(key))
                 ? widthSpecificColumn![key]!
@@ -1016,50 +1020,51 @@ class DataGridFromMap5 extends StatelessWidget {
 class DataGridFromMap3 extends StatelessWidget {
   DataGridFromMap3(
       {Key? key,
-      required this.mapData,
-      this.colorCallback,
-      this.showSrNo = true,
-      this.hideCode = true,
-      this.widthRatio,
-      this.showonly,
-      this.enableSort = false,
-      this.onload,
-      this.hideKeys,
-      this.mode,
-      this.editKeys,
-      this.onEdit,
-      this.actionIcons,
-      this.keyMapping,
-      this.actionIconKey,
-      this.columnAutoResize = true,
-      this.actionOnPress,
-      this.onSelected,
-      this.checkRowKey = "selected",
-      this.onRowDoubleTap,
-      this.formatDate = true,
-      this.dateFromat = "dd-MM-yyyy",
-      this.onFocusChange,
-      this.checkRow,
-      this.doPasccal = true,
-      this.exportFileName,
-      this.checkBoxColumnKey,
-      this.showTitleInCheckBox,
-      this.checkBoxStrComparison,
-      this.uncheckCheckBoxStr,
-      this.spaceActionKey,
-      this.onActionKeyPress,
-      this.enableColumnDoubleTap,
-      this.onColumnHeaderDoubleTap,
-      this.sort = PlutoColumnSort.none,
-      this.previousWidgetFN,
-      this.focusNode,
-      this.gridStyle,
-      this.specificWidth,
-      this.rowHeight = 25,
-      this.formateDateColumn,
-      this.noEditcheckBoxColumnKey,
-      this.removeKeysFromFile,
-      this.widthSpecificColumn})
+        required this.mapData,
+        this.colorCallback,
+        this.showSrNo = true,
+        this.hideCode = true,
+        this.widthRatio,
+        this.showonly,
+        this.enableSort = false,
+        this.onload,
+        this.hideKeys,
+        this.mode,
+        this.editKeys,
+        this.onEdit,
+        this.actionIcons,
+        this.keyMapping,
+        this.actionIconKey,
+        this.columnAutoResize = true,
+        this.actionOnPress,
+        this.onSelected,
+        this.checkRowKey = "selected",
+        this.onRowDoubleTap,
+        this.formatDate = true,
+        this.dateFromat = "dd-MM-yyyy",
+        this.onFocusChange,
+        this.checkRow,
+        this.doPasccal = true,
+        this.exportFileName,
+        this.checkBoxColumnKey,
+        this.showTitleInCheckBox,
+        this.checkBoxStrComparison,
+        this.uncheckCheckBoxStr,
+        this.spaceActionKey,
+        this.onActionKeyPress,
+        this.enableColumnDoubleTap,
+        this.onColumnHeaderDoubleTap,
+        this.sort = PlutoColumnSort.none,
+        this.previousWidgetFN,
+        this.focusNode,
+        this.gridStyle,
+        this.specificWidth,
+        this.rowHeight = 25,
+        this.minimumWidth,
+        this.formateDateColumn,
+        this.noEditcheckBoxColumnKey,
+        this.removeKeysFromFile,
+        this.widthSpecificColumn})
       : super(key: key);
   final FocusNode? previousWidgetFN;
   final Map<String, double>? widthSpecificColumn;
@@ -1089,6 +1094,7 @@ class DataGridFromMap3 extends StatelessWidget {
   final List? hideKeys;
   final Function(PlutoGridOnSelectedEvent)? onSelected;
   final double? widthRatio;
+  final double? minimumWidth;
   final List<IconData>? actionIcons;
   final List<String?>? actionIconKey;
   final bool columnAutoResize;

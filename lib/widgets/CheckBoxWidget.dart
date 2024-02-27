@@ -37,13 +37,13 @@ class CheckBoxWidget1 extends StatelessWidget {
             return Checkbox(
               value: value,
               focusNode: fn,
-              onChanged: (newVal) {
+              onChanged:(isEnable)? (newVal) {
                 value = (newVal ?? false);
                 re(() {});
                 if (onChanged != null) {
                   onChanged!(value);
                 }
-              },
+              }:null,
             );
           }),
           if (showIcon) ...{
@@ -129,13 +129,13 @@ class CheckBoxOnRight extends StatelessWidget {
               value: value,
               focusNode: fn,
               // visualDensity: const VisualDensity(horizontal: -4),
-              onChanged: (newVal) {
+              onChanged:(isEnable)? (newVal) {
                 value = (newVal ?? false);
                 re(() {});
                 if (onChanged != null) {
                   onChanged!(value);
                 }
-              },
+              }:null,
             );
           }),
         ],

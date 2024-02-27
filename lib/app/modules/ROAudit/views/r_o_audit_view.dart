@@ -198,8 +198,22 @@ class ROAuditView extends StatelessWidget {
                           : Colors.white,
                       exportFileName: "Secondary Asrun Modification",
                       mode: PlutoGridMode.normal,
-                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
-                        Get.toNamed(Routes.AUDIT_BOOKINGS);
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
+                       bool sta = await Get.toNamed(Routes.AUDIT_BOOKINGS,arguments: {
+                          "LocationCode":controllerX.selectLocation?.key??"",
+                          "LocationName":controllerX.selectLocation?.value??"",
+                          "ChannelCode":controllerX.selectChannel?.key??"",
+                          "ChannelName":controllerX.selectChannel?.value??"",
+                          "BookingMonth":event.cell.row.cells['bookingmonth']?.value ?? "",
+                          "BookingNumber":event.cell.row.cells['bookingnumber']?.value ?? "",
+                          "clientName":event.cell.row.cells['clientname']?.value ?? "",
+                          "agencyName":event.cell.row.cells['agencyname']?.value ?? "",
+                          "brandName":event.cell.row.cells['brandname']?.value ?? ""
+                        });
+
+                       if(sta){
+                         controllerX.showDetails(name: controllerX.selectTab.value);
+                       }
                       },
                       // hideKeys: const [],
                       mapData: controllerX
@@ -244,8 +258,22 @@ class ROAuditView extends StatelessWidget {
                           : Colors.white,
                       exportFileName: "Secondary Asrun Modification",
                       mode: PlutoGridMode.normal,
-                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
-                        Get.toNamed(Routes.AUDIT_CANCELLATION);
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
+                        bool sta = await Get.toNamed(Routes.AUDIT_CANCELLATION,arguments: {
+                          "LocationCode":controllerX.selectLocation?.key??"",
+                          "LocationName":controllerX.selectLocation?.value??"",
+                          "ChannelCode":controllerX.selectChannel?.key??"",
+                          "ChannelName":controllerX.selectChannel?.value??"",
+                          "CancelMonth":event.cell.row.cells['cancelmonth']?.value ?? "",
+                          "CancelNumber":event.cell.row.cells['cancelNumber']?.value ?? "",
+                          "BookingNumber":event.cell.row.cells['bookingnumber']?.value ?? "",
+                          "clientName":event.cell.row.cells['clientname']?.value ?? "",
+                          "agencyName":event.cell.row.cells['agencyname']?.value ?? "",
+                          "brandName":event.cell.row.cells['brandName']?.value ?? ""
+                        });
+                        if(sta){
+                          controllerX.showDetails(name: controllerX.selectTab.value);
+                        }
                       },
                       // hideKeys: const [],
                       mapData: controllerX
@@ -284,14 +312,30 @@ class ROAuditView extends StatelessWidget {
                       formatDate: false,
                       columnAutoResize: true,
                       doPasccal: true,
+                      enableSort: true,
                       colorCallback: (row) => (row.row.cells
                           .containsValue(controllerX.stateManager?.currentCell))
                           ? Colors.deepPurple.shade200
                           : Colors.white,
                       exportFileName: "Secondary Asrun Modification",
                       mode: PlutoGridMode.normal,
-                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
-                        Get.toNamed(Routes.AUDIT_RESCHEDULE);
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
+                        bool sta = await Get.toNamed(Routes.AUDIT_RESCHEDULE,
+                            arguments: {
+                          "LocationCode":controllerX.selectLocation?.key??"",
+                          "LocationName":controllerX.selectLocation?.value??"",
+                          "ChannelCode":controllerX.selectChannel?.key??"",
+                          "ChannelName":controllerX.selectChannel?.value??"",
+                          "ReSchedulemonth":event.cell.row.cells['reschedulemonth']?.value ?? "",
+                          "ReScheduleNumber":event.cell.row.cells['rescheduleNumber']?.value ?? "",
+                          "clientName":event.cell.row.cells['clientname']?.value ?? "",
+                          "agencyName":event.cell.row.cells['agencyname']?.value ?? "",
+                          "brandName":event.cell.row.cells['brandName']?.value ?? ""
+                        }
+                        );
+                        if(sta){
+                          controllerX.showDetails(name: controllerX.selectTab.value);
+                        }
                       },
                       // hideKeys: const [],
                       mapData: controllerX

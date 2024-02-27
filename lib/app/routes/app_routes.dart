@@ -143,7 +143,7 @@ abstract class _Paths {
   // static const L_M_S_MASTER_REPORT_NEW = '/l-m-s-master-report-new';
   static const SALES_EXECUTIVE_MASTER = '/frmExecutiveMaster';
   static const EMAIL_BILL_DETAILS = '/frmBilling';
-  static const AUDIT_BOOKINGS = '/audit-bookings';
-  static const AUDIT_RESCHEDULE = '/audit-reschedule';
-  static const AUDIT_CANCELLATION = '/audit-cancellation';
+  static const AUDIT_BOOKINGS = '/FrmAuditAddition';
+  static const AUDIT_RESCHEDULE = '/FrmAuditReschedules';
+  static const AUDIT_CANCELLATION = '/FrmAuditCancellation';
 }
