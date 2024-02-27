@@ -6,9 +6,12 @@ import 'package:get/get.dart';
 
 import '../../../../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import '../../../../controller/ConnectorControl.dart';
+import '../../../../controller/HomeController.dart';
 import '../../../../data/DropDownValue.dart';
 import '../../../../providers/ApiFactory.dart';
 import '../../../../providers/Utils.dart';
+import '../../../CommonDocs/controllers/common_docs_controller.dart';
+import '../../../CommonDocs/views/common_docs_view.dart';
 import '../../ReScheduleRetriveDataModel.dart';
 
 class AuditRescheduleController extends GetxController {
@@ -154,11 +157,66 @@ class AuditRescheduleController extends GetxController {
 
         update(['wrightGrid','leftGrid']);
       }
+    });
+  }
 
 
+  saveFunCall(){
+    try{
+      LoadingDialog.call();
+      Map<String,dynamic> postData = {
+        "lstReschdule": reScheduleRetriveDataModel?.infoReschduleBookingList?.reschduleDisplay?.reschdule?.map((e) => e.toJson()).toList(),
+        "locationCode": dataFromRO['LocationCode']??"",
+        "channelCode": dataFromRO['ChannelCode']??"",
+        "reschduleMonth": dataFromRO['ReSchedulemonth']??"",
+        "reschduleNumber":dataFromRO['ReScheduleNumber']??"",
+        "bookingNumber":dataFromRO['BookingNumber']??"",
+        "brandCode":reScheduleRetriveDataModel?.infoReschduleBookingList?.brandCode??""
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.RO_AUDIT_AUDIT_RESCHEDULE_SAVE,
+          json: postData,
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            closeDialogIfOpen();
+            if(map is Map && map['infoSaveReschdule'] != null && map['infoSaveReschdule']['message'] != null){
+              LoadingDialog.callDataSaved2(msg: (map['infoSaveReschdule']['message']??"").toString(),callback: (){
+                datBind();
+              });
+            }else{
+              LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
+            }
+            // datBind();
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+          });
+    }catch(e){
+      closeDialogIfOpen();
+    }
+  }
 
+  clearAll() {
+    Get.delete<AuditRescheduleController>();
+    Get.find<HomeController>().clearPage1();
+  }
 
-
+  docs() async {
+    String documentKey = "";
+    if (dataFromRO['LocationCode'] == "" || dataFromRO['ChannelCode'] == "" ||
+        dataFromRO['BookingMonth'] == "" || dataFromRO['BookingNumber'] == "") {
+      documentKey = "";
+    } else {
+      documentKey = "ROReschedule ${dataFromRO['LocationCode']}${dataFromRO['ChannelCode']}${dataFromRO['ReSchedulemonth']}${dataFromRO['ReScheduleNumber']}";
+    }
+    if (documentKey == "") {
+      return;
+    }
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
     });
   }
 

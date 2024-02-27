@@ -367,7 +367,15 @@ class AuditRescheduleView extends StatelessWidget {
 
                   Get.find<HomeController>().getCommonButton(
                     Routes.R_O_AUDIT,
-                        (btnName) {},
+                        (btnName) {
+                          if (btnName == "Save") {
+                            controllerX.saveFunCall();
+                          } else if (btnName == "Clear") {
+                            controllerX.clearAll();
+                          } else if (btnName == "Docs") {
+                            controllerX.docs();
+                          }
+                        },
                   ),
                   /*  Align(
                   alignment: Alignment.topLeft,

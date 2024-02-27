@@ -134,6 +134,94 @@ class LoadingDialog {
     );*/
   }
 
+  static callDataSaved2({Function? callback, String? msg}) {
+    Get.defaultDialog(
+      title: "",
+      titleStyle: TextStyle(fontSize: 1),
+      barrierDismissible: false,
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            CupertinoIcons.check_mark_circled_solid,
+            color: Colors.green,
+            size: 55,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            msg ?? Const.SAVED_MSG,
+            style: TextStyle(
+                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+          )
+        ],
+      ),
+      radius: 10,
+      confirm: DailogCloseButton(
+        autoFocus: true,
+        callback: () {
+          Get.back();
+          callback!();
+        },
+        btnText: "Ok",
+        iconDataM: Icons.done,
+      ),
+      /*confirm: MaterialButton(
+        autofocus: true,
+        onPressed: () {
+          Get.back();
+          callback!();
+        },
+        child: Text(
+          "OK",
+          style: TextStyle(color: Colors.black),
+        ),
+      ),*/
+      contentPadding: EdgeInsets.only(
+          left: SizeDefine.popupMarginHorizontal,
+          right: SizeDefine.popupMarginHorizontal,
+          bottom: 16),
+    );
+    /* Get.defaultDialog(
+      title: "",
+      titleStyle: const TextStyle(fontSize: 1),
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Icon(
+            CupertinoIcons.check_mark_circled_solid,
+            color: Colors.green,
+            size: 55,
+          ),
+          const SizedBox(height: 20),
+          Text(
+            msg ?? Const.SAVED_MSG,
+            style: TextStyle(
+                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+          )
+        ],
+      ),
+      radius: 10,
+      confirm: TextButton(
+        onPressed: () {
+          Get.back();
+          callback!();
+        },
+        autofocus: true,
+        child: const Text(
+          "OK",
+          style: TextStyle(color: Colors.black),
+        ),
+      ),
+      contentPadding: EdgeInsets.only(
+        left: SizeDefine.popupMarginHorizontal,
+        right: SizeDefine.popupMarginHorizontal,
+        bottom: 16,
+      ),
+    );*/
+  }
+
   static showErrorDialog(String msg, {Function? callback}) {
     Get.defaultDialog(
       title: "",

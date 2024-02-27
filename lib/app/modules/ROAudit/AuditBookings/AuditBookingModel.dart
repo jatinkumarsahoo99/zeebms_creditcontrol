@@ -36,6 +36,7 @@ class InfoShowBookingList {
   String? payMode;
   String? pdcInfo;
   String? remark;
+  String? isPdcEnterd;
   DisplayDetails? displayDetails;
   DislpayDealDetails? dislpayDealDetails;
   DisplayBookingStatus? displayBookingStatus;
@@ -64,6 +65,7 @@ class InfoShowBookingList {
         this.dislpayDealDetails,
         this.displayBookingStatus,
         this.sGetCurrentSQLDate,
+        this.isPdcEnterd,
         this.sGetCurrentSQLTime});
 
   InfoShowBookingList.fromJson(Map<String, dynamic> json) {
@@ -76,6 +78,7 @@ class InfoShowBookingList {
       });
     }
     clientCode = json['clientCode'];
+    isPdcEnterd = (json['isPdcEnterd']??"").toString();
     bookingMonth = json['bookingMonth'];
     bookingNumber = json['bookingNumber'];
     remarks = json['remarks'];
@@ -123,6 +126,7 @@ class InfoShowBookingList {
     data['payMode'] = this.payMode;
     data['pdcInfo'] = this.pdcInfo;
     data['remark'] = this.remark;
+    data['isPdcEnterd'] = this.isPdcEnterd;
     if (this.displayDetails != null) {
       data['displayDetails'] = this.displayDetails!.toJson();
     }
@@ -247,23 +251,23 @@ class LstSpot {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['audited'] = this.audited;
-    data['rowNumber'] = this.rowNumber;
-    data['scheduleDate'] = this.scheduleDate;
-    data['start'] = this.start;
-    data['endTime'] = this.endTime;
-    data['programname'] = this.programname;
-    data['tapeid'] = this.tapeid;
-    data['commercialcaption'] = this.commercialcaption;
-    data['commercialduration'] = this.commercialduration;
-    data['spotamount'] = this.spotamount;
-    data['deal_Number'] = this.dealNumber;
-    data['dealrownumber'] = this.dealrownumber;
-    data['totalspots'] = this.totalspots;
-    data['auditedSpots'] = this.auditedSpots;
-    data['tO_Number'] = this.tONumber;
-    data['auditedBy'] = this.auditedBy;
-    data['auditedOn'] = this.auditedOn;
+    data['audited'] = this.audited??false;
+    data['rowNumber'] = this.rowNumber??"";
+    data['scheduleDate'] = this.scheduleDate??"";
+    data['start'] = this.start??"";
+    data['endTime'] = this.endTime??"";
+    data['programname'] = this.programname??"";
+    data['tapeid'] = this.tapeid??"";
+    data['commercialcaption'] = this.commercialcaption??"";
+    data['commercialduration'] = this.commercialduration??"";
+    data['spotamount'] = this.spotamount??"";
+    data['deal_Number'] = this.dealNumber??"";
+    data['dealrownumber'] = this.dealrownumber??"";
+    data['totalspots'] = this.totalspots??"";
+    data['auditedSpots'] = this.auditedSpots??"";
+    data['tO_Number'] = this.tONumber??"";
+    data['auditedBy'] = this.auditedBy??"";
+    data['auditedOn'] = this.auditedOn??"";
     return data;
   }
 }

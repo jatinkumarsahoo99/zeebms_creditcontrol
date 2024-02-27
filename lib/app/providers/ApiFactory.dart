@@ -1474,6 +1474,10 @@ class ApiFactory {
   static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_CLIENT => "$BASE_URL/api/ROAuditStatus/GetClient?SearchText=";
   static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_AGENCY => "$BASE_URL/api/ROAuditStatus/GetAgency?SearchText=";
   static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_BRAND => "$BASE_URL/api/ROAuditStatus/GetBrand?SearchText=";
+  static String get RO_AUDIT_AUDIT_DITION_POST => "$BASE_URL/api/ROAuditStatus/SaveShowBooking";
+  static String get RO_AUDIT_AUDIT_RESCHEDULE_MARK_AS_UN_AUDIT => "$BASE_URL/api/ROAuditStatus/UnAuditShowBooking";
+  static String get RO_AUDIT_AUDIT_CANCELLATION_SAVE => "$BASE_URL/api/ROAuditStatus/SaveCancellation";
+  static String get RO_AUDIT_AUDIT_RESCHEDULE_SAVE => "$BASE_URL/api/ROAuditStatus/SaveReschduleBooking";
 
 
 }

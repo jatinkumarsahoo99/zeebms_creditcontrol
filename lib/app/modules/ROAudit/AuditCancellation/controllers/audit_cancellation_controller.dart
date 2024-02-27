@@ -7,9 +7,12 @@ import 'package:get/get.dart';
 import '../../../../../widgets/LoadingDialog.dart';
 import '../../../../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import '../../../../controller/ConnectorControl.dart';
+import '../../../../controller/HomeController.dart';
 import '../../../../data/DropDownValue.dart';
 import '../../../../providers/ApiFactory.dart';
 import '../../../../providers/Utils.dart';
+import '../../../CommonDocs/controllers/common_docs_controller.dart';
+import '../../../CommonDocs/views/common_docs_view.dart';
 
 class AuditCancellationController extends GetxController {
   //TODO: Implement AuditCancellationController
@@ -103,6 +106,59 @@ class AuditCancellationController extends GetxController {
         executiveController.text = cancellationRetrieveModel?.infoCancellationBookingList?.personnelCode??"";
         update(['grid']);
       }
+    });
+  }
+
+  saveFunCall(){
+    try{
+      LoadingDialog.call();
+      Map<String,dynamic> postData = {
+        "dtCancellations": cancellationRetrieveModel?.infoCancellationBookingList
+            ?.canDisplayDetails
+            ?.lstCancellations?.map((e) => e.toJson()).toList(),
+        "locationCode": dataFromRO['LocationCode']??"",
+        "channelCode": dataFromRO['ChannelCode']??"",
+        "cancelMonth": dataFromRO['CancelMonth']??"",
+        "cancelNumber":dataFromRO['CancelNumber']??"",
+        "bookingNumber":dataFromRO['BookingNumber']??"",
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.RO_AUDIT_AUDIT_CANCELLATION_SAVE,
+          json: postData,
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            closeDialogIfOpen();
+            Get.back(result: true);
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+          });
+    }catch(e){
+      closeDialogIfOpen();
+    }
+  }
+
+  clearAll() {
+    Get.delete<AuditCancellationController>();
+    Get.find<HomeController>().clearPage1();
+  }
+
+  docs() async {
+    String documentKey = "";
+    if (dataFromRO['LocationCode'] == "" || dataFromRO['ChannelCode'] == "" ||
+        dataFromRO['BookingMonth'] == "" || dataFromRO['BookingNumber'] == "") {
+      documentKey = "";
+    } else {
+      documentKey = "ROCancellation ${dataFromRO['LocationCode']}${dataFromRO['ChannelCode']}${dataFromRO['CancelMonth']}${dataFromRO['CancelNumber']}";
+    }
+    if (documentKey == "") {
+      return;
+    }
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
     });
   }
 

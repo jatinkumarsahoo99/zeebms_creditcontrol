@@ -198,8 +198,8 @@ class ROAuditView extends StatelessWidget {
                           : Colors.white,
                       exportFileName: "Secondary Asrun Modification",
                       mode: PlutoGridMode.normal,
-                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
-                        Get.toNamed(Routes.AUDIT_BOOKINGS,arguments: {
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
+                       bool sta = await Get.toNamed(Routes.AUDIT_BOOKINGS,arguments: {
                           "LocationCode":controllerX.selectLocation?.key??"",
                           "LocationName":controllerX.selectLocation?.value??"",
                           "ChannelCode":controllerX.selectChannel?.key??"",
@@ -210,6 +210,10 @@ class ROAuditView extends StatelessWidget {
                           "agencyName":event.cell.row.cells['agencyname']?.value ?? "",
                           "brandName":event.cell.row.cells['brandname']?.value ?? ""
                         });
+
+                       if(sta){
+                         controllerX.showDetails(name: controllerX.selectTab.value);
+                       }
                       },
                       // hideKeys: const [],
                       mapData: controllerX
@@ -254,8 +258,8 @@ class ROAuditView extends StatelessWidget {
                           : Colors.white,
                       exportFileName: "Secondary Asrun Modification",
                       mode: PlutoGridMode.normal,
-                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
-                        Get.toNamed(Routes.AUDIT_CANCELLATION,arguments: {
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
+                        bool sta = await Get.toNamed(Routes.AUDIT_CANCELLATION,arguments: {
                           "LocationCode":controllerX.selectLocation?.key??"",
                           "LocationName":controllerX.selectLocation?.value??"",
                           "ChannelCode":controllerX.selectChannel?.key??"",
@@ -267,6 +271,9 @@ class ROAuditView extends StatelessWidget {
                           "agencyName":event.cell.row.cells['agencyname']?.value ?? "",
                           "brandName":event.cell.row.cells['brandName']?.value ?? ""
                         });
+                        if(sta){
+                          controllerX.showDetails(name: controllerX.selectTab.value);
+                        }
                       },
                       // hideKeys: const [],
                       mapData: controllerX
@@ -312,8 +319,8 @@ class ROAuditView extends StatelessWidget {
                           : Colors.white,
                       exportFileName: "Secondary Asrun Modification",
                       mode: PlutoGridMode.normal,
-                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
-                        Get.toNamed(Routes.AUDIT_RESCHEDULE,
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
+                        bool sta = await Get.toNamed(Routes.AUDIT_RESCHEDULE,
                             arguments: {
                           "LocationCode":controllerX.selectLocation?.key??"",
                           "LocationName":controllerX.selectLocation?.value??"",
@@ -326,6 +333,9 @@ class ROAuditView extends StatelessWidget {
                           "brandName":event.cell.row.cells['brandName']?.value ?? ""
                         }
                         );
+                        if(sta){
+                          controllerX.showDetails(name: controllerX.selectTab.value);
+                        }
                       },
                       // hideKeys: const [],
                       mapData: controllerX

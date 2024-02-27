@@ -351,7 +351,15 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                   ),
                   Get.find<HomeController>().getCommonButton(
                     Routes.R_O_AUDIT,
-                        (btnName) {},
+                        (btnName) {
+                          if (btnName == "Save") {
+                            controller.saveFunCall();
+                          } else if (btnName == "Clear") {
+                            controller.clearAll();
+                          } else if (btnName == "Docs") {
+                            controller.docs();
+                          }
+                        },
                   ),
                 ],
               ),

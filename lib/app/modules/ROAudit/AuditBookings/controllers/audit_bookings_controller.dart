@@ -4,12 +4,17 @@ import 'package:bms_creditcontrol/app/modules/ROAudit/AuditBookings/AuditBooking
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../../../../../widgets/CheckBoxWidget.dart';
+import '../../../../../widgets/FormButton.dart';
 import '../../../../../widgets/LoadingDialog.dart';
 import '../../../../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import '../../../../controller/ConnectorControl.dart';
+import '../../../../controller/HomeController.dart';
 import '../../../../data/DropDownValue.dart';
 import '../../../../providers/ApiFactory.dart';
 import '../../../../providers/Utils.dart';
+import '../../../CommonDocs/controllers/common_docs_controller.dart';
+import '../../../CommonDocs/views/common_docs_view.dart';
 
 class AuditBookingsController extends GetxController {
   //TODO: Implement AuditBookingsController
@@ -38,6 +43,8 @@ class AuditBookingsController extends GetxController {
       dealNoController = TextEditingController(),
       payRouteController = TextEditingController(),
       executiveController = TextEditingController(),
+      remarkController = TextEditingController(),
+      pdcController = TextEditingController(),
       payModeController = TextEditingController();
 
 
@@ -45,6 +52,8 @@ class AuditBookingsController extends GetxController {
   var canDialogShow = false.obs;
   Widget? dialogWidget;
   Rxn<int> initialOffset = Rxn<int>(null);
+
+  Rx<bool> isPDCEntered = Rx<bool>(false);
 
   Offset? getOffSetValue(BoxConstraints constraints) {
     switch (initialOffset.value) {
@@ -57,6 +66,92 @@ class AuditBookingsController extends GetxController {
       default:
         return null;
     }
+  }
+
+  dragValidation({bool? dealRows = false,
+    bool? buildValue = false,
+    bool? bookingExceeds = false,
+    bool? clientUnder = false ,
+    bool? agencyUnder = false,
+    bool? commercialDur = false}) {
+    initialOffset.value = 2;
+    // Completer<bool> completer = Completer<bool>();
+    dialogWidget = Material(
+      color: Colors.white,
+      // borderRadius: BorderRadius.circular(7),
+      borderOnForeground: false,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: SizedBox(
+          width: Get.width * 0.35,
+          height: Get.height * 0.4,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                height: 30,
+                // color: Colors.grey[200],
+                child: Stack(
+                  fit: StackFit.expand,
+                  // alignment: Alignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        'Validation',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        splashRadius: 20,
+                        onPressed: () {
+                          dialogWidget = null;
+                          canDialogShow.value = false;
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              CheckBoxWidget1(title: "Deal Rows With Negative Balances", isEnable: dealRows??false,value:dealRows??false ,),
+              CheckBoxWidget1(title: "Build Value is Less than Booked Value", isEnable: buildValue??false,value:buildValue??false ),
+              CheckBoxWidget1(title: "Booking Exceeds Max Spend in Deal", isEnable: bookingExceeds??false,value: bookingExceeds??false),
+              CheckBoxWidget1(title: "Client Under embargo", isEnable:clientUnder?? false,value:clientUnder?? false ,),
+              CheckBoxWidget1(title: "Agency Under Embargo", isEnable: agencyUnder??false,value:agencyUnder??false ),
+              CheckBoxWidget1(title: "Commercial Duration Mismatch", isEnable: commercialDur??false,value: commercialDur??false),
+              SizedBox(
+                height: 3,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FormButtonWrapper(
+                    btnText: "DONE",
+                    showIcon: false,
+                    // isEnabled: btn['isDisabled'],
+                    callback: () {
+                      dialogWidget = null;
+                      canDialogShow.value = false;
+                    },
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+    canDialogShow.value = true;
   }
 
   Rx<bool> isEnable = Rx<bool>(false);
@@ -121,6 +216,35 @@ class AuditBookingsController extends GetxController {
         payRouteController.text = auditBookingModel?.infoShowBookingList?.payRouteName??"";
         payModeController.text = auditBookingModel?.infoShowBookingList?.payMode??"";
         executiveController.text = auditBookingModel?.infoShowBookingList?.personnelCode??"";
+
+        if((auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkDealNegativeBalance??false) ||
+            (auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkValuation??false) ||
+            (auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkMaxSpendcheck??false) ||
+            (auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkClientEmbargo??false) ||
+            (auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkAgencyEmbargo??false) ||
+            (auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkAgencyEmbargo??false)
+        ){
+          dragValidation(
+            dealRows: auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkDealNegativeBalance??false,
+            buildValue: auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkValuation??false,
+            bookingExceeds: auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkMaxSpendcheck??false,
+            clientUnder: auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkClientEmbargo??false,
+            agencyUnder: auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkAgencyEmbargo??false,
+            commercialDur: auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkAgencyEmbargo??false,
+          );
+        }
+
+        if(auditBookingModel?.infoShowBookingList?.isPdcEnterd == "1"){
+          remarkController.text = auditBookingModel?.infoShowBookingList?.remark??"";
+          pdcController.text = auditBookingModel?.infoShowBookingList?.pdcInfo??"";
+          isPDCEntered.value = true;
+          isPDCEntered.refresh();
+        }else{
+          remarkController.text = "";
+          pdcController.text = "";
+          isPDCEntered.value = false;
+          isPDCEntered.refresh();
+        }
         update(['grid']);
       }
     });
@@ -130,6 +254,93 @@ class AuditBookingsController extends GetxController {
   closeDialogIfOpen() {
     if (Get.isDialogOpen ?? false) {
       Get.back();
+    }
+  }
+
+
+  saveFunCall(){
+    try{
+      LoadingDialog.call();
+      Map<String,dynamic> postData = {
+        "lstSpots": auditBookingModel?.infoShowBookingList
+            ?.displayDetails?.lstSpot?.map((e) => e.toJson()).toList(),
+        "locationCode": dataFromRO['LocationCode']??"",
+        "channelCode": dataFromRO['ChannelCode']??"",
+        "bookingMonth": dataFromRO['BookingMonth']??"",
+        "bookingNumber":dataFromRO['BookingNumber']??""
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.RO_AUDIT_AUDIT_DITION_POST,
+          json: postData,
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            closeDialogIfOpen();
+            if(map is Map && map['infoSave'] != null && map['infoSave']['message'] != ""){
+              LoadingDialog.callDataSaved2(msg: (map['infoSave']['message']??"").toString(),callback: (){
+                Get.back(result: true);
+              });
+            }else{
+              LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
+            }
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+          });
+    }catch(e){
+      closeDialogIfOpen();
+    }
+  }
+
+  clearAll() {
+    Get.delete<AuditBookingsController>();
+    Get.find<HomeController>().clearPage1();
+  }
+
+  docs() async {
+    String documentKey = "";
+    if (dataFromRO['LocationCode'] == "" || dataFromRO['ChannelCode'] == "" ||
+        dataFromRO['BookingMonth'] == "" || dataFromRO['BookingNumber'] == "") {
+      documentKey = "";
+    } else {
+      documentKey = "RObooking ${dataFromRO['LocationCode']}${dataFromRO['ChannelCode']}${dataFromRO['BookingMonth']}${dataFromRO['BookingNumber']}";
+    }
+    if (documentKey == "") {
+      return;
+    }
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
+    });
+  }
+
+  btnAudit(){
+    try{
+      LoadingDialog.call();
+      Map<String,dynamic> postData = {
+        "locationCode": dataFromRO['LocationCode']??"",
+        "channelCode": dataFromRO['ChannelCode']??"",
+        "bookingMonth": dataFromRO['BookingMonth']??"",
+        "bookingNumber": dataFromRO['BookingNumber']??"",
+      };
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.RO_AUDIT_AUDIT_RESCHEDULE_MARK_AS_UN_AUDIT,
+          json: postData,
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            closeDialogIfOpen();
+            if(map is Map && map['infoUnAudit'] != null && map['infoUnAudit']['message'] != null){
+              LoadingDialog.callDataSaved(msg: (map['infoUnAudit']['message']??"").toString());
+            }else{
+              LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
+            }
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+          });
+    }catch(e){
+      closeDialogIfOpen();
     }
   }
 

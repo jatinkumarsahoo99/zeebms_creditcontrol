@@ -22,7 +22,7 @@ class _DraggableFabState extends State<DraggableFab> {
   late Size _widgetSize;
   double? _left, _top;
   double _screenWidth = 0.0, _screenHeight = 0.0;
-  double? _screenWidthMid, _screenHeightMid;
+  double? _screenWidthMid, _screenHeightMid,_borderWidth;
   GlobalKey key = GlobalKey();
 
   @override
@@ -59,7 +59,7 @@ class _DraggableFabState extends State<DraggableFab> {
               // boxShadow: const [
               //   BoxShadow(color: Colors.black54),
               // ],
-              // borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12),border: Border.all(width:_borderWidth??8 ,color: Colors.grey),
               color: Colors.grey.shade300,
             ),
             child: Draggable(
