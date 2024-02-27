@@ -92,6 +92,10 @@ abstract class RoutesList {
     _Paths.INVOICE_REVISION,
     _Paths.UNDO_CANCELATION,
     _Paths.PAYROUTE_CATEGORY_MASTER,
+    _Paths.AUDIT_BOOKINGS,
+    _Paths.AUDIT_CANCELLATION,
+    _Paths.R_O_AUDIT,
+    _Paths.AUDIT_RESCHEDULE,
   ];
 }
 
