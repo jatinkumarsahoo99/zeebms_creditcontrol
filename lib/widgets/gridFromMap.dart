@@ -1703,7 +1703,7 @@ class DataGridFromMap4 extends StatelessWidget {
             enableEditingMode: editKeys != null && editKeys!.contains(key),
             enableDropToResize: true,
             enableContextMenu: false,
-            minWidth: minimumWidth??25,
+            minWidth: 25,
             width: (widthSpecificColumn != null &&
                     widthSpecificColumn!.containsKey(key))
                 ? widthSpecificColumn![key]!

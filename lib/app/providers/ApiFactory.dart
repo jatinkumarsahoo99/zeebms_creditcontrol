@@ -1469,12 +1469,12 @@ class ApiFactory {
       "$BASE_URL/api/ROAuditStatus/CancellationCellDoubleClick";
   static String get RO_AUDIT_DEAL_APPROVAL_CELL_DOUBLE_CLICK =>
       "$BASE_URL/api/ROAuditStatus/DealApprovalCellDoubleClick";
-  static String get RO_AUDIT_ON_LOCATION_LEAVE => "$BASE_URL/api/ROAuditStatus/OnLocationLeave?LocationCode=";
-  static String get RO_AUDIT_SHOW_DETAILS => "$BASE_URL/api/ROAuditStatus/ShowDetails";
-  static String get RO_AUDIT_ADDITION_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/AdditionsCellDoubleClick";
-  static String get RO_AUDIT_RESCHEDULE_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/RescheduleCellDoubleClick";
-  static String get RO_AUDIT_CANCELLATION_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/CancellationCellDoubleClick";
-  static String get RO_AUDIT_DEAL_APPROVAL_CELL_DOUBLE_CLICK => "$BASE_URL/api/ROAuditStatus/DealApprovalCellDoubleClick";
+  // static String get RO_AUDIT_ON_LOCATION_LEAVE => "$BASE_URL/api/ROAuditStatus/OnLocationLeave?LocationCode=";
+  // static String get RO_AUDIT_SHOW_DETAILS => "$BASE_URL/api/ROAuditStatus/ShowDetails";
+  // static String get RO_AUDIT_ADDITION_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/AdditionsCellDoubleClick";
+  // static String get RO_AUDIT_RESCHEDULE_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/RescheduleCellDoubleClick";
+  // static String get RO_AUDIT_CANCELLATION_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/CancellationCellDoubleClick";
+  // static String get RO_AUDIT_DEAL_APPROVAL_CELL_DOUBLE_CLICK => "$BASE_URL/api/ROAuditStatus/DealApprovalCellDoubleClick";
   static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_CLIENT => "$BASE_URL/api/ROAuditStatus/GetClient?SearchText=";
   static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_AGENCY => "$BASE_URL/api/ROAuditStatus/GetAgency?SearchText=";
   static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_BRAND => "$BASE_URL/api/ROAuditStatus/GetBrand?SearchText=";
