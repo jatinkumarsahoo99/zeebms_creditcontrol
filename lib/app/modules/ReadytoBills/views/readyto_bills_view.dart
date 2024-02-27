@@ -4,6 +4,7 @@ import 'package:bms_creditcontrol/app/routes/app_pages.dart';
 import 'package:bms_creditcontrol/widgets/CheckBoxWidget.dart';
 import 'package:bms_creditcontrol/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_creditcontrol/widgets/FormButton.dart';
+import 'package:bms_creditcontrol/widgets/PlutoGrid/pluto_grid.dart';
 import 'package:bms_creditcontrol/widgets/dropdown.dart';
 import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,7 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: GetBuilder(
+      id: "update",
       init: controller,
       builder: (controller) {
         return Padding(
@@ -113,14 +115,14 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.grey)),
                               )
-                            : DataGridFromMap3(
+                            : DataGridFromMap4(
                                 mapData: controller.billingsList.value
-                                        .map((e) => e.toJson())
-                                        .toList() ??
-                                    [],
+                                    .map((e) => e.toJson())
+                                    .toList(),
                                 onload: (value) {
                                   controller.billingGrid = value.stateManager;
                                 },
+                                editKeys: const ['remark'],
                                 exportFileName: "Ready to Bills",
                                 noEditcheckBoxColumnKey: const [
                                   'asRunImport',
@@ -128,7 +130,6 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                                   'schedulingVerification',
                                   'schedulingClearance',
                                   'finalCheck',
-                                  'readyToBill',
                                 ],
                                 checkBoxColumnKey: const [
                                   'asRunImport',
@@ -140,12 +141,58 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                                 ],
                                 checkBoxStrComparison: "true",
                                 uncheckCheckBoxStr: "false",
+                                actionIconKey: ['readyToBill'],
+                                actionOnPress: (position, isSpaceCalled) {
+                                  controller.lastSelectedIdx =
+                                      position.rowIdx ?? 0;
+                                  if (isSpaceCalled) {
+                                    controller.billingGrid!.changeCellValue(
+                                      controller.billingGrid!.currentCell!,
+                                      controller.billingGrid!.currentCell!
+                                                  .value ==
+                                              "true"
+                                          ? "false"
+                                          : "true",
+                                      force: true,
+                                      callOnChangedEvent: true,
+                                      notify: true,
+                                    );
+                                  }
+                                },
+                                onEdit: (row) {
+                                  print(row.column.field);
+                                  print('===========');
+                                  controller.lastSelectedIdx = row.rowIdx ?? 0;
+
+                                  if (row.column.field == 'remark') {
+                                    controller.billingsList[row.rowIdx].remark =
+                                        row.value.toString();
+                                  } else {
+                                    controller.billingsList[row.rowIdx]
+                                            .readyToBill =
+                                        row.value != "true" ? false : true;
+                                  }
+
+                                  print(controller
+                                      .billingsList[row.rowIdx].readyToBill);
+                                },
                                 columnAutoResize: false,
                                 widthSpecificColumn: Get.find<HomeController>()
                                     .getGridWidthByKey(
                                         userGridSettingList:
                                             controller.userGridSetting1?.value,
                                         key: 'key1'),
+                                // sort: PlutoColumnSort.descending,
+                                // enableSort: true,
+                                onColumnHeaderSingleTap: () {
+                                  // print(controller
+                                  //     .billingGrid!.refColumns[8].key);
+                                  if (controller
+                                          .billingGrid!.refColumns[8].field ==
+                                      "remark") {
+                                    controller.filterList();
+                                  }
+                                },
                               ),
                       ),
                     ),

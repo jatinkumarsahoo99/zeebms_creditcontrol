@@ -67,25 +67,21 @@ class EbillsController extends GetxController {
   }
 
   postAgency() {
-    filterListCompany = [];
-    for (var i = 0; i < lstCheckListCompany!.length; i++) {
-      if (lstCheckListCompany![i].isSelected == true) {
-        filterListCompany!.add(DropDownValue(
-          key: lstCheckListCompany![i].key,
-          value: lstCheckListCompany![i].value,
-        ));
-      }
-    }
-    if (filterListCompany!.isNotEmpty) {
+    bool? isCheck;
+    lstCheckListCompany?.where((element) {
+      isCheck = element.isSelected == true;
+      return element.isSelected == true;
+    }).toList();
+    if (isCheck == true) {
       var payload = {
         "optAgency": selectionCurrentType.value == "Agency" ? true : false,
         "txtTcStartDate": billingPeriod.text,
-        "lstCompany": filterListCompany!
+        "lstCompany": lstCheckListCompany
+            ?.where((element) => element.isSelected ?? false)
             .map((e) => e.toJsonCustom('companyCode', 'companyName'))
             .toList(),
         "txtStartDate": billingPeriod2.text
       };
-
       LoadingDialog.call();
       Get.find<ConnectorControl>().POSTMETHOD(
           api: ApiFactory.EBILLS_POST_AGENCY,
@@ -119,48 +115,19 @@ class EbillsController extends GetxController {
   }
 
   createXML() {
-    filterAgencyGroupList = [];
-    for (var i = 0; i < agencyGroupList!.length; i++) {
-      if (agencyGroupList![i].isSelected == true) {
-        filterAgencyGroupList!.add(DropDownValue(
-          key: agencyGroupList![i].key,
-          value: agencyGroupList![i].value,
-        ));
-      }
-    }
-    if (filterAgencyGroupList!.isNotEmpty) {
-      var payload =
-          // {
-          //   "lstCompany": [
-          //     {"companyCode": "ASIXX00004", "companyName": "ASIA TODAY LIMITED"},
-          //     {
-          //       "companyCode": "ZETEL00007",
-          //       "companyName": "ZEE ENTERTAINMENT ENTERPRISES LIMITED"
-          //     }
-          //   ],
-          //   "lsttblAgencyOrGroup": [
-          //     {"code": "59", "name": "ALLIANCE ADVTG"}
-          //   ],
-          //   "chkConsolidated": false,
-          //   "optAgency": false,
-          //   "chkOnlyBills": true,
-          //   "chkOnlySummary": false,
-          //   "chkTc": false,
-          //   "txtTcStartDate": "01-11-2023",
-          //   "txtStartDate": "15-11-2023",
-          //   "optBillingMumbai": true,
-          //   "chkAdditionalTo": true,
-          //   "chkAdditionalCc": true,
-          //   "txtAddTo": "vc.deven.bhole@zee.com",
-          //   "chkTestMail": true,
-          //   "txtAddCc": "vc.prasad.maddine@zee.com",
-          //   "txtFromMailId": "billing@zee.com"
-          // };
-          {
-        "lstCompany": filterListCompany!
+    bool? isCheck;
+    agencyGroupList?.where((element) {
+      isCheck = element.isSelected == true;
+      return element.isSelected == true;
+    }).toList();
+    if (isCheck == true) {
+      var payload = {
+        "lstCompany": lstCheckListCompany
+            ?.where((element) => element.isSelected ?? false)
             .map((e) => e.toJsonCustom('companyCode', 'companyName'))
             .toList(),
-        "lsttblAgencyOrGroup": filterAgencyGroupList!
+        "lsttblAgencyOrGroup": agencyGroupList
+            ?.where((element) => element.isSelected ?? false)
             .map((e) => e.toJsonCustom('code', 'name'))
             .toList(),
         "chkConsolidated": isConsolidated.value,
