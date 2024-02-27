@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:bms_creditcontrol/app/controller/ConnectorControl.dart';
 import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
 import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -62,11 +65,25 @@ class EBillsForBonusActivityController extends GetxController {
         });
   }
 
+  sendingOptionRadioButtion(String val) {
+    switch (val) {
+      case 'Domestic':
+        mailID.text = fromEmailId ?? "";
+        break;
+      case 'ATL':
+        mailID.text = fromAsiaEmailId ?? "";
+        break;
+      default:
+    }
+  }
+
   postAgency() {
     bool? isCheck;
-    lstCheckListCompany?.where((element) {
-      isCheck = element.isSelected == true;
-      return element.isSelected == true;
+    lstCheckListCompany
+        ?.where((element) => element.isSelected ?? false)
+        .map((e) {
+      isCheck = true;
+      return true;
     }).toList();
     if (isCheck == true) {
       var payload = {
@@ -111,23 +128,11 @@ class EBillsForBonusActivityController extends GetxController {
     }
   }
 
-  sendingOptionRadioButtion(String val) {
-    switch (val) {
-      case 'Domestic':
-        mailID.text = fromEmailId ?? "";
-        break;
-      case 'ATL':
-        mailID.text = fromAsiaEmailId ?? "";
-        break;
-      default:
-    }
-  }
-
   createXML() {
     bool? isCheck;
-    agencyGroupList?.where((element) {
-      isCheck = element.isSelected == true;
-      return element.isSelected == true;
+    agencyGroupList?.where((element) => element.isSelected ?? false).map((e) {
+      isCheck = true;
+      return true;
     }).toList();
     if (isCheck == true) {
       var payload = {
@@ -149,7 +154,7 @@ class EBillsForBonusActivityController extends GetxController {
         "chk_OnlyBills": false,
         "chk_OnlySummary": false,
         "chk_TC": true,
-        "rdBtn_BillingMumbai": false,
+        "rdBtn_BillingMumbai": selRadio.value == 'Domestic' ? true : false,
         "testMail": isTestMail.value,
         "additionalTo": false,
         "additionalCc": false,
@@ -162,13 +167,35 @@ class EBillsForBonusActivityController extends GetxController {
       Get.find<ConnectorControl>().POSTMETHOD(
           api: ApiFactory.EBILLS_BONUS_ACTIVITY_CREATE_XML,
           json: payload,
-          fun: (Map map) {
+          fun: (Map map) async {
             Get.back();
-            if (map != null && map.containsKey('ebAgencyGroup')) {
-              update(["init", "agencyGroupList"]);
+            if (map != null && map.containsKey('infoCreateXml')) {
+              String fileName = extractFileName(
+                  map['infoCreateXml']['tcXml']['ebillsTCpath']);
+              await FileSaver.instance.saveFile(
+                name: (fileName),
+                bytes: base64Decode(map['infoCreateXml']['tcXml']['tc']),
+              );
+              LoadingDialog.callDataSaved(
+                  msg: map['infoCreateXml']['sendMails']['message'],
+                  callback: () {
+                    LoadingDialog.callDataSaved(
+                        msg: map['infoCreateXml']['message'][0],
+                        callback: () {
+                          Get.back();
+                        });
+                  });
+              // update(["init", "agencyGroupList"]);
             }
           });
     }
+  }
+
+  String extractFileName(String filePath) {
+    List<String> pathSegments = filePath.split(RegExp(r'[\\/\\\\]'));
+    String fileName = pathSegments.last;
+
+    return fileName;
   }
 
   manageBillingPeriod() {

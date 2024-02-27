@@ -19,6 +19,8 @@ class EbillsController extends GetxController {
   var isTC = true.obs;
   var isSummary = true.obs;
   var isConsolidated = false.obs;
+  String? fromEmailId;
+  String? asiaTodayFromMailId;
 
   List<DropDownValue>? lstCheckListCompany;
   List<DropDownValue>? filterListCompany;
@@ -52,7 +54,9 @@ class EbillsController extends GetxController {
           Get.back();
           if (map != null && map.containsKey('ebLoad')) {
             // Mail ID
-            mailID.text = map['ebLoad']['fromMailId'];
+            fromEmailId = map['ebLoad']['fromMailId'];
+            asiaTodayFromMailId = map['ebLoad']['asiaTodayFromMailId'];
+            mailID.text = fromEmailId ?? "";
             // Check LIst Company
             lstCheckListCompany = [];
             map['ebLoad']['lstCheckListCompany'].forEach((e) {
@@ -66,11 +70,25 @@ class EbillsController extends GetxController {
         });
   }
 
+  sendingOptionRadioButtion(String val) {
+    switch (val) {
+      case 'Domestic':
+        mailID.text = fromEmailId ?? "";
+        break;
+      case 'ATL':
+        mailID.text = asiaTodayFromMailId ?? "";
+        break;
+      default:
+    }
+  }
+
   postAgency() {
     bool? isCheck;
-    lstCheckListCompany?.where((element) {
-      isCheck = element.isSelected == true;
-      return element.isSelected == true;
+    lstCheckListCompany
+        ?.where((element) => element.isSelected ?? false)
+        .map((e) {
+      isCheck = true;
+      return true;
     }).toList();
     if (isCheck == true) {
       var payload = {
@@ -116,9 +134,9 @@ class EbillsController extends GetxController {
 
   createXML() {
     bool? isCheck;
-    agencyGroupList?.where((element) {
-      isCheck = element.isSelected == true;
-      return element.isSelected == true;
+    agencyGroupList?.where((element) => element.isSelected ?? false).map((e) {
+      isCheck = true;
+      return true;
     }).toList();
     if (isCheck == true) {
       var payload = {

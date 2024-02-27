@@ -271,6 +271,9 @@ class EbillsView extends GetView<EbillsController> {
                                               // print("Response>>>" + val);
                                               controller.sendingCurrentType
                                                   .value = val;
+                                              controller
+                                                  .sendingOptionRadioButtion(
+                                                      val);
                                             },
                                           ),
                                         ),
