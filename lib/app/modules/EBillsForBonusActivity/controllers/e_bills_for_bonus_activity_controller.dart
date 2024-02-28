@@ -170,21 +170,34 @@ class EBillsForBonusActivityController extends GetxController {
           fun: (Map map) async {
             Get.back();
             if (map != null && map.containsKey('infoCreateXml')) {
-              String fileName = extractFileName(
-                  map['infoCreateXml']['tcXml']['ebillsTCpath']);
-              await FileSaver.instance.saveFile(
-                name: (fileName),
-                bytes: base64Decode(map['infoCreateXml']['tcXml']['tc']),
-              );
-              LoadingDialog.callDataSaved(
-                  msg: map['infoCreateXml']['sendMails']['message'],
-                  callback: () {
-                    LoadingDialog.callDataSaved(
-                        msg: map['infoCreateXml']['message'][0],
-                        callback: () {
-                          Get.back();
-                        });
+              if (map['infoCreateXml']['tcXml']['message']
+                  .contains('XML created successfully.')) {
+                String fileName = extractFileName(
+                    map['infoCreateXml']['tcXml']['ebillsTCpath']);
+                await FileSaver.instance.saveFile(
+                  name: (fileName),
+                  bytes: base64Decode(map['infoCreateXml']['tcXml']['tc']),
+                );
+
+                LoadingDialog.callDataSaved(
+                    msg: map['infoCreateXml']['sendMails']['message'],
+                    callback: () {
+                      LoadingDialog.callDataSaved(
+                          msg: map['infoCreateXml']['tcXml']['message'],
+                          callback: () {
+                            Get.back();
+                          });
+                    });
+              } else {
+                LoadingDialog.showErrorDialog(
+                    map['infoCreateXml']['sendMails']['message'], callback: () {
+                  LoadingDialog.showErrorDialog(
+                      map['infoCreateXml']['tcXml']['message'], callback: () {
+                    Get.back();
                   });
+                });
+              }
+
               // update(["init", "agencyGroupList"]);
             }
           });
