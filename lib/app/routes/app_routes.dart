@@ -54,6 +54,7 @@ abstract class Routes {
   static const AUDIT_BOOKINGS = _Paths.AUDIT_BOOKINGS;
   static const AUDIT_RESCHEDULE = _Paths.AUDIT_RESCHEDULE;
   static const AUDIT_CANCELLATION = _Paths.AUDIT_CANCELLATION;
+  static const BILL_TRANSFER = _Paths.BILL_TRANSFER;
 }
 
 abstract class RoutesList {
@@ -150,4 +151,5 @@ abstract class _Paths {
   static const AUDIT_BOOKINGS = '/FrmAuditAddition';
   static const AUDIT_RESCHEDULE = '/FrmAuditReschedules';
   static const AUDIT_CANCELLATION = '/FrmAuditCancellation';
+  static const BILL_TRANSFER = '/frmBillTransfer';
 }
