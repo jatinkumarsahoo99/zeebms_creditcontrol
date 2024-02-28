@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import '../../../../../widgets/CheckBoxWidget.dart';
 import '../../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../../widgets/FormButton.dart';
+import '../../../../../widgets/PlutoGrid/src/pluto_grid.dart';
 import '../../../../../widgets/dropdown.dart';
 import '../../../../../widgets/gridFromMap.dart';
 import '../../../../../widgets/input_fields.dart';
@@ -17,7 +18,7 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
   AuditCancellationView({Key? key}) : super(key: key);
 
   var controller =
-      Get.put<AuditCancellationController>(AuditCancellationController());
+  Get.put<AuditCancellationController>(AuditCancellationController());
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +49,14 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                     return DropDownField
                                         .formDropDown1WidthMapExpand(
                                       controller.locationList.value,
-                                      (value) {
-                                        controller.selectedLocation = value;
+                                          (value) {
+                                        controller.selectedLocation.value = value;
                                       },
                                       "Location",
                                       // titleInLeft: true,
-                                      selected: controller.selectedLocation,
+                                      selected: controller.selectedLocation.value,
                                       titleSizeBoxWidth: 75,
+                                      isEnable: controller.isEnable.value
                                     );
                                   }),
                                 ),
@@ -66,13 +68,14 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                     return DropDownField
                                         .formDropDown1WidthMapExpand(
                                       controller.channelList.value,
-                                      (value) {
-                                        controller.selectedChannel = value;
+                                          (value) {
+                                        controller.selectedChannel.value = value;
                                       },
                                       "Channel",
                                       // titleInLeft: true,
-                                      selected: controller.selectedChannel,
+                                      selected: controller.selectedChannel.value,
                                       titleSizeBoxWidth: 75,
+                                        isEnable: controller.isEnable.value
                                     );
                                   }),
                                 ),
@@ -84,9 +87,10 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                 Expanded(
                                   child: InputFields.formFieldExpand2(
                                       hintTxt: "Ref No",
-                                      controller: controller.tecRefNo,
+                                      controller: controller.refNoController,
                                       autoFocus: true,
                                       titleSizeboxWidth: 80,
+                                      isEnable: controller.isEnable.value,
                                       bottomPadding: false),
                                 ),
                                 SizedBox(
@@ -98,9 +102,9 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                       Expanded(
                                         child: DateWithThreeTextField(
                                           title: "Ref Date",
-                                          mainTextController:
-                                              TextEditingController(),
-                                          isEnable: false,
+                                          mainTextController: controller.refDateController,
+                                          // isEnable: false,
+                                          isEnable: controller.isEnable.value,
                                         ),
                                       ),
                                       // SizedBox(
@@ -109,8 +113,9 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                       Expanded(
                                         child: InputFields.formFieldExpand2(
                                             hintTxt: "Book No",
-                                            controller: controller.tecBookNo,
+                                            controller: controller.bookingNoController,
                                             autoFocus: true,
+                                            isEnable: controller.isEnable.value,
                                             titleSizeboxWidth: 80,
                                             bottomPadding: false),
                                       ),
@@ -120,53 +125,63 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                               ],
                             ),
                             sizedBoxHeight(5),
-                            DropDownField.formDropDownSearchAPI2Expand(
-                              GlobalKey(),
-                              context,
-                              title: "Client",
-                              url: "",
-                              onchanged: (value) {
-                                controller.selectedClient = value;
-                              },
-                              selectedValue: controller.selectedClient,
-                              parseKeyForKey: "",
-                              parseKeyForValue: "",
-                              textSizeboxWidth: 85,
-                            ),
+                            Obx(() {
+                              return DropDownField.formDropDownSearchAPI2Expand(
+                                GlobalKey(),
+                                context,
+                                title: "Client",
+                                url: "",
+                                onchanged: (value) {
+                                  controller.selectedClient.value = value;
+                                },
+                                selectedValue: controller.selectedClient.value,
+                                parseKeyForKey: "",
+                                parseKeyForValue: "",
+                                isEnable: controller.isEnable.value,
+                                textSizeboxWidth: 85,
+                              );
+                            }),
                             sizedBoxHeight(5),
-                            DropDownField.formDropDownSearchAPI2Expand(
-                              GlobalKey(),
-                              context,
-                              title: "Agency",
-                              url: "",
-                              onchanged: (value) {
-                                controller.selectedAgency = value;
-                              },
-                              selectedValue: controller.selectedAgency,
-                              parseKeyForKey: "",
-                              parseKeyForValue: "",
-                              textSizeboxWidth: 85,
-                            ),
+                            Obx(() {
+                              return DropDownField.formDropDownSearchAPI2Expand(
+                                GlobalKey(),
+                                context,
+                                title: "Agency",
+                                url: "",
+                                onchanged: (value) {
+                                  controller.selectedAgency.value = value;
+                                },
+                                selectedValue: controller.selectedAgency.value,
+                                parseKeyForKey: "",
+                                parseKeyForValue: "",
+                                isEnable: controller.isEnable.value,
+                                textSizeboxWidth: 85,
+                              );
+                            }),
                             sizedBoxHeight(5),
-                            DropDownField.formDropDownSearchAPI2Expand(
-                              GlobalKey(),
-                              context,
-                              title: "Brand",
-                              url: "",
-                              onchanged: (value) {
-                                controller.selectedBrand = value;
-                              },
-                              selectedValue: controller.selectedBrand,
-                              parseKeyForKey: "",
-                              parseKeyForValue: "",
-                              textSizeboxWidth: 85,
-                            ),
+                            Obx(() {
+                              return DropDownField.formDropDownSearchAPI2Expand(
+                                GlobalKey(),
+                                context,
+                                title: "Brand",
+                                url: "",
+                                onchanged: (value) {
+                                  controller.selectedBrand.value = value;
+                                },
+                                selectedValue: controller.selectedBrand.value,
+                                parseKeyForKey: "",
+                                parseKeyForValue: "",
+                                isEnable: controller.isEnable.value,
+                                textSizeboxWidth: 85,
+                              );
+                            }),
                             sizedBoxHeight(5),
                             InputFields.formFieldExpand2(
                                 hintTxt: "Executive",
-                                controller: controller.tecRefNo,
+                                controller: controller.executiveController,
                                 autoFocus: true,
                                 titleSizeboxWidth: 80,
+                                isEnable: controller.isEnable.value,
                                 bottomPadding: false),
                           ],
                         ),
@@ -184,8 +199,9 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                         child: DateWithThreeTextField(
                                           title: "FPC Eff Dt",
                                           mainTextController:
-                                              controller.tecFpcDate,
-                                          isEnable: false,
+                                          controller.fpcEffDtController,
+                                          isEnable: controller.isEnable.value,
+
                                         ),
                                       ),
                                       SizedBox(width: 5),
@@ -193,8 +209,8 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                         child: DateWithThreeTextField(
                                           title: "Book Dt",
                                           mainTextController:
-                                              controller.tecBookDate,
-                                          isEnable: false,
+                                          controller.bookedDtController,
+                                          isEnable: controller.isEnable.value,
                                         ),
                                       ),
                                     ],
@@ -205,10 +221,11 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                       Expanded(
                                         child: InputFields.formFieldExpand2(
                                           hintTxt: "Cancel No",
-                                          controller: controller.tecCancelNo,
+                                          controller: controller.cancelNoController,
                                           autoFocus: true,
                                           titleSizeboxWidth: 80,
                                           bottomPadding: false,
+                                          isEnable: controller.isEnable.value,
                                         ),
                                       ),
                                       sizedBoxWidth(5),
@@ -216,9 +233,10 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                         width: 100,
                                         child: InputFields.formFieldExpand2(
                                           hintTxt: "",
-                                          controller: controller.tecBlankYear,
+                                          controller: controller.textController1,
                                           // autoFocus: true,
                                           titleSizeboxWidth: 80,
+                                          isEnable: controller.isEnable.value,
                                           bottomPadding: false,
                                         ),
                                       ),
@@ -227,9 +245,10 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                         width: 150,
                                         child: InputFields.formFieldExpand2(
                                           hintTxt: "",
-                                          controller: controller.tecRefNo,
+                                          controller: controller.textController2,
                                           // autoFocus: true,
                                           titleSizeboxWidth: 80,
+                                          isEnable: controller.isEnable.value,
                                           bottomPadding: false,
                                         ),
                                       ),
@@ -238,30 +257,34 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                   sizedBoxHeight(5),
                                   InputFields.formFieldExpand2(
                                     hintTxt: "Deal No",
-                                    controller: controller.tecDealNo,
+                                    controller: controller.dealNoController,
                                     titleSizeboxWidth: 80,
                                     bottomPadding: false,
+                                    isEnable: controller.isEnable.value,
                                   ),
                                   sizedBoxHeight(5),
                                   InputFields.formFieldExpand2(
                                     hintTxt: "Pay route",
-                                    controller: controller.tecPayRoute,
+                                    controller: controller.payRouteController,
                                     titleSizeboxWidth: 80,
                                     bottomPadding: false,
+                                    isEnable: controller.isEnable.value,
                                   ),
                                   sizedBoxHeight(5),
                                   InputFields.formFieldExpand2(
                                     hintTxt: "Pay Mode",
-                                    controller: controller.tecPayMode,
+                                    controller: controller.payModeController,
                                     titleSizeboxWidth: 80,
                                     bottomPadding: false,
+                                    isEnable: controller.isEnable.value,
                                   ),
                                   sizedBoxHeight(5),
                                   InputFields.formFieldExpand2(
                                     hintTxt: "Spot Amt",
-                                    controller: controller.tecSpotAmt,
+                                    controller: controller.spoyAmountController,
                                     titleSizeboxWidth: 80,
                                     bottomPadding: false,
+                                    isEnable: controller.isEnable.value,
                                   ),
                                 ],
                               ),
@@ -270,91 +293,73 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                     ],
                   ),
                   SizedBox(height: 5),
-                  CheckBoxWidget1(title: "Select All"),
+                  CheckBoxWidget1(title: "Select All", isEnable: false),
                   Expanded(
-                    child: Obx(() {
-                      return DataGridFromMap3(
-                        // colorCallback: (row) {
-                        //   if (row == controller.sm?.currentRow) {
-                        //     return Colors.deepPurple.shade100;
-                        //   } else {
-                        //     return Colors.white;
-                        //   }
-                        // },
-                        // colorCallback: (row) => (row.row.cells
-                        //         .containsValue(controller.sm?.currentCell))
-                        //     ? Colors.deepPurple.shade200
-                        //     : Colors.white,
-                        // showSecondaryDialog: false,
-
-                        // exportFileName: "Returns Blank Tapes",
-                        mapData: controller.gridData.value,
-                        // controller.gridDataTableData.value,
-                        // .map((e) => e.toJson())
-                        // .toList(),
-                        // formatDate: false,
-                        // onRowDoubleTap: (event) {
-                        //   controller.sm?.setCurrentCell(event.cell,
-                        //       event.rowIdx); // to give focus to selected row
-                        //   controller.onRowDounleTap(event);
-                        //   controller.isVisibleRight.value = true;
-                        // },
-                        // onload: (event) {
-                        //   var smNew = event.stateManager;
-                        //   controller.sm = smNew;
-                        //   event.stateManager
-                        //       .setSelectingMode(PlutoGridSelectingMode.row);
-                        //   event.stateManager
-                        //       .setCurrentCell(event.stateManager.firstCell, 0);
-                        //   controller.sm = event.stateManager;
-                        // },
-                        // hideCode: false,
-                        // mode: PlutoGridMode.normal,
-                        // witdthSpecificColumn: controller.showFirstGridData.value
-                        //     ? {
-                        //         "vouchernumber": 120,
-                        //         "description": 240,
-                        //         "tapeid": 120,
-                        //         "partyname": 240,
-                        //         "programname": 240,
-                        //         "channelname": 240,
-                        //         "modifiedby": 120,
-                        //         "gatepassno": 120,
-                        //         "epsno": 120,
-                        //         "GatePassDate": 120,
-                        //         "status": 120,
-                        //         "exporttapecode": 120,
-                        //         "VoucherDate": 120,
-                        //         "record": 120
-                        //       }
-                        //     : {
-                        //         "voucherNumber": 120,
-                        //         "description": 240,
-                        //         "tapeID": 120,
-                        //         "partyName": 240,
-                        //         "programName": 240,
-                        //         "channelName": 240,
-                        //         "modifiedBy": 120,
-                        //         "gatePassNo": 120,
-                        //         "epsNo": 120,
-                        //         "GatePassDate": 120,
-                        //         "status": 120,
-                        //         "exportTapeCode": 120,
-                        //         "VoucherDate": 180,
-                        //         "record": 120,
-                        //         "yearcode": 120
-                        //       },
-                        // witdthSpecificColumn:
-                        //     Get.find<HomeController>().getGridWidthByKey(
-                        //   userGridSettingList:
-                        //       controller.userGridSetting1?.value,
-                        // ),
-                      );
-                    }),
+                    child: GetBuilder<AuditCancellationController>(
+                        id: "grid",
+                        builder: (controller) {
+                          return Container(
+                            child: (controller.cancellationRetrieveModel != null &&
+                                controller.cancellationRetrieveModel?.infoCancellationBookingList !=
+                                    null &&
+                                controller.cancellationRetrieveModel?.infoCancellationBookingList
+                                    ?.canDisplayDetails !=
+                                    null &&
+                                controller.cancellationRetrieveModel?.infoCancellationBookingList
+                                    ?.canDisplayDetails
+                                    ?.lstCancellations != null &&
+                                (controller.cancellationRetrieveModel?.infoCancellationBookingList
+                                    ?.canDisplayDetails
+                                    ?.lstCancellations?.length ?? 0) > 0
+                            ) ?
+                            DataGridFromMap3(
+                              showSrNo: true,
+                              hideCode: false,
+                              formatDate: false,
+                              columnAutoResize: true,
+                              doPasccal: true,
+                              minimumWidth: 180,
+                              colorCallback: (row) =>
+                              (row.row.cells
+                                  .containsValue(controller.stateManager?.currentCell))
+                                  ? Colors.deepPurple.shade200
+                                  : Colors.white,
+                              exportFileName: "Secondary Asrun Modification",
+                              mode: PlutoGridMode.normal,
+                              checkBoxColumnKey: const ["audited", "requested"],
+                              checkBoxStrComparison: true,
+                              noEditcheckBoxColumnKey: const ["audited", "requested"],
+                              onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent? event) {
+                                // dragSpotsDialog();
+                              },
+                              // hideKeys: const [],
+                              mapData: controller.cancellationRetrieveModel!
+                                  .infoCancellationBookingList!.canDisplayDetails
+                              !.lstCancellations!
+                                  .map((e) => e.toJson())
+                                  .toList(),
+                              // mapData: (controllerX.dataList)!,
+                              widthRatio: Get.width / 9 - 1,
+                              onload: (PlutoGridOnLoadedEvent load) {
+                                controller.stateManager = load.stateManager;
+                              },
+                            ) : Container(
+                              decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+                            ),
+                          );
+                        }),
                   ),
                   Get.find<HomeController>().getCommonButton(
-                    Routes.AUDIT_CANCELLATION,
-                    (btnName) {},
+                    Routes.R_O_AUDIT,
+                        (btnName) {
+                          if (btnName == "Save") {
+                            controller.saveFunCall();
+                          } else if (btnName == "Clear") {
+                            controller.clearAll();
+                          } else if (btnName == "Docs") {
+                            controller.docs();
+                          }
+                        },
                   ),
                 ],
               ),

@@ -617,6 +617,7 @@ class InputFields {
     int? maxLen,
     bool expands = false,
     bool titleInLeft = false,
+    Color? backgroundColor,
   }) {
     // var data = 0.obs;colo
     Color? colorFromResp;
@@ -660,6 +661,7 @@ class InputFields {
             Expanded(
               child: Container(
                 height: height ?? SizeDefine.heightInputField,
+                color: backgroundColor??Colors.white,
                 child: TextFormField(
                   expands: expands,
                   maxLines: expands ? null : 1,
