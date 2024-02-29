@@ -1475,13 +1475,41 @@ class ApiFactory {
   // static String get RO_AUDIT_RESCHEDULE_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/RescheduleCellDoubleClick";
   // static String get RO_AUDIT_CANCELLATION_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/CancellationCellDoubleClick";
   // static String get RO_AUDIT_DEAL_APPROVAL_CELL_DOUBLE_CLICK => "$BASE_URL/api/ROAuditStatus/DealApprovalCellDoubleClick";
-  static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_CLIENT => "$BASE_URL/api/ROAuditStatus/GetClient?SearchText=";
-  static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_AGENCY => "$BASE_URL/api/ROAuditStatus/GetAgency?SearchText=";
-  static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_BRAND => "$BASE_URL/api/ROAuditStatus/GetBrand?SearchText=";
-  static String get RO_AUDIT_AUDIT_DITION_POST => "$BASE_URL/api/ROAuditStatus/SaveShowBooking";
-  static String get RO_AUDIT_AUDIT_RESCHEDULE_MARK_AS_UN_AUDIT => "$BASE_URL/api/ROAuditStatus/UnAuditShowBooking";
-  static String get RO_AUDIT_AUDIT_CANCELLATION_SAVE => "$BASE_URL/api/ROAuditStatus/SaveCancellation";
-  static String get RO_AUDIT_AUDIT_RESCHEDULE_SAVE => "$BASE_URL/api/ROAuditStatus/SaveReschduleBooking";
+  static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_CLIENT =>
+      "$BASE_URL/api/ROAuditStatus/GetClient?SearchText=";
+  static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_AGENCY =>
+      "$BASE_URL/api/ROAuditStatus/GetAgency?SearchText=";
+  static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_BRAND =>
+      "$BASE_URL/api/ROAuditStatus/GetBrand?SearchText=";
+  static String get RO_AUDIT_AUDIT_DITION_POST =>
+      "$BASE_URL/api/ROAuditStatus/SaveShowBooking";
+  static String get RO_AUDIT_AUDIT_RESCHEDULE_MARK_AS_UN_AUDIT =>
+      "$BASE_URL/api/ROAuditStatus/UnAuditShowBooking";
+  static String get RO_AUDIT_AUDIT_CANCELLATION_SAVE =>
+      "$BASE_URL/api/ROAuditStatus/SaveCancellation";
+  static String get RO_AUDIT_AUDIT_RESCHEDULE_SAVE =>
+      "$BASE_URL/api/ROAuditStatus/SaveReschduleBooking";
 
+  /// ///////////////////////////  Transfer Data to SAP /////////////////////////
 
+  static String get TRANSFER_DATA_TO_SAP_ON_LOAD =>
+      "$BASE_URL/api/BillTransfer/GetLoad";
+  static String get TRANSFER_DATA_TO_SAP_DATE_LEAVE =>
+      "$BASE_URL/api/BillTransfer/DateLeave";
+  static String get TRANSFER_DATA_TO_SAP_BTN_TRANSFER =>
+      "$BASE_URL/api/BillTransfer/ButtonTransfer";
+
+  ///  /////////////////////// Email bill details ////////////////////////////
+
+  static String get EMAIL_BILL_DETAILS_ONLOAD =>
+      "$BASE_URL/api/EmailBillDetails/Load";
+
+  static String get EMAIL_BILL_DETAILS_GENERATE =>
+      "$BASE_URL/api/EmailBillDetails/Generate";
+
+  static String get EMAIL_BILL_DETAILS_BILLS =>
+      "$BASE_URL/api/EmailBillDetails/Bills";
+
+  static String get EMAIL_BILL_DETAILS_GET_BILL_FILES =>
+      "$BASE_URL/api/EmailBillDetails/GetBillFiles";
 }

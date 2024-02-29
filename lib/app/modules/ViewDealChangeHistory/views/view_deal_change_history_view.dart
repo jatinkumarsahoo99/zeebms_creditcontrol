@@ -109,6 +109,7 @@ class ViewDealChangeHistoryView
                         controller.getDealHistory();
                       },
                       showIcon: false,
+                      fontSize: 13,
                     ),
                   ),
                 ],

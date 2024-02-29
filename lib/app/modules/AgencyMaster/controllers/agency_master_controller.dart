@@ -139,7 +139,7 @@ class AgencyMasterController extends GetxController {
       IBFDescController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].ibfcode ?? "";
       printNameController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].name2 ?? "";
       name3Controller.text = agencyDetail.retrieve?.lstAGencyMaster?[0].name3 ?? "";
-      // panNoController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].pa??"";
+      panNoController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].agencyShortName??"";
       gstNoController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].agencyGSTNumber ?? "";
       emailToController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].mailto ?? "";
       emailCCController.text = agencyDetail.retrieve?.lstAGencyMaster?[0].mailcc ?? "";

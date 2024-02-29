@@ -364,7 +364,51 @@ class ROAuditView extends StatelessWidget {
                   return SizedBox(
                     width: Get.width * 0.99,
                     height: Get.height * 0.8,
-                    child: Center(child: Text("data not found3")),
+                    child:(controllerX.roAuditRetrieveModel != null &&
+                        controllerX.roAuditRetrieveModel?.infoBindList != null &&
+                        controllerX.roAuditRetrieveModel?.infoBindList?.lstDealApprovals != null &&
+                        (controllerX.roAuditRetrieveModel?.infoBindList?.lstDealApprovals?.length??0) >0
+                    )? DataGridFromMap6(
+                      showSrNo: true,
+                      hideCode: false,
+                      formatDate: false,
+                      columnAutoResize: true,
+                      doPasccal: true,
+                      enableSort: true,
+                      colorCallback: (row) => (row.row.cells
+                          .containsValue(controllerX.stateManager?.currentCell))
+                          ? Colors.deepPurple.shade200
+                          : Colors.white,
+                      exportFileName: "Secondary Asrun Modification",
+                      mode: PlutoGridMode.normal,
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
+                        bool sta = await Get.toNamed(Routes.CLIENT_DEALS,
+                            arguments: {
+                              "LocationCode":controllerX.selectLocation?.key??"",
+                              "LocationName":controllerX.selectLocation?.value??"",
+                              "ChannelCode":controllerX.selectChannel?.key??"",
+                              "ChannelName":controllerX.selectChannel?.value??"",
+                              "clientName":event.cell.row.cells['clientname']?.value ?? "",
+                              "agencyName":event.cell.row.cells['agencyname']?.value ?? "",
+                              "brandName":event.cell.row.cells['Brandname']?.value ?? "",
+                              "DealNumber":event.cell.row.cells['DealNumber']?.value ?? "",
+                            }
+                        );
+                        if(sta){
+                          controllerX.showDetails(name: controllerX.selectTab.value);
+                        }
+                      },
+                      // hideKeys: const [],
+                      mapData: controllerX
+                          .roAuditRetrieveModel!.infoBindList!.lstDealApprovals!
+                          .map((e) => e.toJson())
+                          .toList(),
+                      // mapData: (controllerX.dataList)!,
+                      widthRatio: Get.width / 9 - 1,
+                      onload: (PlutoGridOnLoadedEvent load) {
+                        controllerX.stateManager = load.stateManager;
+                      },
+                    ): Center(child: Text("data not found")),
                   );
                 }),
           ),
@@ -381,7 +425,37 @@ class ROAuditView extends StatelessWidget {
                   return SizedBox(
                     width: Get.width * 0.99,
                     height: Get.height * 0.8,
-                    child: Center(child: Text("data not found4")),
+                    child:(controllerX.roAuditRetrieveModel != null &&
+                        controllerX.roAuditRetrieveModel?.infoBindList != null &&
+                        controllerX.roAuditRetrieveModel?.infoBindList?.lstPendingAudit != null &&
+                        (controllerX.roAuditRetrieveModel?.infoBindList?.lstPendingAudit?.length??0) >0
+                    )? DataGridFromMap6(
+                      showSrNo: true,
+                      hideCode: false,
+                      formatDate: false,
+                      columnAutoResize: true,
+                      doPasccal: true,
+                      enableSort: true,
+                      colorCallback: (row) => (row.row.cells
+                          .containsValue(controllerX.stateManager?.currentCell))
+                          ? Colors.deepPurple.shade200
+                          : Colors.white,
+                      exportFileName: "Secondary Asrun Modification",
+                      mode: PlutoGridMode.normal,
+                      onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
+
+                      },
+                      // hideKeys: const [],
+                      mapData: controllerX
+                          .roAuditRetrieveModel!.infoBindList!.lstPendingAudit!
+                          .map((e) => e.toJson())
+                          .toList(),
+                      // mapData: (controllerX.dataList)!,
+                      widthRatio: Get.width / 9 - 1,
+                      onload: (PlutoGridOnLoadedEvent load) {
+                        controllerX.stateManager = load.stateManager;
+                      },
+                    ): Center(child: Text("data not found")),
                   );
                 }),
           ),
