@@ -1411,12 +1411,6 @@ class ApiFactory {
       "$BASE_URL/api/EbillerBonusActivity/PageLoad";
   static String get EBILLS_BONUS_ACTIVITY_FETCH_AGENCY_LIST =>
       "$BASE_URL/api/EbillerBonusActivity/FetchAgencyList";
-  static String EBILLS_BONUS_ACTIVITY_RD_BILLING_MUMBAI_CHECK(
-          String rdBillingMumbai) =>
-      "$BASE_URL/api/EbillerBonusActivity/RdBillingMumbaiChk?RdBillingMumbai=$rdBillingMumbai";
-  static String EBILLS_BONUS_ACTIVITY_RD_BILLING_ASIA_CHECK(
-          String rdBillingMumbai) =>
-      "$BASE_URL/api/EbillerBonusActivity/RdBillingAsiaChk?RdBillingMumbai=$rdBillingMumbai";
   static String get EBILLS_BONUS_ACTIVITY_CREATE_XML =>
       "$BASE_URL/api/EbillerBonusActivity/btnCreateXML";
 
@@ -1475,6 +1469,35 @@ class ApiFactory {
       "$BASE_URL/api/ROAuditStatus/CancellationCellDoubleClick";
   static String get RO_AUDIT_DEAL_APPROVAL_CELL_DOUBLE_CLICK =>
       "$BASE_URL/api/ROAuditStatus/DealApprovalCellDoubleClick";
+  // static String get RO_AUDIT_ON_LOCATION_LEAVE => "$BASE_URL/api/ROAuditStatus/OnLocationLeave?LocationCode=";
+  // static String get RO_AUDIT_SHOW_DETAILS => "$BASE_URL/api/ROAuditStatus/ShowDetails";
+  // static String get RO_AUDIT_ADDITION_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/AdditionsCellDoubleClick";
+  // static String get RO_AUDIT_RESCHEDULE_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/RescheduleCellDoubleClick";
+  // static String get RO_AUDIT_CANCELLATION_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/CancellationCellDoubleClick";
+  // static String get RO_AUDIT_DEAL_APPROVAL_CELL_DOUBLE_CLICK => "$BASE_URL/api/ROAuditStatus/DealApprovalCellDoubleClick";
+  static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_CLIENT =>
+      "$BASE_URL/api/ROAuditStatus/GetClient?SearchText=";
+  static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_AGENCY =>
+      "$BASE_URL/api/ROAuditStatus/GetAgency?SearchText=";
+  static String get RO_AUDIT_AUDIT_RESCHEDULE_GET_BRAND =>
+      "$BASE_URL/api/ROAuditStatus/GetBrand?SearchText=";
+  static String get RO_AUDIT_AUDIT_DITION_POST =>
+      "$BASE_URL/api/ROAuditStatus/SaveShowBooking";
+  static String get RO_AUDIT_AUDIT_RESCHEDULE_MARK_AS_UN_AUDIT =>
+      "$BASE_URL/api/ROAuditStatus/UnAuditShowBooking";
+  static String get RO_AUDIT_AUDIT_CANCELLATION_SAVE =>
+      "$BASE_URL/api/ROAuditStatus/SaveCancellation";
+  static String get RO_AUDIT_AUDIT_RESCHEDULE_SAVE =>
+      "$BASE_URL/api/ROAuditStatus/SaveReschduleBooking";
+
+  /// ///////////////////////////  Transfer Data to SAP /////////////////////////
+
+  static String get TRANSFER_DATA_TO_SAP_ON_LOAD =>
+      "$BASE_URL/api/BillTransfer/GetLoad";
+  static String get TRANSFER_DATA_TO_SAP_DATE_LEAVE =>
+      "$BASE_URL/api/BillTransfer/DateLeave";
+  static String get TRANSFER_DATA_TO_SAP_BTN_TRANSFER =>
+      "$BASE_URL/api/BillTransfer/ButtonTransfer";
 
   ///  /////////////////////// Email bill details ////////////////////////////
 

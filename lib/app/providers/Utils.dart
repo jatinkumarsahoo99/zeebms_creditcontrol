@@ -44,6 +44,52 @@ class Utils {
     return formatter;
   }
 
+  static toDateFormat6(String? date) {
+    String? formatter = "";
+    if (date != null && date != "") {
+      try{
+        formatter = DateFormat("dd-MMM-yyyy").format(
+            DateFormat("dd-MM-yyyy")
+                .parse((date ?? DateTime.now()).toString()));
+      }catch(e){
+        formatter = "";
+      }
+    }
+    // log(">>>>>>"+formatter.toString());
+    return formatter;
+  }
+
+  static bool checkFromAndToDateIsCorrectOrder({String ? fromDate,String ? toDate}){
+    try {
+      if (fromDate != null && fromDate != "" && toDate != "" && toDate !=  null) {
+        if(DateFormat('dd-MM-yyyy').parse(fromDate).isAfter(DateFormat('dd-MM-yyyy').parse(toDate))){
+          return true;
+        }else{
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }catch(e){
+      return false;
+    }
+  }
+
+  static toDateFormat5(String? date) {
+    String? formatter = "";
+    if (date != null && date != "") {
+      try{
+        formatter = DateFormat("dd-MM-yyyy").format(
+            DateFormat("MM/dd/yyyy HH:mm:ss")
+                .parse((date ?? DateTime.now()).toString()));
+      }catch(e){
+        formatter = "";
+      }
+    }
+    // log(">>>>>>"+formatter.toString());
+    return formatter;
+  }
+
   static String getMMDDYYYYFromDDMMYYYYInString1(String? ddMMYYYY) {
     if (ddMMYYYY != null && ddMMYYYY != "") {
       return DateFormat("MM/dd/yyyy")

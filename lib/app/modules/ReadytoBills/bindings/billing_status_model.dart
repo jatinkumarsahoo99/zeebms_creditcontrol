@@ -28,7 +28,7 @@ class Billing {
   bool? schedulingClearance;
   bool? finalCheck;
   bool? readyToBill;
-  dynamic remark;
+  String? remark;
 
   Billing(
       {this.telecastDate,
@@ -48,7 +48,7 @@ class Billing {
     schedulingClearance = json["schedulingClearance"];
     finalCheck = json["finalCheck"];
     readyToBill = json["readyToBill"];
-    remark = json["remark"];
+    remark = json["remark"] ?? "";
   }
 
   Map<String, dynamic> toJson() {

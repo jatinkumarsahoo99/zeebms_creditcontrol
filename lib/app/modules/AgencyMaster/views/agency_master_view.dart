@@ -339,7 +339,7 @@ class AgencyMasterView extends StatelessWidget {
                                             ?.lstClientAgency != null &&
                                         (controllerX.agencyMasterRetrieveModel?.retrieve
                                             ?.lstClientAgency?.length ?? 0) > 0
-                                    ) ? DataGridFromMap(
+                                    ) ? DataGridFromMap3(
                                       showSrNo: true,
                                       hideCode: false,
                                       formatDate: false,

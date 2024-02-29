@@ -54,6 +54,7 @@ abstract class Routes {
   static const AUDIT_BOOKINGS = _Paths.AUDIT_BOOKINGS;
   static const AUDIT_RESCHEDULE = _Paths.AUDIT_RESCHEDULE;
   static const AUDIT_CANCELLATION = _Paths.AUDIT_CANCELLATION;
+  static const BILL_TRANSFER = _Paths.BILL_TRANSFER;
 }
 
 abstract class RoutesList {
@@ -92,6 +93,11 @@ abstract class RoutesList {
     _Paths.INVOICE_REVISION,
     _Paths.UNDO_CANCELATION,
     _Paths.PAYROUTE_CATEGORY_MASTER,
+    _Paths.AUDIT_BOOKINGS,
+    _Paths.AUDIT_CANCELLATION,
+    _Paths.R_O_AUDIT,
+    _Paths.AUDIT_RESCHEDULE,
+    _Paths.BILL_TRANSFER,
   ];
 }
 
@@ -143,7 +149,8 @@ abstract class _Paths {
   // static const L_M_S_MASTER_REPORT_NEW = '/l-m-s-master-report-new';
   static const SALES_EXECUTIVE_MASTER = '/frmExecutiveMaster';
   static const EMAIL_BILL_DETAILS = '/frmBilling';
-  static const AUDIT_BOOKINGS = '/audit-bookings';
-  static const AUDIT_RESCHEDULE = '/audit-reschedule';
-  static const AUDIT_CANCELLATION = '/audit-cancellation';
+  static const AUDIT_BOOKINGS = '/FrmAuditAddition';
+  static const AUDIT_RESCHEDULE = '/FrmAuditReschedules';
+  static const AUDIT_CANCELLATION = '/FrmAuditCancellation';
+  static const BILL_TRANSFER = '/frmBillTransfer';
 }

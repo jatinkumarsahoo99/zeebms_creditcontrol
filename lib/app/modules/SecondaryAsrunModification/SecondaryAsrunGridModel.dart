@@ -84,7 +84,7 @@ class LstAsRunBookingDetails {
   String? scheduleTime;
   String? telecastTime;
   String? rosTimeBand;
-  int? spotAmount;
+  String? spotAmount;
   int? bookingdetailcode;
   String? clientName;
   String? agencyName;
@@ -160,7 +160,7 @@ class LstAsRunBookingDetails {
     scheduleTime = json['scheduleTime'];
     telecastTime = json['telecastTime'];
     rosTimeBand = json['rosTimeBand'];
-    spotAmount = json['spotAmount'];
+    spotAmount = (json['spotAmount']??"0.00").toString();
     bookingdetailcode = json['bookingdetailcode'];
     clientName = json['clientName'];
     agencyName = json['agencyName'];

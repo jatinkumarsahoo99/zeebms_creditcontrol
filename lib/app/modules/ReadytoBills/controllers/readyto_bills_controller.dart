@@ -28,6 +28,7 @@ class ReadytoBillsController extends GetxController {
   var isSelectecRows = false.obs;
   var isFiltter = false.obs;
   int lastSelectedIdx = 0;
+  var isTrueFalseFiltter = true.obs;
 
   PlutoGridStateManager? billingGrid;
   PlutoGridStateManager? verifyGrid;
@@ -38,6 +39,7 @@ class ReadytoBillsController extends GetxController {
   BillingsValueModel? billingsValueModel;
 
   var billingsList = <Billing>[].obs;
+  var billingsList2 = <Billing>[].obs;
   var verifyList = <Verify>[].obs;
   var billingValueList = <Billings>[].obs;
 
@@ -131,7 +133,9 @@ class ReadytoBillsController extends GetxController {
               billingStatusModel =
                   BillingStatusModel.fromJson(map as Map<String, dynamic>);
               billingsList.clear();
+              billingsList2.clear();
               billingsList.value = billingStatusModel?.billing ?? [];
+              billingsList2.value = billingStatusModel?.billing ?? [];
             }
           });
     }
@@ -384,22 +388,23 @@ class ReadytoBillsController extends GetxController {
       });
     } else {
       var saveList = [];
-      for (var item in billingsList) {
-        if (item.telecastDate!.isNotEmpty) {
+      for (var i = 0; i < billingsList.length; i++) {
+        print(billingsList[i].remark!.isNotEmpty);
+        if (billingsList[i].remark!.isNotEmpty) {
           saveList.add({
             "channelCode": selectChannel.value?.key ?? "",
             "locationCode": selectLocation.value?.key ?? "",
-            "telecastDate": dateConvertToyyyyMMdd1(item.telecastDate!),
-            "remark": item.remark,
+            "telecastDate":
+                dateConvertToyyyyMMdd1(billingsList[i].telecastDate!),
+            "remark": billingsList[i].remark ?? "",
           });
         }
       }
-      var payload = {
-        "saveData": saveList,
-      };
       LoadingDialog.call();
       Get.find<ConnectorControl>().POSTMETHOD(
-          json: payload,
+          json: {
+            "saveData": saveList,
+          },
           api: ApiFactory.READY_TO_BILLS_SAVE,
           fun: (Map map) {
             Get.back();
@@ -592,6 +597,34 @@ class ReadytoBillsController extends GetxController {
         );
       },
     );
+  }
+
+  filterList() {
+    if (isTrueFalseFiltter.isTrue) {
+      isTrueFalseFiltter.value = false;
+      billingsList.sort((a, b) {
+        if (a.remark!.isEmpty != b.remark!.isEmpty) {
+          return a.remark!.isEmpty ? -1 : 1; // empty remarks first
+        } else if (a.asRunImport != b.asRunImport) {
+          return a.asRunImport! ? 1 : -1; // false first
+        } else {
+          return a.telecastDate!.compareTo(
+              b.telecastDate!); // Sort by date if val and remarks are the same
+        }
+      });
+    } else {
+      isTrueFalseFiltter.value = true;
+      billingsList.sort((a, b) {
+        if (a.remark!.isEmpty != b.remark!.isEmpty) {
+          return a.remark!.isEmpty ? 1 : -1; // empty remarks first
+        } else if (a.asRunImport != b.asRunImport) {
+          return a.asRunImport! ? -1 : 1; // false first
+        } else {
+          return a.telecastDate!.compareTo(
+              b.telecastDate!); // Sort by date if val and remarks are the same
+        }
+      });
+    }
   }
 
   formHandler(btn) {

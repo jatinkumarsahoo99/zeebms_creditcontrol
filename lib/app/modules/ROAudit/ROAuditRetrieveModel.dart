@@ -17,13 +17,95 @@ class ROAuditRetrieveModel {
     return data;
   }
 }
+class LstDealApproval {
+  String? clientname;
+  String? agencyname;
+  String? brandname;
+  String? dealNumber;
+  String? dealDate;
+  String? dealAmount;
+  String? createdBy;
+  String? createdOn;
+
+  LstDealApproval(
+      {this.clientname,
+        this.agencyname,
+        this.brandname,
+        this.dealNumber,
+        this.dealDate,
+        this.dealAmount,
+        this.createdBy,
+        this.createdOn});
+
+  LstDealApproval.fromJson(Map<String, dynamic> json) {
+    clientname = json['clientname'];
+    agencyname = json['agencyname'];
+    brandname = json['Brandname'];
+    dealNumber = json['DealNumber'];
+    dealDate = json['DealDate'];
+    dealAmount = json['DealAmount'];
+    createdBy = json['CreatedBy'];
+    createdOn = json['CreatedOn'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['clientname'] = this.clientname;
+    data['agencyname'] = this.agencyname;
+    data['Brandname'] = this.brandname;
+    data['DealNumber'] = this.dealNumber;
+    data['DealDate'] = this.dealDate;
+    data['DealAmount'] = this.dealAmount;
+    data['CreatedBy'] = this.createdBy;
+    data['CreatedOn'] = this.createdOn;
+    return data;
+  }
+}
+
+class LstPendingAudit {
+  String? locationcode;
+  String? channelCode;
+  String? locationname;
+  String? channelname;
+  String? scheduleDate;
+  String? spotamount;
+
+  LstPendingAudit(
+      {this.locationcode,
+        this.channelCode,
+        this.locationname,
+        this.channelname,
+        this.scheduleDate,
+        this.spotamount});
+
+  LstPendingAudit.fromJson(Map<String, dynamic> json) {
+    locationcode = json['locationcode'];
+    channelCode = json['ChannelCode'];
+    locationname = json['locationname'];
+    channelname = json['channelname'];
+    scheduleDate = json['ScheduleDate'];
+    spotamount = json['Spotamount'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['locationcode'] = this.locationcode;
+    data['ChannelCode'] = this.channelCode;
+    data['locationname'] = this.locationname;
+    data['channelname'] = this.channelname;
+    data['ScheduleDate'] = this.scheduleDate;
+    data['Spotamount'] = this.spotamount;
+    return data;
+  }
+}
+
 
 class InfoBindList {
-  dynamic lstPendingAudit;
+  List<LstPendingAudit>? lstPendingAudit;
   List<LstAdditions>? lstAdditions;
   List<LstCancellation>? lstCancellation;
   List<LstReschedule>? lstReschedule;
-  dynamic lstDealApprovals;
+  List<LstDealApproval>? lstDealApprovals;
 
   InfoBindList(
       {this.lstPendingAudit,
@@ -33,13 +115,22 @@ class InfoBindList {
         this.lstDealApprovals});
 
   InfoBindList.fromJson(Map<String, dynamic> json) {
-    lstPendingAudit = json['lstPendingAudit'];
+    // lstPendingAudit = json['lstPendingAudit'];
+
+    if (json['lstPendingAudit'] != null) {
+      lstPendingAudit = <LstPendingAudit>[];
+      json['lstPendingAudit'].forEach((v) {
+        lstPendingAudit!.add( LstPendingAudit.fromJson(v));
+      });
+    }
+
     if (json['lstAdditions'] != null) {
       lstAdditions = <LstAdditions>[];
       json['lstAdditions'].forEach((v) {
         lstAdditions!.add(new LstAdditions.fromJson(v));
       });
     }
+
     if (json['lstCancellation'] != null) {
       lstCancellation = <LstCancellation>[];
       json['lstCancellation'].forEach((v) {
@@ -52,12 +143,25 @@ class InfoBindList {
         lstReschedule!.add(new LstReschedule.fromJson(v));
       });
     }
-    lstDealApprovals = json['lstDealApprovals'];
+
+    if (json['lstDealApprovals'] != null) {
+      lstDealApprovals = <LstDealApproval>[];
+      json['lstDealApprovals'].forEach((v) {
+        lstDealApprovals!.add( LstDealApproval.fromJson(v));
+      });
+    }
+
+    // lstDealApprovals = json['lstDealApprovals'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['lstPendingAudit'] = this.lstPendingAudit;
+    // data['lstPendingAudit'] = this.lstPendingAudit;
+
+    if (this.lstPendingAudit != null) {
+      data['lstPendingAudit'] = this.lstPendingAudit!.map((v) => v.toJson()).toList();
+    }
+
     if (this.lstAdditions != null) {
       data['lstAdditions'] = this.lstAdditions!.map((v) => v.toJson()).toList();
     }
@@ -69,7 +173,11 @@ class InfoBindList {
       data['lstReschedule'] =
           this.lstReschedule!.map((v) => v.toJson()).toList();
     }
-    data['lstDealApprovals'] = this.lstDealApprovals;
+    if (this.lstDealApprovals != null) {
+      data['lstDealApprovals'] =
+          this.lstDealApprovals!.map((v) => v.toJson()).toList();
+    }
+    // data['lstDealApprovals'] = this.lstDealApprovals;
     return data;
   }
 }

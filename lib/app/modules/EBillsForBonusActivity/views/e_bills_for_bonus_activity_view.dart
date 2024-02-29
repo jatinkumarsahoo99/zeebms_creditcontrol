@@ -45,38 +45,43 @@ class EBillsForBonusActivityView
                                         decoration: BoxDecoration(
                                             border:
                                                 Border.all(color: Colors.grey)),
-                                        child: ListView.builder(
-                                          itemBuilder: (c, i) {
-                                            return Row(
-                                              children: [
-                                                Checkbox(
-                                                    value: controller
-                                                        .lstCheckListCompany![i]
-                                                        .isSelected,
-                                                    onChanged: (v) {
-                                                      controller
+                                        child: Focus(
+                                          skipTraversal: true,
+                                          child: ListView.builder(
+                                            itemBuilder: (c, i) {
+                                              return Row(
+                                                children: [
+                                                  Checkbox(
+                                                      value: controller
                                                           .lstCheckListCompany![
                                                               i]
-                                                          .isSelected = v;
-                                                      controller.update(
-                                                          ["checkListCompany"]);
-                                                    }),
-                                                Text(
-                                                  controller
-                                                          .lstCheckListCompany![
-                                                              i]
-                                                          .value ??
-                                                      "",
-                                                  style: const TextStyle(
-                                                      fontSize: 13),
-                                                )
-                                              ],
-                                            );
-                                          },
-                                          itemCount: controller
-                                                  .lstCheckListCompany
-                                                  ?.length ??
-                                              0,
+                                                          .isSelected,
+                                                      onChanged: (v) {
+                                                        controller
+                                                            .lstCheckListCompany![
+                                                                i]
+                                                            .isSelected = v;
+                                                        controller.update([
+                                                          "checkListCompany"
+                                                        ]);
+                                                      }),
+                                                  Text(
+                                                    controller
+                                                            .lstCheckListCompany![
+                                                                i]
+                                                            .value ??
+                                                        "",
+                                                    style: const TextStyle(
+                                                        fontSize: 13),
+                                                  )
+                                                ],
+                                              );
+                                            },
+                                            itemCount: controller
+                                                    .lstCheckListCompany
+                                                    ?.length ??
+                                                0,
+                                          ),
                                         ),
                                       )
                                     : Container(
@@ -172,7 +177,6 @@ class EBillsForBonusActivityView
                                                         .value ??
                                                     "",
                                                 onchange: (val) {
-                                                  print("Response>>>" + val);
                                                   controller.selectExportType
                                                       .value = val;
                                                 },
@@ -287,14 +291,11 @@ class EBillsForBonusActivityView
                                                     controller.selRadio.value ??
                                                         "",
                                                 onchange: (val) {
-                                                  // print("Response>>>" + val);
                                                   controller.selRadio.value =
                                                       val;
-                                                  if (val == "Domestic") {
-                                                    controller.domesticClick();
-                                                  } else {
-                                                    controller.asiaClick();
-                                                  }
+                                                  controller
+                                                      .sendingOptionRadioButtion(
+                                                          val);
                                                 },
                                               ),
                                             ),
@@ -372,16 +373,63 @@ class EBillsForBonusActivityView
                   ),
                   Expanded(
                       flex: 5,
-                      child: Container(
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey)),
-                      )),
+                      child: GetBuilder<EBillsForBonusActivityController>(
+                          init: controller,
+                          id: "agencyGroupList",
+                          builder: (context) {
+                            return (controller.agencyGroupList != null &&
+                                    (controller.agencyGroupList?.isNotEmpty ??
+                                        false))
+                                ? Container(
+                                    decoration: BoxDecoration(
+                                        border: Border.all(color: Colors.grey)),
+                                    child: Focus(
+                                      skipTraversal: true,
+                                      child: ListView.builder(
+                                        itemBuilder: (c, i) {
+                                          return Row(
+                                            children: [
+                                              Checkbox(
+                                                  value: controller
+                                                      .agencyGroupList![i]
+                                                      .isSelected,
+                                                  onChanged: (v) {
+                                                    controller
+                                                        .agencyGroupList![i]
+                                                        .isSelected = v;
+                                                    controller.update(
+                                                        ["agencyGroupList"]);
+                                                  }),
+                                              Text(
+                                                controller.agencyGroupList![i]
+                                                        .value ??
+                                                    "",
+                                                style: const TextStyle(
+                                                    fontSize: 13),
+                                              )
+                                            ],
+                                          );
+                                        },
+                                        itemCount: controller
+                                                .agencyGroupList?.length ??
+                                            0,
+                                      ),
+                                    ),
+                                  )
+                                : Container(
+                                    decoration: BoxDecoration(
+                                      border: Border.all(color: Colors.grey),
+                                    ),
+                                  );
+                          })),
                   Padding(
                     padding:
                         const EdgeInsets.only(top: 14.0, left: 10, right: 0),
                     child: FormButtonWrapper(
                       btnText: "Create TC Xml",
-                      callback: () {},
+                      callback: () {
+                        controller.createXML();
+                      },
                       showIcon: true,
                     ),
                   ),

@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:bms_creditcontrol/app/controller/ConnectorControl.dart';
 import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
 import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
+import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -12,9 +15,10 @@ class EBillsForBonusActivityController extends GetxController {
       toTEC = TextEditingController(),
       ccTEC = TextEditingController(),
       mailID = TextEditingController();
+  String? fromEmailId;
+  String? fromAsiaEmailId;
 
   List<DropDownValue>? lstCheckListCompany;
-  List<DropDownValue>? filterListCompany;
   List<DropDownValue>? agencyGroupList;
 
   RxnString selectExportType = RxnString("Group");
@@ -45,7 +49,9 @@ class EBillsForBonusActivityController extends GetxController {
           Get.back();
           if (map != null && map.containsKey('infoPageLoad')) {
             // Mail ID
-            mailID.text = map['infoPageLoad']['fromEmailId'];
+            fromEmailId = map['infoPageLoad']['fromEmailId'];
+            fromAsiaEmailId = map['infoPageLoad']['fromAsiaEmailId'];
+            mailID.text = fromEmailId ?? "";
             // Check LIst Company
             lstCheckListCompany = [];
             map['infoPageLoad']['lstCheckCompanyList'].forEach((e) {
@@ -59,21 +65,32 @@ class EBillsForBonusActivityController extends GetxController {
         });
   }
 
-  postAgency() {
-    filterListCompany = [];
-    for (var i = 0; i < lstCheckListCompany!.length; i++) {
-      if (lstCheckListCompany![i].isSelected == true) {
-        filterListCompany!.add(DropDownValue(
-          key: lstCheckListCompany![i].key,
-          value: lstCheckListCompany![i].value,
-        ));
-      }
+  sendingOptionRadioButtion(String val) {
+    switch (val) {
+      case 'Domestic':
+        mailID.text = fromEmailId ?? "";
+        break;
+      case 'ATL':
+        mailID.text = fromAsiaEmailId ?? "";
+        break;
+      default:
     }
-    if (filterListCompany!.isNotEmpty) {
+  }
+
+  postAgency() {
+    bool? isCheck;
+    lstCheckListCompany
+        ?.where((element) => element.isSelected ?? false)
+        .map((e) {
+      isCheck = true;
+      return true;
+    }).toList();
+    if (isCheck == true) {
       var payload = {
         "optAgency": selectExportType.value == "Agency" ? true : false,
         "tcStartDate": telecastPeriod.text,
-        "lstCompanyList": filterListCompany!
+        "lstCompanyList": lstCheckListCompany
+            ?.where((element) => element.isSelected ?? false)
             .map((e) => e.toJsonCustom('companyCode', 'companyName'))
             .toList(),
         "startDate": telecastPeriod2.text
@@ -85,20 +102,20 @@ class EBillsForBonusActivityController extends GetxController {
           json: payload,
           fun: (Map map) {
             Get.back();
-            if (map != null && map.containsKey('ebAgencyGroup')) {
+            if (map != null && map.containsKey('infoAgencyList')) {
               agencyGroupList = [];
-              if (map['ebAgencyGroup']['lstAgency'] != null) {
-                map['ebAgencyGroup']['lstAgency'].forEach((e) {
+              if (map['infoAgencyList']['lstAgency'] != null) {
+                map['infoAgencyList']['lstAgency'].forEach((e) {
                   agencyGroupList?.add(DropDownValue(
-                    key: e['agencycode'],
+                    key: e['code'].toString(),
                     value: e['name'],
                   ));
                 });
               } else {
-                if (map['ebAgencyGroup']['lstGroup'] != null) {
-                  map['ebAgencyGroup']['lstGroup'].forEach((e) {
+                if (map['infoAgencyList']['lstGroupAgency'] != null) {
+                  map['infoAgencyList']['lstGroupAgency'].forEach((e) {
                     agencyGroupList?.add(DropDownValue(
-                      key: e['groupcode'].toString(),
+                      key: e['code'].toString(),
                       value: e['name'],
                     ));
                   });
@@ -111,74 +128,114 @@ class EBillsForBonusActivityController extends GetxController {
     }
   }
 
-  domesticClick() {
-    LoadingDialog.call();
-    Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.EBILLS_BONUS_ACTIVITY_RD_BILLING_MUMBAI_CHECK('true'),
-        fun: (Map map) {
-          Get.back();
-          if (map != null && map.containsKey('infoBillingMum')) {
-            // Mail ID
-            mailID.text = map['infoBillingMum'];
-          }
-        });
-  }
-
-  asiaClick() {
-    LoadingDialog.call();
-    Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.EBILLS_BONUS_ACTIVITY_RD_BILLING_ASIA_CHECK('false'),
-        fun: (Map map) {
-          Get.back();
-          if (map != null && map.containsKey('infoBillingAsia')) {
-            // Mail ID
-            mailID.text = map['infoBillingAsia'];
-          }
-        });
-  }
-
   createXML() {
-    // if (filterListCompany!.isNotEmpty) {
-    var payload = {
-      "consolidated": "<integer>",
-      "lstCompanyList": filterListCompany!
-          .map((e) => e.toJsonCustom('companyCode', 'companyName'))
-          .toList(),
-      "txt_TcStartDT": telecastPeriod.text,
-      "txt_StartDT": telecastPeriod2.text,
-      "chk_Is_Consolidated": "<boolean>",
-      "lstAgent": [
-        {"code": "<string>", "name": "<string>"},
-      ],
-      "rDbt_Agency": selectExportType.value == "Agency" ? true : false,
-      "isBillExist": false,
-      "isTcExist": false,
-      "chk_OnlyBills": true,
-      "chk_OnlySummary": true,
-      "chk_TC": true,
-      "rdBtn_BillingMumbai": false,
-      "testMail": isTestMail.value,
-      "additionalTo": false,
-      "additionalCc": false,
-      "isConsolidated": false,
-      "code": "<string>",
-      "agencyNM": "<string>",
-      "txtAddTo": toTEC.text,
-      "txtAddCc": ccTEC.text,
-      "txt_FromMailID": mailID.text,
-      "companyName": "<string>"
-    };
-    LoadingDialog.call();
-    Get.find<ConnectorControl>().POSTMETHOD(
-        api: ApiFactory.EBILLS_BONUS_ACTIVITY_CREATE_XML,
-        json: payload,
-        fun: (Map map) {
-          Get.back();
-          if (map != null && map.containsKey('ebAgencyGroup')) {
-            update(["init", "agencyGroupList"]);
-          }
-        });
-    // }
+    bool? isCheck;
+    agencyGroupList?.where((element) => element.isSelected ?? false).map((e) {
+      isCheck = true;
+      return true;
+    }).toList();
+    if (isCheck == true) {
+      var payload = {
+        "consolidated": 0,
+        "lstCompanyList": lstCheckListCompany
+            ?.where((element) => element.isSelected ?? false)
+            .map((e) => e.toJsonCustom('companyCode', 'companyName'))
+            .toList(),
+        "txt_TcStartDT": telecastPeriod.text,
+        "txt_StartDT": telecastPeriod2.text,
+        "chk_Is_Consolidated": false,
+        "lstAgent": agencyGroupList
+            ?.where((element) => element.isSelected ?? false)
+            .map((e) => e.toJsonCustom('code', 'name'))
+            .toList(),
+        "rDbt_Agency": selectExportType.value == "Agency" ? true : false,
+        "isBillExist": true,
+        "isTcExist": true,
+        "chk_OnlyBills": false,
+        "chk_OnlySummary": false,
+        "chk_TC": true,
+        "rdBtn_BillingMumbai": selRadio.value == 'Domestic' ? true : false,
+        "testMail": isTestMail.value,
+        "additionalTo": false,
+        "additionalCc": false,
+        "isConsolidated": false,
+        "txtAddTo": toTEC.text,
+        "txtAddCc": ccTEC.text,
+        "txt_FromMailID": mailID.text,
+      };
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.EBILLS_BONUS_ACTIVITY_CREATE_XML,
+          json: payload,
+          fun: (Map map) async {
+            Get.back();
+            if (map != null && map.containsKey('infoCreateXml')) {
+              var tcXMLMessage = map['infoCreateXml']['tcXml']['message'];
+              var sendMailsMessage =
+                  map['infoCreateXml']['sendMails']['message'];
+
+              if (tcXMLMessage.contains('XML created successfully.')) {
+                String fileName = extractFileName(
+                    map['infoCreateXml']['tcXml']['ebillsTCpath']);
+                await FileSaver.instance.saveFile(
+                  name: (fileName),
+                  bytes: base64Decode(map['infoCreateXml']['tcXml']['tc']),
+                );
+                if (sendMailsMessage.contains('XML mailed successfully.')) {
+                  LoadingDialog.callDataSaved(
+                      msg: map['infoCreateXml']['sendMails']['message'],
+                      callback: () {
+                        LoadingDialog.callDataSaved(
+                            msg: map['infoCreateXml']['tcXml']['message'],
+                            callback: () {
+                              Get.back();
+                            });
+                      });
+                } else {
+                  LoadingDialog.showErrorDialog(
+                      map['infoCreateXml']['sendMails']['message'],
+                      callback: () {
+                    LoadingDialog.callDataSaved(
+                        msg: map['infoCreateXml']['tcXml']['message'],
+                        callback: () {
+                          Get.back();
+                        });
+                  });
+                }
+              } else {
+                if (sendMailsMessage.contains('XML mailed successfully.')) {
+                  LoadingDialog.callDataSaved(
+                      msg: map['infoCreateXml']['sendMails']['message'],
+                      callback: () {
+                        LoadingDialog.showErrorDialog(
+                            map['infoCreateXml']['tcXml']['message'],
+                            callback: () {
+                          Get.back();
+                        });
+                      });
+                } else {
+                  LoadingDialog.showErrorDialog(
+                      map['infoCreateXml']['sendMails']['message'],
+                      callback: () {
+                    LoadingDialog.showErrorDialog(
+                        map['infoCreateXml']['tcXml']['message'], callback: () {
+                      Get.back();
+                    });
+                  });
+                }
+              }
+
+              // update(["init", "agencyGroupList"]);
+            }
+          });
+    }
+  }
+
+  String extractFileName(String filePath) {
+    List<String> pathSegments = filePath.split(RegExp(r'[\\/\\\\]'));
+    String fileName = pathSegments.last;
+
+    return fileName;
   }
 
   manageBillingPeriod() {
