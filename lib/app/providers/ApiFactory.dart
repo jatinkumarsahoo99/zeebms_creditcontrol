@@ -822,15 +822,13 @@ class ApiFactory {
   static String get Client_Deal_LINK_DEAL_SAVE =>
       "$BASE_URL/api/ClientDeals/LinkDealSave";
 
-  static String get Client_Deal_SAVE =>
-      "$BASE_URL/api/ClientDeals/save";
+  static String get Client_Deal_SAVE => "$BASE_URL/api/ClientDeals/save";
 
   static String get Client_Deal_LINK_DEAL_COMPARE =>
       "$BASE_URL/api/ClientDeals/compare";
 
-  static String get Client_Deal_LINK_DEAL_Set_Values=>
+  static String get Client_Deal_LINK_DEAL_Set_Values =>
       "$BASE_URL/api/ClientDeals/setValues?eventCode=";
-
 
   /// ////////////////////////////////End Client Deals ////////////////////////////////////
   ///
@@ -1461,16 +1459,34 @@ class ApiFactory {
 
 /////////////////////////////// end: Invoice Revision ////////////////////////////////
   ///
-///
-///  /////////////////////// RO AUDIT ////////////////////////////
+  ///
+  ///  /////////////////////// RO AUDIT ////////////////////////////
 
   static String get RO_AUDIT_ON_LOAD => "$BASE_URL/api/ROAuditStatus/OnLoad";
-  static String get RO_AUDIT_ON_LOCATION_LEAVE => "$BASE_URL/api/ROAuditStatus/OnLocationLeave?LocationCode=";
-  static String get RO_AUDIT_SHOW_DETAILS => "$BASE_URL/api/ROAuditStatus/ShowDetails";
-  static String get RO_AUDIT_ADDITION_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/AdditionsCellDoubleClick";
-  static String get RO_AUDIT_RESCHEDULE_CELL_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/RescheduleCellDoubleClick";
-  static String get RO_AUDIT_CANCELLATION_DOUBLE_CLICK=> "$BASE_URL/api/ROAuditStatus/CancellationCellDoubleClick";
-  static String get RO_AUDIT_DEAL_APPROVAL_CELL_DOUBLE_CLICK => "$BASE_URL/api/ROAuditStatus/DealApprovalCellDoubleClick";
+  static String get RO_AUDIT_ON_LOCATION_LEAVE =>
+      "$BASE_URL/api/ROAuditStatus/OnLocationLeave?LocationCode=";
+  static String get RO_AUDIT_SHOW_DETAILS =>
+      "$BASE_URL/api/ROAuditStatus/ShowDetails";
+  static String get RO_AUDIT_ADDITION_CELL_DOUBLE_CLICK =>
+      "$BASE_URL/api/ROAuditStatus/AdditionsCellDoubleClick";
+  static String get RO_AUDIT_RESCHEDULE_CELL_DOUBLE_CLICK =>
+      "$BASE_URL/api/ROAuditStatus/RescheduleCellDoubleClick";
+  static String get RO_AUDIT_CANCELLATION_DOUBLE_CLICK =>
+      "$BASE_URL/api/ROAuditStatus/CancellationCellDoubleClick";
+  static String get RO_AUDIT_DEAL_APPROVAL_CELL_DOUBLE_CLICK =>
+      "$BASE_URL/api/ROAuditStatus/DealApprovalCellDoubleClick";
 
+  ///  /////////////////////// Email bill details ////////////////////////////
 
+  static String get EMAIL_BILL_DETAILS_ONLOAD =>
+      "$BASE_URL/api/EmailBillDetails/Load";
+
+  static String get EMAIL_BILL_DETAILS_GENERATE =>
+      "$BASE_URL/api/EmailBillDetails/Generate";
+
+  static String get EMAIL_BILL_DETAILS_BILLS =>
+      "$BASE_URL/api/EmailBillDetails/Bills";
+
+  static String get EMAIL_BILL_DETAILS_GET_BILL_FILES =>
+      "$BASE_URL/api/EmailBillDetails/GetBillFiles";
 }

@@ -1,3 +1,4 @@
+import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:bms_creditcontrol/widgets/input_fields.dart';
 import 'package:bms_creditcontrol/widgets/radio_row.dart';
 import 'package:flutter/cupertino.dart';
@@ -24,157 +25,144 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: SizedBox(
-          width: Get.width * 0.6,
-          child: Dialog(
-            insetPadding:
-                EdgeInsets.symmetric(horizontal: 40.0, vertical: 40.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                AppBar(
-                  title: Text('Email Bill Details'),
-                  centerTitle: true,
-                  backgroundColor: Colors.deepPurple,
-                ),
-                SizedBox(
-                  height: 5,
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            DateWithThreeTextField(
-                              title: "Date",
-                              mainTextController: TextEditingController(),
-                              widthRation: controllerX.widthRatio,
-                            ),
-                            SizedBox(
-                              width: 10,
-                            ),
-                            DropDownField.formDropDown1WidthMap(
-                              [],
-                              (value) {
-                                // controllerX.selectStation = value;
-                              },
-                              "Company",
-                              controllerX.widthRatio,
-                              // isEnable: controllerX.isEnable.value,
-                              // selected: controllerX.selectStation,
-                              dialogHeight: Get.height * controllerX.widthRatio,
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Obx(() {
-                          return Expanded(
-                            child: Container(
-                              // decoration: BoxDecoration(border: Border.all(color: Colors.green)),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CupertinoSlidingSegmentedControl<Mode>(
-                                    children: <Mode, Widget>{
-                                      Mode.bills: SizedBox(
-                                          width: controllerX.widthOfTab,
-                                          child: Text(
-                                            'Bills',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizeDefine.fontSizeTab + 2,
-                                                color: Colors.black),
-                                          )),
-                                      Mode.body: SizedBox(
-                                          width: controllerX.widthOfTab,
-                                          child: Text(
-                                            'Body',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize:
-                                                    SizeDefine.fontSizeTab + 2,
-                                                color: Colors.black),
-                                          )),
-                                    },
-                                    onValueChanged: (Mode? value) {
-                                      print("Index1 is>>" + value.toString());
-                                      controllerX.calendarView.value = value!;
-                                    },
-                                    groupValue: controllerX.calendarView.value,
-                                  ),
-                                  SizedBox(
-                                    height: 4,
-                                  ),
-                                  Divider(
-                                    color: Colors.black,
-                                  ),
-                                  controllerX.calendarView == Mode.bills
-                                      ? getBills()
-                                      : getBody()
-                                ],
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Expanded(
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: GetBuilder<EmailBillDetailsController>(
+                    init: controllerX,
+                    builder: (builder) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              DateWithThreeTextField(
+                                title: "Date",
+                                mainTextController: controllerX.tecDate,
+                                widthRation: controllerX.widthRatio,
                               ),
-                            ),
-                          );
-                        }),
-                      ],
-                    ),
-                  ),
-                ),
-                GetBuilder<HomeController>(
-                    id: "buttons",
-                    init: Get.find<HomeController>(),
-                    builder: (controller) {
-                      try {
-                        PermissionModel formPermissions =
-                            Get.find<MainController>()
-                                .permissionList!
-                                .lastWhere((element) =>
-                                    element.appFormName == "frmBilling");
-                        if (controller.buttons != null) {
-                          return Padding(
-                            padding:
-                                const EdgeInsets.only(left: 5.0, bottom: 5),
-                            child: Wrap(
-                              spacing: 5,
-                              runSpacing: 15,
-                              alignment: WrapAlignment.start,
-                              children: [
-                                for (var btn in controller.buttons!)
-                                  FormButtonWrapper(
-                                    btnText: btn["name"],
-                                    callback: Utils.btnAccessHandler2(
-                                                btn['name'],
-                                                controller,
-                                                formPermissions) ==
-                                            null
-                                        ? null
-                                        : () => controllerX.formHandler(
-                                              btn['name'],
-                                            ),
-                                  )
-                              ],
-                            ),
-                          );
-                        } else {
-                          return Container();
-                        }
-                      } catch (e) {
-                        return const Text("No Access");
-                      }
-                    })
-              ],
-            ),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Obx(() => DropDownField.formDropDown1WidthMap(
+                                    controllerX.companyList.value,
+                                    (value) {
+                                      controllerX.selectedCompany = value;
+                                      controllerX.onGenerate();
+                                      // controllerX.selectStation = value;
+                                    },
+                                    "Company",
+                                    controllerX.widthRatio,
+                                    // isEnable: controllerX.isEnable.value,
+                                    // selected: controllerX.selectStation,
+                                    dialogHeight: 250,
+                                  )),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Obx(() {
+                            return Expanded(
+                              child: Container(
+                                // decoration: BoxDecoration(border: Border.all(color: Colors.green)),
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CupertinoSlidingSegmentedControl<Mode>(
+                                      children: <Mode, Widget>{
+                                        Mode.bills: SizedBox(
+                                            width: controllerX.widthOfTab,
+                                            child: Text(
+                                              'Bills',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      SizeDefine.fontSizeTab +
+                                                          2,
+                                                  color: Colors.black),
+                                            )),
+                                        Mode.body: SizedBox(
+                                            width: controllerX.widthOfTab,
+                                            child: Text(
+                                              'Body',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize:
+                                                      SizeDefine.fontSizeTab +
+                                                          2,
+                                                  color: Colors.black),
+                                            )),
+                                      },
+                                      onValueChanged: (Mode? value) {
+                                        print("Index1 is>>" + value.toString());
+                                        controllerX.calendarView.value = value!;
+                                      },
+                                      groupValue:
+                                          controllerX.calendarView.value,
+                                    ),
+                                    SizedBox(
+                                      height: 4,
+                                    ),
+                                    Divider(
+                                      color: Colors.black,
+                                    ),
+                                    controllerX.calendarView == Mode.bills
+                                        ? getBills()
+                                        : getBody()
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                        ],
+                      );
+                    })),
           ),
-        ),
+          GetBuilder<HomeController>(
+              id: "buttons",
+              init: Get.find<HomeController>(),
+              builder: (controller) {
+                try {
+                  PermissionModel formPermissions = Get.find<MainController>()
+                      .permissionList!
+                      .lastWhere(
+                          (element) => element.appFormName == "frmBilling");
+                  if (controller.buttons != null) {
+                    return Padding(
+                      padding: const EdgeInsets.only(left: 5.0, bottom: 5),
+                      child: Wrap(
+                        spacing: 5,
+                        runSpacing: 15,
+                        alignment: WrapAlignment.start,
+                        children: [
+                          for (var btn in controller.buttons!)
+                            FormButtonWrapper(
+                              btnText: btn["name"],
+                              callback: Utils.btnAccessHandler2(btn['name'],
+                                          controller, formPermissions) ==
+                                      null
+                                  ? null
+                                  : () => controllerX.formHandler(
+                                        btn['name'],
+                                      ),
+                            )
+                        ],
+                      ),
+                    );
+                  } else {
+                    return Container();
+                  }
+                } catch (e) {
+                  return const Text("No Access");
+                }
+              })
+        ],
       ),
     );
   }
@@ -231,7 +219,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                   ),
                 ),
                 SizedBox(
-                  width: Get.width * 0.079,
+                  // width: Get.width * 0.079,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
@@ -307,16 +295,20 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
             Expanded(
               child: Row(
                 children: [
+                  // Expanded(
+                  //   child: Container(
+                  //     // height: 350,
+                  //     // width: 400,
+                  //     decoration: BoxDecoration(
+                  //         borderRadius: BorderRadius.all(Radius.circular(0)),
+                  //         border: Border.all(color: Colors.black26)),
+                  //     child: Container(),
+                  //   ),
+                  // ),
                   Expanded(
-                    child: Container(
-                      // height: 350,
-                      // width: 400,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(0)),
-                          border: Border.all(color: Colors.black26)),
-                      child: Container(),
-                    ),
-                  ),
+                      child: Obx(() => DataGridFromMap3(
+                            mapData: controllerX.gridData.value,
+                          ))),
                   SizedBox(
                     width: 10,
                   ),
@@ -328,6 +320,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                         callback: () => controllerX.formHandler(
                           "Summary",
                         ),
+                        showIcon: false,
                       ),
                       SizedBox(
                         height: 4,
@@ -337,6 +330,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                         callback: () => controllerX.formHandler(
                           "Bills",
                         ),
+                        showIcon: false,
                       ),
                       SizedBox(
                         height: 4,
@@ -346,6 +340,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                         callback: () => controllerX.formHandler(
                           "TC",
                         ),
+                        showIcon: false,
                       ),
                       SizedBox(
                         height: 4,
@@ -355,6 +350,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                         callback: () => controllerX.formHandler(
                           "test",
                         ),
+                        showIcon: false,
                       ),
                       SizedBox(
                         height: 4,
@@ -364,6 +360,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                         callback: () => controllerX.formHandler(
                           "Save Config",
                         ),
+                        showIcon: false,
                       ),
                       SizedBox(
                         height: 4,
@@ -373,6 +370,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                         callback: () => controllerX.formHandler(
                           "Load Config",
                         ),
+                        showIcon: false,
                       ),
                       SizedBox(
                         height: 4,
@@ -382,6 +380,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                         callback: () => controllerX.formHandler(
                           "Send All Together",
                         ),
+                        showIcon: false,
                       ),
                     ],
                   )
