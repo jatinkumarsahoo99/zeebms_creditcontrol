@@ -184,6 +184,7 @@ class BillTransferView extends GetView<BillTransferController> {
                           return FormButtonWrapper(
                             btnText: "Transfer",
                             callback: () {
+                              controllerX.transferApiCall();
                               // controllerX.showDetails(name: controllerX.selectTab.value);
                             },
                             showIcon: true,
