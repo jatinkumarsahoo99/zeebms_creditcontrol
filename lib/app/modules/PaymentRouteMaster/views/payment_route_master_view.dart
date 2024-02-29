@@ -118,6 +118,7 @@ class PaymentRouteMasterView extends GetView<PaymentRouteMasterController> {
                           controller: controller.mainCompanyShare,
                           width: .34,
                           titleInLeft: true,
+                          maxLen: 200,
                           padLeft: 12,
                           inputformatters: [
                             FilteringTextInputFormatter.digitsOnly
@@ -128,6 +129,7 @@ class PaymentRouteMasterView extends GetView<PaymentRouteMasterController> {
                           controller: controller.collectionAgentShare,
                           width: .34,
                           titleInLeft: true,
+                          maxLen: 200,
                           inputformatters: [
                             FilteringTextInputFormatter.digitsOnly
                           ],
@@ -138,6 +140,7 @@ class PaymentRouteMasterView extends GetView<PaymentRouteMasterController> {
                           width: .34,
                           titleInLeft: true,
                           padLeft: 50,
+                          maxLen: 200,
                           inputformatters: [
                             FilteringTextInputFormatter.digitsOnly
                           ],
@@ -272,7 +275,7 @@ class PaymentRouteMasterView extends GetView<PaymentRouteMasterController> {
                                 controller
                                     .getServiceChannel(data.key.toString());
                               },
-                              "Loaction",
+                              "Location",
                               .39,
                               titleInLeft: true,
                               padLeft: 10,
@@ -325,6 +328,7 @@ class PaymentRouteMasterView extends GetView<PaymentRouteMasterController> {
                                           value.stateManager;
                                     },
                                     exportFileName: "Payment Route Master",
+                                    hideCode: false,
                                     widthSpecificColumn:
                                         Get.find<HomeController>()
                                             .getGridWidthByKey(

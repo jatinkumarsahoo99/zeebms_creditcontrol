@@ -642,7 +642,7 @@ class InputFields {
         if (showTitle && !titleInLeft) ...{
           LabelText.style(
             hint: hintTxt,
-            txtColor: (isEnable ?? true) ? Colors.black : Colors.grey,
+            txtColor: Colors.black,
           ),
         },
         Row(
@@ -652,7 +652,7 @@ class InputFields {
                 width: titleSizeboxWidth,
                 child: LabelText2.style(
                   hint: hintTxt,
-                  txtColor: (isEnable ?? true) ? Colors.black : Colors.grey,
+                  txtColor: Colors.black,
                   // titleSizeboxWidth: titleSizeboxWidth
                 ),
               ),

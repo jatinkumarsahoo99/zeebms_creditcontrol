@@ -394,6 +394,7 @@ class PaymentRouteMasterController extends GetxController {
     selectPayRouteCategory = null;
     isToBeBilled.value = false;
     isActive.value = false;
+    billingPayRoute.clear();
     update(['routeUpdate']);
     payRouteNameFN.requestFocus();
   }
