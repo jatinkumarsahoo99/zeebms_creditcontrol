@@ -2,7 +2,9 @@ import 'dart:html';
 
 import 'package:bms_creditcontrol/app/controller/HomeController.dart';
 import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
+import 'package:bms_creditcontrol/app/providers/DataGridMenu.dart';
 import 'package:bms_creditcontrol/app/routes/app_pages.dart';
+import 'package:bms_creditcontrol/widgets/DataGridShowOnly.dart';
 import 'package:bms_creditcontrol/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_creditcontrol/widgets/dropdown.dart';
 import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
@@ -63,7 +65,7 @@ class AgencyEmbargoView extends GetView<AgencyEmbargoController> {
                             autoFocus: true,
                           ),
                           DateWithThreeTextField(
-                            title: "Billing Period",
+                            title: "Date",
                             mainTextController: controller.date,
                             widthRation: .140,
                             onFocusChange: (date) {
@@ -119,7 +121,7 @@ class AgencyEmbargoView extends GetView<AgencyEmbargoController> {
                                           border:
                                               Border.all(color: Colors.grey)),
                                     )
-                                  : DataGridFromMap3(
+                                  : DataGridShowOnlyKeys(
                                       mapData: controller.embargoList.value
                                           .map((e) => e.toJson())
                                           .toList(),
@@ -127,6 +129,7 @@ class AgencyEmbargoView extends GetView<AgencyEmbargoController> {
                                         controller.embargoGrid =
                                             value.stateManager;
                                       },
+                                      formatDate: false,
                                       colorCallback: (colorEvent) {
                                         if (colorEvent.row.cells.containsValue(
                                             controller
@@ -143,9 +146,12 @@ class AgencyEmbargoView extends GetView<AgencyEmbargoController> {
                                             .row.cells['agencycode']?.value);
                                       },
                                       exportFileName: "Agency Embargo",
-                                      widthSpecificColumn:
-                                          Get.find<HomeController>()
-                                              .getGridWidthByKey(
+                                      extraList: [
+                                        SecondaryShowDialogModel(
+                                            'Clear Embargo', () {})
+                                      ],
+                                      keysWidths: Get.find<HomeController>()
+                                          .getGridWidthByKey(
                                         userGridSettingList:
                                             controller.userGridSetting1?.value,
                                         key: 'key1',

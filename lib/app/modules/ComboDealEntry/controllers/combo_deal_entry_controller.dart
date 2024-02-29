@@ -142,12 +142,12 @@ class ComboDealEntryController extends GetxController {
   }
 
   getDealContent(dealcode, locationcode, channelcode, dealnumber) {
-    LoadingDialog.call();
+    // LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.COMBO_DEAL_ENTRY_GET_DEALS_CONTENT_CLICK(
             dealcode, locationcode, channelcode, dealnumber),
         fun: (Map map) {
-          Get.back();
+          // Get.back();
           if (map != null && map.containsKey('linkedDeals')) {
             // tabelLinkDealModel =
             //     TabelLinkDealModel.fromJson(map as Map<String, dynamic>);

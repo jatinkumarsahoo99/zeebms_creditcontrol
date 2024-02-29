@@ -51,7 +51,7 @@ class AsRunDetails {
   String? segmentnumber;
   String? caption;
   String? telecastDuration;
-  String? fpCtime;
+  dynamic fpCtime;
   dynamic bookingNumber;
   dynamic bookingDetailcode;
   dynamic commercialCode;
@@ -92,7 +92,7 @@ class AsRunDetails {
     _data["segmentnumber"] = segmentnumber;
     _data["caption"] = caption;
     _data["telecastDuration"] = dateConvertToddMMyyyy(telecastDuration!);
-    _data["fpCtime"] = dateConvertToddMMyyyy(fpCtime!);
+    _data["fpCtime"] = fpCtime;
     _data["bookingNumber"] = bookingNumber;
     _data["bookingDetailcode"] = bookingDetailcode;
     _data["commercialCode"] = commercialCode;
