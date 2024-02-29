@@ -3822,7 +3822,7 @@ class DropDownField {
             hint,
             style: TextStyle(
               fontSize: SizeDefine.labelSize1,
-              color: textColor,
+              color: Colors.black,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -3838,7 +3838,7 @@ class DropDownField {
                   hint,
                   style: TextStyle(
                     fontSize: SizeDefine.labelSize1,
-                    color: textColor,
+                    color: Colors.black,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
