@@ -97,6 +97,7 @@ abstract class RoutesList {
     _Paths.AUDIT_CANCELLATION,
     _Paths.R_O_AUDIT,
     _Paths.AUDIT_RESCHEDULE,
+    _Paths.BILL_TRANSFER,
   ];
 }
 

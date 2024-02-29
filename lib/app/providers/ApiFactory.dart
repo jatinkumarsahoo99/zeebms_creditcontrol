@@ -1484,4 +1484,11 @@ class ApiFactory {
   static String get RO_AUDIT_AUDIT_RESCHEDULE_SAVE => "$BASE_URL/api/ROAuditStatus/SaveReschduleBooking";
 
 
+  /// ///////////////////////////  Transfer Data to SAP /////////////////////////
+
+  static String get TRANSFER_DATA_TO_SAP_ON_LOAD => "$BASE_URL/api/BillTransfer/GetLoad";
+  static String get TRANSFER_DATA_TO_SAP_DATE_LEAVE => "$BASE_URL/api/BillTransfer/DateLeave";
+  static String get TRANSFER_DATA_TO_SAP_BTN_TRANSFER => "$BASE_URL/api/BillTransfer/ButtonTransfer";
+
+
 }

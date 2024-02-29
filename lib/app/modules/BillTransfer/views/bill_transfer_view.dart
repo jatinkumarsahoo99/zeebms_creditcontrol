@@ -14,9 +14,14 @@ import '../controllers/bill_transfer_controller.dart';
 class BillTransferView extends GetView<BillTransferController> {
   BillTransferView({Key? key}) : super(key: key);
 
+  BillTransferController controllerX =
+  Get.put<BillTransferController>(BillTransferController());
+
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
+    var size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       body: Center(
         child: SizedBox(
@@ -35,39 +40,43 @@ class BillTransferView extends GetView<BillTransferController> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Column(
-                        // mainAxisSize: MainAxisSize.min,
+                      // mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          DropDownField.formDropDown1WidthMap(
-                            [],
-                            (value) {
-                              // controllerX.selectLocation = value;
-                              // controllerX.getChannel(locationCode: value.key);
-                            },
-                            "Location",
-                            .425,
-                            // isEnable: controllerX.isEnable.value,
-                            // selected: controllerX.selectLocation,
-                            dialogHeight: Get.height * .4,
-                            autoFocus: true,
-                          ),
+                          Obx(() {
+                            return DropDownField.formDropDown1WidthMap(
+                              controllerX.locationList.value ?? [],
+                                  (value) {
+                                controllerX.selectLocation = value;
+                                // controllerX.getChannel(locationCode: value.key);
+                              },
+                              "Location",
+                              .425,
+                              // isEnable: controllerX.isEnable.value,
+                              selected: controllerX.selectLocation,
+                              dialogHeight: Get.height * .4,
+                              autoFocus: true,
+                            );
+                          }),
                           SizedBox(
                             height: 4,
                           ),
-                          DropDownField.formDropDown1WidthMap(
-                            [],
-                            (value) {
-                              // controllerX.selectLocation = value;
-                              // controllerX.getChannel(locationCode: value.key);
-                            },
-                            "Company",
-                            .425,
-                            // isEnable: controllerX.isEnable.value,
-                            // selected: controllerX.selectLocation,
-                            dialogHeight: Get.height * .4,
-                            autoFocus: true,
-                          ),
+                          Obx(() {
+                            return DropDownField.formDropDown1WidthMap(
+                              controllerX.companyList.value ?? [],
+                                  (value) {
+                                controllerX.selectCompany = value;
+                                // controllerX.getChannel(locationCode: value.key);
+                              },
+                              "Company",
+                              .425,
+                              // isEnable: controllerX.isEnable.value,
+                              selected: controllerX.selectCompany,
+                              dialogHeight: Get.height * .4,
+                              autoFocus: true,
+                            );
+                          }),
                           SizedBox(
                             height: 4,
                           ),
@@ -78,15 +87,18 @@ class BillTransferView extends GetView<BillTransferController> {
                               children: [
                                 DateWithThreeTextField(
                                   title: "From Date",
-                                  mainTextController: TextEditingController(),
+                                  mainTextController: controllerX.fromDateController,
                                   widthRation: 0.2,
                                   isEnable: true,
                                 ),
                                 DateWithThreeTextField(
                                   title: "To Date",
-                                  mainTextController: TextEditingController(),
+                                  mainTextController: controllerX.toDateController,
                                   widthRation: 0.2,
                                   isEnable: true,
+                                  onFocusChange: (val) {
+                                    controllerX.toDateLeave();
+                                  },
                                 ),
                               ],
                             ),
@@ -114,37 +126,41 @@ class BillTransferView extends GetView<BillTransferController> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 InputFields.formField1WidthBox(
-                                    hintTxt: "Total To",
-                                    widthRatio: 0.1,
-                                    // height: Get.height * 0.1,
-                                    paddingLeft: 0,
-                                    maxLen: 1,
-                                    // focus: controllerX.remarkFocus,
-                                    controller: TextEditingController()),
+                                  hintTxt: "Total To",
+                                  widthRatio: 0.1,
+                                  // height: Get.height * 0.1,
+                                  paddingLeft: 0,
+                                  maxLen: 1,
+                                  // focus: controllerX.remarkFocus,
+                                  controller: controllerX.totalToController,
+                                ),
                                 InputFields.formField1WidthBox(
-                                    hintTxt: "Total SAP Bills",
-                                    widthRatio: 0.1,
-                                    // height: Get.height * 0.1,
-                                    paddingLeft: 0,
-                                    maxLen: 1,
-                                    // focus: controllerX.remarkFocus,
-                                    controller: TextEditingController()),
+                                  hintTxt: "Total SAP Bills",
+                                  widthRatio: 0.1,
+                                  // height: Get.height * 0.1,
+                                  paddingLeft: 0,
+                                  maxLen: 1,
+                                  // focus: controllerX.remarkFocus,
+                                  controller: controllerX.totalSAPBillsController,
+                                ),
                                 InputFields.formField1WidthBox(
-                                    hintTxt: "Total Bills Transferred",
-                                    widthRatio: 0.1,
-                                    // height: Get.height * 0.1,
-                                    paddingLeft: 0,
-                                    maxLen: 1,
-                                    // focus: controllerX.remarkFocus,
-                                    controller: TextEditingController()),
+                                  hintTxt: "Total Bills Transferred",
+                                  widthRatio: 0.1,
+                                  // height: Get.height * 0.1,
+                                  paddingLeft: 0,
+                                  maxLen: 1,
+                                  // focus: controllerX.remarkFocus,
+                                  controller: controllerX.totalBillsTransferredController,
+                                ),
                                 InputFields.formField1WidthBox(
-                                    hintTxt: "Pending To Transfer",
-                                    widthRatio: 0.1,
-                                    // height: Get.height * 0.1,
-                                    paddingLeft: 0,
-                                    maxLen: 1,
-                                    // focus: controllerX.remarkFocus,
-                                    controller: TextEditingController()),
+                                  hintTxt: "Pending To Transfer",
+                                  widthRatio: 0.1,
+                                  // height: Get.height * 0.1,
+                                  paddingLeft: 0,
+                                  maxLen: 1,
+                                  // focus: controllerX.remarkFocus,
+                                  controller: controllerX.pendingToTransferController,
+                                ),
                               ],
                             ),
                           ),
@@ -164,13 +180,16 @@ class BillTransferView extends GetView<BillTransferController> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 14.0, left: 10, right: 10),
-                        child: FormButtonWrapper(
-                          btnText: "Transfer",
-                          callback: () {
-                            // controllerX.showDetails(name: controllerX.selectTab.value);
-                          },
-                          showIcon: true,
-                        ),
+                        child: Obx(() {
+                          return FormButtonWrapper(
+                            btnText: "Transfer",
+                            callback: () {
+                              // controllerX.showDetails(name: controllerX.selectTab.value);
+                            },
+                            showIcon: true,
+                            isEnabled: controllerX.transferBtn.value,
+                          );
+                        }),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 14.0, left: 10, right: 10),
@@ -180,6 +199,7 @@ class BillTransferView extends GetView<BillTransferController> {
                             // controllerX.showDetails(name: controllerX.selectTab.value);
                           },
                           showIcon: true,
+                          isEnabled: false,
                         ),
                       ),
                       Padding(
@@ -187,7 +207,7 @@ class BillTransferView extends GetView<BillTransferController> {
                         child: FormButtonWrapper(
                           btnText: "Clear",
                           callback: () {
-                            // controllerX.showDetails(name: controllerX.selectTab.value);
+                           controllerX.clearAll();
                           },
                           showIcon: true,
                         ),
