@@ -4,6 +4,28 @@ import 'package:bms_creditcontrol/widgets/PlutoGrid/pluto_grid.dart';
 import '../../../app/data/data_grid_props.dart';
 
 extension GridManagerExtension on PlutoGridStateManager {
+  String selectValueFromRow(List<PlutoRow>? rows) {
+    if (rows == null || rows.isEmpty) {
+      return '';
+    }
+    final columnIndexes = columnIndexesByShowFrozen;
+    List<String> rowText = [];
+
+    for (final row in rows) {
+      List<String> columnText = [];
+
+      for (int i = 0; i < columnIndexes.length; i += 1) {
+        final String field = refColumns[columnIndexes[i]].field;
+
+        columnText.add(row.cells[field]!.value.toString());
+      }
+
+      rowText.add(columnText.join('\t'));
+    }
+
+    return rowText.join('\n');
+  }
+
   toJson() {
     List data = [];
     for (var row in rows) {
@@ -42,11 +64,11 @@ extension GridManagerExtension on PlutoGridStateManager {
             value: element.key == "selected" || element.value == null
                 ? ""
                 : element.key.toString().toLowerCase().contains("date") &&
-                        dataGridProps.formatDate!
-                    ? DateFormat(dataGridProps.dateFormat).format(
-                        DateTime.parse(
-                            element.value.toString().replaceAll("T", " ")))
-                    : element.value.toString(),
+                dataGridProps.formatDate!
+                ? DateFormat(dataGridProps.dateFormat).format(
+                DateTime.parse(
+                    element.value.toString().replaceAll("T", " ")))
+                : element.value.toString(),
           );
         }
         initRows.add(PlutoRow(
@@ -82,8 +104,8 @@ extension GridManagerExtension on PlutoGridStateManager {
   }
 
   bool willMoveToPreviousRow(
-    PlutoGridCellPosition? position,
-  ) {
+      PlutoGridCellPosition? position,
+      ) {
     if (!configuration.tabKeyAction.isMoveToNextOnEdge ||
         position == null ||
         !position.hasPosition) {
@@ -94,8 +116,8 @@ extension GridManagerExtension on PlutoGridStateManager {
   }
 
   bool willMoveToNextRow(
-    PlutoGridCellPosition? position,
-  ) {
+      PlutoGridCellPosition? position,
+      ) {
     if (!configuration.tabKeyAction.isMoveToNextOnEdge ||
         position == null ||
         !position.hasPosition) {

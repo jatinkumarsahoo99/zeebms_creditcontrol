@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../../widgets/PlutoGrid/pluto_grid.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../../providers/Utils.dart';
@@ -36,8 +37,16 @@ class ROAuditController extends GetxController {
   Rx<Offset> distance = Rx<Offset>( Offset(10,10));
   Rx<int> selectedInt = Rx<int>(0);
   Rx<String> selectTab = Rx<String>("Additions");
-  formHandler(String string) {
+  formHandler(String sta) {
+    if(sta == "Clear"){
+      clearAll();
+    }
 
+  }
+
+  clearAll() {
+    Get.delete<ROAuditController>();
+    Get.find<HomeController>().clearPage1();
   }
 
   closeDialogIfOpen() {

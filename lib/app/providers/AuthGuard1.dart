@@ -16,6 +16,7 @@ import '../../widgets/LoadingScreen.dart';
 import '../../widgets/NoDataFoundPage.dart';
 import '../modules/BillExport/views/bill_export_view.dart';
 import '../modules/AsrunSpecificationAdRevenue/views/asrun_specification_ad_revenue_view.dart';
+import '../modules/BillTransfer/views/bill_transfer_view.dart';
 import '../modules/ClearSecondarySpots/views/clear_secondary_spots_view.dart';
 import '../modules/AgencyGroupMaster/views/agency_group_master_view.dart';
 import '../modules/AgencyMaster/views/agency_master_view.dart';
@@ -275,6 +276,9 @@ class _AuthGuard1State extends State<AuthGuard> with WidgetsBindingObserver {
               break;
             case Routes.AUDIT_CANCELLATION:
               currentWidget = AuditCancellationView();
+              break;
+            case Routes.BILL_TRANSFER:
+              currentWidget = BillTransferView();
               break;
             default:
               currentWidget = const NoDataFoundPage();
