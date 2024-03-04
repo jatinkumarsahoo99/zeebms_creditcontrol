@@ -480,7 +480,6 @@ class SecondaryAsrunModificationController extends GetxController {
           if ((key.toString().trim() == "tapeDuration") ||
               (key.toString().trim() == "telecastDuration") ||
               (key.toString().trim() == "bookingdetailcode") ||
-              (key.toString().trim() == "spotAmount") ||
               (key.toString().trim() == "bookingDetailCode1") ||
               (key.toString().trim() == "recordnumber")) {
             if (row.cells[key]?.value != null &&
@@ -494,7 +493,11 @@ class SecondaryAsrunModificationController extends GetxController {
               // rowMap[key] = DateFormat("yyyy-MM-dd").format(DateTime.now()) + (row.cells[key]?.value ?? "");
               rowMap[key] = 0;
             }
-          } else {
+          }
+          else if((key.toString().trim() == "MID/Pre")){
+            rowMap["miD_Pre"] = row.cells[key]?.value ?? "";
+          }
+          else {
             rowMap[key] = row.cells[key]?.value ?? "";
           }
         }
