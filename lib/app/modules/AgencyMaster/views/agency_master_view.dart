@@ -45,6 +45,9 @@ class AgencyMasterView extends StatelessWidget {
                                   child: SingleChildScrollView(
                                     child: Column(
                                       children: [
+                                        SizedBox(
+                                          height: 2,
+                                        ),
                                         DropDownField.formDropDownSearchAPI2(
                                             GlobalKey(), context,
                                             title: "Agency Name",
@@ -63,60 +66,94 @@ class AgencyMasterView extends StatelessWidget {
                                             },
                                             dialogHeight: 200,
                                             width: (Get.width * controllerX.fixedWidth)),
-                                        InputFields.formField1(
-                                          hintTxt: "Group Name",
-                                          // autoFocus: true,
-                                          // controller: controllerX.productLevel1Controller,
-                                          controller: controllerX.groupNameController,
-                                          width: controllerX.fixedWidth,
-                                          // isEnable: controllerX.isEnable,
-                                          onchanged: (value) {},
-                                          autoFocus: false,
-                                          isEnable: controllerX.disable.value,
-                                          // focusNode: controllerX.productLevel1Focus
-                                          // autoFocus: true,
+                                        SizedBox(
+                                          height: 3,
                                         ),
-                                        InputFields.formField1(
-                                          hintTxt: "Contact Person",
-                                          // autoFocus: true,
-                                          // controller: controllerX.productLevel1Controller,
-                                          controller: controllerX.contactPersonController,
-                                          width: controllerX.fixedWidth,
-                                          isEnable: controllerX.disable.value,
-                                          // isEnable: controllerX.isEnable,
-                                          onchanged: (value) {},
-                                          autoFocus: false,
-                                          // focusNode: controllerX.productLevel1Focus
-                                          // autoFocus: true,
-                                        ),
-                                        InputFields.formField1(
-                                          hintTxt: "Address",
-                                          // autoFocus: true,
-                                          // controller: controllerX.productLevel1Controller,
-                                          controller: controllerX.addressController,
-                                          width: controllerX.fixedWidth,
-                                          isEnable: controllerX.disable.value,
-                                          // isEnable: controllerX.isEnable,
-                                          onchanged: (value) {},
-                                          autoFocus: false,
-                                          // focusNode: controllerX.productLevel1Focus
+                                        SizedBox(
+                                          width: Get.width * controllerX.fixedWidth,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
 
-                                          // autoFocus: true,
-                                        ),
-                                        InputFields.formField1(
-                                          hintTxt: "",
-                                          // autoFocus: true,
-                                          // controller: controllerX.productLevel1Controller,
-                                          controller: controllerX.addressController1,
-                                          width: controllerX.fixedWidth,
-                                          isEnable: controllerX.disable.value,
-                                          // isEnable: controllerX.isEnable,
-                                          onchanged: (value) {},
-                                          autoFocus: false,
-                                          // focusNode: controllerX.productLevel1Focus
+                                              InputFields.formField1WithCustomColor(
+                                                hintTxt: "Group Name",
+                                                labelColor: Colors.black,
+                                                // autoFocus: true,
+                                                // controller: controllerX.productLevel1Controller,
+                                                controller: controllerX.groupNameController,
+                                                width: controllerX.fixedWidth1,
+                                                // isEnable: controllerX.isEnable,
+                                                onchanged: (value) {},
+                                                autoFocus: false,
+                                                isEnable: controllerX.disable.value,
+                                                // focusNode: controllerX.productLevel1Focus
+                                                // autoFocus: true,
+                                              ),
 
-                                          // autoFocus: true,
+                                              InputFields.formField1WithCustomColor(
+                                                hintTxt: "Contact Person",
+                                                labelColor: Colors.black,
+                                                // autoFocus: true,
+                                                // controller: controllerX.productLevel1Controller,
+                                                controller: controllerX.contactPersonController,
+                                                width: controllerX.fixedWidth1,
+                                                isEnable: controllerX.disable.value,
+                                                // isEnable: controllerX.isEnable,
+                                                onchanged: (value) {},
+                                                autoFocus: false,
+                                                // focusNode: controllerX.productLevel1Focus
+                                                // autoFocus: true,
+                                              ),
+
+                                            ],
+                                          ),
                                         ),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
+
+                                        SizedBox(
+                                          width: Get.width * controllerX.fixedWidth,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              InputFields.formField1WithCustomColor(
+                                                hintTxt: "Address",
+                                                labelColor: Colors.black,
+                                                // autoFocus: true,
+                                                // controller: controllerX.productLevel1Controller,
+                                                controller: controllerX.addressController,
+                                                width: controllerX.fixedWidth1,
+                                                isEnable: controllerX.disable.value,
+                                                // isEnable: controllerX.isEnable,
+                                                onchanged: (value) {},
+                                                autoFocus: false,
+                                                // focusNode: controllerX.productLevel1Focus
+
+                                                // autoFocus: true,
+                                              ),
+                                              InputFields.formField1WithCustomColor(
+                                                hintTxt: "",
+                                                labelColor: Colors.black,
+                                                // autoFocus: true,
+                                                // controller: controllerX.productLevel1Controller,
+                                                controller: controllerX.addressController1,
+                                                width: controllerX.fixedWidth1,
+                                                isEnable: controllerX.disable.value,
+                                                // isEnable: controllerX.isEnable,
+                                                onchanged: (value) {},
+                                                autoFocus: false,
+                                                // focusNode: controllerX.productLevel1Focus
+
+                                                // autoFocus: true,
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 3,
+                                        ),
+
                                         SizedBox(
                                           width: Get.width * controllerX.fixedWidth,
                                           child: Row(
@@ -135,8 +172,9 @@ class AgencyMasterView extends StatelessWidget {
                                                   autoFocus: false,
                                                 );
                                               }),
-                                              InputFields.formField1(
+                                              InputFields.formField1WithCustomColor(
                                                 hintTxt: "Pin",
+                                                labelColor: Colors.black,
                                                 // autoFocus: true,
                                                 // controller: controllerX.productLevel1Controller,
                                                 controller: controllerX.pinController,
@@ -153,12 +191,16 @@ class AgencyMasterView extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(
+                                          height: 3,
+                                        ),
+                                        SizedBox(
                                           width: Get.width * controllerX.fixedWidth,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              InputFields.formField1(
+                                              InputFields.formField1WithCustomColor(
                                                 hintTxt: "Tel",
+                                                labelColor: Colors.black,
                                                 // autoFocus: true,
                                                 // controller: controllerX.productLevel1Controller,
                                                 controller: controllerX.telController,
@@ -171,8 +213,9 @@ class AgencyMasterView extends StatelessWidget {
 
                                                 // autoFocus: true,
                                               ),
-                                              InputFields.formField1(
+                                              InputFields.formField1WithCustomColor(
                                                 hintTxt: "Email",
+                                                labelColor: Colors.black,
                                                 // autoFocus: true,
                                                 // controller: controllerX.productLevel1Controller,
                                                 controller: controllerX.emailController,
@@ -189,12 +232,16 @@ class AgencyMasterView extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(
+                                          height: 3,
+                                        ),
+                                        SizedBox(
                                           width: Get.width * controllerX.fixedWidth,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              InputFields.formField1(
+                                              InputFields.formField1WithCustomColor(
                                                 hintTxt: "SAP Code",
+                                                labelColor: Colors.black,
                                                 isEnable: controllerX.disable.value,
                                                 // autoFocus: true,
                                                 // controller: controllerX.productLevel1Controller,
@@ -207,8 +254,9 @@ class AgencyMasterView extends StatelessWidget {
 
                                                 // autoFocus: true,
                                               ),
-                                              InputFields.formField1(
+                                              InputFields.formField1WithCustomColor(
                                                 hintTxt: "Cust Grp",
+                                                labelColor: Colors.black,
                                                 isEnable: controllerX.disable.value,
                                                 // autoFocus: true,
                                                 // controller: controllerX.productLevel1Controller,
@@ -225,12 +273,16 @@ class AgencyMasterView extends StatelessWidget {
                                           ),
                                         ),
                                         SizedBox(
+                                          height: 3,
+                                        ),
+                                        SizedBox(
                                           width: Get.width * controllerX.fixedWidth,
                                           child: Row(
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              InputFields.formField1(
+                                              InputFields.formField1WithCustomColor(
                                                 hintTxt: "Mobile",
+                                                labelColor: Colors.black,
                                                 // autoFocus: true,
                                                 // controller: controllerX.productLevel1Controller,
                                                 controller: controllerX.mobileController,
@@ -243,8 +295,9 @@ class AgencyMasterView extends StatelessWidget {
 
                                                 // autoFocus: true,
                                               ),
-                                              InputFields.formField1(
+                                              InputFields.formField1WithCustomColor(
                                                 hintTxt: "IBF Desc",
+                                                labelColor: Colors.black,
                                                 // autoFocus: true,
                                                 // controller: controllerX.productLevel1Controller,
                                                 controller: controllerX.IBFDescController,
@@ -260,8 +313,12 @@ class AgencyMasterView extends StatelessWidget {
                                             ],
                                           ),
                                         ),
-                                        InputFields.formField1(
+                                        SizedBox(
+                                          height: 3,
+                                        ),
+                                        InputFields.formField1WithCustomColor(
                                           hintTxt: "Print Name",
+                                          labelColor: Colors.black,
                                           // autoFocus: true,
                                           // controller: controllerX.productLevel1Controller,
                                           controller: controllerX.printNameController,
@@ -274,8 +331,12 @@ class AgencyMasterView extends StatelessWidget {
 
                                           // autoFocus: true,
                                         ),
-                                        InputFields.formField1(
+                                        SizedBox(
+                                          height: 3,
+                                        ),
+                                        InputFields.formField1WithCustomColor(
                                           hintTxt: "Name 3",
+                                          labelColor: Colors.black,
                                           // autoFocus: true,
                                           // controller: controllerX.productLevel1Controller,
                                           controller: controllerX.name3Controller,
@@ -288,34 +349,49 @@ class AgencyMasterView extends StatelessWidget {
 
                                           // autoFocus: true,
                                         ),
-                                        InputFields.formField1(
-                                          hintTxt: "PAN No.",
-                                          // autoFocus: true,
-                                          // controller: controllerX.productLevel1Controller,
-                                          controller: controllerX.panNoController,
-                                          width: controllerX.fixedWidth,
-                                          isEnable: controllerX.disable.value,
-                                          // isEnable: controllerX.isEnable,
-                                          onchanged: (value) {},
-                                          autoFocus: false,
-                                          // focusNode: controllerX.productLevel1Focus
-
-                                          // autoFocus: true,
+                                        SizedBox(
+                                          height: 3,
                                         ),
-                                        InputFields.formField1(
-                                          hintTxt: "GST No.",
-                                          // autoFocus: true,
-                                          // controller: controllerX.productLevel1Controller,
-                                          controller: controllerX.gstNoController,
-                                          width: controllerX.fixedWidth,
-                                          isEnable: controllerX.disable.value,
-                                          // isEnable: controllerX.isEnable,
-                                          onchanged: (value) {},
-                                          autoFocus: false,
-                                          // focusNode: controllerX.productLevel1Focus
 
-                                          // autoFocus: true,
+                                        SizedBox(
+                                          width: Get.width * controllerX.fixedWidth,
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              InputFields.formField1WithCustomColor(
+                                                hintTxt: "PAN No.",
+                                                labelColor: Colors.black,
+                                                // autoFocus: true,
+                                                // controller: controllerX.productLevel1Controller,
+                                                controller: controllerX.panNoController,
+                                                width: controllerX.fixedWidth1,
+                                                isEnable: controllerX.disable.value,
+                                                // isEnable: controllerX.isEnable,
+                                                onchanged: (value) {},
+                                                autoFocus: false,
+                                                // focusNode: controllerX.productLevel1Focus
+
+                                                // autoFocus: true,
+                                              ),
+                                              InputFields.formField1WithCustomColor(
+                                                hintTxt: "GST No.",
+                                                labelColor: Colors.black,
+                                                // autoFocus: true,
+                                                // controller: controllerX.productLevel1Controller,
+                                                controller: controllerX.gstNoController,
+                                                width: controllerX.fixedWidth1,
+                                                isEnable: controllerX.disable.value,
+                                                // isEnable: controllerX.isEnable,
+                                                onchanged: (value) {},
+                                                autoFocus: false,
+                                                // focusNode: controllerX.productLevel1Focus
+
+                                                // autoFocus: true,
+                                              ),
+                                            ],
+                                          ),
                                         ),
+
                                       ],
                                     ),
                                   ),

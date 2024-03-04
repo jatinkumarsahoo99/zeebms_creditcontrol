@@ -56,7 +56,9 @@ class DealReportView extends GetView<DealReportController> {
                     },
                     "Channel",
                     0.16,
-                    onChanged: (index, selectValue) {},
+                    onChanged: (index, selectValue) {
+                      print(">>>>>>>>>>${index} ${selectValue}");
+                    },
                   ),
                 ),
                 Focus(

@@ -206,7 +206,7 @@ class LstAsRunBookingDetails {
     data['agencyName'] = this.agencyName;
     data['brandName'] = this.brandName;
     data['caption'] = this.caption;
-    data['miD_Pre'] = this.miDPre;
+    data['MID/Pre'] = this.miDPre;
     data['billnumber'] = this.billnumber;
     data['status'] = this.status;
     data['remarks'] = this.remarks;
