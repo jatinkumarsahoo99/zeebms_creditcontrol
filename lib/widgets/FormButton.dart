@@ -21,6 +21,7 @@ class FormButtonWrapper extends StatelessWidget {
   final FocusNode? focusNode;
   final bool showIcon;
   final bool exitButtonNotUsed;
+  final double? fontSize;
 
   FormButtonWrapper({
     required this.btnText,
@@ -29,6 +30,7 @@ class FormButtonWrapper extends StatelessWidget {
     this.height = 25,
     this.isEnabled,
     this.iconDataM,
+    this.fontSize,
     this.showIcon = true,
     this.exitButtonNotUsed = true,
   });
@@ -41,6 +43,7 @@ class FormButtonWrapper extends StatelessWidget {
         focusNode: focusNode,
         btnText: btnText,
         callback: callback,
+        fontSize: fontSize,
         isEnabled: isEnabled,
         iconDataM: iconDataM,
         showIcon: showIcon,
@@ -96,6 +99,8 @@ class FormButton extends StatelessWidget {
   final IconData? iconDataM;
   final bool showIcon;
   final bool exitButtonNotUsed;
+  final double? fontSize;
+  // final
 
   const FormButton({
     Key? key,
@@ -106,6 +111,7 @@ class FormButton extends StatelessWidget {
     this.showIcon = true,
     this.iconDataM,
     this.exitButtonNotUsed = true,
+    this.fontSize,
   }) : super(key: key);
 
   @override
@@ -210,7 +216,7 @@ class FormButton extends StatelessWidget {
       icon: showIcon ? Icon(iconData, size: 16) : const SizedBox(width: 0),
       label: Text(
         btnText,
-        style: TextStyle(fontSize: SizeDefine.fontSizeButton),
+        style: TextStyle(fontSize: fontSize ?? SizeDefine.fontSizeButton),
       ),
     );
 

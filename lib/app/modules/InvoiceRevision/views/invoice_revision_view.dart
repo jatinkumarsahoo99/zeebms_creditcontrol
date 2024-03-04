@@ -71,6 +71,7 @@ class InvoiceRevisionView extends GetView<InvoiceRevisionController> {
                     title: "From Date",
                     mainTextController: controller.fromDate,
                     widthRation: .135,
+                    isEnable: controller.isEnable,
                   ),
                   const SizedBox(
                     width: 10,
