@@ -8,6 +8,9 @@ import '../../../controller/ConnectorControl.dart';
 import '../../../controller/HomeController.dart';
 import '../../../providers/ApiFactory.dart';
 import '../../../providers/Utils.dart';
+import '../../CommonDocs/controllers/common_docs_controller.dart';
+import '../../CommonDocs/views/common_docs_view.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 import '../ClientEmbargoHistoryModel.dart';
 import '../ClientEmbargoModel.dart';
 
@@ -27,6 +30,8 @@ class ClientEmbargoController extends GetxController {
   Rxn<DropDownValue> selectedClient = Rxn<DropDownValue>(null);
 
   ClientEmbargoHistoryModel? clientEmbargoHistoryModel;
+
+
 
   getAllLoadData() {
     LoadingDialog.call();
@@ -94,12 +99,13 @@ class ClientEmbargoController extends GetxController {
   }
 
   saveApiCall() {
-    LoadingDialog.call();
+
     try {
+      LoadingDialog.call();
       Map<String, dynamic> postData = {
         "clientcode": selectedClient.value?.key??"",
         "embargoNo": embargoNoController.text??"",
-        "fromdate":(dateController.text)?? "24-01-2024",
+        "fromdate":(dateController.text)?? "",
         "todate": (dateController.text)??"",
         "reason": reasonController.text??"",
         "strCode": "0"
@@ -111,7 +117,9 @@ class ClientEmbargoController extends GetxController {
           fun: (map) {
             closeDialogIfOpen();
             if(map is Map && map['message'] != null){
-              LoadingDialog.callDataSaved(msg: map['message']??"Something went wrong");
+              LoadingDialog.callDataSaved(msg: map['message']??"Something went wrong",callback: (){
+                clearAll();
+              });
             }else{
               LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
             }
@@ -149,11 +157,43 @@ class ClientEmbargoController extends GetxController {
 
   void increment() => count.value++;
 
+  String? strEmbargoNo = "";
+
+  docs() async {
+    String documentKey = "";
+    if (embargoNoController.text == "" ) {
+      documentKey = "";
+    } else {
+      documentKey = "ClientEmbargo ${embargoNoController.text}";
+    }
+    if (documentKey == "") {
+      return;
+    }
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
+    });
+  }
+
   formHandler(String sta) {
     if(sta == "Clear"){
       clearAll();
     } else if( sta == "Save"){
       saveApiCall();
+    }else if(sta == "Search"){
+      Get.to(
+        const SearchPage(
+          key: Key("Client Embargo"),
+          screenName: "Client Embargo",
+          appBarName: "Client Embargo",
+          strViewName: "VClientEmbargo",
+          isAppBarReq: true,
+        ),
+      );
+    }else if(sta == "Docs"){
+      docs();
     }
   }
 }
