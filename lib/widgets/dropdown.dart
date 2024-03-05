@@ -92,7 +92,7 @@ class DropDownField {
     Function(DropDownValue) callback,
     String hint,
     double widthRatio, {
-    Function(int index, bool selectValue)? onChanged,
+    Function(int index, bool selectValue)? onChangedFun,
     double? height,
     double? paddingBottom,
     MultiCheckBoxModel? selected,
@@ -250,6 +250,11 @@ class DropDownField {
                                                     // getSelectedName(items);
                                                   }
                                                   tempList.refresh();
+                                                  if (onChangedFun != null) {
+                                                    onChangedFun(
+                                                        0,
+                                                        newVal??false);
+                                                  }
                                                   re(() {});
                                                 },
                                                 materialTapTargetSize:
@@ -314,8 +319,8 @@ class DropDownField {
                                                 //     val;
                                                 tempList[index].isSelected =
                                                     val;
-                                                if (onChanged != null) {
-                                                  onChanged(
+                                                if (onChangedFun != null) {
+                                                  onChangedFun(
                                                       tempList[index]
                                                           .realIndex!,
                                                       val);
