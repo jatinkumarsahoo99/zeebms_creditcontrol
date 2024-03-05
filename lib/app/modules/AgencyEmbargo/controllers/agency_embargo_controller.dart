@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bms_creditcontrol/app/controller/ConnectorControl.dart';
 import 'package:bms_creditcontrol/app/controller/HomeController.dart';
 import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
@@ -28,6 +30,8 @@ class AgencyEmbargoController extends GetxController {
   var agencyHistoryList = [].obs;
   PlutoGridStateManager? embargoGrid;
   PlutoGridStateManager? agencyHistoryGrid;
+  var clearAgencyCode = '';
+  var clearEmbargoNo = '';
 
   Rxn<DropDownValue> selectAgency = Rxn<DropDownValue>();
 
@@ -66,6 +70,7 @@ class AgencyEmbargoController extends GetxController {
                 AgencyEmbargoOnLoadModel.fromJson(map as Map<String, dynamic>);
             embargoList.clear();
             embargoList.value = agencyEmbargoOnLoadModel?.onload ?? [];
+            update(['init']);
           }
         });
   }
@@ -112,9 +117,56 @@ class AgencyEmbargoController extends GetxController {
     }
   }
 
+  clearEmbargo() {
+    Timer(Duration(milliseconds: 500), () {
+      LoadingDialog.modify('Want to clear embargo?', () {
+        clearEmbargoSave();
+      }, () {
+        Get.back();
+      }, deleteTitle: 'Yes', cancelTitle: 'No');
+    });
+  }
+
+  clearEmbargoSave() {
+    if (embargoGrid?.currentRowIdx != null) {
+      clearAgencyCode = embargoList[embargoGrid!.currentRowIdx!].agencycode!;
+      clearEmbargoNo =
+          embargoList[embargoGrid!.currentRowIdx!].embargoNo!.toString();
+      embargoList.removeAt(embargoGrid!.currentRowIdx!);
+      update(["init"]);
+      var payload = {
+        "agencyCode": clearAgencyCode,
+        "embargoNo": clearEmbargoNo,
+        "fromdate": dateConvertToyyyyMMdd1(),
+        "reason": reason.text,
+      };
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().POSTMETHOD(
+          api: ApiFactory.AGENCY_EMBARGO_SAVE,
+          json: payload,
+          fun: (Map map) {
+            Get.back();
+            if (map != null && map.containsKey('save')) {
+              LoadingDialog.callDataSaved(
+                  msg: map['save'],
+                  callback: () {
+                    Get.delete<AgencyEmbargoController>();
+                    Get.find<HomeController>().clearPage1();
+                  });
+            }
+          });
+    }
+  }
+
   String dateConvertToyyyyMMdd(String date) {
     return (DateFormat('yyyy-MM-dd')
         .format(DateFormat('dd-MM-yyyy').parse(date)));
+  }
+
+  String dateConvertToyyyyMMdd1() {
+    DateTime now = DateTime.now();
+    return (DateFormat('yyyy-MM-dd')
+        .format(DateFormat('yyyy-MM-dd hh:mm:ss').parse(now.toString())));
   }
 
   formHandler(btn) {
@@ -156,5 +208,4 @@ class AgencyEmbargoController extends GetxController {
         break;
     }
   }
-
 }
