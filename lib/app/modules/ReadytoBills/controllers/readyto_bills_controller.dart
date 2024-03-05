@@ -316,8 +316,8 @@ class ReadytoBillsController extends GetxController {
                 msg: map['sendToSAP'],
                 callback: () {
                   export();
-                  Get.delete<ReadytoBillsController>();
-                  Get.find<HomeController>().clearPage1();
+                  // Get.delete<ReadytoBillsController>();
+                  // Get.find<HomeController>().clearPage1();
                 });
           }
         });
@@ -341,8 +341,8 @@ class ReadytoBillsController extends GetxController {
             LoadingDialog.callDataSaved(
                 msg: map['resendToSAP'],
                 callback: () {
-                  Get.delete<ReadytoBillsController>();
-                  Get.find<HomeController>().clearPage1();
+                  // Get.delete<ReadytoBillsController>();
+                  // Get.find<HomeController>().clearPage1();
                 });
           }
         });
@@ -466,8 +466,15 @@ class ReadytoBillsController extends GetxController {
                                     hideKeys: const [
                                       'v_wbs',
                                       'clcode',
-                                      'agcode'
+                                      'agcode',
+                                      'rmsprogram',
+                                      'wbscode',
+                                      'rmsprogramcode'
                                     ],
+                                    keyMapping: const {
+                                      'ptype': 'PTYPE',
+                                      'verr': 'VERR'
+                                    },
                                     columnAutoResize: false,
                                     widthSpecificColumn:
                                         Get.find<HomeController>()
@@ -603,8 +610,8 @@ class ReadytoBillsController extends GetxController {
     if (isTrueFalseFiltter.isTrue) {
       isTrueFalseFiltter.value = false;
       billingsList.sort((a, b) {
-        if (a.remark!.isEmpty != b.remark!.isEmpty) {
-          return a.remark!.isEmpty ? -1 : 1; // empty remarks first
+        if (a.remark!.compareTo(b.remark!) != 0) {
+          return a.remark!.compareTo(b.remark!);
         } else if (a.asRunImport != b.asRunImport) {
           return a.asRunImport! ? 1 : -1; // false first
         } else {
@@ -615,8 +622,8 @@ class ReadytoBillsController extends GetxController {
     } else {
       isTrueFalseFiltter.value = true;
       billingsList.sort((a, b) {
-        if (a.remark!.isEmpty != b.remark!.isEmpty) {
-          return a.remark!.isEmpty ? 1 : -1; // empty remarks first
+        if (a.remark!.compareTo(b.remark!) != 0) {
+          return b.remark!.compareTo(a.remark!);
         } else if (a.asRunImport != b.asRunImport) {
           return a.asRunImport! ? -1 : 1; // false first
         } else {
@@ -624,6 +631,30 @@ class ReadytoBillsController extends GetxController {
               b.telecastDate!); // Sort by date if val and remarks are the same
         }
       });
+    }
+  }
+
+  onEdit(row) {
+    lastSelectedIdx = row.rowIdx ?? 0;
+    if (row.column.field == 'remark') {
+      billingsList[row.rowIdx].remark = row.value.toString();
+      if (isTrueFalseFiltter.isTrue) {
+        billingsList.sort((a, b) {
+          if (a.remark!.compareTo(b.remark!) != 0) {
+            return b.remark!.compareTo(a.remark!);
+          }
+          return 0;
+        });
+      } else {
+        billingsList.sort((a, b) {
+          if (a.remark!.compareTo(b.remark!) != 0) {
+            return a.remark!.compareTo(b.remark!);
+          }
+          return 0;
+        });
+      }
+    } else {
+      billingsList[row.rowIdx].readyToBill = row.value != "true" ? false : true;
     }
   }
 
