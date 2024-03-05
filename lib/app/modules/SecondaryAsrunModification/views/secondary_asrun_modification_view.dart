@@ -20,7 +20,7 @@ class SecondaryAsrunModificationView extends StatelessWidget {
   SecondaryAsrunModificationView({Key? key}) : super(key: key);
 
   SecondaryAsrunModificationController controllerX =
-      Get.put<SecondaryAsrunModificationController>(SecondaryAsrunModificationController());
+  Get.put<SecondaryAsrunModificationController>(SecondaryAsrunModificationController());
 
   var rebuildSecModKey = GlobalKey<ScaffoldState>();
 
@@ -48,7 +48,7 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        'Info',
+                        '',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
@@ -80,64 +80,77 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                     builder: (controllerX) {
                       return Container(
                         child: (controllerX.lstFinalAsRunDataList != null &&
-                                (controllerX.lstFinalAsRunDataList
-                                            ?.length ??
-                                        0) >
-                                    0)
+                            (controllerX.lstFinalAsRunDataList
+                                ?.length ??
+                                0) >
+                                0)
                             ? DataGridFromMap(
-                                showSrNo: true,
-                                hideCode: false,
-                                formatDate: false,
-                                columnAutoResize: true,
-                                doPasccal: true,
-                                colorCallback: (row) => (row.row.cells
-                                        .containsValue(controllerX.stateManagerDialog?.currentCell))
-                                    ? Colors.deepPurple.shade200
-                                    : Colors.white,
-                                exportFileName: "Secondary Asrun Modification",
-                                mode: PlutoGridMode.normal,
-                                onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
-                                  print(">>>>>>>>>>>onRowDoubleTapColField${event.cell.column.field ?? ""}");
-                                  print(">>>>>>>>>>>onRowDoubleTapColField${event.cell.row.cells['spotStatus']?.value ?? ""}");
+                          showSrNo: true,
+                          hideCode: false,minimumWidth: 150,
+                          formatDate: false,
+                          columnAutoResize: false,
+                          doPasccal: true,
+                          colorCallback: (row) =>
+                          (row.row.cells
+                              .containsValue(controllerX.stateManagerDialog?.currentCell))
+                              ? Colors.deepPurple.shade200
+                              : Colors.white,
+                          exportFileName: "Secondary Asrun Modification",
+                          mode: PlutoGridMode.normal,
+                          onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                            print(">>>>>>>>>>>onRowDoubleTapColField${event.cell.column.field ??
+                                ""}");
+                            print(">>>>>>>>>>>onRowDoubleTapColField${event.cell.row
+                                .cells['spotStatus']?.value ?? ""}");
 
-                                  try {
-                                    if (controllerX.stateManagerDialog?.rows[controllerX.stateManagerDialog?.currentRowIdx ?? 0].cells['spotStatus']?.value ==
-                                        "T") {
-                                      LoadingDialog.showErrorDialog("Sorry, clicked tape id is already mapped");
-                                    }else{
-                                      controllerX.dialogWidget = null;
-                                      controllerX.canDialogShow.value = false;
-                                      controllerX.tapeIdEditingController.text = event.cell.row.cells['exportTapeCode']?.value??"";
-                                      controllerX.finalProgramEditingController.text = event.cell.row.cells['programname']?.value??"";
-                                      controllerX.finalTelecastTimeEditingController.text = event.cell.row.cells['telecastTime']?.value??"";
-                                      controllerX.finalDurationEditingController.text = event.cell.row.cells['tapeDuration']?.value??"";
+                            try {
+                              if (controllerX.stateManagerDialog?.rows[controllerX
+                                  .stateManagerDialog?.currentRowIdx ?? 0].cells['spotStatus']
+                                  ?.value ==
+                                  "T") {
+                                LoadingDialog.showErrorDialog(
+                                    "Sorry, clicked tape id is already mapped");
+                              } else {
+                                controllerX.dialogWidget = null;
+                                controllerX.canDialogShow.value = false;
+                                controllerX.tapeIdEditingController.text =
+                                    event.cell.row.cells['exportTapeCode']?.value ?? "";
+                                controllerX.finalProgramEditingController.text =
+                                    event.cell.row.cells['programname']?.value ?? "";
+                                controllerX.finalTelecastTimeEditingController.text =
+                                    event.cell.row.cells['telecastTime']?.value ?? "";
+                                controllerX.finalDurationEditingController.text =
+                                    event.cell.row.cells['tapeDuration']?.value ?? "";
 
-                                      controllerX.finalMidPreEditingController.text = (event.cell.row.cells['spotPosition']?.value == "" ||
-                                          (event.cell.row.cells['spotPosition']?.value).toString().trim() == "null")?"MID":event.cell.row.cells['spotPosition']?.value;
+                                controllerX.finalMidPreEditingController.text =
+                                (event.cell.row.cells['spotPosition']?.value == "" ||
+                                    (event.cell.row.cells['spotPosition']?.value)
+                                        .toString()
+                                        .trim() == "null") ? "MID" : event.cell.row
+                                    .cells['spotPosition']?.value;
 
-                                      dragInfoDialog2();
-                                    }
-                                  } catch (e) {
-                                    LoadingDialog.showErrorDialog("Something went wrong");
+                                dragInfoDialog2();
+                              }
+                            } catch (e) {
+                              LoadingDialog.showErrorDialog("Something went wrong");
+                            }
 
-                                  }
-
-                                  // spotStatus
-                                },
-                                mapData: controllerX
-                                    .lstFinalAsRunDataList!
-                                    .map((e) => e.toJson())
-                                    .toList(),
-                                // mapData: (controllerX.dataList)!,
-                                widthRatio: Get.width / 9 - 1,
-                                onload: (PlutoGridOnLoadedEvent load) {
-                                  controllerX.stateManagerDialog = load.stateManager;
-                                },
-                              )
+                            // spotStatus
+                          },
+                          mapData: controllerX
+                              .lstFinalAsRunDataList!
+                              .map((e) => e.toJson())
+                              .toList(),
+                          // mapData: (controllerX.dataList)!,
+                          widthRatio: Get.width / 9 - 1,
+                          onload: (PlutoGridOnLoadedEvent load) {
+                            controllerX.stateManagerDialog = load.stateManager;
+                          },
+                        )
                             : Container(
-                                decoration: BoxDecoration(
-                                border: Border.all(color: Colors.grey),
-                              )),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                            )),
                       );
                     }),
               ),
@@ -178,7 +191,7 @@ class SecondaryAsrunModificationView extends StatelessWidget {
         padding: const EdgeInsets.all(5.0),
         child: SizedBox(
           width: Get.width * 0.4,
-          height: Get.height * 0.4,
+          height: Get.height * 0.48,
           child: Column(
             // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -247,11 +260,11 @@ class SecondaryAsrunModificationView extends StatelessWidget {
               ),
 
               SizedBox(
-                width: Get.width*0.38,
+                width: Get.width * 0.38,
                 child: InputFields.numbers3(
                   hintTxt: "Final Duration",
                   controller: controllerX.finalDurationEditingController,
-                  width: .38,padLeft: 0,
+                  width: .38, padLeft: 0,
 
                   // readOnly: true,
                   // isEnable: false,
@@ -268,7 +281,6 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                     showIcon: false,
                     // isEnabled: btn['isDisabled'],
                     callback: () {
-
                       controllerX.dialogOkClick();
                       Get.back();
 
@@ -308,12 +320,12 @@ class SecondaryAsrunModificationView extends StatelessWidget {
         floatingActionButton: Obx(() {
           return controllerX.canDialogShow.value
               ? DraggableFab(
-                  initPosition: controllerX.getOffSetValue(constraints),
-                  child: controllerX.dialogWidget!,
-                  dragEndCall: () {
-                    controllerX.update(['diaGrid']);
-                  },
-                )
+            initPosition: controllerX.getOffSetValue(constraints),
+            child: controllerX.dialogWidget!,
+            dragEndCall: () {
+              controllerX.update(['diaGrid']);
+            },
+          )
               : const SizedBox();
         }),
         body: Padding(
@@ -323,60 +335,73 @@ class SecondaryAsrunModificationView extends StatelessWidget {
               Row(
                 // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  DropDownField.formDropDown1WidthMap(
-                    controllerX.locationList.value ?? [],
-                    (value) {
-                      controllerX.selectedLocation = value;
-                      controllerX.getChannels(locationCode: value.key ?? "");
-                      // controllerX.getChannel(value.key??"");
-                    },
-                    "Location",
-                    .3,
-                    selected: controllerX.selectedLocation,
-                    // isEnable: controllerX.isEnable.value,
-                    // selected: controllerX.selectedLocation,
-                    // dialogHeight: Get.height * .15,
-                    autoFocus: true,
-                  ),
+                  Obx(() {
+                    return DropDownField.formDropDown1WidthMap(
+                        controllerX.locationList.value ?? [],
+                            (value) {
+                          controllerX.selectedLocation = value;
+                          controllerX.getChannels(locationCode: value.key ?? "");
+                          // controllerX.getChannel(value.key??"");
+                        },
+                        "Location",
+                        .3,
+                        selected: controllerX.selectedLocation,
+                        // isEnable: controllerX.isEnable.value,
+                        // selected: controllerX.selectedLocation,
+                        // dialogHeight: Get.height * .15,
+                        autoFocus: true,
+                        isEnable: controllerX.isEnable.value
+                    );
+                  }),
                   SizedBox(
                     width: 5,
                   ),
-                  DropDownField.formDropDown1WidthMap(
-                    controllerX.channelList.value ?? [],
-                    (value) {
-                      controllerX.selectedChannel = value;
-                      // controllerX.getChannel(value.key??"");
-                    },
-                    "Channel",
-                    .3,
-                    selected: controllerX.selectedChannel,
-                    // isEnable: controllerX.isEnable.value,
-                    // selected: controllerX.selectedLocation,
-                    // dialogHeight: Get.height * .15,
-                    autoFocus: true,
-                  ),
+                  Obx(() {
+                    return DropDownField.formDropDown1WidthMap(
+                        controllerX.channelList.value ?? [],
+                            (value) {
+                          controllerX.selectedChannel = value;
+                          // controllerX.getChannel(value.key??"");
+                        },
+                        "Channel",
+                        .3,
+                        selected: controllerX.selectedChannel,
+                        // isEnable: controllerX.isEnable.value,
+                        // selected: controllerX.selectedLocation,
+                        // dialogHeight: Get.height * .15,
+                        autoFocus: true,
+                        isEnable: controllerX.isEnable.value
+                    );
+                  }),
                   SizedBox(
                     width: 5,
                   ),
-                  DateWithThreeTextField(
-                    title: "Log Date",
-                    mainTextController: controllerX.logDateController,
-                    widthRation: .1,
-                    // isEnable: controllerX.isEnable.value,
-                  ),
+                  Obx(() {
+                    return DateWithThreeTextField(
+                      title: "Log Date",
+                      mainTextController: controllerX.logDateController,
+                      widthRation: .1,
+                      isEnable: controllerX.isEnable.value,
+                      // isEnable: controllerX.isEnable.value,
+                    );
+                  }),
                   SizedBox(
                     width: 5,
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 14.0, left: 10, right: 10),
-                    child: FormButtonWrapper(
-                      btnText: "Retrieve Data",
-                      callback: () {
-                        // controllerX.showApiCall();
-                        controllerX.getBindData();
-                      },
-                      showIcon: true,
-                    ),
+                    child: Obx(() {
+                      return FormButtonWrapper(
+                        btnText: "Retrieve Data",
+                        callback: () {
+                          // controllerX.showApiCall();
+                          controllerX.getBindData();
+                        },
+                        showIcon: true,
+                        isEnabled: controllerX.isEnable.value,
+
+                      );
+                    }),
                   ),
                   SizedBox(
                     width: 5,
@@ -403,40 +428,39 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                         return Container(
                           decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
                           child: (controllerX.secondaryAsrunGridModel != null &&
-                                  controllerX.secondaryAsrunGridModel?.bindGrid != null &&
-                                  controllerX.secondaryAsrunGridModel?.bindGrid
-                                          ?.lstAsRunBookingDetails !=
-                                      null &&
-                                  (controllerX.secondaryAsrunGridModel?.bindGrid
-                                              ?.lstAsRunBookingDetails?.length ??
-                                          0) >
-                                      0)
+                              controllerX.secondaryAsrunGridModel?.bindGrid != null &&
+                              controllerX.secondaryAsrunGridModel?.bindGrid
+                                  ?.lstAsRunBookingDetails !=
+                                  null &&
+                              (controllerX.secondaryAsrunGridModel?.bindGrid
+                                  ?.lstAsRunBookingDetails?.length ??
+                                  0) >
+                                  0)
                               ? DataGridFromMap6(
-                                  showSrNo: true,
-                                  hideCode: false,
-                                  formatDate: false,
-                                  columnAutoResize: true,
-                                  doPasccal: true,
-                                  colorCallback: (row) => (row.row.cells
-                                          .containsValue(controllerX.stateManager?.currentCell))
-                                      ? Colors.deepPurple.shade200
-                                      : Colors.white,
-                                  exportFileName: "Secondary Asrun Modification",
-                                  mode: PlutoGridMode.normal,
-                                  onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
-                                    print(
-                                        ">>>>>>>>>>>onRowDoubleTapColField${event.cell.column.field ?? ""}");
-                                    print(
-                                        ">>>>>>>>>>>onRowDoubleTapColField${event.cell.row.cells['spotStatus']?.value ?? ""}");
-                                    // spotStatus
-                                    if ((event.cell.column.field ?? "").toString().trim() ==
-                                        "spotStatus") {
-                                      if ((event.cell.row.cells['spotStatus']?.value ?? "")
-                                              .toString()
-                                              .toLowerCase()
-                                              .trim() ==
-                                          "telecasted") {
-                                        /*LoadingDialog.modify3(
+                            showSrNo: true,
+                            hideCode: false,
+                            formatDate: false,
+                            columnAutoResize: true,
+                            doPasccal: true,
+                            colorCallback: (row) =>
+                            (row.row.cells
+                                .containsValue(controllerX.stateManager?.currentCell))
+                                ? Colors.deepPurple.shade200
+                                : Colors.white,
+                            exportFileName: "Secondary Asrun Modification",
+                            mode: PlutoGridMode.normal,
+                            onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                              // print(">>>>>>>>>>>onRowDoubleTapColField${event.cell.column.field ?? ""}");
+                              // print(">>>>>>>>>>>onRowDoubleTapColField${event.cell.row.cells['spotStatus']?.value ?? ""}");
+                              // spotStatus
+                              if ((event.cell.column.field ?? "").toString().trim() ==
+                                  "spotStatus") {
+                                if ((event.cell.row.cells['spotStatus']?.value ?? "")
+                                    .toString()
+                                    .toLowerCase()
+                                    .trim() ==
+                                    "telecasted") {
+                                  /*LoadingDialog.modify3(
                                             "Want to change the status to NOT TELECASTED", () {
                                           controllerX
                                               .stateManager
@@ -445,37 +469,40 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                                               ?.value = "NOT TELECASTED";
                                           controllerX.stateManager?.notifyListeners();
                                         }, () {}, cancelTitle: "No", confirmTitle: "Yes");*/
-                                        controllerX.onDoubleClick(controllerX.stateManager?.currentRowIdx??-1,event);
-                                      } else {
-                                        dragInfoDialog();
-                                      }
-                                    }
-                                  },
-                                  hideKeys: const [
-                                    "clearBySys",
-                                    "spotPositionShortName",
-                                    "telecastProgramcode",
-                                    "telprogname",
-                                    "telpos",
-                                    "bookingDetailCode1",
-                                    "dealno",
-                                    "packagecode",
-                                    "recordnumber",
-                                    "modifyStatus",
-                                    "locationCode",
-                                    "channelCode",
-                                    ""
-                                  ],
-                                  mapData: controllerX
-                                      .secondaryAsrunGridModel!.bindGrid!.lstAsRunBookingDetails!
-                                      .map((e) => e.toJson())
-                                      .toList(),
-                                  // mapData: (controllerX.dataList)!,
-                                  widthRatio: Get.width / 9 - 1,
-                                  onload: (PlutoGridOnLoadedEvent load) {
-                                    controllerX.stateManager = load.stateManager;
-                                  },
-                                )
+
+                                  controllerX.stateManager?.setCurrentCell(event.cell, event.rowIdx);
+                                  controllerX.onDoubleClick(
+                                      controllerX.stateManager?.currentRowIdx ?? -1, event);
+                                } else {
+                                  dragInfoDialog();
+                                }
+                              }
+                            },
+                            hideKeys: const [
+                              "clearBySys",
+                              "spotPositionShortName",
+                              "telecastProgramcode",
+                              "telprogname",
+                              "telpos",
+                              "bookingDetailCode1",
+                              "dealno",
+                              "packagecode",
+                              "recordnumber",
+                              "modifyStatus",
+                              "locationCode",
+                              "channelCode",
+                              ""
+                            ],
+                            mapData: controllerX
+                                .secondaryAsrunGridModel!.bindGrid!.lstAsRunBookingDetails!
+                                .map((e) => e.toJson())
+                                .toList(),
+                            // mapData: (controllerX.dataList)!,
+                            widthRatio: Get.width / 9 - 1,
+                            onload: (PlutoGridOnLoadedEvent load) {
+                              controllerX.stateManager = load.stateManager;
+                            },
+                          )
                               : Container(),
                         );
                       })),
@@ -488,7 +515,8 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                     id: "buttons",
                     init: Get.find<HomeController>(),
                     builder: (controller) {
-                      PermissionModel formPermissions = Get.find<MainController>()
+                      PermissionModel formPermissions = Get
+                          .find<MainController>()
                           .permissionList!
                           .lastWhere(
                               (element) => element.appFormName == "frmSecondaryAsRunModification");
@@ -502,12 +530,13 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                               FormButtonWrapper(
                                 btnText: btn["name"],
                                 callback: Utils.btnAccessHandler2(
-                                            btn['name'], controller, formPermissions) ==
-                                        null
+                                    btn['name'], controller, formPermissions) ==
+                                    null
                                     ? null
-                                    : () => controllerX.formHandler(
-                                          btn['name'],
-                                        ),
+                                    : () =>
+                                    controllerX.formHandler(
+                                      btn['name'],
+                                    ),
                               )
                           ],
                         );

@@ -188,6 +188,7 @@ class LstAsRunBookingDetails {
     accountCode = json['accountCode'];
     bookedProgramCode = json['bookedProgramCode'];
   }
+//miD_Pre
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -206,7 +207,7 @@ class LstAsRunBookingDetails {
     data['agencyName'] = this.agencyName;
     data['brandName'] = this.brandName;
     data['caption'] = this.caption;
-    data['miD_Pre'] = this.miDPre;
+    data['MID/Pre'] = this.miDPre;
     data['billnumber'] = this.billnumber;
     data['status'] = this.status;
     data['remarks'] = this.remarks;
