@@ -44,7 +44,8 @@ class AgencyGroupMasterController extends GetxController {
           json: postData,
           fun: (map) {
             closeDialogIfOpen();
-            if (map is Map && map['retrieveRecord'] != null) {
+            if (map is Map && map['retrieveRecord'] != null && map['retrieveRecord']['lstGroup'] != null &&
+                map['retrieveRecord']['lstGroup'].length > 0) {
               agencyGroupMasterModel = AgencyGroupMasterModel.fromJson(map as Map<String, dynamic>);
               if (agencyGroupMasterModel != null &&
                   agencyGroupMasterModel?.retrieveRecord != null &&
@@ -59,22 +60,25 @@ class AgencyGroupMasterController extends GetxController {
               }
               update(['grid']);
             } else {
-              agencyGroupMasterModel = null;
-              strCode = "0";
-              update(['grid']);
+              // agencyGroupMasterModel = null;
+              // stateManager = null;
+              // strCode = "0";
+              // update(['grid']);
             }
           },
           failed: (map) {
             closeDialogIfOpen();
-            agencyGroupMasterModel = null;
-            strCode = "0";
-            update(['grid']);
+            // agencyGroupMasterModel = null;
+            // stateManager = null;
+            // strCode = "0";
+            // update(['grid']);
           });
     } catch (e) {
       closeDialogIfOpen();
-      agencyGroupMasterModel = null;
-      strCode = "0";
-      update(['grid']);
+      // agencyGroupMasterModel = null;
+      // stateManager = null;
+      // strCode = "0";
+      // update(['grid']);
     }
   }
 
@@ -232,12 +236,25 @@ class AgencyGroupMasterController extends GetxController {
     groupNameFocus = FocusNode(
       onKeyEvent: (node, event) {
         if (event.logicalKey == LogicalKeyboardKey.tab) {
+          groupNameController.text = (groupNameController.text).capitalizeFirst??"";
           getRetrieveRecord();
           return KeyEventResult.ignored;
         }
         return KeyEventResult.ignored;
       },
     );
+
+    shortNameFocus = FocusNode(
+      onKeyEvent: (node, event) {
+        if (event.logicalKey == LogicalKeyboardKey.tab) {
+          shortNameController.text = (shortNameController.text).capitalizeFirst??"";
+          // getRetrieveRecord();
+          return KeyEventResult.ignored;
+        }
+        return KeyEventResult.ignored;
+      },
+    );
+
     super.onInit();
   }
 

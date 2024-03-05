@@ -37,7 +37,7 @@ class ExportBillingFPCView extends GetView<ExportBillingFPCController> {
                       (value) {},
                       "Location",
                       0.19,
-                      onChanged: (index, selectValue) {
+                      onChangedFun: (index, selectValue) {
                         controller.locations[index].isSelected = selectValue;
                       },
                       autoFocus: true,
@@ -53,7 +53,7 @@ class ExportBillingFPCView extends GetView<ExportBillingFPCController> {
                       },
                       "Channel",
                       0.19,
-                      onChanged: (index, selectValue) {},
+                      onChangedFun: (index, selectValue) {},
                     ),
                   ),
                   GetBuilder(
@@ -72,7 +72,7 @@ class ExportBillingFPCView extends GetView<ExportBillingFPCController> {
                               (value) {},
                               "Program Type",
                               0.19,
-                              onChanged: (index, selectValue) {},
+                              onChangedFun: (index, selectValue) {},
                               inkWellFocusNode: controller.toDateFN,
                             ),
                           ),
@@ -81,14 +81,14 @@ class ExportBillingFPCView extends GetView<ExportBillingFPCController> {
                             (value) {},
                             "Original/Repeat",
                             0.19,
-                            onChanged: (index, selectValue) {},
+                            onChangedFun: (index, selectValue) {},
                           ),
                           DropDownField().formDropDownCheckBoxMap(
                             controller.listOfProgram,
                             (value) {},
                             "List of Programs",
                             0.19,
-                            onChanged: (index, selectValue) {},
+                            onChangedFun: (index, selectValue) {},
                           ),
                         ],
                       );
