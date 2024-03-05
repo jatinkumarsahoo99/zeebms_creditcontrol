@@ -161,15 +161,7 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                                   }
                                 },
                                 onEdit: (row) {
-                                  controller.lastSelectedIdx = row.rowIdx ?? 0;
-                                  if (row.column.field == 'remark') {
-                                    controller.billingsList[row.rowIdx].remark =
-                                        row.value.toString();
-                                  } else {
-                                    controller.billingsList[row.rowIdx]
-                                            .readyToBill =
-                                        row.value != "true" ? false : true;
-                                  }
+                                  controller.onEdit(row);
                                 },
                                 columnAutoResize: true,
                                 enableAutoEditing: true,
@@ -181,8 +173,6 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                                 // sort: PlutoColumnSort.descending,
                                 // enableSort: true,
                                 onColumnHeaderSingleTap: () {
-                                  // print(controller
-                                  //     .billingGrid!.refColumns[8].key);
                                   if (controller
                                           .billingGrid!.refColumns[8].field ==
                                       "remark") {

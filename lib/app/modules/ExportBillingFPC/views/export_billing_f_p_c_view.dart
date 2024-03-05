@@ -162,11 +162,16 @@ class ExportBillingFPCView extends GetView<ExportBillingFPCController> {
                           onload: (value) {
                             controller.exportBillingGrid = value.stateManager;
                           },
+                          hideCode: false,
                           exportFileName: "Export Billing FPC",
                           widthSpecificColumn: Get.find<HomeController>()
                               .getGridWidthByKey(
                                   userGridSettingList:
                                       controller.userGridSetting1?.value),
+                          keyMapping: const {
+                            'wbs': 'WBS',
+                            'orgrpt': 'org/rpt',
+                          },
                         ),
                 ),
               ),
