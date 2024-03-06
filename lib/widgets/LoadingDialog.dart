@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:bms_creditcontrol/app/modules/EmailBillDetails/controllers/email_bill_details_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -809,9 +810,123 @@ class LoadingDialog {
     );
   }
 
+  static selectFileDailog(
+    String title,
+    String des, {
+    // required Object controllerX,
+    // class className,
+    required EmailBillDetailsController controllerX,
+    // required String selectedFileNames,
+    required Function fun1,
+    required Function fun2,
+    required String fun1Title,
+    required String fun2Title,
+  }) {
+    Get.defaultDialog(
+      title: "",
+      titleStyle: TextStyle(fontSize: 1),
+      content: GetBuilder<EmailBillDetailsController>(
+          init: controllerX,
+          builder: (builder) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  CupertinoIcons.search_circle_fill,
+                  color: Colors.green,
+                  size: 55,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                      color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Text(
+                  des,
+                  style: const TextStyle(
+                    // color: Colors.green,
+                    fontSize: 10,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Obx(() {
+                  return controllerX.selectedFileNames.value != ""
+                      ? Row(
+                          children: [
+                            Text(
+                              "Selected Files:",
+                              style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w400),
+                              textAlign: TextAlign.center,
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            // Obx(() =>
+                            Text(
+                              controllerX.selectedFileNames.value,
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 10,
+                              ),
+                              textAlign: TextAlign.center,
+                            )
+                            // ),
+                          ],
+                        )
+                      : SizedBox();
+                })
+              ],
+            );
+          }),
+      radius: 10,
+      /*confirm: MaterialButton(
+          onPressed: () {
+            Get.back();
+            confirm!();
+          },
+          child: Text(deleteTitle ?? "Delete")),*/
+      confirm: DailogCloseButton(
+        autoFocus: false,
+        callback: () {
+          fun2();
+        },
+        btnText: fun2Title,
+      ),
+      /*cancel: MaterialButton(
+          onPressed: () {
+            Get.back();
+            cancel!();
+          },
+          child: Text(cancelTitle ?? "Cancel")),*/
+      cancel: DailogCloseButton(
+        autoFocus: true,
+        callback: () {
+          fun1();
+        },
+        btnText: fun1Title,
+      ),
+      contentPadding: EdgeInsets.only(
+          left: SizeDefine.popupMarginHorizontal,
+          right: SizeDefine.popupMarginHorizontal,
+          bottom: 16),
+    );
+  }
+
   static Future<bool> modifyWithAsync(String title,
       {String? deleteTitle, String? cancelTitle}) {
-
     Completer<bool> completer = Completer<bool>();
 
     Get.defaultDialog(
@@ -870,7 +985,6 @@ class LoadingDialog {
     );
 
     return completer.future;
-
   }
 
   static callDataDeleted([String? msg]) {
