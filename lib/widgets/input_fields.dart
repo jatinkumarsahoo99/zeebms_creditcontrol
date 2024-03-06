@@ -34,9 +34,7 @@ class InputFields {
             textInputAction: TextInputAction.done,
             // keyboardType: Validator.getKeyboardTyp(validateModel.fieldType.toLowerCase()),
             style: const TextStyle(fontSize: 15),
-            inputFormatters: [
-              LengthLimitingTextInputFormatter(SizeDefine.maxcharlimit)
-            ],
+            inputFormatters: [LengthLimitingTextInputFormatter(SizeDefine.maxcharlimit)],
             placeholder: hintTxt,
             decoration: BoxDecoration(
               color: ColorData.bgFormField,
@@ -52,9 +50,7 @@ class InputFields {
                   isPassVisible.value = !isPassVisible.value;
                 },
                 child: Icon(
-                  (isPassVisible.value)
-                      ? CupertinoIcons.eye_solid
-                      : CupertinoIcons.eye_slash_fill,
+                  (isPassVisible.value) ? CupertinoIcons.eye_solid : CupertinoIcons.eye_slash_fill,
                   color: ColorData.hintColor,
                 ),
               ),
@@ -114,9 +110,7 @@ class InputFields {
               minLines: maxLines,
               autofocus: autoFocus,
               onEditingComplete: onEditComplete,
-              textCapitalization: capital
-                  ? TextCapitalization.characters
-                  : TextCapitalization.none,
+              textCapitalization: capital ? TextCapitalization.characters : TextCapitalization.none,
               validator: validator,
               enabled: isEnable ?? true,
               maxLength: maxLen ?? 25,
@@ -132,9 +126,8 @@ class InputFields {
                     ]
                   : inputformatters,
               controller: controller,
-              style: TextStyle(
-                  fontSize: 12,
-                  color: (isEnable ?? true) ? Colors.black : Colors.grey),
+              style:
+                  TextStyle(fontSize: 12, color: (isEnable ?? true) ? Colors.black : Colors.grey),
               decoration: InputDecoration(
                   enabled: isEnable ?? true,
                   errorBorder: InputBorder.none,
@@ -219,9 +212,7 @@ class InputFields {
             minLines: maxLines,
             autofocus: autoFocus,
             onEditingComplete: onEditComplete,
-            textCapitalization: capital
-                ? TextCapitalization.characters
-                : TextCapitalization.none,
+            textCapitalization: capital ? TextCapitalization.characters : TextCapitalization.none,
             validator: validator,
             enabled: isEnable ?? true,
             maxLength: maxLen ?? 25,
@@ -233,16 +224,13 @@ class InputFields {
             onFieldSubmitted: onFieldSubmitted,
             inputFormatters: inputformatters.isEmpty
                 ? [
-                    LengthLimitingTextInputFormatter(
-                        (maxLen) ?? SizeDefine.maxcharlimit),
+                    LengthLimitingTextInputFormatter((maxLen) ?? SizeDefine.maxcharlimit),
                     FilteringTextInputFormatter.deny("  "),
                     // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
                   ]
                 : inputformatters,
             controller: controller,
-            style: TextStyle(
-                fontSize: 12,
-                color: (isEnable ?? true) ? Colors.black : Colors.grey),
+            style: TextStyle(fontSize: 12, color: (isEnable ?? true) ? Colors.black : Colors.grey),
             decoration: InputDecoration(
                 enabled: isEnable ?? true,
                 // prefixText: prefixText,
@@ -271,8 +259,7 @@ class InputFields {
                 counterText: "",
                 // hintText: "dd/MM/yyyy",
                 contentPadding: EdgeInsets.only(
-                    left: prefixText == null ? 10 : 2,
-                    top: (contentPad != null) ? contentPad : 2),
+                    left: prefixText == null ? 10 : 2, top: (contentPad != null) ? contentPad : 2),
                 // labelText: hintTxt,
                 labelStyle: TextStyle(
                     fontSize: SizeDefine.labelSize,
@@ -369,9 +356,8 @@ class InputFields {
                 minLines: maxLines,
                 autofocus: autoFocus,
                 onEditingComplete: onEditComplete,
-                textCapitalization: capital
-                    ? TextCapitalization.characters
-                    : TextCapitalization.none,
+                textCapitalization:
+                    capital ? TextCapitalization.characters : TextCapitalization.none,
                 validator: validator,
                 enabled: isEnable ?? true,
                 maxLength: maxLen ?? 25,
@@ -383,16 +369,14 @@ class InputFields {
                 onFieldSubmitted: onFieldSubmitted,
                 inputFormatters: inputformatters.isEmpty
                     ? [
-                        LengthLimitingTextInputFormatter(
-                            maxLen ?? SizeDefine.maxcharlimit),
+                        LengthLimitingTextInputFormatter(maxLen ?? SizeDefine.maxcharlimit),
                         FilteringTextInputFormatter.deny("  "),
                         // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
                       ]
                     : inputformatters,
                 controller: controller,
-                style: TextStyle(
-                    fontSize: 12,
-                    color: (isEnable ?? true) ? Colors.black : Colors.grey),
+                style:
+                    TextStyle(fontSize: 12, color: (isEnable ?? true) ? Colors.black : Colors.grey),
                 decoration: InputDecoration(
                     enabled: isEnable ?? true,
                     // prefixText: prefixText,
@@ -420,8 +404,7 @@ class InputFields {
                     errorBorder: InputBorder.none,
                     counterText: "",
                     // hintText: "dd/MM/yyyy",
-                    contentPadding:
-                        EdgeInsets.only(left: prefixText == null ? 10 : 0),
+                    contentPadding: EdgeInsets.only(left: prefixText == null ? 10 : 0),
                     // labelText: hintTxt,
                     labelStyle: TextStyle(
                         fontSize: SizeDefine.labelSize,
@@ -453,30 +436,29 @@ class InputFields {
     );
   }
 
-  static Widget formField1WithCustomColor({
-    String? Function(String?)? validator,
-    required String hintTxt,
-    required TextEditingController controller,
-    Function(String)? onchanged,
-    double padLeft = 5,
-    FocusNode? focusNode,
-    Function()? onEditComplete,
-    List<TextInputFormatter> inputformatters = const [],
-    num? width = 0.12,
-    bool capital = false,
-    bool? isEnable,
-    int? maxLen,
-    bool margin = false,
-    bool autoFocus = false,
-    bool showTitle = true,
-    int maxLines = 1,
-    double? height,
-    void Function(String)? onFieldSubmitted,
-    String? prefixText,
-    bool titleInLeft = false,
-    bool readOnly = false,
-    Color ? labelColor
-  }) {
+  static Widget formField1WithCustomColor(
+      {String? Function(String?)? validator,
+      required String hintTxt,
+      required TextEditingController controller,
+      Function(String)? onchanged,
+      double padLeft = 5,
+      FocusNode? focusNode,
+      Function()? onEditComplete,
+      List<TextInputFormatter> inputformatters = const [],
+      num? width = 0.12,
+      bool capital = false,
+      bool? isEnable,
+      int? maxLen,
+      bool margin = false,
+      bool autoFocus = false,
+      bool showTitle = true,
+      int maxLines = 1,
+      double? height,
+      void Function(String)? onFieldSubmitted,
+      String? prefixText,
+      bool titleInLeft = false,
+      bool readOnly = false,
+      Color? labelColor}) {
     // var data = 0.obs;
 
     if (inputformatters.isNotEmpty) {
@@ -493,7 +475,7 @@ class InputFields {
         if (showTitle && !titleInLeft) ...{
           LabelText.style(
             hint: hintTxt,
-            txtColor:labelColor?? ((isEnable ?? true) ? Colors.black : Colors.grey),
+            txtColor: labelColor ?? ((isEnable ?? true) ? Colors.black : Colors.grey),
           ),
         },
         Row(
@@ -502,7 +484,7 @@ class InputFields {
             if (titleInLeft) ...{
               LabelText.style(
                 hint: hintTxt,
-                txtColor: (labelColor)??((isEnable ?? true) ? Colors.black : Colors.grey),
+                txtColor: (labelColor) ?? ((isEnable ?? true) ? Colors.black : Colors.grey),
               ),
               SizedBox(width: padLeft),
             },
@@ -521,9 +503,8 @@ class InputFields {
                 minLines: maxLines,
                 autofocus: autoFocus,
                 onEditingComplete: onEditComplete,
-                textCapitalization: capital
-                    ? TextCapitalization.characters
-                    : TextCapitalization.none,
+                textCapitalization:
+                    capital ? TextCapitalization.characters : TextCapitalization.none,
                 validator: validator,
                 enabled: isEnable ?? true,
                 maxLength: maxLen ?? 25,
@@ -535,34 +516,32 @@ class InputFields {
                 onFieldSubmitted: onFieldSubmitted,
                 inputFormatters: inputformatters.isEmpty
                     ? [
-                  LengthLimitingTextInputFormatter(
-                      maxLen ?? SizeDefine.maxcharlimit),
-                  FilteringTextInputFormatter.deny("  "),
-                  // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
-                ]
+                        LengthLimitingTextInputFormatter(maxLen ?? SizeDefine.maxcharlimit),
+                        FilteringTextInputFormatter.deny("  "),
+                        // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
+                      ]
                     : inputformatters,
                 controller: controller,
-                style: TextStyle(
-                    fontSize: 12,
-                    color: (isEnable ?? true) ? Colors.black : Colors.grey),
+                style:
+                    TextStyle(fontSize: 12, color: (isEnable ?? true) ? Colors.black : Colors.grey),
                 decoration: InputDecoration(
                     enabled: isEnable ?? true,
                     // prefixText: prefixText,
 
                     prefixIcon: prefixText != null
                         ? SizedBox(
-                      child: Center(
-                        widthFactor: 0.0,
-                        child: Text(
-                          " $prefixText ",
-                          style: TextStyle(
-                            backgroundColor: Colors.grey.shade500,
-                            color: Colors.white,
-                            fontSize: 12,
-                          ),
-                        ),
-                      ),
-                    )
+                            child: Center(
+                              widthFactor: 0.0,
+                              child: Text(
+                                " $prefixText ",
+                                style: TextStyle(
+                                  backgroundColor: Colors.grey.shade500,
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
+                          )
                         : null,
                     prefixStyle: TextStyle(
                       backgroundColor: Colors.grey.shade500,
@@ -572,8 +551,7 @@ class InputFields {
                     errorBorder: InputBorder.none,
                     counterText: "",
                     // hintText: "dd/MM/yyyy",
-                    contentPadding:
-                    EdgeInsets.only(left: prefixText == null ? 10 : 0),
+                    contentPadding: EdgeInsets.only(left: prefixText == null ? 10 : 0),
                     // labelText: hintTxt,
                     labelStyle: TextStyle(
                         fontSize: SizeDefine.labelSize,
@@ -660,9 +638,7 @@ class InputFields {
             minLines: maxLines,
             autofocus: autoFocus,
             onEditingComplete: onEditComplete,
-            textCapitalization: capital
-                ? TextCapitalization.characters
-                : TextCapitalization.none,
+            textCapitalization: capital ? TextCapitalization.characters : TextCapitalization.none,
             validator: validator,
             enabled: isEnable ?? true,
             maxLength: maxLen ?? 25,
@@ -674,16 +650,13 @@ class InputFields {
             onFieldSubmitted: onFieldSubmitted,
             inputFormatters: inputformatters.isEmpty
                 ? [
-                    LengthLimitingTextInputFormatter(
-                        (maxLen) ?? SizeDefine.maxcharlimit),
+                    LengthLimitingTextInputFormatter((maxLen) ?? SizeDefine.maxcharlimit),
                     FilteringTextInputFormatter.deny("  "),
                     // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
                   ]
                 : inputformatters,
             controller: controller,
-            style: TextStyle(
-                fontSize: 12,
-                color: (isEnable ?? true) ? Colors.black : Colors.grey),
+            style: TextStyle(fontSize: 12, color: (isEnable ?? true) ? Colors.black : Colors.grey),
             decoration: InputDecoration(
                 enabled: isEnable ?? true,
                 // prefixText: prefixText,
@@ -712,8 +685,7 @@ class InputFields {
                 counterText: "",
                 // hintText: "dd/MM/yyyy",
                 contentPadding: EdgeInsets.only(
-                    left: prefixText == null ? 10 : 2,
-                    top: (contentPad != null) ? contentPad : 2),
+                    left: prefixText == null ? 10 : 2, top: (contentPad != null) ? contentPad : 2),
                 // labelText: hintTxt,
                 labelStyle: TextStyle(
                     fontSize: SizeDefine.labelSize,
@@ -822,9 +794,8 @@ class InputFields {
                   minLines: expands ? null : 1,
                   autofocus: autoFocus,
                   onEditingComplete: onEditComplete,
-                  textCapitalization: capital
-                      ? TextCapitalization.characters
-                      : TextCapitalization.none,
+                  textCapitalization:
+                      capital ? TextCapitalization.characters : TextCapitalization.none,
                   validator: validator,
                   enabled: isEnable ?? true,
                   maxLength: maxLen,
@@ -882,8 +853,7 @@ class InputFields {
                       // labelText: hintTxt,
                       labelStyle: TextStyle(
                           fontSize: SizeDefine.labelSize,
-                          color:
-                              (isEnable ?? true) ? Colors.black : Colors.grey),
+                          color: (isEnable ?? true) ? Colors.black : Colors.grey),
                       border: InputBorder.none,
                       // suffixIcon: Icon(
                       //   Icons.calendar_today,
@@ -948,9 +918,8 @@ class InputFields {
           width: Get.width * widthRatio,
           child: TextFormField(
             autofocus: autoFocus,
-            textCapitalization: istextCapitalized
-                ? TextCapitalization.characters
-                : TextCapitalization.none,
+            textCapitalization:
+                istextCapitalized ? TextCapitalization.characters : TextCapitalization.none,
             inputFormatters: [
               ...inputformatters,
               LengthLimitingTextInputFormatter(SizeDefine.maxcharlimit)
@@ -971,8 +940,7 @@ class InputFields {
                 // hintText: "dd/MM/yyyy",
                 contentPadding: const EdgeInsets.only(left: 10),
                 // labelText: hintTxt,
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.black),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                 border: InputBorder.none,
                 // suffixIcon: Icon(
                 //   Icons.calendar_today,
@@ -1044,8 +1012,7 @@ class InputFields {
                 contentPadding: const EdgeInsets.only(left: 10),
                 // labelText: hintTxt,
                 counterText: "",
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.black),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                 border: InputBorder.none,
                 // suffixIcon: Icon(
                 //   Icons.calendar_today,
@@ -1099,16 +1066,12 @@ class InputFields {
             autofocus: autofocus,
             inputFormatters: [
               LengthLimitingTextInputFormatter(SizeDefine.maxcharlimit),
-              capital
-                  ? UpperCaseTextFormatter()
-                  : FilteringTextInputFormatter.deny(RegExp('')),
+              capital ? UpperCaseTextFormatter() : FilteringTextInputFormatter.deny(RegExp('')),
               FilteringTextInputFormatter.deny("  "),
               // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
             ],
             focusNode: focus,
-            textCapitalization: capital
-                ? TextCapitalization.characters
-                : TextCapitalization.none,
+            textCapitalization: capital ? TextCapitalization.characters : TextCapitalization.none,
             enabled: isEnable ?? true,
             maxLength: maxLen ?? 25,
             textAlignVertical: TextAlignVertical.center,
@@ -1127,8 +1090,7 @@ class InputFields {
                 contentPadding: const EdgeInsets.only(left: 10),
                 // labelText: hintTxt,
                 counterText: "",
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.black),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                 border: InputBorder.none,
 
                 // suffixIcon: Icon(
@@ -1175,8 +1137,7 @@ class InputFields {
         Padding(
           padding: EdgeInsets.only(left: paddingLeft ?? 10),
           child: LabelText.style(
-              hint: hintTxt,
-              txtColor: (isEnable ?? true) ? Colors.black : Colors.grey),
+              hint: hintTxt, txtColor: (isEnable ?? true) ? Colors.black : Colors.grey),
         ),
         Container(
           // padding: const EdgeInsets.only(
@@ -1188,26 +1149,19 @@ class InputFields {
 
           child: TextField(
             inputFormatters: [
-              LengthLimitingTextInputFormatter(
-                  maxLen ?? SizeDefine.maxcharlimit),
-              capital
-                  ? UpperCaseTextFormatter()
-                  : FilteringTextInputFormatter.deny(RegExp(''))
+              LengthLimitingTextInputFormatter(maxLen ?? SizeDefine.maxcharlimit),
+              capital ? UpperCaseTextFormatter() : FilteringTextInputFormatter.deny(RegExp(''))
             ],
             autofocus: autoFocus,
             focusNode: focus,
-            textCapitalization: capital
-                ? TextCapitalization.characters
-                : TextCapitalization.none,
+            textCapitalization: capital ? TextCapitalization.characters : TextCapitalization.none,
             enabled: isEnable ?? true,
             maxLength: maxLen ?? SizeDefine.maxcharlimit,
             textAlignVertical: TextAlignVertical.center,
             keyboardType: TextInputType.datetime,
             textAlign: TextAlign.left,
             controller: controller,
-            style: TextStyle(
-                fontSize: 12,
-                color: (isEnable ?? true) ? Colors.black : Colors.grey),
+            style: TextStyle(fontSize: 12, color: (isEnable ?? true) ? Colors.black : Colors.grey),
             onChanged: (val) {
               if (onChange != null) {
                 onChange(val);
@@ -1277,17 +1231,12 @@ class InputFields {
           alignment: Alignment.topLeft,
           child: TextField(
             inputFormatters: [
-              LengthLimitingTextInputFormatter(
-                  maxLen ?? SizeDefine.maxcharlimit),
-              capital
-                  ? UpperCaseTextFormatter()
-                  : FilteringTextInputFormatter.deny(RegExp(''))
+              LengthLimitingTextInputFormatter(maxLen ?? SizeDefine.maxcharlimit),
+              capital ? UpperCaseTextFormatter() : FilteringTextInputFormatter.deny(RegExp(''))
             ],
             expands: true,
             focusNode: focus,
-            textCapitalization: capital
-                ? TextCapitalization.characters
-                : TextCapitalization.none,
+            textCapitalization: capital ? TextCapitalization.characters : TextCapitalization.none,
             enabled: isEnable ?? true,
             maxLength: maxLen ?? SizeDefine.maxcharlimit,
             maxLines: null,
@@ -1312,8 +1261,7 @@ class InputFields {
                 ),
                 // labelText: hintTxt,
                 counterText: "",
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.black),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                 border: InputBorder.none,
 
                 // suffixIcon: Icon(
@@ -1365,8 +1313,7 @@ class InputFields {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Padding(
-                      padding: EdgeInsets.only(
-                          left: paddingLeft ?? 10, right: 1, top: 3),
+                      padding: EdgeInsets.only(left: paddingLeft ?? 10, right: 1, top: 3),
                       child: LabelText.style(hint: hintTxt),
                     ),
                   ],
@@ -1383,17 +1330,12 @@ class InputFields {
           alignment: Alignment.topLeft,
           child: TextField(
             inputFormatters: [
-              LengthLimitingTextInputFormatter(
-                  maxLen ?? SizeDefine.maxcharlimit),
-              capital
-                  ? UpperCaseTextFormatter()
-                  : FilteringTextInputFormatter.deny(RegExp(''))
+              LengthLimitingTextInputFormatter(maxLen ?? SizeDefine.maxcharlimit),
+              capital ? UpperCaseTextFormatter() : FilteringTextInputFormatter.deny(RegExp(''))
             ],
             expands: true,
             focusNode: focus,
-            textCapitalization: capital
-                ? TextCapitalization.characters
-                : TextCapitalization.none,
+            textCapitalization: capital ? TextCapitalization.characters : TextCapitalization.none,
             enabled: isEnable ?? true,
             maxLength: maxLen ?? SizeDefine.maxcharlimit,
             maxLines: null,
@@ -1418,8 +1360,7 @@ class InputFields {
                 ),
                 // labelText: hintTxt,
                 counterText: "",
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.black),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                 border: InputBorder.none,
 
                 // suffixIcon: Icon(
@@ -1581,10 +1522,7 @@ class InputFields {
             maxLength: maxLen ?? 25,
             controller: controller,
             style: TextStyle(
-                fontSize: 12,
-                color: (isEnable != null && isEnable)
-                    ? Colors.grey
-                    : Colors.black),
+                fontSize: 12, color: (isEnable != null && isEnable) ? Colors.grey : Colors.black),
             focusNode: focusNode ?? null,
             enabled: isEnable ?? true,
             inputFormatters: [
@@ -1609,8 +1547,7 @@ class InputFields {
                 // labelText: hintTxt,
                 counterText: "",
                 labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize,
-                    color: isEnable! ? Colors.black : Colors.grey),
+                    fontSize: SizeDefine.labelSize, color: isEnable! ? Colors.black : Colors.grey),
                 border: InputBorder.none,
                 // suffixIcon: Icon(
                 //   Icons.calendar_today,
@@ -1673,8 +1610,7 @@ class InputFields {
               // hintText: "dd/MM/yyyy",
               contentPadding: const EdgeInsets.only(left: 10),
               // labelText: hintTxt,
-              labelStyle: TextStyle(
-                  fontSize: SizeDefine.labelSize, color: Colors.black),
+              labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
               border: InputBorder.none,
               // suffixIcon: Icon(
               //   Icons.calendar_today,
@@ -1726,16 +1662,13 @@ class InputFields {
             setCursor(2);
           } else if ((int.tryParse(value.substring(3, 5)) ?? 0) > 59) {
 //MINUTES
-            controller.text =
-                "${value.substring(0, 3)}00${value.substring(5, (isTime ? 8 : 11))}";
+            controller.text = "${value.substring(0, 3)}00${value.substring(5, (isTime ? 8 : 11))}";
             setCursor(5);
           } else if ((int.tryParse(value.substring(6, 8)) ?? 0) > 59) {
 //SECOND
-            controller.text =
-                "${value.substring(0, 6)}00${value.substring(8, (isTime ? 8 : 11))}";
+            controller.text = "${value.substring(0, 6)}00${value.substring(8, (isTime ? 8 : 11))}";
             setCursor(8);
-          } else if (!isTime &&
-              (int.tryParse(value.substring(9, 11)) ?? 0) > 29) {
+          } else if (!isTime && (int.tryParse(value.substring(9, 11)) ?? 0) > 29) {
 //FRAME
             String tempPrefix = value.substring(0, 9);
             controller.text = "${tempPrefix}00";
@@ -1746,13 +1679,11 @@ class InputFields {
 //HOUR
             controller.text = "00:";
             setCursor(2);
-          } else if (len == 5 &&
-              (int.tryParse(value.substring(3, 5)) ?? 0) > 59) {
+          } else if (len == 5 && (int.tryParse(value.substring(3, 5)) ?? 0) > 59) {
 //MINUTES
             controller.text = "${value.substring(0, 3)}00:";
             setCursor(5);
-          } else if (len == 8 &&
-              (int.tryParse(value.substring(6, 8)) ?? 0) > 59) {
+          } else if (len == 8 && (int.tryParse(value.substring(6, 8)) ?? 0) > 59) {
 //SECON
             controller.text = "${value.substring(0, 6)}00:";
             setCursor(8);
@@ -1826,8 +1757,7 @@ class InputFields {
             onFocusChange(controller.text);
           }
         } else {
-          controller.selection = TextSelection(
-              baseOffset: 0, extentOffset: controller.text.length);
+          controller.selection = TextSelection(baseOffset: 0, extentOffset: controller.text.length);
         }
       },
       child: RawKeyboardListener(
@@ -1894,8 +1824,7 @@ class InputFields {
                 cursorHeight: 15,
                 textAlign: TextAlign.start,
                 style: TextStyle(
-                    fontSize: textSize,
-                    color: (isEnable ?? true) ? Colors.black : Colors.grey),
+                    fontSize: textSize, color: (isEnable ?? true) ? Colors.black : Colors.grey),
               ),
             ),
           ],
@@ -1988,8 +1917,7 @@ class InputFields {
             textAlignVertical: TextAlignVertical.center,
             keyboardType: TextInputType.number,
             inputFormatters: [
-              LengthLimitingTextInputFormatter(
-                  maxchar ?? SizeDefine.maxcharlimit),
+              LengthLimitingTextInputFormatter(maxchar ?? SizeDefine.maxcharlimit),
               FilteringTextInputFormatter.allow(
                 RegExp(r'[0-9:]'),
               ),
@@ -2018,8 +1946,7 @@ class InputFields {
                                 padding: new EdgeInsets.all(0.0),
                                 icon: Icon(Icons.arrow_drop_up_sharp),
                                 onPressed: () {
-                                  controller.text =
-                                      "${(int.tryParse(controller.text) ?? 0) + 1}";
+                                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
                                 },
                               )),
                           SizedBox(
@@ -2037,8 +1964,7 @@ class InputFields {
                                           "${(int.tryParse(controller.text) ?? 0) - 1}";
                                     } else {
                                       if ((controller.text != "" &&
-                                              !(int.tryParse(controller.text)
-                                                  ?.isNegative)!) &&
+                                              !(int.tryParse(controller.text)?.isNegative)!) &&
                                           controller.text != "0") {
                                         controller.text =
                                             "${(int.tryParse(controller.text) ?? 0) - 1}";
@@ -2053,8 +1979,7 @@ class InputFields {
                 // hintText: "dd/MM/yyyy",
                 contentPadding: const EdgeInsets.only(left: 10),
                 // labelText: hintTxt,
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.black),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                 border: InputBorder.none,
 
                 // suffixIcon: Icon(
@@ -2093,8 +2018,7 @@ class InputFields {
   }) {
     // var data = 0.obs;
     var fN = FocusNode(skipTraversal: true);
-    final iconColor =
-        (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
+    final iconColor = (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -2119,28 +2043,23 @@ class InputFields {
                   /* controller.text =
                       "${(int.tryParse(controller.text) ?? 1) - 1}";*/
                   if (!isNegativeReq) {
-                    if (int.tryParse(controller.text) != 1 &&
-                        int.tryParse(controller.text) != 0) {
-                      controller.text =
-                          "${(int.tryParse(controller.text) ?? 1) - 1}";
+                    if (int.tryParse(controller.text) != 1 && int.tryParse(controller.text) != 0) {
+                      controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                     }
                   } else {
-                    controller.text =
-                        "${(int.tryParse(controller.text) ?? 1) - 1}";
+                    controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                   }
                 }
                 if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
-                  controller.text =
-                      "${(int.tryParse(controller.text) ?? 0) + 1}";
+                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
                 }
               }
             },
             child: AbsorbPointer(
               absorbing: isEnabled ?? false,
               child: TextFormField(
-                textCapitalization: capital
-                    ? TextCapitalization.characters
-                    : TextCapitalization.none,
+                textCapitalization:
+                    capital ? TextCapitalization.characters : TextCapitalization.none,
                 validator: validator,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onChanged: (onchanged != null) ? onchanged : null,
@@ -2148,16 +2067,14 @@ class InputFields {
                 keyboardType: TextInputType.datetime,
                 textAlign: TextAlign.left,
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(
-                      maxchar ?? SizeDefine.maxcharlimit),
+                  LengthLimitingTextInputFormatter(maxchar ?? SizeDefine.maxcharlimit),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 enabled: isEnabled ?? true,
                 decoration: InputDecoration(
                   errorBorder: InputBorder.none,
                   contentPadding: const EdgeInsets.only(left: 10),
-                  labelStyle: TextStyle(
-                      fontSize: SizeDefine.labelSize, color: Colors.black),
+                  labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                   border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.deepPurpleAccent),
@@ -2185,8 +2102,7 @@ class InputFields {
                               ),
                               onTap: () {
                                 if (isEnabled ?? true) {
-                                  controller.text =
-                                      "${(int.tryParse(controller.text) ?? 0) + 1}";
+                                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
                                   if (onchanged != null) {
                                     onchanged(controller.text);
                                   }
@@ -2205,16 +2121,14 @@ class InputFields {
                               onTap: () {
                                 if (isEnabled ?? true) {
                                   if (!isNegativeReq) {
-                                    print("Click on negative>>>" +
-                                        controller.text);
+                                    print("Click on negative>>>" + controller.text);
                                     if (controller.text != "0") {
                                       controller.text =
                                           "${(int.tryParse(controller.text) ?? 1) - 1}";
                                       onchanged!(controller.text);
                                     }
                                   } else {
-                                    controller.text =
-                                        "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                    controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                                     onchanged!(controller.text);
                                   }
                                 } else {
@@ -2252,8 +2166,7 @@ class InputFields {
   }) {
     // var data = 0.obs;
     var fN = FocusNode();
-    final iconColor =
-        (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
+    final iconColor = (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -2278,28 +2191,23 @@ class InputFields {
                   /* controller.text =
                       "${(int.tryParse(controller.text) ?? 1) - 1}";*/
                   if (!isNegativeReq) {
-                    if (int.tryParse(controller.text) != 1 ||
-                        int.tryParse(controller.text) != 0) {
-                      controller.text =
-                          "${(int.tryParse(controller.text) ?? 1) - 1}";
+                    if (int.tryParse(controller.text) != 1 || int.tryParse(controller.text) != 0) {
+                      controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                     }
                   } else {
-                    controller.text =
-                        "${(int.tryParse(controller.text) ?? 1) - 1}";
+                    controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                   }
                 }
                 if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
-                  controller.text =
-                      "${(int.tryParse(controller.text) ?? 0) + 1}";
+                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
                 }
               }
             },
             child: AbsorbPointer(
               absorbing: isEnabled != null ? !isEnabled : false,
               child: TextFormField(
-                textCapitalization: capital
-                    ? TextCapitalization.characters
-                    : TextCapitalization.none,
+                textCapitalization:
+                    capital ? TextCapitalization.characters : TextCapitalization.none,
                 validator: validator,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onChanged: (onchanged != null) ? onchanged : null,
@@ -2307,16 +2215,14 @@ class InputFields {
                 keyboardType: TextInputType.datetime,
                 textAlign: TextAlign.left,
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(
-                      maxchar ?? SizeDefine.maxcharlimit),
+                  LengthLimitingTextInputFormatter(maxchar ?? SizeDefine.maxcharlimit),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 enabled: isEnabled ?? true,
                 decoration: InputDecoration(
                   errorBorder: InputBorder.none,
                   contentPadding: const EdgeInsets.only(left: 10),
-                  labelStyle: TextStyle(
-                      fontSize: SizeDefine.labelSize, color: Colors.black),
+                  labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                   border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.deepPurpleAccent),
@@ -2344,8 +2250,7 @@ class InputFields {
                               ),
                               onTap: () {
                                 if (isEnabled ?? true) {
-                                  controller.text =
-                                      "${(int.tryParse(controller.text) ?? 0) + 1}";
+                                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
                                   onchanged!(controller.text);
                                 } else {
                                   print("Print tap");
@@ -2362,16 +2267,14 @@ class InputFields {
                               onTap: () {
                                 if (isEnabled ?? true) {
                                   if (!isNegativeReq) {
-                                    print("Click on negative>>>" +
-                                        controller.text);
+                                    print("Click on negative>>>" + controller.text);
                                     if (controller.text != "0") {
                                       controller.text =
                                           "${(int.tryParse(controller.text) ?? 1) - 1}";
                                       onchanged!(controller.text);
                                     }
                                   } else {
-                                    controller.text =
-                                        "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                    controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                                     onchanged!(controller.text);
                                   }
                                 } else {
@@ -2409,8 +2312,7 @@ class InputFields {
   }) {
     // var data = 0.obs;
     var fN = FocusNode();
-    final iconColor =
-        (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
+    final iconColor = (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -2435,28 +2337,23 @@ class InputFields {
                   /* controller.text =
                       "${(int.tryParse(controller.text) ?? 1) - 1}";*/
                   if (!isNegativeReq) {
-                    if (int.tryParse(controller.text) != 1 ||
-                        int.tryParse(controller.text) != 0) {
-                      controller.text =
-                          "${(int.tryParse(controller.text) ?? 1) - 1}";
+                    if (int.tryParse(controller.text) != 1 || int.tryParse(controller.text) != 0) {
+                      controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                     }
                   } else {
-                    controller.text =
-                        "${(int.tryParse(controller.text) ?? 1) - 1}";
+                    controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                   }
                 }
                 if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
-                  controller.text =
-                      "${(int.tryParse(controller.text) ?? 0) + 1}";
+                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
                 }
               }
             },
             child: AbsorbPointer(
               absorbing: isEnabled != null ? !isEnabled : false,
               child: TextFormField(
-                textCapitalization: capital
-                    ? TextCapitalization.characters
-                    : TextCapitalization.none,
+                textCapitalization:
+                    capital ? TextCapitalization.characters : TextCapitalization.none,
                 validator: validator,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onChanged: (onchanged != null) ? onchanged : null,
@@ -2464,16 +2361,14 @@ class InputFields {
                 keyboardType: TextInputType.datetime,
                 textAlign: TextAlign.left,
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(
-                      maxchar ?? SizeDefine.maxcharlimit),
+                  LengthLimitingTextInputFormatter(maxchar ?? SizeDefine.maxcharlimit),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 enabled: isEnabled ?? true,
                 decoration: InputDecoration(
                   errorBorder: InputBorder.none,
                   contentPadding: const EdgeInsets.only(left: 10),
-                  labelStyle: TextStyle(
-                      fontSize: SizeDefine.labelSize, color: Colors.black),
+                  labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                   border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.deepPurpleAccent),
@@ -2501,8 +2396,7 @@ class InputFields {
                               ),
                               onTap: () {
                                 if (isEnabled ?? true) {
-                                  controller.text =
-                                      "${(int.tryParse(controller.text) ?? 0) + 1}";
+                                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
                                   onchanged!(controller.text);
                                 } else {
                                   print("Print tap");
@@ -2519,16 +2413,14 @@ class InputFields {
                               onTap: () {
                                 if (isEnabled ?? true) {
                                   if (!isNegativeReq) {
-                                    print("Click on negative>>>" +
-                                        controller.text);
+                                    print("Click on negative>>>" + controller.text);
                                     if (controller.text != "0") {
                                       controller.text =
                                           "${(int.tryParse(controller.text) ?? 1) - 1}";
                                       onchanged!(controller.text);
                                     }
                                   } else {
-                                    controller.text =
-                                        "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                    controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                                     onchanged!(controller.text);
                                   }
                                 } else {
@@ -2569,8 +2461,7 @@ class InputFields {
   }) {
     // var data = 0.obs;
     var fN = FocusNode();
-    final iconColor =
-        (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
+    final iconColor = (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -2620,26 +2511,22 @@ class InputFields {
                         if (!isNegativeReq) {
                           if (int.tryParse(controller.text) != 1 ||
                               int.tryParse(controller.text) != 0) {
-                            controller.text =
-                                "${(int.tryParse(controller.text) ?? 1) - 1}";
+                            controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                           }
                         } else {
-                          controller.text =
-                              "${(int.tryParse(controller.text) ?? 1) - 1}";
+                          controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                         }
                       }
                       if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
-                        controller.text =
-                            "${(int.tryParse(controller.text) ?? 0) + 1}";
+                        controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
                       }
                     }
                   },
                   child: AbsorbPointer(
                     absorbing: isEnabled != null ? !isEnabled : false,
                     child: TextFormField(
-                      textCapitalization: capital
-                          ? TextCapitalization.characters
-                          : TextCapitalization.none,
+                      textCapitalization:
+                          capital ? TextCapitalization.characters : TextCapitalization.none,
                       validator: validator,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       onChanged: (onchanged != null) ? onchanged : null,
@@ -2647,21 +2534,17 @@ class InputFields {
                       keyboardType: TextInputType.datetime,
                       textAlign: TextAlign.left,
                       inputFormatters: [
-                        LengthLimitingTextInputFormatter(
-                            maxchar ?? SizeDefine.maxcharlimit),
+                        LengthLimitingTextInputFormatter(maxchar ?? SizeDefine.maxcharlimit),
                         FilteringTextInputFormatter.digitsOnly,
                       ],
                       enabled: isEnabled ?? true,
                       decoration: InputDecoration(
                         errorBorder: InputBorder.none,
                         contentPadding: const EdgeInsets.only(left: 10),
-                        labelStyle: TextStyle(
-                            fontSize: SizeDefine.labelSize,
-                            color: Colors.black),
+                        labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                         border: InputBorder.none,
                         enabledBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.deepPurpleAccent),
+                          borderSide: BorderSide(color: Colors.deepPurpleAccent),
                           borderRadius: BorderRadius.circular(0),
                         ),
                         disabledBorder: OutlineInputBorder(
@@ -2669,8 +2552,7 @@ class InputFields {
                           borderRadius: BorderRadius.circular(0),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide:
-                              BorderSide(color: Colors.deepPurpleAccent),
+                          borderSide: BorderSide(color: Colors.deepPurpleAccent),
                           borderRadius: BorderRadius.circular(0),
                         ),
                         suffixIcon: showbtn!
@@ -2689,7 +2571,10 @@ class InputFields {
                                       if (isEnabled ?? true) {
                                         controller.text =
                                             "${(int.tryParse(controller.text) ?? 0) + 1}";
-                                        onchanged!(controller.text);
+                                        if (onchanged != null) {
+                                          onchanged(controller.text);
+                                        }
+                                        // onchanged!(controller.text);
                                       } else {
                                         print("Print tap");
                                       }
@@ -2705,17 +2590,20 @@ class InputFields {
                                     onTap: () {
                                       if (isEnabled ?? true) {
                                         if (!isNegativeReq) {
-                                          print("Click on negative>>>" +
-                                              controller.text);
+                                          print("Click on negative>>>" + controller.text);
                                           if (controller.text != "0") {
                                             controller.text =
                                                 "${(int.tryParse(controller.text) ?? 1) - 1}";
-                                            onchanged!(controller.text);
+                                            if (onchanged != null) {
+                                              onchanged(controller.text);
+                                            }
                                           }
                                         } else {
                                           controller.text =
                                               "${(int.tryParse(controller.text) ?? 1) - 1}";
-                                          onchanged!(controller.text);
+                                          if (onchanged != null) {
+                                            onchanged(controller.text);
+                                          }
                                         }
                                       } else {
                                         print("Print tap");
@@ -2756,8 +2644,7 @@ class InputFields {
   }) {
     // var data = 0.obs;
     fN ??= FocusNode();
-    final iconColor =
-        (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
+    final iconColor = (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -2782,25 +2669,21 @@ class InputFields {
                   /* controller.text =
                       "${(int.tryParse(controller.text) ?? 1) - 1}";*/
                   if (!isNegativeReq) {
-                    if (int.tryParse(controller.text) != 1 &&
-                        int.tryParse(controller.text) != 0) {
-                      controller.text =
-                          "${(int.tryParse(controller.text) ?? 1) - 1}";
+                    if (int.tryParse(controller.text) != 1 && int.tryParse(controller.text) != 0) {
+                      controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                       if (onchanged != null) {
                         onchanged(controller.text);
                       }
                     }
                   } else {
-                    controller.text =
-                        "${(int.tryParse(controller.text) ?? 1) - 1}";
+                    controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                     if (onchanged != null) {
                       onchanged(controller.text);
                     }
                   }
                 }
                 if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
-                  controller.text =
-                      "${(int.tryParse(controller.text) ?? 0) + 1}";
+                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
                   if (onchanged != null) {
                     onchanged(controller.text);
                   }
@@ -2811,9 +2694,8 @@ class InputFields {
               absorbing: isEnabled ?? false,
               child: TextFormField(
                 focusNode: fN,
-                textCapitalization: capital
-                    ? TextCapitalization.characters
-                    : TextCapitalization.none,
+                textCapitalization:
+                    capital ? TextCapitalization.characters : TextCapitalization.none,
                 validator: validator,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 onChanged: (onchanged != null) ? onchanged : null,
@@ -2821,16 +2703,14 @@ class InputFields {
                 keyboardType: TextInputType.datetime,
                 textAlign: TextAlign.left,
                 inputFormatters: [
-                  LengthLimitingTextInputFormatter(
-                      maxchar ?? SizeDefine.maxcharlimit),
+                  LengthLimitingTextInputFormatter(maxchar ?? SizeDefine.maxcharlimit),
                   FilteringTextInputFormatter.digitsOnly,
                 ],
                 enabled: isEnabled ?? true,
                 decoration: InputDecoration(
                   errorBorder: InputBorder.none,
                   contentPadding: const EdgeInsets.only(left: 10),
-                  labelStyle: TextStyle(
-                      fontSize: SizeDefine.labelSize, color: Colors.black),
+                  labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                   border: InputBorder.none,
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.deepPurpleAccent),
@@ -2858,8 +2738,7 @@ class InputFields {
                               ),
                               onTap: () {
                                 if (isEnabled ?? true) {
-                                  controller.text =
-                                      "${(int.tryParse(controller.text) ?? 0) + 1}";
+                                  controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
                                   onchanged!(controller.text);
                                 } else {
                                   print("Print tap");
@@ -2876,16 +2755,14 @@ class InputFields {
                               onTap: () {
                                 if (isEnabled ?? true) {
                                   if (!isNegativeReq) {
-                                    print("Click on negative>>>" +
-                                        controller.text);
+                                    print("Click on negative>>>" + controller.text);
                                     if (controller.text != "0") {
                                       controller.text =
                                           "${(int.tryParse(controller.text) ?? 1) - 1}";
                                       onchanged!(controller.text);
                                     }
                                   } else {
-                                    controller.text =
-                                        "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                    controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                                     onchanged!(controller.text);
                                   }
                                 } else {
@@ -2926,8 +2803,7 @@ class InputFields {
   }) {
     // var data = 0.obs;
     var fN = FocusNode(skipTraversal: true);
-    final iconColor =
-        (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
+    final iconColor = (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -2954,13 +2830,11 @@ class InputFields {
                     if (!isNegativeReq) {
                       print("Click on negative>>>" + controller.text);
                       if (controller.text != "0") {
-                        controller.text =
-                            "${(int.tryParse(controller.text) ?? 1) - 1}";
+                        controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                         onchanged!(controller.text);
                       }
                     } else {
-                      controller.text =
-                          "${(int.tryParse(controller.text) ?? 1) - 1}";
+                      controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                       onchanged!(controller.text);
                     }
                   } else {
@@ -2969,8 +2843,7 @@ class InputFields {
                 }
                 if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
                   if (isEnabled ?? true) {
-                    controller.text =
-                        "${(int.tryParse(controller.text) ?? 0) + 1}";
+                    controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
                     if (onchanged != null) {
                       onchanged(controller.text);
                     }
@@ -2982,9 +2855,7 @@ class InputFields {
             },
             child: TextFormField(
               focusNode: focusNode,
-              textCapitalization: capital
-                  ? TextCapitalization.characters
-                  : TextCapitalization.none,
+              textCapitalization: capital ? TextCapitalization.characters : TextCapitalization.none,
               validator: validator,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               onChanged: (onchanged != null) ? onchanged : null,
@@ -2993,8 +2864,7 @@ class InputFields {
               textAlign: TextAlign.left,
               autofocus: autoFocus,
               inputFormatters: [
-                LengthLimitingTextInputFormatter(
-                    maxchar ?? SizeDefine.maxcharlimit),
+                LengthLimitingTextInputFormatter(maxchar ?? SizeDefine.maxcharlimit),
                 FilteringTextInputFormatter.digitsOnly,
               ],
               enabled: isEnabled ?? true,
@@ -3031,8 +2901,7 @@ class InputFields {
                             ),
                             onTap: () {
                               if (isEnabled ?? true) {
-                                controller.text =
-                                    "${(int.tryParse(controller.text) ?? 0) + 1}";
+                                controller.text = "${(int.tryParse(controller.text) ?? 0) + 1}";
                                 if (onchanged != null) {
                                   onchanged(controller.text);
                                 }
@@ -3051,16 +2920,13 @@ class InputFields {
                             onTap: () {
                               if (isEnabled ?? true) {
                                 if (!isNegativeReq) {
-                                  print(
-                                      "Click on negative>>>" + controller.text);
+                                  print("Click on negative>>>" + controller.text);
                                   if (controller.text != "0") {
-                                    controller.text =
-                                        "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                    controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                                     onchanged!(controller.text);
                                   }
                                 } else {
-                                  controller.text =
-                                      "${(int.tryParse(controller.text) ?? 1) - 1}";
+                                  controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
                                   onchanged!(controller.text);
                                 }
                               } else {
@@ -3118,8 +2984,7 @@ class InputFields {
                 // hintText: "dd/MM/yyyy",
                 contentPadding: const EdgeInsets.only(left: 10),
                 // labelText: hintTxt,
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.black),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                 border: InputBorder.none,
                 // suffixIcon: Icon(
                 //   Icons.calendar_today,
@@ -3177,8 +3042,7 @@ class InputFields {
                 // hintText: "dd/MM/yyyy",
                 contentPadding: const EdgeInsets.only(left: 10),
                 // labelText: hintTxt,
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.black),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.black),
                 border: InputBorder.none,
                 // suffixIcon: Icon(
                 //   Icons.calendar_today,
@@ -3237,8 +3101,7 @@ class InputFields {
                 // hintText: "dd/MM/yyyy",
                 contentPadding: const EdgeInsets.only(left: 10),
                 // labelText: hintTxt,
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.grey),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.grey),
                 border: InputBorder.none,
                 // suffixIcon: Icon(
                 //   Icons.calendar_today,
@@ -3300,8 +3163,7 @@ class InputFields {
                 // hintText: "dd/MM/yyyy",
                 contentPadding: const EdgeInsets.only(left: 10),
                 // labelText: hintTxt,
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.grey),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.grey),
                 border: InputBorder.none,
                 // suffixIcon: Icon(
                 //   Icons.calendar_today,
@@ -3354,13 +3216,11 @@ class InputFields {
               style: TextStyle(fontSize: 12, color: Colors.grey.shade600),
               decoration: InputDecoration(
                   errorBorder: InputBorder.none,
-                  errorText:
-                      controller.text == "" ? 'Invalid ${hintTxt}' : null,
+                  errorText: controller.text == "" ? 'Invalid ${hintTxt}' : null,
                   // hintText: "dd/MM/yyyy",
                   contentPadding: const EdgeInsets.only(left: 10),
                   // labelText: hintTxt,
-                  labelStyle: TextStyle(
-                      fontSize: SizeDefine.labelSize, color: Colors.grey),
+                  labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.grey),
                   border: InputBorder.none,
                   // suffixIcon: Icon(
                   //   Icons.calendar_today,
@@ -3410,8 +3270,7 @@ class InputFields {
         ),
         value: value,
         onChanged: callback,
-        controlAffinity:
-            ListTileControlAffinity.leading, //  <-- leading Checkbox
+        controlAffinity: ListTileControlAffinity.leading, //  <-- leading Checkbox
       ),
     );
   }
@@ -3453,8 +3312,7 @@ class InputFields {
                 // hintText: "dd/MM/yyyy",
                 contentPadding: const EdgeInsets.only(left: 10),
                 // labelText: hintTxt,
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.grey),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.grey),
                 border: InputBorder.none,
                 // suffixIcon: Icon(
                 //   Icons.calendar_today,
@@ -3519,8 +3377,7 @@ class InputFields {
                 // hintText: "dd/MM/yyyy",
                 contentPadding: const EdgeInsets.only(left: 10),
                 // labelText: hintTxt,
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.grey),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.grey),
                 border: InputBorder.none,
                 // suffixIcon: Icon(
                 //   Icons.calendar_today,
@@ -3585,8 +3442,7 @@ class InputFields {
               onChange!(v);
             },
             inputFormatters: [
-              LengthLimitingTextInputFormatter(
-                  maxChar ?? SizeDefine.maxcharlimit),
+              LengthLimitingTextInputFormatter(maxChar ?? SizeDefine.maxcharlimit),
               FilteringTextInputFormatter.allow(
                 RegExp(r'[0-9]'),
               ),
@@ -3597,8 +3453,7 @@ class InputFields {
                 // hintText: "dd/MM/yyyy",
                 contentPadding: const EdgeInsets.only(left: 10),
                 // labelText: hintTxt,
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.grey),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.grey),
                 border: InputBorder.none,
                 // suffixIcon: Icon(
                 //   Icons.calendar_today,
@@ -3624,8 +3479,7 @@ class InputFields {
     );
   }
 
-  static Widget formFieldDisableDt(
-      {required String hintTxt, required String value}) {
+  static Widget formFieldDisableDt({required String hintTxt, required String value}) {
     // var data = 0.obs;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -3653,8 +3507,7 @@ class InputFields {
                 // hintText: "dd/MM/yyyy",
                 contentPadding: const EdgeInsets.only(left: 10),
                 // labelText: hintTxt,
-                labelStyle: TextStyle(
-                    fontSize: SizeDefine.labelSize, color: Colors.grey),
+                labelStyle: TextStyle(fontSize: SizeDefine.labelSize, color: Colors.grey),
                 border: InputBorder.none,
                 suffixIcon: Icon(
                   Icons.calendar_today,
@@ -3689,12 +3542,9 @@ class RangeTextInputFormatter24 extends TextInputFormatter {
   ) {
     if (newValue.text == '')
       return TextEditingValue();
-    else if (int.parse(newValue.text) < 1)
-      return TextEditingValue().copyWith(text: '1');
+    else if (int.parse(newValue.text) < 1) return TextEditingValue().copyWith(text: '1');
 
-    return int.parse(newValue.text) > 24
-        ? TextEditingValue().copyWith(text: '24')
-        : newValue;
+    return int.parse(newValue.text) > 24 ? TextEditingValue().copyWith(text: '24') : newValue;
   }
 }
 
@@ -3728,16 +3578,13 @@ class MaskedTextInputFormatter extends TextInputFormatter {
   }
 
   @override
-  TextEditingValue formatEditUpdate(
-      TextEditingValue oldValue, TextEditingValue newValue) {
+  TextEditingValue formatEditUpdate(TextEditingValue oldValue, TextEditingValue newValue) {
     if (newValue.text.length > 0) {
       if (newValue.text.length > oldValue.text.length) {
         if (newValue.text.length > mask.length) return oldValue;
-        if (newValue.text.length < mask.length &&
-            mask[newValue.text.length - 1] == separator) {
+        if (newValue.text.length < mask.length && mask[newValue.text.length - 1] == separator) {
           return TextEditingValue(
-            text:
-                '${oldValue.text}$separator${newValue.text.substring(newValue.text.length - 1)}',
+            text: '${oldValue.text}$separator${newValue.text.substring(newValue.text.length - 1)}',
             selection: TextSelection.collapsed(
               offset: newValue.selection.end + 1,
             ),
@@ -3956,6 +3803,5 @@ class TimeTextFormatterWithColun extends TextInputFormatter {
 class UpperCaseTextFormatter extends TextInputFormatter {
   @override
   TextEditingValue formatEditUpdate(oldValue, TextEditingValue newValue) =>
-      TextEditingValue(
-          text: newValue.text.toUpperCase(), selection: newValue.selection);
+      TextEditingValue(text: newValue.text.toUpperCase(), selection: newValue.selection);
 }
