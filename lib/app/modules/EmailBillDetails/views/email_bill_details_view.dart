@@ -1,3 +1,4 @@
+import 'package:bms_creditcontrol/widgets/PlutoGrid/src/pluto_grid.dart';
 import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:bms_creditcontrol/widgets/input_fields.dart';
 import 'package:bms_creditcontrol/widgets/radio_row.dart';
@@ -308,6 +309,24 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                   Expanded(
                       child: Obx(() => DataGridFromMap3(
                             mapData: controllerX.gridData.value,
+                            checkBoxColumnKey: ["selected"],
+                            exportFileName: "Email bill details",
+                            checkBoxStrComparison: "true",
+                            actionIconKey: ["selected"],
+                            onload: (PlutoGridOnLoadedEvent load) {
+                              controller.stateManager = load.stateManager;
+                            },
+                            actionOnPress: (position, isSpaceCalled) {
+                              controller.handleactionOnPressChangeInward(
+                                position,
+                                isSpaceCalled,
+                              );
+                            },
+                            onEdit: (event) {
+                              controller.inwardLastSelectedIdx = event.rowIdx;
+                              controller.gridData[event.rowIdx]['selected'] =
+                                  (event.value.toString()) == "true";
+                            },
                           ))),
                   SizedBox(
                     width: 10,
@@ -317,9 +336,9 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                     children: [
                       FormButtonWrapper(
                         btnText: "       Summary          ",
-                        callback: () => controllerX.formHandler(
-                          "Summary",
-                        ),
+                        callback: () {
+                          controllerX.onSummary();
+                        },
                         showIcon: false,
                       ),
                       SizedBox(
@@ -327,9 +346,12 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                       ),
                       FormButtonWrapper(
                         btnText: "            Bills              ",
-                        callback: () => controllerX.formHandler(
-                          "Bills",
-                        ),
+                        callback: () {
+                          controllerX.onBills();
+                        },
+                        // => controllerX.formHandler(
+                        //   "Bills",
+                        // ),
                         showIcon: false,
                       ),
                       SizedBox(
@@ -357,9 +379,10 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                       ),
                       FormButtonWrapper(
                         btnText: "       Save Config      ",
-                        callback: () => controllerX.formHandler(
-                          "Save Config",
-                        ),
+                        callback: () {
+                          // controllerX.onSaveConfig();
+                          controllerX.onSaveConfig(showDailog: true);
+                        },
                         showIcon: false,
                       ),
                       SizedBox(
@@ -367,9 +390,9 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                       ),
                       FormButtonWrapper(
                         btnText: "       Load Config      ",
-                        callback: () => controllerX.formHandler(
-                          "Load Config",
-                        ),
+                        callback: () {
+                          controllerX.loadConfig();
+                        },
                         showIcon: false,
                       ),
                       SizedBox(
@@ -377,9 +400,13 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                       ),
                       FormButtonWrapper(
                         btnText: "  Send All Together ",
-                        callback: () => controllerX.formHandler(
-                          "Send All Together",
-                        ),
+                        callback: () {
+                          // controllerX.
+                        },
+
+                        // => controllerX.formHandler(
+                        //   "Send All Together",
+                        // ),
                         showIcon: false,
                       ),
                     ],
@@ -398,41 +425,53 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          DropDownField.formDropDown1WidthMap(
-            [],
-            (value) {
-              // controllerX.selectStation = value;
-            },
-            "From",
-            (controllerX.widthRatio1),
-            // isEnable: controllerX.isEnable.value,
-            // selected: controllerX.selectStation,
-            dialogHeight: Get.height * controllerX.widthRatio,
+          Obx(
+            () => DropDownField.formDropDown1WidthMap(
+              controllerX.fromList.value,
+              (value) {
+                controllerX.selectedFrom = value;
+                // controllerX.selectStation = value;
+              },
+              "From",
+              (controllerX.widthRatio1),
+              // isEnable: controllerX.isEnable.value,
+              // selected: controllerX.selectStation,
+              dialogHeight: Get.height * controllerX.widthRatio,
+              selected: controllerX.selectedFrom,
+            ),
           ),
           SizedBox(
             height: 5,
           ),
           InputFields.formField1(
             hintTxt: "Test To",
-            controller: controllerX.testTo_,
+            controller: controllerX.tecTestTo,
             width: (controllerX.widthRatio1),
           ),
           Row(
             children: [
               InputFields.formField1(
                 hintTxt: "Path",
-                controller: controllerX.path_,
+                controller: controllerX.tecPath,
                 width: (controllerX.widthRatio1) - 0.024,
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 15.0),
-                child: IconButton(onPressed: () {}, icon: Icon(Icons.upload)),
+                child: IconButton(
+                    onPressed: () {
+                      // controllerX.selectFiles();
+                      // controllerX.pickFolder();
+                      // controllerX.pickFolder();
+                      // var resp = controllerX._getFolderPath();
+                      // controllerX._getFolderPath;
+                    },
+                    icon: Icon(Icons.upload)),
               )
             ],
           ),
           InputFields.formField1WidthBox(
               hintTxt: "",
-              controller: controllerX.body_,
+              controller: controllerX.tecbody,
               widthRatio: Get.width * 0.58,
               height: Get.height * 0.43,
               maxLen: 10000,
