@@ -1,3 +1,4 @@
+import 'package:bms_creditcontrol/app/modules/CompanyChannelLink/ChannelLinkMasterData.dart';
 import 'package:bms_creditcontrol/widgets/PlutoGrid/src/pluto_grid.dart';
 import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:bms_creditcontrol/widgets/input_fields.dart';
@@ -200,8 +201,59 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                             padding: const EdgeInsets.only(top: 5.0),
                             child: Checkbox(
                               value: controllerX.all1.value,
+                              // onChanged: (val) {
+                              //   controllerX.all1.value = val!;
+                              // },
                               onChanged: (val) {
-                                controllerX.all1.value = val!;
+                                controllerX.all1.value =
+                                    !controllerX.all1.value;
+                                for (var i = 0;
+                                    i < controller.gridData.length;
+                                    i++) {
+                                  controller.gridData.value[controller
+                                          .stateManager!
+                                          .refRows[i]
+                                          .sortIdx]['selected'] =
+                                      controller.all1.value.toString();
+                                  controller.stateManager!.changeCellValue(
+                                    controller.stateManager!
+                                        .getRowByIdx(i)!
+                                        .cells['selected']!,
+                                    controller.all1.value.toString(),
+                                    callOnChangedEvent: false,
+                                    force: true,
+                                    notify: true,
+                                  );
+                                  // print(controller.responseData);
+                                  controller.gridData.refresh();
+                                }
+                                // controller.checkAll(val ?? false);
+                                // for (var element in controllerX.gridData.value) {
+                                //   element['selected'] = controllerX.all1.value;
+                                //   return element;
+                                // }
+                                // for (var i = 0;
+                                //     i < controller.gridData.length;
+                                //     i++) {
+                                //   controller.gridData.value[controller
+                                //           .stateManager!.refRows[i].sortIdx]
+                                //       ['selected'] = controller.all1.value;
+                                //   controller.stateManager!.changeCellValue(
+                                //     controller.stateManager!
+                                //         .getRowByIdx(i)!
+                                //         .cells['selected']!,
+                                //     controller.all1.value.toString(),
+                                //     callOnChangedEvent: false,
+                                //     force: true,
+                                //     notify: true,
+                                //   );
+                                //   controllerX.gridData.value =
+                                //       controllerX.gridData.value;
+
+                                //   // print(controller.responseData);
+                                //   // controller.gridData.refresh();
+                                // }
+                                // controllerX.selectUnselectAll();
                               },
                               materialTapTargetSize:
                                   MaterialTapTargetSize.shrinkWrap,
@@ -308,10 +360,13 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                   // ),
                   Expanded(
                       child: Obx(() => DataGridFromMap3(
+                            mode: PlutoGridMode.normal,
+                            doPasccal: true,
                             mapData: controllerX.gridData.value,
                             checkBoxColumnKey: ["selected"],
                             exportFileName: "Email bill details",
                             checkBoxStrComparison: "true",
+                            uncheckCheckBoxStr: "false",
                             actionIconKey: ["selected"],
                             onload: (PlutoGridOnLoadedEvent load) {
                               controller.stateManager = load.stateManager;

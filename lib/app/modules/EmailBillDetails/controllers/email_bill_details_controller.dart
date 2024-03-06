@@ -602,7 +602,6 @@ class EmailBillDetailsController extends GetxController {
       "testMailBody": tecbody.text,
       "isEmailSendTest": sendTest.value,
       "files": sendBillsDetails,
-      // "files": selectedFiles
     });
 
     Get.find<ConnectorControl>().POSTMETHOD_FORMDATA(
@@ -633,6 +632,33 @@ class EmailBillDetailsController extends GetxController {
         // update(["transButtons"]);
       },
     );
+  }
+
+  selectUnselectAll() {
+    for (var i = 0; i < gridData.value.length; i++) {
+      gridData.value[i]["selected"] = all1.value;
+      stateManager!.changeCellValue(
+        stateManager!.getRowByIdx(i)!.cells['selected']!,
+        all1.value.toString(),
+        callOnChangedEvent: false,
+        force: true,
+        notify: true,
+      );
+
+      // gridData!.changeCellValue(
+      //                 mgSpotTabelGrid!
+      //                     .getRowByIdx(i)!
+      //                     .cells['selectRow']!,
+      //                 controllsEnable.value.toString(),
+      //                 callOnChangedEvent: false,
+      //                 force: true,
+      //                 notify: true,
+      //               );
+      // return ;
+    }
+
+    gridData.refresh();
+    print("object");
   }
 
   sendBillFilesForAll() async {
