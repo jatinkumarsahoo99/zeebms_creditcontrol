@@ -46,7 +46,7 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        'Info',
+                        '',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
@@ -96,7 +96,7 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                                     showSrNo: true,
                                     hideCode: false,
                                     formatDate: false,
-                                    columnAutoResize: true,
+                                    columnAutoResize: false,
                                     doPasccal: true,
                                     minimumWidth: 180,
                                     colorCallback: (row) => (row.row.cells
@@ -242,6 +242,114 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                     callback: () {
                       controller.dialogWidget = null;
                       controller.canDialogShow.value = false;
+                    },
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+    controller.canDialogShow.value = true;
+  }
+
+  dealDialogView(){
+    controller.initialOffset.value = 2;
+    // Completer<bool> completer = Completer<bool>();
+    controller.dialogWidget = Material(
+      color: Colors.white,
+      borderOnForeground: false,
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: SizedBox(
+          width: Get.width * 0.65,
+          height: Get.height * 0.65,
+          child: Column(
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 30,
+                // color: Colors.grey[200],
+                child: Stack(
+                  fit: StackFit.expand,
+                  // alignment: Alignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        '',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black,
+                          fontSize: 20,
+                        ),
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: IconButton(
+                        splashRadius: 20,
+                        onPressed: () {
+                          controller.dialogWidget = null;
+                          controller.canDialogShow.value = false;
+                        },
+                        icon: const Icon(Icons.close),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 4,
+              ),
+              InputFields.formField2(
+                  hintTxt: "Max Spend",
+                  controller:controller.maxSpendControllerDialog,
+                isEnable: false,
+                width: 0.57
+              ),
+              SizedBox(
+                height: 2,
+              ),
+              Expanded(
+                child: Row(
+                  children: [
+                    Expanded(
+                        flex: 4,
+                        child:Padding(
+                      padding: const EdgeInsets.only(top: 8.0,bottom: 8),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                        ),
+                      ),
+                    )),
+                    Expanded(
+                        flex: 6,
+                        child:Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.grey),
+                      ),
+                    )),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 3,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  FormButtonWrapper(
+                    btnText: "DONE",
+                    showIcon: false,
+                    // isEnabled: btn['isDisabled'],
+                    callback: () {
+                      controller.dialogWidget = null;
+                      controller.canDialogShow.value = false;
+                      // controller.gridStateManagerLeft?.setFilter((element) => true);
+                      // controller.gridStateManagerLeft?.notifyListeners();
                     },
                   )
                 ],
@@ -411,7 +519,11 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                                 btnText: "Deal",
                                 showIcon: false,
                                 isEnabled: true,
-                                callback: () {},
+                                callback: () {
+                                  controller.maxSpendControllerDialog.text = (controller.auditBookingModel?.infoShowBookingList
+                                      ?.dislpayDealDetails?.dealMaxSpend??"").toString();
+                                  dealDialogView();
+                                },
                               ),
                               SizedBox(
                                 width: 10,
