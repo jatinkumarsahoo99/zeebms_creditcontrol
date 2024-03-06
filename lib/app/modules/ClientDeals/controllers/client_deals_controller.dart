@@ -168,7 +168,7 @@ class ClientDealsController extends GetxController {
   Rx<String> executive = Rx<String>("");
   Rx<String> payroute = Rx<String>("");
   Rx<String> zone = Rx<String>("");
-  Rx<String> gstPlantName = Rx<String>("");
+  Rx<String> gstPlantName = Rx<String>("Label44");
 
   var canDialogShow = false.obs;
   Widget? dialogWidget;

@@ -1188,11 +1188,14 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                 child: Focus(
                                   skipTraversal: true,
                                   descendantsAreFocusable: false,
+                                  // focusNode: FocusNode(),
+                                  // canRequestFocus: true,
                                   child: InputFields.numbers4(
                                     hintTxt: "Bk Dur",
                                     controller: controller.bkDurationController,
                                     titleInLeft: true,
                                     titleSizeboxWidth: 45,
+                                      isNegativeReq: false,
                                   ),
                                 ),
                               ),
@@ -1266,6 +1269,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                     controller:
                                                     controller.amountController,
                                                     titleInLeft: true,
+                                                    isNegativeReq: false
                                                     // titleSizeboxWidth: 45,
                                                   ),
                                                 ),
@@ -1298,6 +1302,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                         .secondsController,
                                                     titleInLeft: true,
                                                     titleSizeboxWidth: 45,
+                                                      isNegativeReq: false
                                                   ),
                                                 ),
                                               ),
@@ -1340,6 +1345,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                   .bkAmountController,
                                               titleInLeft: true,
                                               titleSizeboxWidth: 45,
+                                                isNegativeReq: false
                                             ),
                                           ),
                                         ),
@@ -1861,6 +1867,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                 // titleInLeft: true,
                                                 // titleSizeboxWidth: 45,
                                                 fieldWidth: 0.1,
+                                                isNegativeReq: false,
 
                                                 padLeft: 0);
                                           }),
@@ -1879,6 +1886,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                               // titleInLeft: true,
                                               // titleSizeboxWidth: 45,
                                               fieldWidth: 0.15,
+                                                isNegativeReq: false
                                             );
                                           }),
                                         ),
@@ -1893,6 +1901,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             // titleInLeft: true,
                                             // titleSizeboxWidth: 45,
                                             fieldWidth: 0.15,
+                                            isNegativeReq: false
                                           ),
                                         ),
                                         SizedBox(
@@ -1906,6 +1915,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             // titleInLeft: true,
                                             // titleSizeboxWidth: 45,
                                             fieldWidth: 0.15,
+                                              isNegativeReq: false
                                           ),
                                         ),
                                       ],

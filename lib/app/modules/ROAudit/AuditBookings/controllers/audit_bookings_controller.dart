@@ -45,6 +45,7 @@ class AuditBookingsController extends GetxController {
       executiveController = TextEditingController(),
       remarkController = TextEditingController(),
       pdcController = TextEditingController(),
+      maxSpendControllerDialog = TextEditingController(),
       payModeController = TextEditingController();
 
 
