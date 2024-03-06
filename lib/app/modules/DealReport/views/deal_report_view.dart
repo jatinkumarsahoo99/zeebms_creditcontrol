@@ -38,43 +38,50 @@ class DealReportView extends GetView<DealReportController> {
                     "Location",
                     0.16,
                     selected: controllerX.selectedLocation.value,
+                    inkWellFocusNode: controllerX.locationFocus,
                     // isEnable: controllerX.isEnable,
-                    autoFocus: false,
+                    autoFocus: true,
                   );
                 }),
-                Focus(
-                  focusNode: controllerX.channelFocus,
-                  onFocusChange: (val) {
-                    if (!val) {
-                      controllerX.channelLeave();
-                    }
+                DropDownField().formDropDownCheckBoxMap(
+                  controllerX.channelsList,
+                      (value) {
+                    print(value);
                   },
-                  child: DropDownField().formDropDownCheckBoxMap(
-                    controllerX.channelsList,
-                        (value) {
-                      print(value);
+                  "Channel",
+                  0.16,
+                  inkWellFocusNode: controllerX.channelFocus1,
+                    onFocusChange: (sta){
+                      print(">>>>>>>>>>>staJKS${sta}");
+                      if(!sta){
+                        controllerX.channelLeave();
+                      }
                     },
-                    "Channel",
-                    0.16,
-                    onChanged: (index, selectValue) {},
-                  ),
+                  onChangedFun: (index, selectValue) {
+                    print(">>>>>>>>>>${index} ${selectValue}");
+                   /* if(selectValue){
+                      controllerX.channelLeave().then((value) {
+                        controllerX.clientFocus1.requestFocus();
+                      });
+                    }*/
+
+                  },
                 ),
-                Focus(
-                  focusNode: controllerX.clientFocus,
-                  onFocusChange: (val) {
-                    if (!val) {
+                DropDownField().formDropDownCheckBoxMap(
+                  controllerX.clientList,
+                      (value) {
+                    print(value);
+                  },
+                  "Client",
+                  0.16,
+                  inkWellFocusNode: controllerX.clientFocus1,
+                  onChangedFun: (index, selectValue) {},
+                  onFocusChange: (sta){
+                    print(">>>>>>>>>>>sta${sta}");
+                    if(!sta){
                       controllerX.clientLeave();
                     }
-                  },
-                  child: DropDownField().formDropDownCheckBoxMap(
-                    controllerX.clientList,
-                        (value) {
-                      print(value);
-                    },
-                    "Client",
-                    0.16,
-                    onChanged: (index, selectValue) {},
-                  ),
+                  }
                 ),
                 DropDownField().formDropDownCheckBoxMap(
                   controllerX.agencyList,
@@ -83,7 +90,8 @@ class DealReportView extends GetView<DealReportController> {
                   },
                   "Agency",
                   0.16,
-                  onChanged: (index, selectValue) {},
+                  inkWellFocusNode: controllerX.agencyFocus1,
+                  onChangedFun: (index, selectValue) {},
                 ),
                 DateWithThreeTextField(
                   title: "From Date",

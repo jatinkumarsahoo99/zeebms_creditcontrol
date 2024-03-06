@@ -92,7 +92,7 @@ class DropDownField {
     Function(DropDownValue) callback,
     String hint,
     double widthRatio, {
-    Function(int index, bool selectValue)? onChanged,
+    Function(int index, bool selectValue)? onChangedFun,
     double? height,
     double? paddingBottom,
     MultiCheckBoxModel? selected,
@@ -250,6 +250,11 @@ class DropDownField {
                                                     // getSelectedName(items);
                                                   }
                                                   tempList.refresh();
+                                                  if (onChangedFun != null) {
+                                                    onChangedFun(
+                                                        0,
+                                                        newVal??false);
+                                                  }
                                                   re(() {});
                                                 },
                                                 materialTapTargetSize:
@@ -314,8 +319,8 @@ class DropDownField {
                                                 //     val;
                                                 tempList[index].isSelected =
                                                     val;
-                                                if (onChanged != null) {
-                                                  onChanged(
+                                                if (onChangedFun != null) {
+                                                  onChangedFun(
                                                       tempList[index]
                                                           .realIndex!,
                                                       val);
@@ -786,7 +791,7 @@ class DropDownField {
     var items = RxList([]);
     var isLoading = RxBool(false);
     var msg = RxnString();
-    ScrollController _scrollController = ScrollController();
+    final _scrollController = ScrollController();
 
     getDataFromAPI(String value) async {
       await Get.find<ConnectorControl>().GETMETHODCALL(
@@ -946,60 +951,58 @@ class DropDownField {
                                                   ? Center(
                                                       child: Text(msg.value!),
                                                     )
-                                                  : Material(
-                                                      color: Colors.white,
-                                                      child: Scrollbar(
+                                                  : Scrollbar(
+                                                      thumbVisibility: true,
+                                                      controller:
+                                                          _scrollController,
+                                                      child: ListView(
                                                         controller:
                                                             _scrollController,
-                                                        thumbVisibility: true,
-                                                        child: ListView(
-                                                          shrinkWrap: true,
-                                                          children: items
-                                                              .map(
-                                                                (element) =>
-                                                                    InkWell(
-                                                                  onTap: () {
-                                                                    Navigator.pop(
-                                                                        context);
-                                                                    selectedValue =
-                                                                        DropDownValue(
-                                                                      key: element[
-                                                                              parseKeyForKey]
-                                                                          .toString(),
-                                                                      value: element[
-                                                                              parseKeyForValue]
-                                                                          .toString(),
-                                                                    );
-                                                                    re(() {});
-                                                                    FocusScope.of(
-                                                                            context)
-                                                                        .requestFocus(
-                                                                            inkwellFocus);
-                                                                    onchanged(
-                                                                        selectedValue!);
-                                                                  },
-                                                                  child:
-                                                                      Padding(
-                                                                    padding: const EdgeInsets
-                                                                            .symmetric(
-                                                                        vertical:
-                                                                            8),
-                                                                    child: Text(
-                                                                      (element[parseKeyForValue] ??
-                                                                              "null")
-                                                                          .toString(),
-                                                                      style:
-                                                                          TextStyle(
-                                                                        fontSize:
-                                                                            SizeDefine.dropDownFontSize -
-                                                                                1,
-                                                                      ),
+                                                        shrinkWrap: true,
+                                                        children: items
+                                                            .map(
+                                                              (element) =>
+                                                                  InkWell(
+                                                                onTap: () {
+                                                                  Navigator.pop(
+                                                                      context);
+                                                                  selectedValue =
+                                                                      DropDownValue(
+                                                                    key: element[
+                                                                            parseKeyForKey]
+                                                                        .toString(),
+                                                                    value: element[
+                                                                            parseKeyForValue]
+                                                                        .toString(),
+                                                                  );
+                                                                  re(() {});
+                                                                  FocusScope.of(
+                                                                          context)
+                                                                      .requestFocus(
+                                                                          inkwellFocus);
+                                                                  onchanged(
+                                                                      selectedValue!);
+                                                                },
+                                                                child: Padding(
+                                                                  padding: const EdgeInsets
+                                                                          .symmetric(
+                                                                      vertical:
+                                                                          8),
+                                                                  child: Text(
+                                                                    (element[parseKeyForValue] ??
+                                                                            "null")
+                                                                        .toString(),
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          SizeDefine.dropDownFontSize -
+                                                                              1,
                                                                     ),
                                                                   ),
                                                                 ),
-                                                              )
-                                                              .toList(),
-                                                        ),
+                                                              ),
+                                                            )
+                                                            .toList(),
                                                       ),
                                                     );
                                             },
@@ -2739,6 +2742,273 @@ class DropDownField {
     );
   }
 
+
+  static Widget formDropDownSearchAPI2WithCustomColor(
+      GlobalKey widgetKey,
+      BuildContext context, {
+        required String title,
+        required String url,
+        String parseKeyForValue = "programName",
+        String parseKeyForKey = "programCode",
+        required void Function(DropDownValue) onchanged,
+        DropDownValue? selectedValue,
+        String textFieldHintText = "Search",
+        String hintText = "Select Item",
+        double dialogHeight = 350.0,
+        double? width,
+        bool isEnable = true,
+        bool autoFocus = false,
+        dynamic customInData,
+        double? widthofDialog,
+        FocusNode? inkwellFocus,
+        bool startFromLeft = true,
+        int maxLength = 40,
+        int miniumSearchLength = 2,
+        Color ? labelColor
+      }) {
+    final textColor = isEnable ? Colors.black : Colors.grey;
+    final iconLineColor = isEnable ? Colors.deepPurpleAccent : Colors.grey;
+    var items = RxList([]);
+    var isLoading = RxBool(false);
+    var msg = RxnString();
+    getDataFromAPI(String value) async {
+      await Get.find<ConnectorControl>().GETMETHODCALL(
+          api: url + value,
+          fun: (data) async {
+            var tempData = [];
+            items.clear();
+            if (customInData != null) {
+              data = await data[customInData];
+            }
+            for (var element in data) {
+              tempData.add(Map.from(element));
+            }
+            items.addAll(tempData);
+            tempData.clear();
+            if (items.isEmpty) {
+              msg.value = "No Data Found";
+            } else {
+              msg.value = "";
+            }
+          });
+    }
+
+    inkwellFocus ??= FocusNode();
+    final _scrollController = ScrollController();
+
+    return Column(
+      key: widgetKey,
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: SizeDefine.labelSize1,
+            color: labelColor??textColor,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 5),
+        StatefulBuilder(builder: (context, re) {
+          return InkWell(
+              autofocus: autoFocus,
+              focusNode: inkwellFocus,
+              canRequestFocus: isEnable,
+              onTap: !isEnable
+                  ? null
+                  : () {
+                String fieldText = "";
+                final RenderBox renderBox = widgetKey.currentContext
+                    ?.findRenderObject() as RenderBox;
+                final offset = renderBox.localToGlobal(Offset.zero);
+                final top = offset.dy + renderBox.size.height;
+                final left = offset.dx;
+                final right = startFromLeft
+                    ? left + renderBox.size.width
+                    : offset.dy;
+                final width = renderBox.size.width;
+
+                searchData(String value) {
+                  if (value.length >= miniumSearchLength &&
+                      (!isLoading.value)) {
+                    isLoading.value = true;
+                    getDataFromAPI(value).then((value) {
+                      isLoading.value = false;
+                    });
+                  }
+                }
+
+                showMenu(
+                  context: context,
+                  useRootNavigator: true,
+                  position: RelativeRect.fromLTRB(left, top, right, 0.0),
+                  constraints: BoxConstraints.expand(
+                    width: widthofDialog ?? width,
+                    height: dialogHeight,
+                  ),
+                  items: [
+                    CustomPopupMenuItem(
+                      textStyle: TextStyle(
+                          color: Colors.black,
+                          fontSize: SizeDefine.fontSizeInputField),
+                      child: Container(
+                        padding: const EdgeInsets.all(8),
+                        height: dialogHeight - 20,
+                        child: Column(
+                          children: [
+                            /// search
+                            TextFormField(
+                              maxLength: maxLength,
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.fromLTRB(
+                                    12.0, 17.0, 20.0, 15.0),
+                                isDense: true,
+                                isCollapsed: true,
+                                hintText: textFieldHintText,
+                                suffixIcon: IconButton(
+                                  padding: EdgeInsets.zero,
+                                  onPressed: () => searchData(fieldText),
+                                  icon: const Icon(Icons.search),
+                                  splashRadius: 15,
+                                ),
+                              ),
+                              style: TextStyle(
+                                fontSize: SizeDefine.fontSizeInputField,
+                              ),
+                              onFieldSubmitted: searchData,
+                              onChanged: (value) => fieldText = value,
+                              autofocus: true,
+                              inputFormatters: [
+                                FilteringTextInputFormatter.deny("  "),
+                              ],
+                            ),
+
+                            /// progreesbar
+                            Obx(() {
+                              return Visibility(
+                                visible: isLoading.value,
+                                child: const LinearProgressIndicator(
+                                  minHeight: 3,
+                                ),
+                              );
+                            }),
+
+                            const SizedBox(height: 5),
+
+                            /// list
+                            Expanded(
+                              child: Obx(
+                                    () {
+                                  return (msg.value != null &&
+                                      msg.value != "")
+                                      ? Center(
+                                    child: Text(msg.value!),
+                                  )
+                                      : Scrollbar(
+                                    thumbVisibility: true,
+                                    controller: _scrollController,
+                                    child: ListView(
+                                      controller: _scrollController,
+                                      shrinkWrap: true,
+                                      children: items
+                                          .map(
+                                            (element) => InkWell(
+                                          onTap: () {
+                                            Navigator.pop(
+                                                context);
+                                            selectedValue =
+                                                DropDownValue(
+                                                  key: element[
+                                                  parseKeyForKey]
+                                                      .toString(),
+                                                  value: element[
+                                                  parseKeyForValue]
+                                                      .toString(),
+                                                );
+                                            re(() {});
+                                            FocusScope.of(
+                                                context)
+                                                .requestFocus(
+                                                inkwellFocus);
+                                            onchanged(
+                                                selectedValue!);
+                                          },
+                                          child: Padding(
+                                            padding:
+                                            const EdgeInsets
+                                                .symmetric(
+                                                vertical:
+                                                8),
+                                            child: Text(
+                                              (element[parseKeyForValue] ??
+                                                  "null")
+                                                  .toString(),
+                                              style: TextStyle(
+                                                fontSize: SizeDefine
+                                                    .dropDownFontSize -
+                                                    1,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                          .toList(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              },
+              child: Builder(builder: (context) {
+                if (inkwellFocus!.hasFocus) {
+                  FocusScope.of(context).requestFocus(inkwellFocus);
+                }
+                return Container(
+                  width: width,
+                  height: SizeDefine.heightInputField,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      color: iconLineColor,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8, right: 4),
+                              child: Text(
+                                (selectedValue?.value ?? ""),
+                                style: TextStyle(
+                                  fontSize: SizeDefine.fontSizeInputField,
+                                  color: textColor,
+                                ),
+                                maxLines: 1,
+                                textAlign: TextAlign.start,
+                              ),
+                            ),
+                          )),
+                      Icon(
+                        Icons.arrow_drop_down,
+                        color: iconLineColor,
+                      )
+                    ],
+                  ),
+                );
+              }));
+        }),
+      ],
+    );
+  }
+
   static Widget formDropDownSearchAPI({
     required String title,
     required String url,
@@ -3822,7 +4092,7 @@ class DropDownField {
             hint,
             style: TextStyle(
               fontSize: SizeDefine.labelSize1,
-              color: textColor,
+              color: Colors.black,
               fontWeight: FontWeight.w500,
             ),
           ),
@@ -3838,7 +4108,7 @@ class DropDownField {
                   hint,
                   style: TextStyle(
                     fontSize: SizeDefine.labelSize1,
-                    color: textColor,
+                    color: Colors.black,
                     fontWeight: FontWeight.w500,
                   ),
                 ),

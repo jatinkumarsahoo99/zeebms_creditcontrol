@@ -2,8 +2,11 @@ import 'dart:html';
 
 import 'package:bms_creditcontrol/app/controller/HomeController.dart';
 import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
+import 'package:bms_creditcontrol/app/providers/DataGridMenu.dart';
 import 'package:bms_creditcontrol/app/routes/app_pages.dart';
+import 'package:bms_creditcontrol/widgets/DataGridShowOnly.dart';
 import 'package:bms_creditcontrol/widgets/DateTime/DateWithThreeTextField.dart';
+import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:bms_creditcontrol/widgets/dropdown.dart';
 import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:bms_creditcontrol/widgets/input_fields.dart';
@@ -63,7 +66,7 @@ class AgencyEmbargoView extends GetView<AgencyEmbargoController> {
                             autoFocus: true,
                           ),
                           DateWithThreeTextField(
-                            title: "Billing Period",
+                            title: "Date",
                             mainTextController: controller.date,
                             widthRation: .140,
                             onFocusChange: (date) {
@@ -112,46 +115,58 @@ class AgencyEmbargoView extends GetView<AgencyEmbargoController> {
                           physics: const NeverScrollableScrollPhysics(),
                           children: [
                             //Embargo Grid
-                            Obx(
-                              () => controller.embargoList.isEmpty
-                                  ? Container(
-                                      decoration: BoxDecoration(
-                                          border:
-                                              Border.all(color: Colors.grey)),
-                                    )
-                                  : DataGridFromMap3(
-                                      mapData: controller.embargoList.value
-                                          .map((e) => e.toJson())
-                                          .toList(),
-                                      onload: (value) {
-                                        controller.embargoGrid =
-                                            value.stateManager;
-                                      },
-                                      colorCallback: (colorEvent) {
-                                        if (colorEvent.row.cells.containsValue(
-                                            controller
-                                                .embargoGrid?.currentCell)) {
-                                          return Colors.deepPurple.shade100;
-                                        }
-                                        return Colors.white;
-                                      },
-                                      onRowDoubleTap: (event) {
-                                        controller.agencyHistoryGrid
-                                            ?.setCurrentCell(
-                                                event.cell, event.rowIdx);
-                                        controller.getAgencyHistory(event
-                                            .row.cells['agencycode']?.value);
-                                      },
-                                      exportFileName: "Agency Embargo",
-                                      widthSpecificColumn:
-                                          Get.find<HomeController>()
+                            GetBuilder(
+                                id: 'init',
+                                init: controller,
+                                builder: (controller) {
+                                  return controller.embargoList.isEmpty
+                                      ? Container(
+                                          decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.grey)),
+                                        )
+                                      : DataGridShowOnlyKeys(
+                                          mapData: controller.embargoList.value
+                                              .map((e) => e.toJson())
+                                              .toList(),
+                                          onload: (value) {
+                                            controller.embargoGrid =
+                                                value.stateManager;
+                                          },
+                                          formatDate: false,
+                                          colorCallback: (colorEvent) {
+                                            if (colorEvent.row.cells
+                                                .containsValue(controller
+                                                    .embargoGrid
+                                                    ?.currentCell)) {
+                                              return Colors.deepPurple.shade100;
+                                            }
+                                            return Colors.white;
+                                          },
+                                          onRowDoubleTap: (event) {
+                                            controller.agencyHistoryGrid
+                                                ?.setCurrentCell(
+                                                    event.cell, event.rowIdx);
+                                            controller.getAgencyHistory(event
+                                                .row
+                                                .cells['agencycode']
+                                                ?.value);
+                                          },
+                                          exportFileName: "Agency Embargo",
+                                          extraList: [
+                                            SecondaryShowDialogModel(
+                                                'Clear Embargo', () {
+                                              controller.clearEmbargo();
+                                            })
+                                          ],
+                                          keysWidths: Get.find<HomeController>()
                                               .getGridWidthByKey(
-                                        userGridSettingList:
-                                            controller.userGridSetting1?.value,
-                                        key: 'key1',
-                                      ),
-                                    ),
-                            ),
+                                            userGridSettingList: controller
+                                                .userGridSetting1?.value,
+                                            key: 'key1',
+                                          ),
+                                        );
+                                }),
                             //Agency Grid
                             Obx(
                               () => controller.agencyHistoryList.isEmpty

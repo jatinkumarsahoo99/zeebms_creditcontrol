@@ -145,6 +145,7 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                                 actionOnPress: (position, isSpaceCalled) {
                                   controller.lastSelectedIdx =
                                       position.rowIdx ?? 0;
+                                  print(position.columnIdx);
                                   if (isSpaceCalled) {
                                     controller.billingGrid!.changeCellValue(
                                       controller.billingGrid!.currentCell!,
@@ -160,23 +161,10 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                                   }
                                 },
                                 onEdit: (row) {
-                                  print(row.column.field);
-                                  print('===========');
-                                  controller.lastSelectedIdx = row.rowIdx ?? 0;
-
-                                  if (row.column.field == 'remark') {
-                                    controller.billingsList[row.rowIdx].remark =
-                                        row.value.toString();
-                                  } else {
-                                    controller.billingsList[row.rowIdx]
-                                            .readyToBill =
-                                        row.value != "true" ? false : true;
-                                  }
-
-                                  print(controller
-                                      .billingsList[row.rowIdx].readyToBill);
+                                  controller.onEdit(row);
                                 },
-                                columnAutoResize: false,
+                                columnAutoResize: true,
+                                enableAutoEditing: true,
                                 widthSpecificColumn: Get.find<HomeController>()
                                     .getGridWidthByKey(
                                         userGridSettingList:
@@ -185,8 +173,6 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                                 // sort: PlutoColumnSort.descending,
                                 // enableSort: true,
                                 onColumnHeaderSingleTap: () {
-                                  // print(controller
-                                  //     .billingGrid!.refColumns[8].key);
                                   if (controller
                                           .billingGrid!.refColumns[8].field ==
                                       "remark") {

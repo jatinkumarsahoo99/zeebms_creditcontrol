@@ -50,6 +50,8 @@ class SecondaryAsrunModificationController extends GetxController {
   TextEditingController finalTelecastTimeEditingController = TextEditingController();
   TextEditingController finalDurationEditingController = TextEditingController();
 
+  Rx<bool> isEnable = Rx<bool>(true);
+
   Offset? getOffSetValue(BoxConstraints constraints) {
     switch (initialOffset.value) {
       case 1:
@@ -165,10 +167,14 @@ class SecondaryAsrunModificationController extends GetxController {
               secondaryAsrunGridModel =
                   SecondaryAsrunGridModel.fromJson(map as Map<String, dynamic>);
               lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun;
+              isEnable.value = false;
+              isEnable.refresh();
               update(['grid']);
             } else {
               secondaryAsrunGridModel = null;
               lstFinalAsRunDataList = [];
+              isEnable.value = false;
+              isEnable.refresh();
               update(['grid']);
             }
           },
@@ -176,12 +182,16 @@ class SecondaryAsrunModificationController extends GetxController {
             closeDialogIfOpen();
             secondaryAsrunGridModel = null;
             lstFinalAsRunDataList = [];
+            isEnable.value = false;
+            isEnable.refresh();
             update(['grid']);
           });
     } catch (e) {
       closeDialogIfOpen();
       secondaryAsrunGridModel = null;
       lstFinalAsRunDataList = [];
+      isEnable.value = false;
+      isEnable.refresh();
       update(['grid']);
     }
   }
@@ -415,15 +425,17 @@ class SecondaryAsrunModificationController extends GetxController {
   btnClearMisMatch() {
     try {
       if (secondaryAsrunGridModel != null &&
-          secondaryAsrunGridModel?.bindGrid != null &&
-          secondaryAsrunGridModel?.bindGrid?.lstbookingdetail != null &&
-          (secondaryAsrunGridModel?.bindGrid?.lstbookingdetail?.length ?? 0) > 0) {
+          secondaryAsrunGridModel?.bindGrid != null
+      /* &&
+          secondaryAsrunGridModel?.bindGrid?.lstbookingdetail != null
+           && (secondaryAsrunGridModel?.bindGrid?.lstbookingdetail?.length ?? 0) > 0*/
+      ) {
         LoadingDialog.call();
         Map<String, dynamic> postData = {
           "locationcode": selectedLocation?.key ?? "",
           "channelcode": selectedChannel?.key ?? "",
           "date": Utils.getMMDDYYYYFromDDMMYYYYInString3(logDateController.text) ?? "",
-          "lstTape": secondaryAsrunGridModel?.bindGrid?.lstbookingdetail?.map((e) => e.toJson()).toList()
+          "lstTape": (secondaryAsrunGridModel?.bindGrid?.lstbookingdetail?.map((e) => e.toJson()).toList())??[]
         };
         Get.find<ConnectorControl>().POSTMETHOD(
             api: ApiFactory.SECONDARY_ASRUN_MODIFICATION_GET_CLEAR_MISMATCH,
@@ -431,12 +443,23 @@ class SecondaryAsrunModificationController extends GetxController {
             // "https://jsonkeeper.com/b/D537"
             fun: (map) {
               closeDialogIfOpen();
-              getBindData();
+              if(map is Map && map['clearmismatch'] != null && map['clearmismatch']['message'] != null){
+                LoadingDialog.callDataSaved2(msg: (map['clearmismatch']['message']??"").toString(),
+                    callback: (){
+                      getBindData();
+                });
+              }else{
+                LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
+              }
+
             },
             failed: (map) {
               closeDialogIfOpen();
               LoadingDialog.showErrorDialog(("Something went wrong").toString());
             });
+      }
+      else{
+        LoadingDialog.callInfoMessage("No miss Match found");
       }
 
 
@@ -457,7 +480,6 @@ class SecondaryAsrunModificationController extends GetxController {
           if ((key.toString().trim() == "tapeDuration") ||
               (key.toString().trim() == "telecastDuration") ||
               (key.toString().trim() == "bookingdetailcode") ||
-              (key.toString().trim() == "spotAmount") ||
               (key.toString().trim() == "bookingDetailCode1") ||
               (key.toString().trim() == "recordnumber")) {
             if (row.cells[key]?.value != null &&
@@ -471,7 +493,11 @@ class SecondaryAsrunModificationController extends GetxController {
               // rowMap[key] = DateFormat("yyyy-MM-dd").format(DateTime.now()) + (row.cells[key]?.value ?? "");
               rowMap[key] = 0;
             }
-          } else {
+          }
+          else if((key.toString().trim() == "MID/Pre")){
+            rowMap["miD_Pre"] = row.cells[key]?.value ?? "";
+          }
+          else {
             rowMap[key] = row.cells[key]?.value ?? "";
           }
         }

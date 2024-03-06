@@ -91,7 +91,7 @@ class ClientEmbargoView extends StatelessWidget {
                             widthRatio: controllerX.fixedWidth,
                             height: Get.height * 0.1,
                             paddingLeft: 0,
-                            maxLen: 5,
+                            maxLen: 500,
                             // focus: controllerX.remarkFocus,
                             controller: controllerX.reasonController
                         ),

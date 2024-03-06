@@ -147,7 +147,8 @@ class InvoiceRevisionController extends GetxController {
           api: ApiFactory.INVOICE_REVISION_RETRIEVE(
             selectLocation.value?.key ?? "",
             selectChannel.value?.key ?? "",
-            fromDate.text,
+            DateFormat('MM-dd-yyyy')
+                .format(DateFormat('dd-MM-yyyy').parse(fromDate.text)),
           ),
           fun: (Map map) {
             Get.back();

@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:bms_creditcontrol/widgets/CheckBox/multi_check_box.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
@@ -23,9 +26,12 @@ class DealReportController extends GetxController {
   TextEditingController toDateController = TextEditingController();
   Rxn<DropDownValue> selectedLocation = Rxn<DropDownValue>(null);
   FocusNode clientFocus = FocusNode();
+  FocusNode clientFocus1 = FocusNode();
   FocusNode locationFocus = FocusNode();
-  FocusNode channelFocus = FocusNode();
+  // FocusNode channelFocus = FocusNode();
+  FocusNode channelFocus1 = FocusNode();
   FocusNode agencyFocus = FocusNode();
+  FocusNode agencyFocus1 = FocusNode();
 
   callOnLoad() {
     try {
@@ -75,7 +81,8 @@ class DealReportController extends GetxController {
     }
   }
 
-  channelLeave() {
+  Future<void>channelLeave() {
+    Completer<String> completer = Completer<String>();
     try {
 
       List<DropDownValue> selectChannel = [];
@@ -96,6 +103,7 @@ class DealReportController extends GetxController {
             failed: (map){
               closeDialogIfOpen();
               LoadingDialog.showErrorDialog((map??"").toString());
+              completer.complete("");
             },
             fun: (map) {
               closeDialogIfOpen();
@@ -113,6 +121,8 @@ class DealReportController extends GetxController {
                   i = 0;
                 }
               }
+              completer.complete("");
+              // clientFocus1.requestFocus();
 
               // } else {
               //   locationList.clear();
@@ -122,7 +132,9 @@ class DealReportController extends GetxController {
 
     } catch (e) {
       closeDialogIfOpen();
+      completer.complete("");
     }
+    return completer.future;
   }
 
   clientLeave() {
@@ -161,6 +173,8 @@ class DealReportController extends GetxController {
                   i = 0;
                 }
               }
+              agencyFocus1.requestFocus();
+
 
               // } else {
               //   locationList.clear();
@@ -237,6 +251,15 @@ class DealReportController extends GetxController {
 
   @override
   void onInit() {
+   /* channelFocus1 = FocusNode(
+      onKeyEvent: (node, event) {
+        if (event.logicalKey == LogicalKeyboardKey.tab) {
+          clientFocus1.requestFocus();
+          return KeyEventResult.ignored;
+        }
+        return KeyEventResult.ignored;
+      },
+    );*/
     super.onInit();
   }
 

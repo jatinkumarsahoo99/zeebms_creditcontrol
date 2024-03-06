@@ -3,6 +3,7 @@ import 'package:bms_creditcontrol/app/controller/MainController.dart';
 import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
 import 'package:bms_creditcontrol/app/routes/app_pages.dart';
 import 'package:bms_creditcontrol/widgets/CheckBoxWidget.dart';
+import 'package:bms_creditcontrol/widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import 'package:bms_creditcontrol/widgets/PlutoGrid/src/pluto_grid.dart';
 import 'package:bms_creditcontrol/widgets/dropdown.dart';
 import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
@@ -42,6 +43,7 @@ class ComboDealEntryView extends GetView<ComboDealEntryController> {
                       controller: controller.groupNo,
                       isNegativeReq: false,
                       width: 0.135,
+                      padLeft: 0,
                       isEnabled: controller.isAllEnabels.value,
                       focusNode: controller.groupNoFN,
                       autoFocus: true,
@@ -178,9 +180,12 @@ class ComboDealEntryView extends GetView<ComboDealEntryController> {
                           mapData: controller.tabelLinkDealList.value,
                           onload: (value) {
                             controller.tabelLinkDealGrid = value.stateManager;
+                            value.stateManager
+                                .setSelectingMode(PlutoGridSelectingMode.row);
                           },
                           hideCode: false,
                           columnAutoResize: false,
+                          mode: PlutoGridMode.normal,
                           exportFileName: "Mix Master Delivery Status",
                           colorCallback: (colorEvent) {
                             if (colorEvent.row.cells.containsValue(
@@ -196,6 +201,43 @@ class ComboDealEntryView extends GetView<ComboDealEntryController> {
                                 controller.userGridSetting1?.value,
                             key: "key2",
                           ),
+                          hideKeys: const [
+                            "spots",
+                            "programCategoryCode",
+                            "programCode",
+                            "sponsorTypeCode",
+                            "locationname",
+                            "channelName",
+                            "dealCode",
+                            "dealDetailCode",
+                            "primaryEventCode",
+                            "locationcode",
+                            "channelcode",
+                            "bandcode",
+                            "timeband",
+                            "netcode",
+                            "networkname",
+                            "sun",
+                            "mon",
+                            "tue",
+                            "wed",
+                            "thu",
+                            "fri",
+                            "sat",
+                            "revflag",
+                            "accountCode",
+                            "accountname",
+                            "eventcode",
+                            "eventname",
+                          ],
+                          keyMapping: const {
+                            "dealnumber": "Deal Number",
+                            "sponsorTypeName": "Sponsor Type",
+                            "programname": "Program",
+                            "programCategoryName": "Program Category",
+                            "starttime": "Start Time",
+                            "valuationrate": "Valuation",
+                          },
                         ),
                 ),
               ),

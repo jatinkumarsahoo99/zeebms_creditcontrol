@@ -56,7 +56,7 @@ class GenerateBookingReportView
                         },
                         "Channel",
                         0.16,
-                        onChanged: (index, selectValue) {
+                        onChangedFun: (index, selectValue) {
                           controllerX.channels[index].isSelected = selectValue;
                         },
                       ),
