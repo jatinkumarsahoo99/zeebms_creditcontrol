@@ -134,11 +134,13 @@ class CurrencyTypeMasterController extends GetxController {
         fun: (Map map) {
           Get.back();
           if (map != null && map.containsKey('currencyData')) {
-            LoadingDialog.showErrorDialog(map['currencyData']['message'],
-                callback: () {
-              currencyCode.clear();
-              currencyCodeFN.requestFocus();
-            });
+            if (map['currencyData']['message'] != null) {
+              LoadingDialog.showErrorDialog(map['currencyData']['message'],
+                  callback: () {
+                currencyCode.clear();
+                currencyCodeFN.requestFocus();
+              });
+            }
           }
         });
   }
