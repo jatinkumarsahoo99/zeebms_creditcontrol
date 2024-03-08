@@ -112,13 +112,14 @@ class ROAuditController extends GetxController {
   ROAuditRetrieveModel? roAuditRetrieveModel;
 
   showDetails({String? name}){
-      try{
+    if(selectLocation != null && selectChannel != null){
+      try {
         LoadingDialog.call();
-        Map<String,dynamic> postData = {
-          "strType":name??"",
-          "LocationCode":selectLocation?.key??"",
-          "ChannelCode":selectChannel?.key??"",
-          "DtpDate":Utils.getMMDDYYYYFromDDMMYYYYInString( scheduleDateController.text??"")
+        Map<String, dynamic> postData = {
+          "strType": name ?? "",
+          "LocationCode": selectLocation?.key ?? "",
+          "ChannelCode": selectChannel?.key ?? "",
+          "DtpDate": Utils.getMMDDYYYYFromDDMMYYYYInString(scheduleDateController.text ?? "")
         };
         Get.find<ConnectorControl>().GET_METHOD_WITH_PARAM(
             api: ApiFactory.RO_AUDIT_SHOW_DETAILS,
@@ -126,10 +127,10 @@ class ROAuditController extends GetxController {
             // "https://jsonkeeper.com/b/D537"
             fun: (map) {
               closeDialogIfOpen();
-              if(map is Map){
-                roAuditRetrieveModel = ROAuditRetrieveModel.fromJson(map as Map<String,dynamic>);
+              if (map is Map) {
+                roAuditRetrieveModel = ROAuditRetrieveModel.fromJson(map as Map<String, dynamic>);
                 update(['grid']);
-              }else{
+              } else {
                 roAuditRetrieveModel = null;
                 update(['grid']);
               }
@@ -139,11 +140,12 @@ class ROAuditController extends GetxController {
               roAuditRetrieveModel = null;
               update(['grid']);
             });
-      }catch(e){
+      } catch (e) {
         closeDialogIfOpen();
         roAuditRetrieveModel = null;
         update(['grid']);
       }
+    }
   }
 
   @override

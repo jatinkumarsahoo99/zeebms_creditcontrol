@@ -1512,4 +1512,7 @@ class ApiFactory {
 
   static String get EMAIL_BILL_DETAILS_GET_BILL_FILES =>
       "$BASE_URL/api/EmailBillDetails/GetBillFiles";
+
+  static String get EMAIL_BILL_DETAILS_SUMMARY =>
+      "$BASE_URL/api/EmailBillDetails/Summary";
 }
