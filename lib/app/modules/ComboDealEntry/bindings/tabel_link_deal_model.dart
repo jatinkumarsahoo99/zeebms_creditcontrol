@@ -19,7 +19,7 @@ class TabelLinkDealModel {
 }
 
 class LinkedDeals {
-  List<LstTblLinkDeal>? lstTblLinkDeal;
+  List<LstTblLinkDealList>? lstTblLinkDeal;
 
   LinkedDeals({this.lstTblLinkDeal});
 
@@ -27,7 +27,7 @@ class LinkedDeals {
     lstTblLinkDeal = json["lstTblLinkDeal"] == null
         ? null
         : (json["lstTblLinkDeal"] as List)
-            .map((e) => LstTblLinkDeal.fromJson(e))
+            .map((e) => LstTblLinkDealList.fromJson(e))
             .toList();
   }
 
@@ -40,7 +40,7 @@ class LinkedDeals {
   }
 }
 
-class LstTblLinkDeal {
+class LstTblLinkDealList {
   String? locationname;
   String? channelName;
   num? dealCode;
@@ -82,7 +82,7 @@ class LstTblLinkDeal {
   num? spots;
   num? groupValuationRate;
 
-  LstTblLinkDeal(
+  LstTblLinkDealList(
       {this.locationname,
       this.channelName,
       this.dealCode,
@@ -124,7 +124,7 @@ class LstTblLinkDeal {
       this.spots,
       this.groupValuationRate});
 
-  LstTblLinkDeal.fromJson(Map<String, dynamic> json) {
+  LstTblLinkDealList.fromJson(Map<String, dynamic> json) {
     locationname = json["locationname"];
     channelName = json["channelName"];
     dealCode = json["dealCode"];

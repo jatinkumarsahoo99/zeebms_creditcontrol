@@ -173,11 +173,11 @@ class ReadytoBillsView extends GetView<ReadytoBillsController> {
                                 // sort: PlutoColumnSort.descending,
                                 // enableSort: true,
                                 onColumnHeaderSingleTap: () {
-                                  if (controller
-                                          .billingGrid!.refColumns[8].field ==
-                                      "remark") {
-                                    controller.filterList();
-                                  }
+                                  // if (controller
+                                  //         .billingGrid!.refColumns[8].field ==
+                                  //     "remark") {
+                                  controller.filterList();
+                                  // }
                                 },
                               ),
                       ),

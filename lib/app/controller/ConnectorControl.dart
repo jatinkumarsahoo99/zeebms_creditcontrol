@@ -214,7 +214,8 @@ class ConnectorControl extends GetConnect {
       }
       if (e.response?.statusCode == 401) {
         updateToken(() {
-          POSTMETHOD_FORMDATAWITHTYPE1(api: api, fun: fun, failed: failed, json: json);
+          POSTMETHOD_FORMDATAWITHTYPE1(
+              api: api, fun: fun, failed: failed, json: json);
         });
       } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
@@ -276,7 +277,7 @@ class ConnectorControl extends GetConnect {
         failed(failedMap);
       }
     } on DioError catch (e) {
-     if ([400, 403].contains(e.response?.statusCode)) {
+      if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
           Get.back();
         }
@@ -292,8 +293,7 @@ class ConnectorControl extends GetConnect {
               Const.errorCode[e.response?.statusCode] ?? "");
         } else {
           LoadingDialog.showErrorDialog(
-              "${e.response?.statusCode
-                  .toString()} - Something went wrong please contact support team");
+              "${e.response?.statusCode.toString()} - Something went wrong please contact support team");
         }
         switch (e.type) {
           case DioErrorType.connectionTimeout:
@@ -340,7 +340,11 @@ class ConnectorControl extends GetConnect {
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         updateToken(() {
-          GETMETHODCALL_TOKEN(api: api, fun: fun, token: token,);
+          GETMETHODCALL_TOKEN(
+            api: api,
+            fun: fun,
+            token: token,
+          );
         });
       } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
@@ -358,8 +362,7 @@ class ConnectorControl extends GetConnect {
               Const.errorCode[e.response?.statusCode] ?? "");
         } else {
           LoadingDialog.showErrorDialog(
-              "${e.response?.statusCode
-                  .toString()} - Something went wrong please contact support team");
+              "${e.response?.statusCode.toString()} - Something went wrong please contact support team");
         }
         switch (e.type) {
           case DioErrorType.connectionTimeout:
@@ -414,7 +417,7 @@ class ConnectorControl extends GetConnect {
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         updateToken(() {
-          POSTMETHOD(api: api, fun: fun, failed: failed,json: json);
+          POSTMETHOD(api: api, fun: fun, failed: failed, json: json);
         });
       } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
@@ -491,7 +494,7 @@ class ConnectorControl extends GetConnect {
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         updateToken(() {
-          POSTMETHOD_BYTES(api: api, fun: fun,json: json);
+          POSTMETHOD_BYTES(api: api, fun: fun, json: json);
         });
       } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
@@ -636,7 +639,7 @@ class ConnectorControl extends GetConnect {
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         updateToken(() {
-          DELETEMETHOD(api: api, fun: fun,json: json);
+          DELETEMETHOD(api: api, fun: fun, json: json);
         });
       } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
@@ -716,7 +719,7 @@ class ConnectorControl extends GetConnect {
     } on DioError catch (e) {
       if (e.response?.statusCode == 401) {
         updateToken(() {
-          POSTMETHOD_FORMDATA(api: api, fun: fun,  json: json);
+          POSTMETHOD_FORMDATA(api: api, fun: fun, json: json);
         });
       } else if ([400, 403].contains(e.response?.statusCode)) {
         if (Get.isDialogOpen ?? false) {
