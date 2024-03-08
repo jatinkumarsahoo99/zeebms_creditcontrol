@@ -59,7 +59,7 @@ class ClientDealsController extends GetxController {
   RxList<DropDownValue> dialogAgencyList = RxList([]);
   RxList<AddInfo> infoDiaLogList = RxList([]);
   RxList<dynamic> dealNoList = RxList([]);
-  RxList<dynamic> remarkList = RxList([]);
+  List<RemarksData> remarkList = [];
 
   Rxn<DropDownValue>? selectedLocation = Rxn<DropDownValue>(null);
   Rxn<DropDownValue>? selectedLocation2 = Rxn<DropDownValue>(null);
@@ -526,11 +526,10 @@ class ClientDealsController extends GetxController {
                   }
                 }
 
-                if (agencyLeaveDataModel?.agencyLeaveModel?.remark != null &&
-                    agencyLeaveDataModel?.agencyLeaveModel?.remark != "") {
+                if (agencyLeaveDataModel?.agencyLeaveModel?.remark != null ) {
                   remarkList.clear();
-                  remarkList.add({"remark": agencyLeaveDataModel?.agencyLeaveModel?.remark ?? ""});
-                  remarkList.refresh();
+                  remarkList = [RemarksData(remark: agencyLeaveDataModel?.agencyLeaveModel?.remark??"")];
+                  // remarkList.refresh();
                 }
               } else {
                 agencyLeaveDataModel = null;
@@ -637,9 +636,11 @@ class ClientDealsController extends GetxController {
   }
 
   remarkAdd() {
-    remarkList.add({"remark": remarkDiaController.text});
+    remarkList.add(RemarksData(remark: remarkDiaController.text));
+    // {"remark": remarkDiaController.text}
     remarkDiaController.text = "";
-    remarkList.refresh();
+    update(['all']);
+    // remarkList.refresh();
   }
 
   weekend(bool sta) {
@@ -789,6 +790,7 @@ class ClientDealsController extends GetxController {
               }
 
 
+
               // linkedDealNumber
               intNewEntry = 1;
 
@@ -809,6 +811,8 @@ class ClientDealsController extends GetxController {
                       }
                     }
 
+
+
                     if (channelList.length > 0) {
                       for (var element in channelList.value) {
                         if (element.key.toString().trim() ==
@@ -821,7 +825,8 @@ class ClientDealsController extends GetxController {
                           break;
                         }
                       }
-                    } else {
+                    }
+                    else {
                       selectedChannel?.value = DropDownValue(
                           value: selectedChannel2?.value?.value ?? "",
                           key: selectedChannel2?.value?.key ?? "");
@@ -850,8 +855,14 @@ class ClientDealsController extends GetxController {
                         break;
                       }
                     }
+
                     selectedClient = selectedClient2;
                     selectedClient?.refresh();
+
+                    if(clientDealRetrieveModel?.agencyLeaveModel?.remarks != null &&
+                        (clientDealRetrieveModel?.agencyLeaveModel?.remarks?.length??0) > 0){
+                      remarkList = (clientDealRetrieveModel?.agencyLeaveModel?.remarks)??[];
+                    }
 
                     clientsLeave().then((value) {
                       agencyGstNumber.value =
@@ -939,6 +950,9 @@ class ClientDealsController extends GetxController {
                         effectiveRate.refresh();
                       });
                     });
+
+                    bkDurationController.text = (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].secondused??"0").toString();
+                    bkAmountController.text = (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].bookedamount??"0").toString();
                   }
                 } catch (e) {}
               }
@@ -1412,7 +1426,7 @@ class ClientDealsController extends GetxController {
       }
       return mapList;
     }else if(gridName != null && gridName !="" && gridName == "remark"){
-      return remarkList.value ;
+      return remarkList ;
     } else {
       return [];
     }
