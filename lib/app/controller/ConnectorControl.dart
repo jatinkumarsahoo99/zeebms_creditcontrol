@@ -723,7 +723,7 @@ class ConnectorControl extends GetConnect {
           Get.back();
         }
         if (e.response?.data is Map && e.response?.data.containsKey("status")) {
-          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+          LoadingDialog.showErrorDialog(e.response?.data["status"].toString()??"");
         }
       } else {
         if (Get.isDialogOpen ?? false) {
