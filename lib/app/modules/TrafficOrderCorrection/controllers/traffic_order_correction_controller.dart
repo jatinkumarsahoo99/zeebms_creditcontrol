@@ -411,6 +411,7 @@ class TrafficOrderCorrectionController extends GetxController {
   }
 
   void modifyClick() {
+    if(selectedTapeId!=null && selectedSpotStatus!=null)
     gridManager?.currentRow?.cells["Booking Status"]?.value =
         selectedSpotStatus?.key ?? "";
     gridManager?.currentRow?.cells["Tape Code"]?.value =
