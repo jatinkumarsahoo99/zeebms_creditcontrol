@@ -570,22 +570,8 @@ class EmailBillDetailsController extends GetxController {
 
   sendBillFiles() async {
     var sendBillsDetails = [];
-    gridData.asMap().forEach((index, e) {
-      if (e["selected"]) {
-        sendBillsDetails.add({
-          "clientName": e["clientName"],
-          "agencyName": e["agencyName"],
-          "files": multipleFile!.files.map((e) {
-            return dio.MultipartFile.fromBytes(
-              e.bytes!.toList(),
-              filename: e.name,
-            );
-          }).toList(),
-          "channelName": e["channel"],
-          "mailTo": e["mailto"]
-        });
-      }
-    });
+    // var formData2 = dio.FormData();
+
     // "files": multipleFile!.files.map((e) {
     //         return dio.MultipartFile.fromBytes(
     //           e.bytes!.toList(),
@@ -601,8 +587,49 @@ class EmailBillDetailsController extends GetxController {
       "testMailTo": tecTestTo.text,
       "testMailBody": tecbody.text,
       "isEmailSendTest": sendTest.value,
-      "files": sendBillsDetails,
+      // "files": sendBillsDetails,
       // "files": selectedFiles
+    });
+
+    gridData.asMap().forEach((index, e) {
+      // var formData2 = dio.FormData();
+      if (e["selected"]) {
+        formData.fields.add(MapEntry(
+          'files[$index].clientName',
+          e["clientName"],
+        ));
+        formData.fields.add(MapEntry(
+          'files[$index].agencyName',
+          e["agencyName"],
+        ));
+        formData.fields.add(MapEntry(
+          'files[$index].mailTo',
+          ((e["mailto"] != null && e["mailto"] != "")
+              ? e["mailto"]
+              : tecTestTo.text),
+        ));
+        formData.fields.add(MapEntry(
+          'files[$index].ChannelName',
+          (e["channel"]),
+        ));
+        formData.files.add(MapEntry(
+          'files[$index].files',
+          dio.MultipartFile.fromBytes(
+            multipleFile!.files[index].bytes!.toList(),
+            filename: multipleFile!.files[index].name,
+          ),
+        ));
+        /*sendBillsDetails.add({
+          "clientName": e["clientName"],
+          "agencyName": e["agencyName"],
+          "files": dio.MultipartFile.fromBytes(
+            multipleFile!.files[index].bytes!.toList(),
+            filename: multipleFile!.files[index].name,
+          ),
+          "channelName": e["channel"],
+          "mailTo": e["mailto"] ?? tecTestTo.text
+        });*/
+      }
     });
 
     Get.find<ConnectorControl>().POSTMETHOD_FORMDATA(
