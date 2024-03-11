@@ -1,4 +1,5 @@
 import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
+import 'package:bms_creditcontrol/widgets/PlutoGrid/pluto_grid.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -92,14 +93,19 @@ class SAPBIllCheckReportView extends GetView<SAPBIllCheckReportController> {
                               (controllerX.dataList?.isNotEmpty ?? false))
                           ? DataGridFromMap(
                               showSrNo: true,
-                              exportFileName: "Client Channel Link",
+                              exportFileName: "Sap Bill Check Report",
                               mode: PlutoGridMode.normal,
                               mapData: controller.dataList!,
-
+                              colorCallback: (row) => (row.rowIdx ==
+                                      controller.gridManager?.currentRowIdx)
+                                  ? Colors.deepPurple.shade200
+                                  : Colors.white,
                               // mapData: (controllerX.dataList)!,
                               widthRatio: Get.width / 9 - 1,
                               onload: (PlutoGridOnLoadedEvent load) {
                                 controller.gridManager = load.stateManager;
+                                load.stateManager.setSelectingMode(
+                                    PlutoGridSelectingMode.row);
                               },
                               widthSpecificColumn: (controller
                                   .userDataSettings?.userSetting

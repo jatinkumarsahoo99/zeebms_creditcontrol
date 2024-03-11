@@ -391,7 +391,8 @@ class TrafficOrderCorrectionController extends GetxController {
   }
 
   rowDoubleTap(PlutoRow? row) {
-    gridManager?.setCurrentCell(row?.cells["Booking DetailCode"], row?.sortIdx ?? 0);
+    gridManager?.setCurrentCell(
+        row?.cells["Booking DetailCode"], row?.sortIdx ?? 0);
     tapeID_List = [
       DropDownValue(
           key: row?.cells["commercialCode"]?.value ?? "",
@@ -411,28 +412,31 @@ class TrafficOrderCorrectionController extends GetxController {
   }
 
   void modifyClick() {
-    if(selectedTapeId!=null && selectedSpotStatus!=null)
-    gridManager?.currentRow?.cells["Booking Status"]?.value =
-        selectedSpotStatus?.key ?? "";
-    gridManager?.currentRow?.cells["Tape Code"]?.value =
-        selectedTapeId?.value ?? "";
-    gridManager?.currentRow?.cells["Spot Amount"]?.value = tecAmount.text;
-    gridManager?.currentRow?.cells["remarks"]?.value = tecRemarks.text;
-    gridManager?.currentRow?.cells["Caption"]?.value = tecCaption.text;
-    gridManager?.currentRow?.cells["Duration"]?.value = tecDuration.text;
-    gridManager?.currentRow?.cells["commercialCode"]?.value =
-        selectedTapeId?.key ?? "";
-    gridManager?.currentRow?.cells["recordNumber"]?.value = gridRecordNo.text;
-    gridManager?.currentRow?.cells["Spot Amount"]?.value = tecAmount.text;
+    if (selectedTapeId != null &&
+        selectedSpotStatus != null &&
+        tecDuration.text != "") {
+      gridManager?.currentRow?.cells["Booking Status"]?.value =
+          selectedSpotStatus?.key ?? "";
+      gridManager?.currentRow?.cells["Tape Code"]?.value =
+          selectedTapeId?.value ?? "";
+      gridManager?.currentRow?.cells["Spot Amount"]?.value = tecAmount.text;
+      gridManager?.currentRow?.cells["remarks"]?.value = tecRemarks.text;
+      gridManager?.currentRow?.cells["Caption"]?.value = tecCaption.text;
+      gridManager?.currentRow?.cells["Duration"]?.value = tecDuration.text;
+      gridManager?.currentRow?.cells["commercialCode"]?.value =
+          selectedTapeId?.key ?? "";
+      gridManager?.currentRow?.cells["recordNumber"]?.value = gridRecordNo.text;
+      gridManager?.currentRow?.cells["Spot Amount"]?.value = tecAmount.text;
 
-    selectedTapeId = null;
-    selectedSpotStatus = null;
-    tecDuration.text = "";
-    tecAmount.text = "";
-    tecCaption.text = "";
-    // tecRemarks.text = "";
-    gridManager?.notifyListeners();
-    update(["main"]);
+      selectedTapeId = null;
+      selectedSpotStatus = null;
+      tecDuration.text = "";
+      tecAmount.text = "";
+      tecCaption.text = "";
+      // tecRemarks.text = "";
+      gridManager?.notifyListeners();
+      update(["main"]);
+    }
   }
 
   void dealClick() {
