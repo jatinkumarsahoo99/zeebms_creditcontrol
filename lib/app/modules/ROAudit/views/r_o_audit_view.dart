@@ -200,7 +200,7 @@ class ROAuditView extends StatelessWidget {
                                   ? Colors.deepPurple.shade200
                                   : Colors.white;
                             },
-                            exportFileName: "R.O. AUDIT",
+                            exportFileName: "Audit Status",
                             mode: PlutoGridMode.normal,
                             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
                               bool sta = await Get.toNamed(Routes.AUDIT_BOOKINGS, arguments: {
@@ -215,13 +215,13 @@ class ROAuditView extends StatelessWidget {
                                 "brandName": event.cell.row.cells['brandname']?.value ?? ""
                               });
 
-                              if (sta) {
+                              if (sta == true) {
                                 controllerX.showDetails(name: controllerX.selectTab.value);
                               }
                             },
                             // hideKeys: const [],
                             mapData: controllerX.roAuditRetrieveModel!.infoBindList!.lstAdditions!
-                                .map((e) => e.toJson())
+                                .map((e) => e.toJson1())
                                 .toList(),
                             // mapData: (controllerX.dataList)!,
                             widthRatio: Get.width / 9 - 1,
@@ -260,11 +260,21 @@ class ROAuditView extends StatelessWidget {
                             formatDate: false,
                             columnAutoResize: true,
                             doPasccal: true,
-                            colorCallback: (row) =>
-                                (row.row.cells.containsValue(controllerX.stateManager?.currentCell))
+                            colorCallback: (row) {
+                              if (row.row.cells['auditedSpots']?.value == "" ||
+                                  row.row.cells['auditedSpots']?.value == null) {
+                                return const Color(0xFF96FF96);
+                              } else if (int.parse(
+                                  (row.row.cells['auditedSpots']?.value ?? '0').toString()) <
+                                  int.parse(
+                                      (row.row.cells['totalspots']?.value ?? '0').toString())) {
+                                return const Color(0xFFFF9696);
+                              }
+                                return (row.row.cells.containsValue(controllerX.stateManager?.currentCell))
                                     ? Colors.deepPurple.shade200
-                                    : Colors.white,
-                            exportFileName: "R.O. AUDIT",
+                                    : Colors.white ;
+                                },
+                            exportFileName: "Audit Status",
                             mode: PlutoGridMode.normal,
                             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
                               bool sta = await Get.toNamed(Routes.AUDIT_CANCELLATION, arguments: {
@@ -277,6 +287,7 @@ class ROAuditView extends StatelessWidget {
                                 "BookingNumber": event.cell.row.cells['bookingnumber']?.value ?? "",
                                 "clientName": event.cell.row.cells['clientname']?.value ?? "",
                                 "agencyName": event.cell.row.cells['agencyname']?.value ?? "",
+                                "spotamount": event.cell.row.cells['spotamount']?.value ?? "",
                                 "brandName": event.cell.row.cells['brandName']?.value ?? ""
                               });
                               if (sta) {
@@ -340,7 +351,7 @@ class ROAuditView extends StatelessWidget {
                                   ? Colors.deepPurple.shade200
                                   : Colors.white;
                             },
-                            exportFileName: "R.O. AUDIT",
+                            exportFileName: "Audit Status",
                             mode: PlutoGridMode.normal,
                             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
                               bool sta = await Get.toNamed(Routes.AUDIT_RESCHEDULE, arguments: {
