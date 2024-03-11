@@ -35,6 +35,18 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  AppBar(
+                    title: const Text('Audit Cancellation'),
+                    centerTitle: true,
+                    backgroundColor: Colors.deepPurple,
+                    leading: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Get.back(result: true),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -100,16 +112,25 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                   child: Row(
                                     children: [
                                       Expanded(
+                                        child: InputFields.formFieldExpand2(
+                                            hintTxt: "Ref Date",
+                                            controller: controller.refDateController,
+                                            autoFocus: true,
+                                            titleSizeboxWidth: 80,
+                                            isEnable: controller.isEnable.value,
+                                            bottomPadding: false),
+                                      ),
+                                      /*Expanded(
                                         child: DateWithThreeTextField(
                                           title: "Ref Date",
                                           mainTextController: controller.refDateController,
                                           // isEnable: false,
                                           isEnable: controller.isEnable.value,
                                         ),
+                                      ),*/
+                                      SizedBox(
+                                        width: 10,
                                       ),
-                                      // SizedBox(
-                                      //   width: 10,
-                                      // ),
                                       Expanded(
                                         child: InputFields.formFieldExpand2(
                                             hintTxt: "Book No",
@@ -319,11 +340,12 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                               columnAutoResize: true,
                               doPasccal: true,
                               minimumWidth: 180,
-                              colorCallback: (row) =>
-                              (row.row.cells
+                              colorCallback: (row) {
+                              return (row.row.cells
                                   .containsValue(controller.stateManager?.currentCell))
                                   ? Colors.deepPurple.shade200
-                                  : Colors.white,
+                                  : Colors.white ;
+                              },
                               exportFileName: "Secondary Asrun Modification",
                               mode: PlutoGridMode.normal,
                               checkBoxColumnKey: const ["audited", "requested"],
@@ -349,13 +371,14 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                           );
                         }),
                   ),
-                  Get.find<HomeController>().getCommonButton(
+                  Get.find<HomeController>().getCommonButton1(
                     Routes.R_O_AUDIT,
                         (btnName) {
                           if (btnName == "Save") {
                             controller.saveFunCall();
                           } else if (btnName == "Clear") {
-                            controller.clearAll();
+                            // controller.clearAll();
+                            Get.back(result: true);
                           } else if (btnName == "Docs") {
                             controller.docs();
                           }

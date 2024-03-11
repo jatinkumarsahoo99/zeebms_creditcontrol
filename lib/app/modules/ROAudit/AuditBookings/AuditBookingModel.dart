@@ -1,3 +1,5 @@
+import '../../../providers/Utils.dart';
+
 class AuditBookingModel {
   InfoShowBookingList? infoShowBookingList;
 
@@ -270,6 +272,29 @@ class LstSpot {
     data['auditedOn'] = this.auditedOn??"";
     return data;
   }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['audited'] = this.audited??false;
+    data['rowNumber'] = this.rowNumber??"";
+    data['scheduleDate'] = Utils.toDateFormat9( this.scheduleDate??"");
+    data['start'] = this.start??"";
+    data['endTime'] = this.endTime??"";
+    data['programname'] = this.programname??"";
+    data['tapeid'] = this.tapeid??"";
+    data['commercialcaption'] = this.commercialcaption??"";
+    data['commercialduration'] = this.commercialduration??"";
+    data['spotamount'] = this.spotamount??"";
+    data['deal_Number'] = this.dealNumber??"";
+    data['dealrownumber'] = this.dealrownumber??"";
+    data['totalspots'] = this.totalspots??"";
+    data['auditedSpots'] = (auditedSpots == 0)? "" : (auditedSpots??"0").toString();
+    data['tO_Number'] = this.tONumber??"";
+    data['auditedBy'] = this.auditedBy??"";
+    data['auditedOn'] = Utils.toDateFormat8(this.auditedOn??"");
+    return data;
+  }
+
 }
 
 class DislpayDealDetails {
@@ -394,6 +419,23 @@ class LstBookingDetails {
     data['bookingNumber'] = this.bookingNumber;
     data['bookingDetailCode'] = this.bookingDetailCode;
     data['scheduleDate'] = this.scheduleDate;
+    data['scheduleTime'] = this.scheduleTime;
+    data['programname'] = this.programname;
+    data['commercialCaption'] = this.commercialCaption;
+    data['exportTapeCode'] = this.exportTapeCode;
+    data['tapeDuration'] = this.tapeDuration;
+    data['spotAmount'] = this.spotAmount;
+    data['packagecode'] = this.packagecode;
+    data['bookingStatus'] = this.bookingStatus;
+    return data;
+  }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['status'] = this.status;
+    data['bookingNumber'] = this.bookingNumber;
+    data['bookingDetailCode'] = this.bookingDetailCode;
+    data['scheduleDate'] = Utils.toDateFormat9( this.scheduleDate??"");
     data['scheduleTime'] = this.scheduleTime;
     data['programname'] = this.programname;
     data['commercialCaption'] = this.commercialCaption;

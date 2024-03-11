@@ -44,6 +44,81 @@ class Utils {
     return formatter;
   }
 
+  static toDateFormat10(String? date) {
+    String? formatter = "";
+    if (date != null && date != "") {
+      try{
+        formatter = DateFormat("dd-MMM-yyyy").format(
+            DateFormat("yyyy-MM-ddTHH:mm:ss")
+                .parse((date ?? DateTime.now()).toString()));
+      }catch(e){
+        formatter = "";
+      }
+    }
+    // log(">>>>>>"+formatter.toString());
+    return formatter;
+  }
+
+  static toDateFormat9(String? date) {
+    String? formatter = "";
+    if (date != null && date != "") {
+      try{
+        formatter = DateFormat("dd/MM/yyyy").format(
+            DateFormat("yyyy-MM-ddTHH:mm:ss")
+                .parse((date ?? DateTime.now()).toString()));
+      }catch(e){
+        formatter = "";
+      }
+    }
+    // log(">>>>>>"+formatter.toString());
+    return formatter;
+  }
+
+  static toDateFormat11(String? date) {
+    String? formatter = "";
+    if (date != null && date != "") {
+      try{
+        formatter = DateFormat("dd/MM/yyyy HH:mm:ss").format(
+            DateFormat("yyyy-MM-ddTHH:mm:ss")
+                .parse((date ?? DateTime.now()).toString()));
+      }catch(e){
+        formatter = "";
+      }
+    }
+    // log(">>>>>>"+formatter.toString());
+    return formatter;
+  }
+
+  static toDateFormat8(String? date) {
+    String? formatter = "";
+    if (date != null && date != "") {
+      try{
+        formatter = DateFormat("dd/MM/yyyy hh:mm a").format(
+            DateFormat("yyyy-MM-ddTHH:mm:ss")
+                .parse((date ?? DateTime.now()).toString()));
+      }catch(e){
+        formatter = "";
+      }
+    }
+    // log(">>>>>>"+formatter.toString());
+    return formatter;
+  }
+
+  static toDateFormat7(String? date) {
+    String? formatter = "";
+    if (date != null && date != "") {
+      try{
+        formatter = DateFormat("dd-MMM-yyyy").format(
+            DateFormat("MM/dd/yyyy HH:mm:ss")
+                .parse((date ?? DateTime.now()).toString()));
+      }catch(e){
+        formatter = "";
+      }
+    }
+    // log(">>>>>>"+formatter.toString());
+    return formatter;
+  }
+
   static toDateFormat6(String? date) {
     String? formatter = "";
     if (date != null && date != "") {
@@ -611,9 +686,9 @@ class Utils {
         return 280;
       } else if (value is num ||
           (value is String && num.tryParse(value) != null)) {
-        return 45;
+        return 120;
       } else if (key.toLowerCase().contains("date")) {
-        return 45;
+        return 180;
       }
     } catch (e) {
       print("problem in setting width $e");

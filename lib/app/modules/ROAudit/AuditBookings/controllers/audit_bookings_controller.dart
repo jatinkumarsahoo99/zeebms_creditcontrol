@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bms_creditcontrol/app/modules/ROAudit/AuditBookings/AuditBookingModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../widgets/CheckBoxWidget.dart';
 import '../../../../../widgets/FormButton.dart';
@@ -33,7 +34,7 @@ class AuditBookingsController extends GetxController {
       selectedBrand = Rxn<DropDownValue>(null);
 
   final refNoController = TextEditingController(),
-      refDateController = TextEditingController(),
+      refDateController = TextEditingController(text: DateFormat("dd-MMM-yyyy").format(DateTime.now())),
       fpcEffDtController = TextEditingController(),
       bookedDtController = TextEditingController(),
       bookingNoController = TextEditingController(),
@@ -166,6 +167,7 @@ class AuditBookingsController extends GetxController {
   }
 
   AuditBookingModel? auditBookingModel;
+  List<LstBookingDetails> ?spotFilterList = [];
 
   Future<String> getDataFromApi() {
     Completer<String> completer = Completer<String>();
@@ -206,11 +208,18 @@ class AuditBookingsController extends GetxController {
         selectedClient.value = DropDownValue(value:dataFromRO['clientName'] ,key:auditBookingModel?.infoShowBookingList?.clientCode??"" );
         selectedAgency.value = DropDownValue(value:dataFromRO['agencyName'] ,key:auditBookingModel?.infoShowBookingList?.agencyCode??"" );
         selectedBrand.value = DropDownValue(value:dataFromRO['brandName'] ,key:auditBookingModel?.infoShowBookingList?.brandCode??"" );
-        refDateController.text = Utils.toDateFormat5(auditBookingModel?.infoShowBookingList?.bookingRefDate??"");
-        fpcEffDtController.text = Utils.toDateFormat4(auditBookingModel?.infoShowBookingList?.sGetCurrentSQLDate??"");
-        bookedDtController.text = Utils.toDateFormat4(auditBookingModel?.infoShowBookingList?.sGetCurrentSQLDate??"");
+
+        refDateController.text = Utils.toDateFormat7(auditBookingModel?.infoShowBookingList?.bookingRefDate??"");
+        print(">>>>>>>>>>>>refDate${refDateController.text}");
+        // update(['date']);
+         auditBookingModel?.infoShowBookingList?.displayBookingStatus?.lstBookingDetails?.forEach((element) {
+           spotFilterList?.add(element);
+        });
+
+        // fpcEffDtController.text = Utils.toDateFormat4(auditBookingModel?.infoShowBookingList?.sGetCurrentSQLDate??"");
+        // bookedDtController.text = Utils.toDateFormat4(auditBookingModel?.infoShowBookingList?.sGetCurrentSQLDate??"");
         refNoController.text = auditBookingModel?.infoShowBookingList?.bookingRefNumber??"";
-        bookingNoController.text = auditBookingModel?.infoShowBookingList?.bookingNumber??"";
+        bookingNoController.text =dataFromRO["BookingMonth"]??"";
         textController1.text = auditBookingModel?.infoShowBookingList?.bookingNumber??"";
         textController2.text = auditBookingModel?.infoShowBookingList?.zoneName??"";
         dealNoController.text = auditBookingModel?.infoShowBookingList?.remarks??"";
@@ -231,7 +240,7 @@ class AuditBookingsController extends GetxController {
             bookingExceeds: auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkMaxSpendcheck??false,
             clientUnder: auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkClientEmbargo??false,
             agencyUnder: auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkAgencyEmbargo??false,
-            commercialDur: auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkAgencyEmbargo??false,
+            commercialDur: auditBookingModel?.infoShowBookingList?.dislpayDealDetails?.chkCommDurMismatch??false,
           );
         }
 

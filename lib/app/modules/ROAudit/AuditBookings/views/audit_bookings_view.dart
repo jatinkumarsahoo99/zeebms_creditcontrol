@@ -4,6 +4,7 @@ import 'package:bms_creditcontrol/widgets/sized_box_widget.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../../widgets/PlutoGrid/src/pluto_grid.dart';
@@ -80,42 +81,37 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey),
                             ),
-                            child: (controller.auditBookingModel != null &&
-                                    controller.auditBookingModel?.infoShowBookingList != null &&
-                                    controller.auditBookingModel?.infoShowBookingList
-                                            ?.displayBookingStatus !=
-                                        null &&
-                                    controller.auditBookingModel?.infoShowBookingList
-                                            ?.displayBookingStatus?.lstBookingDetails !=
-                                        null &&
-                                    (controller.auditBookingModel?.infoShowBookingList
-                                                ?.displayBookingStatus?.lstBookingDetails?.length ??
-                                            0) >
-                                        0)
+                            child: (
+                                controller.spotFilterList !=
+                                    null &&
+                                (controller.spotFilterList?.length ??
+                                    0) >
+                                    0)
                                 ? DataGridFromMap3(
-                                    showSrNo: true,
-                                    hideCode: false,
-                                    formatDate: false,
-                                    columnAutoResize: false,
-                                    doPasccal: true,
-                                    minimumWidth: 180,
-                                    colorCallback: (row) => (row.row.cells
-                                            .containsValue(controller.spotGridManager?.currentCell))
-                                        ? Colors.deepPurple.shade200
-                                        : Colors.white,
-                                    exportFileName: "Client Deals",
-                                    mode: PlutoGridMode.normal,
-                                    // hideKeys: ["isrequired", "allowedvalues"],
-                                    mapData: controller.auditBookingModel!.infoShowBookingList!
-                                        .displayBookingStatus!.lstBookingDetails!
-                                        .map((e) => e.toJson())
-                                        .toList(),
-                                    // mapData: (controllerX.dataList)!,
-                                    widthRatio: Get.width / 9 - 1,
-                                    onload: (PlutoGridOnLoadedEvent load) {
-                                      controller.spotGridManager = load.stateManager;
-                                    },
-                                  )
+                              showSrNo: true,
+                              hideCode: false,
+                              formatDate: false,
+                              columnAutoResize: false,
+                              doPasccal: true,
+                              minimumWidth: 180,
+                              colorCallback: (row) {
+                                return (row.row.cells
+                                    .containsValue(controller.spotGridManager?.currentCell))
+                                    ? Colors.deepPurple.shade200
+                                    : Colors.white;
+                              },
+                              exportFileName: "Audit Booking",
+                              mode: PlutoGridMode.normal,
+                              // hideKeys: ["isrequired", "allowedvalues"],
+                              mapData: controller.spotFilterList!
+                                  .map((e) => e.toJson1())
+                                  .toList(),
+                              // mapData: (controllerX.dataList)!,
+                              widthRatio: Get.width / 9 - 1,
+                              onload: (PlutoGridOnLoadedEvent load) {
+                                controller.spotGridManager = load.stateManager;
+                              },
+                            )
                                 : Container(),
                           ),
                         );
@@ -147,13 +143,12 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
     controller.canDialogShow.value = true;
   }
 
-  dragValidation(
-      {bool? dealRows = false,
-      bool? buildValue = false,
-      bool? bookingExceeds = false,
-      bool? clientUnder = false,
-      bool? agencyUnder = false,
-      bool? commercialDur = false}) {
+  dragValidation({bool? dealRows = false,
+    bool? buildValue = false,
+    bool? bookingExceeds = false,
+    bool? clientUnder = false,
+    bool? agencyUnder = false,
+    bool? commercialDur = false}) {
     controller.initialOffset.value = 2;
     // Completer<bool> completer = Completer<bool>();
     controller.dialogWidget = Material(
@@ -254,7 +249,7 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
     controller.canDialogShow.value = true;
   }
 
-  dealDialogView(){
+  dealDialogView() {
     controller.initialOffset.value = 2;
     // Completer<bool> completer = Completer<bool>();
     controller.dialogWidget = Material(
@@ -305,9 +300,9 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
               ),
               InputFields.formField2(
                   hintTxt: "Max Spend",
-                  controller:controller.maxSpendControllerDialog,
-                isEnable: false,
-                width: 0.57
+                  controller: controller.maxSpendControllerDialog,
+                  isEnable: false,
+                  width: 0.57
               ),
               SizedBox(
                 height: 2,
@@ -317,21 +312,21 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                   children: [
                     Expanded(
                         flex: 4,
-                        child:Padding(
-                      padding: const EdgeInsets.only(top: 8.0,bottom: 8),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                        ),
-                      ),
-                    )),
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+                          child: Container(
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                            ),
+                          ),
+                        )),
                     Expanded(
                         flex: 6,
-                        child:Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                      ),
-                    )),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.grey),
+                          ),
+                        )),
                   ],
                 ),
               ),
@@ -370,12 +365,12 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
         floatingActionButton: Obx(() {
           return controller.canDialogShow.value
               ? DraggableFab(
-                  initPosition: controller.getOffSetValue(constraints),
-                  child: controller.dialogWidget!,
-                  dragEndCall: () {
-                    controller.update(['all']);
-                  },
-                )
+            initPosition: controller.getOffSetValue(constraints),
+            child: controller.dialogWidget!,
+            dragEndCall: () {
+              controller.update(['all']);
+            },
+          )
               : const SizedBox();
         }),
         body: SizedBox(
@@ -386,6 +381,18 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                AppBar(
+                  title: const Text('Audit Bookings'),
+                  centerTitle: true,
+                  backgroundColor: Colors.deepPurple,
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () => Get.back(result: true),
+                  ),
+                ),
+                SizedBox(
+                  height: 5,
+                ),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -440,12 +447,31 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                                 width: 10,
                               ),
                               Expanded(
-                                child: DateWithThreeTextField(
-                                  title: "",
-                                  mainTextController: controller.refDateController,
-                                  isEnable: controller.isEnable.value,
-                                ),
+                                child: InputFields.formFieldExpand2(
+                                    hintTxt: "",
+                                    controller: controller.refDateController,
+                                    autoFocus: true,
+                                    titleSizeboxWidth: 80,
+                                    isEnable: controller.isEnable.value,
+                                    bottomPadding: false),
                               ),
+                             /* Expanded(
+                                child: GetBuilder<AuditBookingsController>(
+                                    id: "date",
+                                    builder: (controller) {
+                                      return DateWithThreeTextField(
+                                        title: "",
+                                        mainTextController: controller.refDateController,
+                                        isEnable: controller.isEnable.value,
+                                        splitType: "-",
+                                        startDate: (DateFormat("dd-MM-yyyy").parse(
+                                            "28-03-2023")).subtract(Duration(days: 3)),
+                                        // intailDate:(DateFormat("dd-MM-yyyy").parse(controller.refDateController.text)),
+
+
+                                      );
+                                    }),
+                              ),*/
                             ],
                           ),
                           sizedBoxHeight(5),
@@ -520,8 +546,9 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                                 showIcon: false,
                                 isEnabled: true,
                                 callback: () {
-                                  controller.maxSpendControllerDialog.text = (controller.auditBookingModel?.infoShowBookingList
-                                      ?.dislpayDealDetails?.dealMaxSpend??"").toString();
+                                  controller.maxSpendControllerDialog.text =
+                                      (controller.auditBookingModel?.infoShowBookingList
+                                          ?.dislpayDealDetails?.dealMaxSpend ?? "").toString();
                                   dealDialogView();
                                 },
                               ),
@@ -535,25 +562,25 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                                 callback: () {
                                   dragValidation(
                                     dealRows: controller.auditBookingModel?.infoShowBookingList
-                                            ?.dislpayDealDetails?.chkDealNegativeBalance ??
+                                        ?.dislpayDealDetails?.chkDealNegativeBalance ??
                                         false,
                                     buildValue: controller.auditBookingModel?.infoShowBookingList
-                                            ?.dislpayDealDetails?.chkValuation ??
+                                        ?.dislpayDealDetails?.chkValuation ??
                                         false,
                                     bookingExceeds: controller
-                                            .auditBookingModel
-                                            ?.infoShowBookingList
-                                            ?.dislpayDealDetails
-                                            ?.chkMaxSpendcheck ??
+                                        .auditBookingModel
+                                        ?.infoShowBookingList
+                                        ?.dislpayDealDetails
+                                        ?.chkMaxSpendcheck ??
                                         false,
                                     clientUnder: controller.auditBookingModel?.infoShowBookingList
-                                            ?.dislpayDealDetails?.chkClientEmbargo ??
+                                        ?.dislpayDealDetails?.chkClientEmbargo ??
                                         false,
                                     agencyUnder: controller.auditBookingModel?.infoShowBookingList
-                                            ?.dislpayDealDetails?.chkAgencyEmbargo ??
+                                        ?.dislpayDealDetails?.chkAgencyEmbargo ??
                                         false,
                                     commercialDur: controller.auditBookingModel?.infoShowBookingList
-                                            ?.dislpayDealDetails?.chkAgencyEmbargo ??
+                                        ?.dislpayDealDetails?.chkCommDurMismatch ??
                                         false,
                                   );
                                 },
@@ -668,12 +695,12 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                             return Container(
                               child: (controller.isPDCEntered.value)
                                   ? InputFields.formFieldExpand2(
-                                      hintTxt: "Remark",
-                                      controller: controller.remarkController,
-                                      autoFocus: true,
-                                      titleSizeboxWidth: 80,
-                                      isEnable: controller.isEnable.value,
-                                      bottomPadding: false)
+                                  hintTxt: "Remark",
+                                  controller: controller.remarkController,
+                                  autoFocus: true,
+                                  titleSizeboxWidth: 80,
+                                  isEnable: controller.isEnable.value,
+                                  bottomPadding: false)
                                   : Container(),
                             );
                           }),
@@ -691,15 +718,15 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                       return Container(
                         child: (controller.isPDCEntered.value)
                             ? Expanded(
-                                child: InputFields.formFieldExpand2(
-                                    hintTxt: "PDC",
-                                    controller: controller.pdcController,
-                                    backgroundColor: Colors.orangeAccent.withOpacity(0.2),
-                                    autoFocus: true,
-                                    titleSizeboxWidth: 80,
-                                    isEnable: controller.isEnable.value,
-                                    bottomPadding: false),
-                              )
+                          child: InputFields.formFieldExpand2(
+                              hintTxt: "PDC",
+                              controller: controller.pdcController,
+                              backgroundColor: Colors.orangeAccent.withOpacity(0.2),
+                              autoFocus: true,
+                              titleSizeboxWidth: 80,
+                              isEnable: controller.isEnable.value,
+                              bottomPadding: false),
+                        )
                             : Container(),
                       );
                     }),
@@ -713,50 +740,71 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                       builder: (controller) {
                         return Container(
                           child: (controller.auditBookingModel != null &&
-                                  controller.auditBookingModel?.infoShowBookingList != null &&
-                                  controller
-                                          .auditBookingModel?.infoShowBookingList?.displayDetails !=
-                                      null &&
-                                  controller.auditBookingModel?.infoShowBookingList?.displayDetails
-                                          ?.lstSpot !=
-                                      null &&
-                                  (controller.auditBookingModel?.infoShowBookingList?.displayDetails
-                                              ?.lstSpot?.length ??
-                                          0) >
-                                      0)
+                              controller.auditBookingModel?.infoShowBookingList != null &&
+                              controller
+                                  .auditBookingModel?.infoShowBookingList?.displayDetails !=
+                                  null &&
+                              controller.auditBookingModel?.infoShowBookingList?.displayDetails
+                                  ?.lstSpot !=
+                                  null &&
+                              (controller.auditBookingModel?.infoShowBookingList?.displayDetails
+                                  ?.lstSpot?.length ??
+                                  0) >
+                                  0)
                               ? DataGridFromMap3(
-                                  showSrNo: true,
-                                  hideCode: false,
-                                  formatDate: false,
-                                  columnAutoResize: true,
-                                  doPasccal: true,
-                                  minimumWidth: 180,
-                                  colorCallback: (row) => (row.row.cells
-                                          .containsValue(controller.stateManager?.currentCell))
-                                      ? Colors.deepPurple.shade200
-                                      : Colors.white,
-                                  exportFileName: "Secondary Asrun Modification",
-                                  mode: PlutoGridMode.normal,
-                                  checkBoxColumnKey: ["audited"],
-                                  checkBoxStrComparison: true,
-                                  noEditcheckBoxColumnKey: ["audited"],
-                                  onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent? event) {
-                                    dragSpotsDialog();
-                                  },
-                                  // hideKeys: const [],
-                                  mapData: controller.auditBookingModel!.infoShowBookingList!
-                                      .displayDetails!.lstSpot!
-                                      .map((e) => e.toJson())
-                                      .toList(),
-                                  // mapData: (controllerX.dataList)!,
-                                  widthRatio: Get.width / 9 - 1,
-                                  onload: (PlutoGridOnLoadedEvent load) {
-                                    controller.stateManager = load.stateManager;
-                                  },
-                                )
+                            showSrNo: true,
+                            hideCode: false,
+                            formatDate: false,
+                            columnAutoResize: true,
+                            doPasccal: true,
+                            minimumWidth: 180,
+                            colorCallback: (row) {
+                              if (row.row.cells['auditedSpots']?.value == "" ||
+                                  row.row.cells['auditedSpots']?.value == null) {
+                                return const Color(0xFF96FF96);
+                              } else if (int.parse(
+                                  (row.row.cells['auditedSpots']?.value ?? '0').toString()) <
+                                  int.parse(
+                                      (row.row.cells['totalspots']?.value ?? '0').toString())) {
+                                return const Color(0xFFFF9696);
+                              }
+                              return (row.row.cells
+                                  .containsValue(controller.stateManager?.currentCell))
+                                  ? Colors.deepPurple.shade200
+                                  : Colors.white;
+                            },
+                            exportFileName: "Audit Bookings",
+                            mode: PlutoGridMode.normal,
+                            checkBoxColumnKey: ["audited"],
+                            checkBoxStrComparison: true,
+                            noEditcheckBoxColumnKey: ["audited"],
+                            onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent? event) {
+                              String rowNumber = (event?.cell.row.cells['rowNumber']?.value ?? "").toString();
+                              controller.spotFilterList?.clear();
+                              controller.auditBookingModel?.infoShowBookingList?.displayBookingStatus?.lstBookingDetails?.forEach((element) {
+                                print(">>>>>>>>>> ${element.packagecode} ${rowNumber}");
+                                if((element.packagecode??"").toString().toLowerCase().trim() == rowNumber.toLowerCase().trim()){
+                                  controller.spotFilterList?.add(element);
+                                }
+                              });
+                              print(">>>>>>>>>${controller.spotFilterList}");
+
+                              dragSpotsDialog();
+                            },
+                            // hideKeys: const [],
+                            mapData: controller.auditBookingModel!.infoShowBookingList!
+                                .displayDetails!.lstSpot!
+                                .map((e) => e.toJson1())
+                                .toList(),
+                            // mapData: (controllerX.dataList)!,
+                            widthRatio: Get.width / 9 - 1,
+                            onload: (PlutoGridOnLoadedEvent load) {
+                              controller.stateManager = load.stateManager;
+                            },
+                          )
                               : Container(
-                                  decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
-                                ),
+                            decoration: BoxDecoration(border: Border.all(color: Colors.grey)),
+                          ),
                         );
                       }),
                 ),
@@ -784,13 +832,14 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                     ),
                   ],
                 ),
-                Get.find<HomeController>().getCommonButton(
+                Get.find<HomeController>().getCommonButton1(
                   Routes.R_O_AUDIT,
-                  (btnName) {
+                      (btnName) {
                     if (btnName == "Save") {
                       controller.saveFunCall();
                     } else if (btnName == "Clear") {
-                      controller.clearAll();
+                      // controller.clearAll();
+                      Get.back(result: true);
                     } else if (btnName == "Docs") {
                       controller.docs();
                     }
