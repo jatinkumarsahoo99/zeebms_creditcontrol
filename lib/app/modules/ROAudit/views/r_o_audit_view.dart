@@ -287,6 +287,7 @@ class ROAuditView extends StatelessWidget {
                                 "BookingNumber": event.cell.row.cells['bookingnumber']?.value ?? "",
                                 "clientName": event.cell.row.cells['clientname']?.value ?? "",
                                 "agencyName": event.cell.row.cells['agencyname']?.value ?? "",
+                                "spotamount": event.cell.row.cells['spotamount']?.value ?? "",
                                 "brandName": event.cell.row.cells['brandName']?.value ?? ""
                               });
                               if (sta) {

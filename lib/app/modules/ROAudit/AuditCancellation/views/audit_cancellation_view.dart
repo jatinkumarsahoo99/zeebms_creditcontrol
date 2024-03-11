@@ -346,7 +346,7 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                                   ? Colors.deepPurple.shade200
                                   : Colors.white ;
                               },
-                              exportFileName: "Secondary Asrun Modification",
+                              exportFileName: "Audit Cancellation",
                               mode: PlutoGridMode.normal,
                               checkBoxColumnKey: const ["audited", "requested"],
                               checkBoxStrComparison: true,
@@ -358,7 +358,7 @@ class AuditCancellationView extends GetView<AuditCancellationController> {
                               mapData: controller.cancellationRetrieveModel!
                                   .infoCancellationBookingList!.canDisplayDetails
                               !.lstCancellations!
-                                  .map((e) => e.toJson())
+                                  .map((e) => e.toJson1())
                                   .toList(),
                               // mapData: (controllerX.dataList)!,
                               widthRatio: Get.width / 9 - 1,

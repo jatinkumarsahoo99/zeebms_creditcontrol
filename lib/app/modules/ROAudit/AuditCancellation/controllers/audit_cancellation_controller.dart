@@ -97,6 +97,7 @@ class AuditCancellationController extends GetxController {
         refDateController.text = Utils.toDateFormat10(cancellationRetrieveModel?.infoCancellationBookingList?.referenceDate??"");
         print(">>>>>>>>>>>refDateController.text${refDateController.text}");
         cancelNoController.text = dataFromRO["CancelMonth"]??"";
+        spoyAmountController.text = dataFromRO["spotamount"]??"";
         // fpcEffDtController.text = Utils.toDateFormat4(auditBookingModel?.infoShowBookingList?.sGetCurrentSQLDate??"");
         // bookedDtController.text = Utils.toDateFormat4(auditBookingModel?.infoShowBookingList?.sGetCurrentSQLDate??"");
         refNoController.text = cancellationRetrieveModel?.infoCancellationBookingList?.referenceNumber??"";
