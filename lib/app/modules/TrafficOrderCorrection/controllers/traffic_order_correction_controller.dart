@@ -391,7 +391,7 @@ class TrafficOrderCorrectionController extends GetxController {
   }
 
   rowDoubleTap(PlutoRow? row) {
-    gridManager?.setCurrentCell(row?.cells["bookingNumber"], row?.sortIdx ?? 0);
+    gridManager?.setCurrentCell(row?.cells["Booking DetailCode"], row?.sortIdx ?? 0);
     tapeID_List = [
       DropDownValue(
           key: row?.cells["commercialCode"]?.value ?? "",
