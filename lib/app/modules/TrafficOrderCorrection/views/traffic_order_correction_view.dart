@@ -1,3 +1,4 @@
+import 'package:bms_creditcontrol/widgets/PlutoGrid/pluto_grid.dart';
 import 'package:bms_creditcontrol/widgets/input_fields.dart';
 import 'package:flutter/material.dart';
 
@@ -49,9 +50,9 @@ class TrafficOrderCorrectionView
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Expanded(
-                            child: /*FocusTraversalOrder(
+                            child: FocusTraversalOrder(
                               order: NumericFocusOrder(1),
-                              child:*/ Column(
+                              child: Column(
                                 children: [
                                   Card(
                                     child: Padding(
@@ -448,14 +449,14 @@ class TrafficOrderCorrectionView
                                         );
                                       }),
                                 ],
-                              )/*,
-                            ),*/
+                              ),
+                            ),
                           ),
                           sizedBoxWidth(10),
                           Expanded(
-                            child:/* FocusTraversalOrder(
+                            child: FocusTraversalOrder(
                               order: NumericFocusOrder(2),
-                              child: */Column(
+                              child: Column(
                                 mainAxisSize: MainAxisSize.max,
                                 children: [
                                   Card(
@@ -628,6 +629,7 @@ class TrafficOrderCorrectionView
                                                               controller
                                                                       .gridManager =
                                                                   load.stateManager;
+                                                              load.stateManager.setSelectingMode(PlutoGridSelectingMode.row);
                                                             },
                                                             onRowDoubleTap:
                                                                 (pluto) {
@@ -702,8 +704,8 @@ class TrafficOrderCorrectionView
                                     ),
                                   ),
                                 ],
-                              )/*,
-                            ),*/
+                              ),
+                            ),
                           ),
                         ],
                       ),
