@@ -100,6 +100,7 @@ abstract class RoutesList {
     _Paths.BILL_TRANSFER,
     _Paths.DEAL_REPORT,
     _Paths.TRAFFIC_ORDER_CORRECTION,
+    _Paths.CLIENT_MASTER,
   ];
 }
 
