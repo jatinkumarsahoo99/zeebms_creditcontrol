@@ -16,6 +16,7 @@ import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../data/user_data_settings_model.dart';
 import '../../../providers/ApiFactory.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 import '../InfoShowModel.dart';
 import '../ToInitModel.dart';
 
@@ -376,6 +377,14 @@ class TrafficOrderCorrectionController extends GetxController {
       case "Clear":
         Get.delete<TrafficOrderCorrectionController>();
         Get.find<HomeController>().clearPage1();
+        break;
+      case "Search":
+        Get.to(SearchPage(
+            screenName: "Traffic Order Correction",
+            isAppBarReq: true,
+            // isPopup: true,
+            appBarName: "Traffic Order Correction",
+            strViewName: "vTesting"));
         break;
     }
   }
