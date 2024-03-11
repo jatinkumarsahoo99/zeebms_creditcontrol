@@ -403,6 +403,104 @@ class HomeController extends GetxController {
     );
   }
 
+  Widget getCommonButton1<T>(
+      String frmName,
+      void Function(String btnName) btnName, {
+        bool handleAutoClear = true,
+        bool exitButtonNotUsed = true,
+        List<String>? disableBtns,
+        List<String>? buttonNameList,
+      }) {
+    return GetBuilder<HomeController>(
+      init: Get.find<HomeController>(),
+      id: "buttons",
+      builder: (controller) {
+        if (frmName.contains("/")) {
+          frmName = frmName.replaceAll("/", "");
+        }
+        PermissionModel? formPermissions =
+        Get.find<MainController>().permissionList?.lastWhere(
+              (element) {
+            return element.appFormName == frmName;
+          },
+          orElse: () => PermissionModel(),
+        );
+
+        if ((controller.buttons?.length ?? 0) == 0 ||
+            formPermissions?.delete == null) {
+          if (controller.buttons?.isNotEmpty ?? false) {
+            return const Align(
+              alignment: Alignment.bottomLeft,
+              child: Text(
+                "Form Permission not found in permission list Please contact to ADMIN.",
+                style: TextStyle(color: Colors.red),
+              ),
+            );
+          }
+          return SizedBox();
+        }
+
+        return Padding(
+          padding: const EdgeInsets.only(top: 5),
+          child: Wrap(
+            spacing: 5,
+            runSpacing: 15,
+            crossAxisAlignment: WrapCrossAlignment.start,
+            // runAlignment: WrapAlignment.start,
+            // alignment: WrapAlignment.start,
+            children: [
+              for (int index = 0;
+              index < (controller.buttons?.length ?? 0);
+              index++) ...{
+                if (buttonNameList != null &&
+                    buttonNameList.any(
+                            (e) => controller.buttons![index]["name"].contains(e)))
+                  ...{}
+                else ...{
+                  FormButtonWrapper(
+                    btnText: controller.buttons?[index]["name"],
+                    callback: (disableBtns != null &&
+                        disableBtns
+                            .contains(controller.buttons?[index]["name"]))
+                        ? null
+                        : Utils.btnAccessHandler2(
+                        controller.buttons?[index]['name'],
+                        controller,
+                        formPermissions!) ==
+                        null
+                        ? null
+                        : () async {
+                      btnName(controller.buttons?[index]['name']);
+                      if (handleAutoClear &&
+                          controller.buttons?[index]['name'] ==
+                              "Clear") {
+                        if (RoutesList.listRoutes
+                            .contains("/" + frmName)) {
+                          try {
+                            await Get.delete<T>();
+                          } catch (e) {
+                            print(
+                                "Error while clearing a page ${e.toString()}");
+                          } finally {
+
+                          }
+                        } else {
+                          print(
+                              "Please add your route in RoutesList Class");
+                        }
+                      }
+                    },
+                    exitButtonNotUsed: exitButtonNotUsed,
+                  )
+                }
+              }
+            ],
+          ),
+        );
+      },
+    );
+  }
+
   Widget getCommonButtonWithSourceBtnLst<T>(
       String frmName,
       void Function(String btnName) btnName, {

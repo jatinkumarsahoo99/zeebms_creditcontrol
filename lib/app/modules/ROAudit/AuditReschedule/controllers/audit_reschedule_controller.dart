@@ -119,6 +119,8 @@ class AuditRescheduleController extends GetxController {
                 reScheduleRetriveDataModel?.infoReschduleBookingList?.referenceDate ?? "") ??
             "";
 
+        print(">>>>>>>>>>>>>>>>>>>>refDateController${refDateController.text}");
+
         bookingNoController.text =
             reScheduleRetriveDataModel?.infoReschduleBookingList?.bookingNumber ?? "";
 

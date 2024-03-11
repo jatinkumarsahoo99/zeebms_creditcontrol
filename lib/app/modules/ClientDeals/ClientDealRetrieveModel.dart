@@ -39,7 +39,7 @@ class PaymentModels {
 
 class AgencyLeaveModel {
   List<PaymentModels>? paymentModels;
-  List<Remarks>? remarks;
+  List<RemarksData>? remarks;
   List<NewDetails>? newDetails;
   List<Retrieve>? retrieve;
   List<AddInfo>? addInfo;
@@ -67,9 +67,9 @@ class AgencyLeaveModel {
       });
     }
     if (json['remarks'] != null) {
-      remarks = <Remarks>[];
+      remarks = <RemarksData>[];
       json['remarks'].forEach((v) {
-        remarks!.add(new Remarks.fromJson(v));
+        remarks!.add(new RemarksData.fromJson(v));
       });
     }
     if (json['newDetails'] != null) {
@@ -122,12 +122,12 @@ class AgencyLeaveModel {
   }
 }
 
-class Remarks {
+class RemarksData {
   String? remark;
 
-  Remarks({this.remark});
+  RemarksData({this.remark});
 
-  Remarks.fromJson(Map<String, dynamic> json) {
+  RemarksData.fromJson(Map<String, dynamic> json) {
     remark = json['remark'];
   }
 

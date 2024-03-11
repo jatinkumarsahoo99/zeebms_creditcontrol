@@ -1,3 +1,5 @@
+import '../../providers/Utils.dart';
+
 class ReScheduleRetriveDataModel {
   InfoReschduleBookingList? infoReschduleBookingList;
 
@@ -312,6 +314,40 @@ class Reschdule {
     data['breakNumber'] = this.breakNumber;
     data['auditedby'] = this.auditedby;
     data['auditedon'] = this.auditedon;
+    data['midPre'] = this.midPre;
+    data['positionCode'] = this.positionCode;
+    data['locationCode'] = this.locationCode;
+    data['channelCode'] = this.channelCode;
+    data['bookingNumber'] = this.bookingNumber;
+    data['commercialCode'] = this.commercialCode;
+    data['programcode'] = this.programcode;
+    return data;
+  }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['auditStatus'] = this.auditStatus;
+    data['rescheduleNo'] = this.rescheduleNo;
+    data['audited'] = this.audited;
+    data['rowNumber'] = this.rowNumber;
+    data['scheduleDate'] = Utils.toDateFormat9(scheduleDate??"");
+    data['programName'] = this.programName;
+    data['startTime'] = this.startTime;
+    data['endTime'] = this.endTime;
+    data['tapeCode'] = this.tapeCode;
+    data['segmentNumber'] = this.segmentNumber;
+    data['commercialCaption'] = this.commercialCaption;
+    data['tapeDuration'] = this.tapeDuration;
+    data['spotAmount'] = this.spotAmount;
+    data['totalspots'] = this.totalspots;
+    data['dealNo'] = this.dealNo;
+    data['dealRowNumber'] = this.dealRowNumber;
+    data['bookingDetailCode'] = this.bookingDetailCode;
+    data['spotPositionTypeName'] = this.spotPositionTypeName;
+    data['positionName'] = this.positionName;
+    data['breakNumber'] = this.breakNumber;
+    data['auditedby'] = this.auditedby;
+    data['auditedon'] = Utils.toDateFormat11(auditedon);
     data['midPre'] = this.midPre;
     data['positionCode'] = this.positionCode;
     data['locationCode'] = this.locationCode;
