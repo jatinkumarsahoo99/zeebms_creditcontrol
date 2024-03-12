@@ -437,22 +437,49 @@ class AddInfo {
   dynamic infovalue;
   int? isrequired;
   String? allowedvalues;
+  String? selectIndex;
+  List<String>? lstData = [];
 
-  AddInfo({this.infoname, this.infovalue, this.isrequired, this.allowedvalues});
+  AddInfo({this.infoname, this.infovalue, this.isrequired, this.allowedvalues,this.lstData,this.selectIndex});
 
   AddInfo.fromJson(Map<String, dynamic> json) {
     infoname = json['infoname'];
     infovalue = json['infovalue'];
     isrequired = json['isrequired'];
     allowedvalues = json['allowedvalues'];
+    selectIndex = json['selectIndex']??"0";
+    lstData = getListOfData(json['allowedvalues']);
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['infoname'] = this.infoname;
-    data['infovalue'] = this.infovalue;
+    data['infovalue'] = getInfoValue(infovalue);
     data['isrequired'] = this.isrequired;
     data['allowedvalues'] = this.allowedvalues;
+    data['lstData'] = this.lstData;
+    data['selectIndex'] = this.selectIndex;
+
     return data;
   }
+
+  getInfoValue(String? infoValue ){
+    if(infoValue == null){
+      String ? data = lstData?[int.parse(selectIndex??"0")];
+      return data;
+    }else{
+      return infoValue;
+    }
+  }
+
+
+  List<String> getListOfData(String? txt){
+    if(txt != null && txt != ""){
+      List<String> data = txt.split("~").toList();
+      return data;
+    }else {
+      return [""];
+    }
+  }
+
 }
