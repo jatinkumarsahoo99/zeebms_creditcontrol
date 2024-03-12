@@ -816,11 +816,13 @@ class LoadingDialog {
     // required Object controllerX,
     // class className,
     required EmailBillDetailsController controllerX,
-    // required String selectedFileNames,
+    // required String selectedFileNames
+    bool showOneButton = false,
     required Function fun1,
     required Function fun2,
     required String fun1Title,
     required String fun2Title,
+    bool hideSelectedName = false,
   }) {
     Get.defaultDialog(
       title: "",
@@ -848,46 +850,50 @@ class LoadingDialog {
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  des,
-                  style: const TextStyle(
-                    // color: Colors.green,
-                    fontSize: 10,
-                  ),
-                  textAlign: TextAlign.center,
-                ),
+                des != ""
+                    ? Text(
+                        des,
+                        style: const TextStyle(
+                          // color: Colors.green,
+                          fontSize: 10,
+                        ),
+                        textAlign: TextAlign.center,
+                      )
+                    : SizedBox(),
                 const SizedBox(
                   height: 10,
                 ),
-                Obx(() {
-                  return controllerX.selectedFileNames.value != ""
-                      ? Row(
-                          children: [
-                            Text(
-                              "Selected Files:",
-                              style: TextStyle(
-                                  color: Colors.red,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.w400),
-                              textAlign: TextAlign.center,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            // Obx(() =>
-                            Text(
-                              controllerX.selectedFileNames.value,
-                              style: TextStyle(
-                                color: Colors.red,
-                                fontSize: 10,
-                              ),
-                              textAlign: TextAlign.center,
-                            )
-                            // ),
-                          ],
-                        )
-                      : SizedBox();
-                })
+                hideSelectedName
+                    ? SizedBox()
+                    : Obx(() {
+                        return controllerX.selectedFileNames.value != ""
+                            ? Row(
+                                children: [
+                                  Text(
+                                    "Selected Files:",
+                                    style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w400),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  // Obx(() =>
+                                  Text(
+                                    controllerX.selectedFileNames.value,
+                                    style: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 10,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )
+                                  // ),
+                                ],
+                              )
+                            : SizedBox();
+                      })
               ],
             );
           }),
@@ -898,13 +904,15 @@ class LoadingDialog {
             confirm!();
           },
           child: Text(deleteTitle ?? "Delete")),*/
-      confirm: DailogCloseButton(
-        autoFocus: false,
-        callback: () {
-          fun2();
-        },
-        btnText: fun2Title,
-      ),
+      confirm: showOneButton
+          ? null
+          : DailogCloseButton(
+              autoFocus: false,
+              callback: () {
+                fun2();
+              },
+              btnText: fun2Title,
+            ),
       /*cancel: MaterialButton(
           onPressed: () {
             Get.back();
@@ -919,9 +927,10 @@ class LoadingDialog {
         btnText: fun1Title,
       ),
       contentPadding: EdgeInsets.only(
-          left: SizeDefine.popupMarginHorizontal,
-          right: SizeDefine.popupMarginHorizontal,
-          bottom: 16),
+        left: SizeDefine.popupMarginHorizontal,
+        right: SizeDefine.popupMarginHorizontal,
+        bottom: 16,
+      ),
     );
   }
 

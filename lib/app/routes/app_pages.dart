@@ -37,8 +37,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.TRAFFIC_ORDER_CORRECTION +
-          "?personalNo=%2F7i0zDr%2FLpXNOAIr8lUluw%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=3XqNlmb4iUhjNDeTzTXJ7mp9BePdeY1injLPvII1YVU%3D");
+      : (Routes.EMAIL_BILL_DETAILS +
+          "?personalNo=ces%2FeKicpwo5mz%2FYFOQDvw%3D%3D&loginCode=zWc5qlvs%2BXZUagqFBqBN0A%3D%3D&formName=MIwQ7EMo0EfEHhtKQnpM9kezFFoojACI6t01pVYRjxg%3D");
 
   static final routes = [
     GetPage(
