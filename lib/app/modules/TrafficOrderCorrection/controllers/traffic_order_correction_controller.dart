@@ -16,6 +16,7 @@ import '../../../controller/HomeController.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../data/user_data_settings_model.dart';
 import '../../../providers/ApiFactory.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 import '../InfoShowModel.dart';
 import '../ToInitModel.dart';
 
@@ -207,18 +208,19 @@ class TrafficOrderCorrectionController extends GetxController {
   }
 
   getTapeIdLeave() {
-    Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.TO_TAPE_ID_LEAVE(
-            selectedTapeId?.key ?? '', tecDuration.text, tecAmount.text),
-        fun: (map) {
-          if (map is Map &&
-              map.containsKey("infoCellDoubleClick") &&
-              map["infoCellDoubleClick"] != null) {
-            tecCaption.text = map["infoCellDoubleClick"]["caption"];
-            tecDuration.text = map["infoCellDoubleClick"]["duration"];
-            tecAmount.text = map["infoCellDoubleClick"]["amount"];
-          }
-        });
+    if (tecDuration.text != "" && tecAmount.text != "")
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: ApiFactory.TO_TAPE_ID_LEAVE(
+              selectedTapeId?.key ?? '', tecDuration.text, tecAmount.text),
+          fun: (map) {
+            if (map is Map &&
+                map.containsKey("infoCellDoubleClick") &&
+                map["infoCellDoubleClick"] != null) {
+              tecCaption.text = map["infoCellDoubleClick"]["caption"];
+              tecDuration.text = map["infoCellDoubleClick"]["duration"];
+              tecAmount.text = map["infoCellDoubleClick"]["amount"];
+            }
+          });
   }
 
   save() {
@@ -377,10 +379,20 @@ class TrafficOrderCorrectionController extends GetxController {
         Get.delete<TrafficOrderCorrectionController>();
         Get.find<HomeController>().clearPage1();
         break;
+      case "Search":
+        Get.to(SearchPage(
+            screenName: "Traffic Order Correction",
+            isAppBarReq: true,
+            // isPopup: true,
+            appBarName: "Traffic Order Correction",
+            strViewName: "vTesting"));
+        break;
     }
   }
 
   rowDoubleTap(PlutoRow? row) {
+    gridManager?.setCurrentCell(
+        row?.cells["Booking DetailCode"], row?.sortIdx ?? 0);
     tapeID_List = [
       DropDownValue(
           key: row?.cells["commercialCode"]?.value ?? "",
@@ -400,27 +412,31 @@ class TrafficOrderCorrectionController extends GetxController {
   }
 
   void modifyClick() {
-    gridManager?.currentRow?.cells["Booking Status"]?.value =
-        selectedSpotStatus?.key ?? "";
-    gridManager?.currentRow?.cells["Tape Code"]?.value =
-        selectedTapeId?.value ?? "";
-    gridManager?.currentRow?.cells["Spot Amount"]?.value = tecAmount.text;
-    gridManager?.currentRow?.cells["remarks"]?.value = tecRemarks.text;
-    gridManager?.currentRow?.cells["Caption"]?.value = tecCaption.text;
-    gridManager?.currentRow?.cells["Duration"]?.value = tecDuration.text;
-    gridManager?.currentRow?.cells["commercialCode"]?.value =
-        selectedTapeId?.key??"";
-    gridManager?.currentRow?.cells["recordNumber"]?.value = gridRecordNo.text;
-    gridManager?.currentRow?.cells["Spot Amount"]?.value = tecAmount.text;
+    if (selectedTapeId != null &&
+        selectedSpotStatus != null &&
+        tecDuration.text != "") {
+      gridManager?.currentRow?.cells["Booking Status"]?.value =
+          selectedSpotStatus?.key ?? "";
+      gridManager?.currentRow?.cells["Tape Code"]?.value =
+          selectedTapeId?.value ?? "";
+      gridManager?.currentRow?.cells["Spot Amount"]?.value = tecAmount.text;
+      gridManager?.currentRow?.cells["remarks"]?.value = tecRemarks.text;
+      gridManager?.currentRow?.cells["Caption"]?.value = tecCaption.text;
+      gridManager?.currentRow?.cells["Duration"]?.value = tecDuration.text;
+      gridManager?.currentRow?.cells["commercialCode"]?.value =
+          selectedTapeId?.key ?? "";
+      gridManager?.currentRow?.cells["recordNumber"]?.value = gridRecordNo.text;
+      gridManager?.currentRow?.cells["Spot Amount"]?.value = tecAmount.text;
 
-    selectedTapeId = null;
-    selectedSpotStatus = null;
-    tecDuration.text = "";
-    tecAmount.text = "";
-    tecCaption.text = "";
-    // tecRemarks.text = "";
-    gridManager?.notifyListeners();
-    update(["main"]);
+      selectedTapeId = null;
+      selectedSpotStatus = null;
+      tecDuration.text = "";
+      tecAmount.text = "";
+      tecCaption.text = "";
+      // tecRemarks.text = "";
+      gridManager?.notifyListeners();
+      update(["main"]);
+    }
   }
 
   void dealClick() {
@@ -496,6 +512,7 @@ class TrafficOrderCorrectionController extends GetxController {
                                 // checkRow: true,
                                 showSrNo: false,
                                 mode: PlutoGridMode.normal,
+                                hideCode: false,
                                 // checkRowKey: "eventtype",
                                 onload: (PlutoGridOnLoadedEvent load) {
                                   print("My Data is>>>");

@@ -218,6 +218,9 @@ class InvoiceRevisionController extends GetxController {
     payRoute.text = event.row.cells['payrouteName']?.value ?? "";
     bookingNo.text = event.row.cells['toNumber'].value ?? "";
     bookingAmt.text = event.row.cells['bookingAmount']?.value.toString() ?? "";
+    selectNewClient.value = null;
+    selectAgency.value = null;
+    selectPayroute.value = null;
     getBrand();
     update(['textFieldUpdate']);
   }
