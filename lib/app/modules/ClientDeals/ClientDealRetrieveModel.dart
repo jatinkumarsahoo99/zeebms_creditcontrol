@@ -457,7 +457,7 @@ class AddInfo {
     data['infovalue'] = getInfoValue(infovalue);
     data['isrequired'] = this.isrequired;
     data['allowedvalues'] = this.allowedvalues;
-    data['lstData'] = this.lstData;
+    data['lstData'] = (this.lstData).toString();
     data['selectIndex'] = this.selectIndex;
 
     return data;
@@ -475,8 +475,12 @@ class AddInfo {
 
   List<String> getListOfData(String? txt){
     if(txt != null && txt != ""){
-      List<String> data = txt.split("~").toList();
-      return data;
+      try{
+        List<String> data = txt.split("~").toList();
+        return data;
+      }catch(e){
+        return [""];
+      }
     }else {
       return [""];
     }
