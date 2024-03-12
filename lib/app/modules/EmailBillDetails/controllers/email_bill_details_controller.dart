@@ -51,7 +51,7 @@ class EmailBillDetailsController extends GetxController {
   TextEditingController counter2_ = TextEditingController(text: "0");
 
   TextEditingController tecTestTo = TextEditingController();
-  TextEditingController tecDate = TextEditingController(text: "30-04-2018");
+  TextEditingController tecDate = TextEditingController();
 
   TextEditingController tecPath = TextEditingController();
   TextEditingController tecbody = TextEditingController();
@@ -511,6 +511,7 @@ class EmailBillDetailsController extends GetxController {
   }
 
   onBills(bool isBills) {
+    onSaveConfig(showDailog: false);
     fileNameFromApi = "";
     selectedFileNames.value = "";
     var billsDetails = [];
