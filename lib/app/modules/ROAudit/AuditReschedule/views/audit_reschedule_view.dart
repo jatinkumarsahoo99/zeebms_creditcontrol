@@ -105,6 +105,12 @@ class AuditRescheduleView extends StatelessWidget {
                         title: "Ref. Date",
                         mainTextController: controllerX.refDateController,
                         widthRation: .1,
+                        onFocusChange: (str){
+                          print(">>>>>>>>>>>>> focus${str}");
+                          controllerX.refDateController.text = str;
+                        },
+                        startDate: DateTime.now().subtract(Duration(days: 700)),
+                        // intailDate: DateTime.now().subtract(Duration(days: 700)),
                         // isEnable: controllerX.isEnable.value,
                       ),
                       InputFields.formField1WidthBox(
@@ -409,6 +415,7 @@ class AuditRescheduleView extends StatelessWidget {
                               Get.back(result: true);
                             } else if (btnName == "Docs") {
                               controllerX.docs();
+                              // controllerX.refDateController.text ="03-Mar-2023" ;
                             }
                           },
                     ),
