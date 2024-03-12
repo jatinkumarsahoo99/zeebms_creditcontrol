@@ -59,7 +59,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        'Remark',
+                        'Remarks',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
@@ -108,7 +108,9 @@ class ClientDealsView extends GetView<ClientDealsController> {
                 height: 4,
               ),
               Expanded(child: Container(
-                child: Obx(() {
+                child: GetBuilder<ClientDealsController>(
+                    id: "all",
+                    builder: (controller) {
                   return Container(
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.grey),
@@ -129,7 +131,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                           : Colors.white,
                       exportFileName: "Client Deals",
                       mode: PlutoGridMode.selectWithOneTap,
-                      mapData: controller.remarkList.value,
+                      mapData: controller.remarkList.map((e) => e.toJson()).toList(),
                       // mapData: (controllerX.dataList)!,
                       widthRatio: Get.width / 9 - 1,
                       onload: (PlutoGridOnLoadedEvent load) {
@@ -198,43 +200,47 @@ class ClientDealsView extends GetView<ClientDealsController> {
                 height: 4,
               ),
               Expanded(child: Container(
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.grey),
-                  ),
-                  child: (controller.clientDealRetrieveModel != null &&
-                      controller.clientDealRetrieveModel?.agencyLeaveModel !=
-                          null &&
-                      controller.clientDealRetrieveModel?.agencyLeaveModel
-                          ?.addInfo != null &&
-                      (controller.clientDealRetrieveModel?.agencyLeaveModel
-                          ?.addInfo?.length ?? 0) > 0
-                  ) ? DataGridFromMap(
-                    showSrNo: true,
-                    hideCode: false,
-                    formatDate: false,
-                    columnAutoResize: true,
-                    doPasccal: true,
-                    colorCallback: (row) =>
-                    (row.row.cells
-                        .containsValue(
-                        controller.addInfoStateManager?.currentCell))
-                        ? Colors.deepPurple.shade200
-                        : Colors.white,
-                    exportFileName: "Client Deals",
-                    mode: PlutoGridMode.normal,
-                    hideKeys: ["isrequired", "allowedvalues"],
-                    mapData: controller.clientDealRetrieveModel!
-                        .agencyLeaveModel!.addInfo!.
-                    map((e) => e.toJson()).toList(),
-                    // mapData: (controllerX.dataList)!,
-                    widthRatio: Get.width / 9 - 1,
-                    onload: (PlutoGridOnLoadedEvent load) {
-                      controller.addInfoStateManager =
-                          load.stateManager;
-                    },
-                  ) : Container(),
-                ),
+                child: GetBuilder<ClientDealsController>(
+                    id: "all",
+                    builder: (controller) {
+                      return Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        child: (controller.clientDealRetrieveModel != null &&
+                            controller.clientDealRetrieveModel?.agencyLeaveModel !=
+                                null &&
+                            controller.clientDealRetrieveModel?.agencyLeaveModel
+                                ?.addInfo != null &&
+                            (controller.clientDealRetrieveModel?.agencyLeaveModel
+                                ?.addInfo?.length ?? 0) > 0
+                        ) ? DataGridFromMap(
+                          showSrNo: true,
+                          hideCode: false,
+                          formatDate: false,
+                          columnAutoResize: true,
+                          doPasccal: true,
+                          colorCallback: (row) =>
+                          (row.row.cells
+                              .containsValue(
+                              controller.addInfoStateManager?.currentCell))
+                              ? Colors.deepPurple.shade200
+                              : Colors.white,
+                          exportFileName: "Client Deals",
+                          mode: PlutoGridMode.normal,
+                          hideKeys: ["isrequired", "allowedvalues"],
+                          mapData: controller.clientDealRetrieveModel!
+                              .agencyLeaveModel!.addInfo!.
+                          map((e) => e.toJson()).toList(),
+                          // mapData: (controllerX.dataList)!,
+                          widthRatio: Get.width / 9 - 1,
+                          onload: (PlutoGridOnLoadedEvent load) {
+                            controller.addInfoStateManager =
+                                load.stateManager;
+                          },
+                        ) : Container(),
+                      );
+                    }),
               )),
               SizedBox(
                 height: 3,
@@ -247,6 +253,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
                     showIcon: false,
                     // isEnabled: btn['isDisabled'],
                     callback: () {
+                      controller.dialogWidget = null;
+                      controller.canDialogShow.value = false;
                       // controller.gridStateManagerLeft?.setFilter((element) => true);
                       // controller.gridStateManagerLeft?.notifyListeners();
                     },
@@ -1195,7 +1203,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                     controller: controller.bkDurationController,
                                     titleInLeft: true,
                                     titleSizeboxWidth: 45,
-                                      isNegativeReq: false,
+                                    isNegativeReq: false,
                                   ),
                                 ),
                               ),
@@ -1265,11 +1273,11 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                   skipTraversal: true,
                                                   descendantsAreFocusable: false,
                                                   child: InputFields.numbers4(
-                                                    hintTxt: "Amount",
-                                                    controller:
-                                                    controller.amountController,
-                                                    titleInLeft: true,
-                                                    isNegativeReq: false
+                                                      hintTxt: "Amount",
+                                                      controller:
+                                                      controller.amountController,
+                                                      titleInLeft: true,
+                                                      isNegativeReq: false
                                                     // titleSizeboxWidth: 45,
                                                   ),
                                                 ),
@@ -1296,12 +1304,12 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                   descendantsAreFocusable: false,
                                                   skipTraversal: true,
                                                   child: InputFields.numbers4(
-                                                    hintTxt: "Seconds",
-                                                    controller:
-                                                    controller
-                                                        .secondsController,
-                                                    titleInLeft: true,
-                                                    titleSizeboxWidth: 45,
+                                                      hintTxt: "Seconds",
+                                                      controller:
+                                                      controller
+                                                          .secondsController,
+                                                      titleInLeft: true,
+                                                      titleSizeboxWidth: 45,
                                                       isNegativeReq: false
                                                   ),
                                                 ),
@@ -1340,11 +1348,11 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             skipTraversal: true,
                                             descendantsAreFocusable: false,
                                             child: InputFields.numbers4(
-                                              hintTxt: "Bk Amt",
-                                              controller: controller
-                                                  .bkAmountController,
-                                              titleInLeft: true,
-                                              titleSizeboxWidth: 45,
+                                                hintTxt: "Bk Amt",
+                                                controller: controller
+                                                    .bkAmountController,
+                                                titleInLeft: true,
+                                                titleSizeboxWidth: 45,
                                                 isNegativeReq: false
                                             ),
                                           ),
@@ -1880,12 +1888,13 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                           width: Get.width * 0.18,
                                           child: Obx(() {
                                             return InputFields.numbers4(
-                                              hintTxt:controller.label25.value ?? "Rate per 100 seconds",
-                                              controller: controller
-                                                  .ratePerTenSecondsController,
-                                              // titleInLeft: true,
-                                              // titleSizeboxWidth: 45,
-                                              fieldWidth: 0.15,
+                                                hintTxt: controller.label25.value ??
+                                                    "Rate per 100 seconds",
+                                                controller: controller
+                                                    .ratePerTenSecondsController,
+                                                // titleInLeft: true,
+                                                // titleSizeboxWidth: 45,
+                                                fieldWidth: 0.15,
                                                 isNegativeReq: false
                                             );
                                           }),
@@ -1896,12 +1905,12 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                         SizedBox(
                                           width: Get.width * 0.18,
                                           child: InputFields.numbers4(
-                                            hintTxt: "Amount",
-                                            controller: controller.amountController2,
-                                            // titleInLeft: true,
-                                            // titleSizeboxWidth: 45,
-                                            fieldWidth: 0.15,
-                                            isNegativeReq: false
+                                              hintTxt: "Amount",
+                                              controller: controller.amountController2,
+                                              // titleInLeft: true,
+                                              // titleSizeboxWidth: 45,
+                                              fieldWidth: 0.15,
+                                              isNegativeReq: false
                                           ),
                                         ),
                                         SizedBox(
@@ -1910,11 +1919,11 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                         SizedBox(
                                           width: Get.width * 0.18,
                                           child: InputFields.numbers4(
-                                            hintTxt: "Val Rate",
-                                            controller: controller.valueRateController,
-                                            // titleInLeft: true,
-                                            // titleSizeboxWidth: 45,
-                                            fieldWidth: 0.15,
+                                              hintTxt: "Val Rate",
+                                              controller: controller.valueRateController,
+                                              // titleInLeft: true,
+                                              // titleSizeboxWidth: 45,
+                                              fieldWidth: 0.15,
                                               isNegativeReq: false
                                           ),
                                         ),
@@ -2090,6 +2099,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                   showIcon: false,
                                   // isEnabled: btn['isDisabled'],
                                   callback: () {
+                                    dragableDialogRemark();
                                     // controller.gridStateManagerLeft?.setFilter((element) => true);
                                     // controller.gridStateManagerLeft?.notifyListeners();
                                   },

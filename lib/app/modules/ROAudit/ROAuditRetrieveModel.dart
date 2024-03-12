@@ -1,3 +1,5 @@
+import '../../providers/Utils.dart';
+
 class ROAuditRetrieveModel {
   InfoBindList? infoBindList;
 
@@ -272,6 +274,32 @@ class LstAdditions {
     data['bookedBy'] = this.bookedBy;
     data['salesBook'] = this.salesBook;
     data['enteredOn'] = this.enteredOn;
+    data['agencyGSTNumber'] = this.agencyGSTNumber;
+    data['plantName'] = this.plantName;
+    data['column1'] = this.column1;
+    return data;
+  }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['bookingmonth'] = this.bookingmonth;
+    data['bookingnumber'] = this.bookingnumber;
+    data['zonename'] = this.zonename;
+    data['clientname'] = this.clientname;
+    data['agencyname'] = this.agencyname;
+    data['brandname'] = this.brandname;
+    data['totalspots'] = this.totalspots;
+    data['auditedSpots'] = this.auditedSpots;
+    data['bookedAMount'] = this.bookedAMount;
+    data['auditedamount'] = this.auditedamount;
+    data['payroutename'] = this.payroutename;
+    data['unaudited_spots'] = this.unauditedSpots;
+    data['dropped'] = this.dropped;
+    data['bookingno'] = this.bookingno;
+    data['bookicongReferenceNumber'] = this.bookicongReferenceNumber;
+    data['bookedBy'] = this.bookedBy;
+    data['salesBook'] = this.salesBook;
+    data['enteredOn'] = Utils.toDateFormat8( enteredOn??"");
     data['agencyGSTNumber'] = this.agencyGSTNumber;
     data['plantName'] = this.plantName;
     data['column1'] = this.column1;

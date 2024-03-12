@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bms_creditcontrol/app/modules/ROAudit/AuditCancellation/CancellationRetrieveModel.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../../widgets/LoadingDialog.dart';
 import '../../../../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
@@ -33,7 +34,7 @@ class AuditCancellationController extends GetxController {
 
 
   final refNoController = TextEditingController(),
-      refDateController = TextEditingController(),
+      refDateController = TextEditingController(text: DateFormat("dd-MMM-yyyy").format(DateTime.now())),
       fpcEffDtController = TextEditingController(),
       bookedDtController = TextEditingController(),
       bookingNoController = TextEditingController(),
@@ -93,7 +94,10 @@ class AuditCancellationController extends GetxController {
         selectedClient.value = DropDownValue(value:dataFromRO['clientName'] ,key:cancellationRetrieveModel?.infoCancellationBookingList?.clientCode??"" );
         selectedAgency.value = DropDownValue(value:dataFromRO['agencyName'] ,key:cancellationRetrieveModel?.infoCancellationBookingList?.agencyCode??"" );
         selectedBrand.value = DropDownValue(value:dataFromRO['brandName'] ,key:cancellationRetrieveModel?.infoCancellationBookingList?.brandCode??"" );
-        refDateController.text = Utils.toDateFormat5(cancellationRetrieveModel?.infoCancellationBookingList?.referenceDate??"");
+        refDateController.text = Utils.toDateFormat10(cancellationRetrieveModel?.infoCancellationBookingList?.referenceDate??"");
+        print(">>>>>>>>>>>refDateController.text${refDateController.text}");
+        cancelNoController.text = dataFromRO["CancelMonth"]??"";
+        spoyAmountController.text = dataFromRO["spotamount"]??"";
         // fpcEffDtController.text = Utils.toDateFormat4(auditBookingModel?.infoShowBookingList?.sGetCurrentSQLDate??"");
         // bookedDtController.text = Utils.toDateFormat4(auditBookingModel?.infoShowBookingList?.sGetCurrentSQLDate??"");
         refNoController.text = cancellationRetrieveModel?.infoCancellationBookingList?.referenceNumber??"";
