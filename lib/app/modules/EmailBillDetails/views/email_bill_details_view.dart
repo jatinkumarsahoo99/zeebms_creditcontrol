@@ -305,6 +305,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                   child: InputFields.numbersWithoutHint(
                       hintTxt: "",
                       controller: controllerX.counter1_,
+                      isNegativeReq: false,
                       width: 0.10),
                 ),
                 Padding(
@@ -312,6 +313,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                   child: InputFields.numbersWithoutHint(
                       hintTxt: "",
                       controller: controllerX.counter2_,
+                      isNegativeReq: false,
                       width: 0.10),
                 ),
                 SizedBox(

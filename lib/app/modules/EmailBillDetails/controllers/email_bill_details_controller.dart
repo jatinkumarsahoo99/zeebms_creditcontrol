@@ -29,7 +29,7 @@ class EmailBillDetailsController extends GetxController {
   Rx<Mode> calendarView = Rx<Mode>(Mode.bills);
   Rx<String> selectRadio = Rx<String>("Summary");
 
-  RxBool sendTest = RxBool(false);
+  RxBool sendTest = RxBool(true);
   RxBool all1 = RxBool(false);
   RxBool all2 = RxBool(false);
 
