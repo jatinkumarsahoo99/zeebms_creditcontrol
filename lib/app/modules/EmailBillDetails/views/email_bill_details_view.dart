@@ -377,6 +377,14 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                                 isSpaceCalled,
                               );
                             },
+                            colorCallback: (colorEvent) {
+                              if (colorEvent.row.cells.containsValue(
+                                  controller.stateManager?.currentCell)) {
+                                return Colors.deepPurple.shade100;
+                              }
+
+                              return Colors.white;
+                            },
                             onEdit: (event) {
                               controller.inwardLastSelectedIdx = event.rowIdx;
                               controller.gridData[event.rowIdx]['selected'] =
@@ -402,9 +410,9 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                       FormButtonWrapper(
                         btnText: "            Bills              ",
                         callback: () {
-                          controllerX.onBills();
+                          controllerX.onBills(true);
                         },
-                        // => controllerX.formHandler(
+                        // => controllerX.formHandler(send a
                         //   "Bills",
                         // ),
                         showIcon: false,
@@ -456,6 +464,8 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                       FormButtonWrapper(
                         btnText: "  Send All Together ",
                         callback: () {
+                          controllerX.onBills(false);
+
                           // controllerX.
                         },
 

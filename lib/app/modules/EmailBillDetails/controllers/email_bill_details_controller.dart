@@ -43,6 +43,7 @@ class EmailBillDetailsController extends GetxController {
 
   int inwardLastSelectedIdx = 0;
   List<File> files = [];
+  List? billNameList;
 
   PlutoGridStateManager? stateManager;
 
@@ -57,12 +58,18 @@ class EmailBillDetailsController extends GetxController {
 
   var selectedFile = Rxn<PlatformFile?>();
 
-  var listFileName = ['swaggerEmailBills.json', 'swaggerBillDetails.json'];
+  // var listFileName = ['swaggerEmailBills.json', 'swaggerBillDetails.json'];
 
   // List<html.File>? selectedFiles;
   String fileNameFromApi = "";
   var selectedFileNames = "".obs;
   FilePickerResult? multipleFile;
+  FilePickerResult? multipleFileForAll;
+
+  // var selectedFilesForAll = [];
+  // List<FilePickerResult?> selectedFilesForAll = [];
+
+  List<FilePickerResult?> selectedFilesForAll = [];
 
   // final List<html.File>? files
 
@@ -81,45 +88,46 @@ class EmailBillDetailsController extends GetxController {
 
   List<String> selectedFiles = [];
 
-  Future<void> selectFiles() async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(
-      allowMultiple: true,
-      type: FileType.any,
-    );
+  // Future<void> selectFiles() async {
+  //   FilePickerResult? result = await FilePicker.platform.pickFiles(
+  //     allowMultiple: true,
+  //     type: FileType.any,
+  //   );
 
-    if (result != null) {
-      List<String> filenames = [
-        'swaggerCreditControl 2.json',
-        'swaggerIssueBlankTape1.json'
-      ];
+  //   if (result != null) {
+  //     List<String> filenames = [
+  //       'swaggerCreditControl 2.json',
+  //       'swaggerIssueBlankTape1.json'
+  //     ];
 
-      List<String?> selectedFilepaths = result.paths ?? [];
-      List<String> matchingFiles = [];
+  //     List<String?> selectedFilepaths = result.paths ?? [];
+  //     List<String> matchingFiles = [];
 
-      // Filter selected files by filename
-      selectedFilepaths.forEach((filepath) {
-        String filename = filepath!.split('/').last; // Get filename from path
-        if (filenames.contains(filename)) {
-          matchingFiles.add(filepath);
-        }
-      });
+  //     // Filter selected files by filename
+  //     selectedFilepaths.forEach((filepath) {
+  //       String filename = filepath!.split('/').last; // Get filename from path
+  //       if (filenames.contains(filename)) {
+  //         matchingFiles.add(filepath);
+  //       }
+  //     });
 
-      // setState(() {
-      selectedFiles = matchingFiles;
-      if (result != null) {
-        for (var file in result.files) {
-          print("selected file -  ${file.name}"); // Prints the file name
-          selectedFileNames.value += "${file.name}, ";
-        }
-        selectedFileNames.value
-            .substring(0, selectedFileNames.value.length - 2);
-        multipleFile = result;
-      }
-      // });
-    } else {
-      // User canceled the picker
-    }
-  }
+  //     // setState(() {
+  //     selectedFiles = matchingFiles;
+  //     if (result != null) {
+  //       for (var file in result.files) {
+  //         print("selected file -  ${file.name}"); // Prints the file name
+  //         selectedFileNames.value += "${file.name}, ";
+  //       }
+  //       selectedFileNames.value
+  //           .substring(0, selectedFileNames.value.length - 2);
+  //       multipleFile = result;
+
+  //     }
+  //     // });
+  //   } else {
+  //     // User canceled the picker
+  //   }
+  // }
 
   String dateFormat(String? date) {
     if (date != null && date != "") {
@@ -151,9 +159,9 @@ class EmailBillDetailsController extends GetxController {
   //   });
   // }
 
-  pickFiles() async {
+  pickFiles({required bool fromSendAll}) async {
     selectedFileNames.value = '';
-
+    multipleFile = null;
     FilePickerResult? result =
         await FilePicker.platform.pickFiles(allowMultiple: true);
 
@@ -164,10 +172,42 @@ class EmailBillDetailsController extends GetxController {
       }
       selectedFileNames.value.substring(0, selectedFileNames.value.length - 2);
       multipleFile = result;
+      if (fromSendAll) {
+        // sendBillFilesForAll();
+        Get.back();
+        // pickFilesToAddInAll();
+        // sendAllBillFiles();
+        selectFilesForAll(0);
+        // pickFilesToAddInAll();
+      }
     } else {
       // User canceled the picker
     }
   }
+
+  // pickFilesToAddInAll(int index) async {
+  //   // selectedFileNames.value = ';
+  //   // multipleFileForAll = null;
+  //   FilePickerResult? result =
+  //       await FilePicker.platform.pickFiles(allowMultiple: true);
+
+  //   if (result != null) {
+  //     // for (var file in result.files) {
+  //     //   print("selected file -  ${file.name}"); // Prints the file name
+  //     //   selectedFileNames.value += "${file.name}, ";
+  //     // }
+  //     // selectedFileNames.value.substring(0, selectedFileNames.value.length - 2);
+  //     // multipleFileForAll = result;
+  //     selectedFilesForAll[index] = result;
+  //     // if (fromSendAll) {
+  //     //   // sendBillFilesForAll();
+  //     //   sendAllBillFiles();
+  //     // }
+  //     // return multipleFileForAll;
+  //   } else {
+  //     // User canceled the picker
+  //   }
+  // }
 
 //   void selectSpecificFiles() {
 //   // List of file names to select
@@ -379,7 +419,20 @@ class EmailBillDetailsController extends GetxController {
             resp.toString().contains("generate") &&
             resp["generate"] != null &&
             resp["generate"].isNotEmpty) {
+          // resp["generate"]
           gridData.value = resp["generate"];
+          gridData.value.map((e) {
+            e["selected"] = e["selected"].toString();
+            return e;
+          }).toList();
+          // if (responseData.value.isNotEmpty) {
+          //       responseData.value.map((e) {
+          //         e["scheduledate"] = DateFormat("dd-MM-yyyy").format(
+          //             DateFormat("yyyy-MM-ddThh:mm:ss")
+          //                 .parse(e["scheduledate"]));
+          //         return e;
+          //       }).toList();
+          //     }
         }
       },
       failed: (resp) {
@@ -392,7 +445,8 @@ class EmailBillDetailsController extends GetxController {
   onSummary() {
     var summaryDetails = [];
     gridData.asMap().forEach((index, e) {
-      if (e["selected"]) {
+      // print
+      if (e["selected"].toString() == "true") {
         summaryDetails.add({
           "rowNo": index,
           "locationcode": e["locationcode"],
@@ -456,11 +510,12 @@ class EmailBillDetailsController extends GetxController {
     );
   }
 
-  onBills() {
+  onBills(bool isBills) {
     fileNameFromApi = "";
+    selectedFileNames.value = "";
     var billsDetails = [];
     gridData.asMap().forEach((index, e) {
-      if (e["selected"]) {
+      if (e["selected"].toString() == "true") {
         billsDetails.add({
           "rowNo": index,
           "locationcode": e["locationcode"],
@@ -492,72 +547,49 @@ class EmailBillDetailsController extends GetxController {
             resp is Map<String, dynamic> &&
             resp.toString().contains("bills") &&
             resp["bills"].isNotEmpty) {
-          List billList = resp["bills"];
-          for (var i = 0; i < billList.length; i++) {
+          billNameList = resp["bills"];
+          for (var i = 0; i < billNameList!.length; i++) {
             fileNameFromApi +=
                 "${resp["bills"][i]["pdfInfo"][0]["invoiceFileName"]}, ";
           }
           fileNameFromApi =
               fileNameFromApi.substring(0, fileNameFromApi.length - 1);
-          // for (var element in billList) {
-          //   fileNameFromApi += "${element.}"
-          // }
-          // billList.map((e){
 
-          // });
-          // resp["bills"].map()
-          // LoadingDialog.callInfoMessage(value)
-          // LoadingDialog
-          // LoadingDialog.selectFile(
-          //   "Select the following files",
-          //   ""
-          //   () {},
-          //   () {},
-          //   deleteTitle: "Select files",
-          //   cancelTitle: "Send files",
-          // );
-          // GetBuilder<EmailBillDetailsController>(builder: (builder) {
-          //   return Obx(
-          //     () => LoadingDialog.selectFileDailog(
-          //       "Select the followig files",
-          //       fileNameFromApi,
-          //       selectedFileNames: selectedFileNames.value,
-          //       fun1: () {
-          //         selectFiles();
-          //       },
-          //       fun2: () {},
-          //       fun1Title: "Select Files",
-          //       fun2Title: "Send Files",
-          //     ),
-          //   );
-          // });
-
-          LoadingDialog.selectFileDailog(
-            "Select the followig files",
-            fileNameFromApi,
-            controllerX: Get.put<EmailBillDetailsController>(
-                EmailBillDetailsController()),
-            // controllerX: Get.put(EmailBillDetailsController()),
-            // selectedFileNames: selectedFileNames.value,
-            fun1: () {
-              // selectFiles();
-              pickFiles();
-              // selectFiles();
-            },
-            fun2: () {
-              sendBillFiles();
-            },
-            fun1Title: "Select Files",
-            fun2Title: "Send Files",
-          );
-
-          // LoadingDialog.callInfoMessage("sdsd");
-          // LoadingDialog.callDataSaved(
-          //   msg: resp["message"],
-          //   callback: () {
-          //     // callClear();
-          //   },
-          // );
+          if (isBills) {
+            LoadingDialog.selectFileDailog(
+              "Select the followig files",
+              fileNameFromApi,
+              controllerX: Get.put<EmailBillDetailsController>(
+                  EmailBillDetailsController()),
+              fun1: () {
+                pickFiles(fromSendAll: false);
+              },
+              fun2: () {
+                Get.back();
+                if (isBills) {
+                  sendBillFiles();
+                } else {
+                  sendAllBillFiles();
+                }
+              },
+              fun1Title: "Select Files",
+              fun2Title: "Send Files",
+            );
+          } else {
+            LoadingDialog.selectFileDailog(
+              "Select the followig files",
+              fileNameFromApi,
+              controllerX: Get.put<EmailBillDetailsController>(
+                  EmailBillDetailsController()),
+              showOneButton: true,
+              fun1: () {
+                pickFiles(fromSendAll: true);
+              },
+              fun2: () {},
+              fun1Title: "Select Files",
+              fun2Title: "",
+            );
+          }
         }
       },
       failed: (resp) {
@@ -569,15 +601,6 @@ class EmailBillDetailsController extends GetxController {
   }
 
   sendBillFiles() async {
-    var sendBillsDetails = [];
-    // var formData2 = dio.FormData();
-
-    // "files": multipleFile!.files.map((e) {
-    //         return dio.MultipartFile.fromBytes(
-    //           e.bytes!.toList(),
-    //           filename: e.name,
-    //         );
-    //       }).toList(),
     LoadingDialog.call();
     dio.FormData formData = dio.FormData.fromMap({
       "companyCode": selectedCompany?.key ?? "",
@@ -593,7 +616,7 @@ class EmailBillDetailsController extends GetxController {
 
     gridData.asMap().forEach((index, e) {
       // var formData2 = dio.FormData();
-      if (e["selected"]) {
+      if (e["selected"].toString() == "true") {
         formData.fields.add(MapEntry(
           'files[$index].clientName',
           e["clientName"],
@@ -612,23 +635,28 @@ class EmailBillDetailsController extends GetxController {
           'files[$index].ChannelName',
           (e["channel"]),
         ));
-        formData.files.add(MapEntry(
-          'files[$index].files',
-          dio.MultipartFile.fromBytes(
-            multipleFile!.files[index].bytes!.toList(),
-            filename: multipleFile!.files[index].name,
-          ),
-        ));
-        /*sendBillsDetails.add({
-          "clientName": e["clientName"],
-          "agencyName": e["agencyName"],
-          "files": dio.MultipartFile.fromBytes(
-            multipleFile!.files[index].bytes!.toList(),
-            filename: multipleFile!.files[index].name,
-          ),
-          "channelName": e["channel"],
-          "mailTo": e["mailto"] ?? tecTestTo.text
-        });*/
+        // if (multipleFile!.files.length >= (index + 1)) {
+        //   formData.files.add(MapEntry(
+        //     'files[$index].files',
+        //     dio.MultipartFile.fromBytes(
+        //       multipleFile!.files[index].bytes!.toList(),
+        //       filename: multipleFile!.files[index].name,
+        //     ),
+        //   ));
+        // }
+
+        for (var i = 0; i < multipleFile!.files.length; i++) {
+          if (billNameList![index]["pdfInfo"][0]['invoiceFileName'] ==
+              multipleFile!.files[i].name) {
+            formData.files.add(MapEntry(
+              'files[$index].files',
+              dio.MultipartFile.fromBytes(
+                multipleFile!.files[i].bytes!.toList(),
+                filename: multipleFile!.files[i].name,
+              ),
+            ));
+          }
+        }
       }
     });
 
@@ -637,24 +665,347 @@ class EmailBillDetailsController extends GetxController {
       json: formData,
       fun: (value) {
         Get.back();
-        // if (value is Map && value.containsKey("asrunDetails")) {
-        //   if (value["asrunDetails"]["lstTempResponse"]
-        //           ['lstSaveTempDetailResponse'] !=
-        //       null) {
-        //     asrunData = <AsRunData>[];
-        //     value["asrunDetails"]["lstTempResponse"]
-        //             ['lstSaveTempDetailResponse']
-        //         .forEach((v) {
-        //       asrunData!.add(AsRunData.fromJson(v));
-        //     });
+
+        if (value is Map && value.toString().contains("successfully")) {
+          // LoadingDialog.callDataSaved()
+          LoadingDialog.callDataSaved(
+            msg: value["bills"],
+            callback: () {},
+          );
+          // if (value["asrunDetails"]["lstTempResponse"]
+          //         ['lstSaveTempDetailResponse'] !=
+          //     null) {
+          //   asrunData = <AsRunData>[];
+          //   value["asrunDetails"]["lstTempResponse"]
+          //           ['lstSaveTempDetailResponse']
+          //       .forEach((v) {
+          //     asrunData!.add(AsRunData.fromJson(v));
+          //   });
+          // }
+          // update(["fpcData"]);
+          // if (value["asrunDetails"]["lstTempResponse"]['showPopup'] != null &&
+          //     value["asrunDetails"]["lstTempResponse"]['showPopup']
+          //         ["isCheck"]) {
+          //   LoadingDialog.callInfoMessage(value["asrunDetails"]
+          //       ["lstTempResponse"]['showPopup']["message"]);
+          // }
+        }
+
+        // update(["transButtons"]);
+      },
+    );
+  }
+
+  selectFilesForAll(int i) async {
+    if (i < billNameList!.length) {
+      stateManager!.setCurrentCell(
+        stateManager!.getRowByIdx(billNameList![i]["rowNo"])?.cells['selected'],
+        // tabelLinkDealGrid!.getRowByIdx(i)?.cells['groupValuationRate']
+        billNameList![i]["rowNo"],
+        notify: true,
+      );
+      if (i == (billNameList!.length - 1)) {
+        LoadingDialog.selectFileDailog(
+          "Select the files",
+          "",
+          controllerX:
+              Get.put<EmailBillDetailsController>(EmailBillDetailsController()),
+          // showOneButton: true,
+          hideSelectedName: true,
+          fun1: () {
+            // pickFiles(fromSendAll: true);
+            pickFilesToAddInAll(i);
+          },
+          fun2: () {
+            Get.back();
+            sendAllBillFiles();
+          },
+          fun1Title: "Select Files",
+          fun2Title: "Send Files",
+        );
+      } else {
+        LoadingDialog.selectFileDailog(
+          "Select the files",
+          "",
+          controllerX:
+              Get.put<EmailBillDetailsController>(EmailBillDetailsController()),
+          showOneButton: true,
+          hideSelectedName: true,
+          fun1: () {
+            // pickFiles(fromSendAll: true);
+            pickFilesToAddInAll(i);
+          },
+          fun2: () {},
+          fun1Title: "Select Files",
+          fun2Title: "",
+        );
+      }
+    }
+    print("selectFilesForAll");
+    // for (var i = 0; i < billNameList!.length; i++) {
+
+    // }
+    // sendAllBillFiles();
+  }
+
+  // List<FilePickerResult?> selectedFilesForAll = [];
+
+// Function to pick files for a specific index
+  Future<void> pickFilesToAddInAll(int index) async {
+    print("======> Open");
+    // for (var i = 0; i < billNameList!.length; i++) {
+    //   print(i);
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(allowMultiple: true);
+
+    if (result != null) {
+      // selectedFilesForAll[index] = result;
+      selectedFilesForAll.add(result);
+      if (index < (billNameList!.length - 1)) {
+        Get.back();
+      }
+      // Get.back();
+      selectFilesForAll(index + 1);
+      // pickFilesToAddInAll(index++);
+    } else {
+      selectedFilesForAll.add(result);
+      if (index < (billNameList!.length - 1)) {
+        Get.back();
+      }
+      selectFilesForAll(index + 1);
+
+      // pickFilesToAddInAll(index++);
+
+      // User canceled the picker
+    }
+    // }
+    // if (index < billNameList!.length) {
+    //   FilePickerResult? result =
+    //       await FilePicker.platform.pickFiles(allowMultiple: true);
+
+    //   if (result != null) {
+    //     // selectedFilesForAll[index] = result;
+    //     selectedFilesForAll.add(result);
+    //     pickFilesToAddInAll(index++);
+    //   } else {
+    //     selectedFilesForAll.add(result);
+    //     pickFilesToAddInAll(index++);
+
+    //     // User canceled the picker
+    //   }
+    // }
+  }
+
+// Function to select files for all indices
+  // Future<void> selectFilesForAll() async {
+  //   print("selectFilesForAll");
+  //   print(billNameList!.length);
+  //   pickFilesToAddInAll(0);
+  //   // print(${billNameList!.length});
+  //   // for (var i = 0; i < billNameList!.length; i++) {
+  //   //   await pickFilesToAddInAll(i);
+  //   // }
+  // }
+
+  sendAllBillFiles() async {
+    // for (var element in listFileName) {
+    //   element[]
+    // }
+    LoadingDialog.call();
+    dio.FormData formData = dio.FormData.fromMap({
+      "companyCode": selectedCompany?.key ?? "",
+      "companyName": selectedCompany?.value ?? "",
+      "billdate": dateFormat(tecDate.text),
+      "testMailFrom": selectedFrom?.value ?? "",
+      "testMailTo": tecTestTo.text,
+      "testMailBody": tecbody.text,
+      "isEmailSendTest": sendTest.value,
+      // "files": sendBillsDetails,
+      // "files": selectedFiles
+    });
+
+    gridData.asMap().forEach((index, e) async {
+      // var formData2 = dio.FormData();
+      if (e["selected"].toString() == "true") {
+        formData.fields.add(MapEntry(
+          'files[$index].clientName',
+          e["clientName"],
+        ));
+        formData.fields.add(MapEntry(
+          'files[$index].agencyName',
+          e["agencyName"],
+        ));
+        formData.fields.add(MapEntry(
+          'files[$index].mailTo',
+          ((e["mailto"] != null && e["mailto"] != "")
+              ? e["mailto"]
+              : tecTestTo.text),
+        ));
+        formData.fields.add(MapEntry(
+          'files[$index].ChannelName',
+          (e["channel"]),
+        ));
+        formData.fields.add(MapEntry(
+          'files[$index].ChannelName',
+          (e["channel"]),
+        ));
+        // add more
+        formData.fields.add(MapEntry(
+          'files[$index].agencycode',
+          (e["agencyCode"]),
+        ));
+        formData.fields.add(MapEntry(
+          'files[$index].clientcode',
+          (e["clientCode"]),
+        ));
+        formData.fields.add(MapEntry(
+          'files[$index].channelcode',
+          (e["channelCode"]),
+        ));
+        formData.fields.add(MapEntry(
+          'files[$index].locationcode',
+          (e["locationcode"]),
+        ));
+
+        for (var i = 0; i < multipleFile!.files.length; i++) {
+          if (billNameList![index]["pdfInfo"][0]['invoiceFileName'] ==
+              multipleFile!.files[i].name) {
+            formData.files.add(MapEntry(
+              'files[$index].files',
+              dio.MultipartFile.fromBytes(
+                multipleFile!.files[i].bytes!.toList(),
+                filename: multipleFile!.files[i].name,
+              ),
+            ));
+          }
+        }
+
+        for (var i = 0; i < selectedFilesForAll[index]!.files.length; i++) {
+          formData.files.add(MapEntry(
+              "files[$index].ExtraFiles",
+              dio.MultipartFile.fromBytes(
+                selectedFilesForAll[index]!.files[i].bytes!.toList(),
+                filename: selectedFilesForAll[index]!.files[i].name,
+              )));
+        }
+
+        // var fileList = [];
+        // if (selectedFilesForAll[index] != null) {
+        //   for (var i = 0; i < selectedFilesForAll[index]!.files.length; i++) {
+        //     fileList.add(
+        //       dio.MultipartFile.fromBytes(
+        //         selectedFilesForAll[index]!.files[i].bytes!.toList(),
+        //         filename: selectedFilesForAll[index]!.files[i].name,
+        //       ),
+        //     );
         //   }
-        //   update(["fpcData"]);
-        //   if (value["asrunDetails"]["lstTempResponse"]['showPopup'] != null &&
-        //       value["asrunDetails"]["lstTempResponse"]['showPopup']
-        //           ["isCheck"]) {
-        //     LoadingDialog.callInfoMessage(value["asrunDetails"]
-        //         ["lstTempResponse"]['showPopup']["message"]);
+        //   formData.files.add(MapEntry(
+        //       'files[$index].ExtraFiles', fileList as dio.MultipartFile));
+        // }
+
+        // if (multipleFile!.files.length >= (index + 1)) {
+        //   formData.files.add(MapEntry(
+        //     'files[$index].files',
+        //     dio.MultipartFile.fromBytes(
+        //       multipleFile!.files[index].bytes!.toList(),
+        //       filename: multipleFile!.files[index].name,
+        //     ),
+        //   ));
+        // }
+
+        // pickFiles(fromSendAll: fromSendAll);
+        // pickFiles(fromSendAll: )
+
+        // await pickFilesToAddInAll();
+
+        // Get.back();
+
+        // var fileList = [];
+        // print(
+        //     "selected files selected filesselected filesselected filesselected filesselected files");
+        // print(selectedFilesForAll);
+        // if (selectedFilesForAll[index] != null) {
+        //   selectedFilesForAll[index].
+        //   // fileList.add(dio.MultipartFile.fromBytes(
+        //   //     multipleFile!.files[i].bytes!.toList(),
+        //   //     filename: multipleFile!.files[i].name,
+        //   //   ))
+        // }
+        // if (selectedFilesForAll[index] != null) {
+        //   fileList.add(dio.MultipartFile.fromBytes(
+        //       multipleFile!.files[i].bytes!.toList(),
+        //       filename: multipleFile!.files[i].name,
+        //     ));
+        // }
+        // for (var i = 0; i < multipleFile!.files.length; i++) {
+        //   if (billNameList![index]["pdfInfo"][0]['invoiceFileName'] ==
+        //       multipleFile!.files[i].name) {
+        //     fileList.add(dio.MultipartFile.fromBytes(
+        //       multipleFile!.files[i].bytes!.toList(),
+        //       filename: multipleFile!.files[i].name,
+        //     ));
+        //     // formData.files.add(MapEntry(
+        //     //   'files[$index].files',
+        //     //   dio.MultipartFile.fromBytes(
+        //     //     multipleFile!.files[i].bytes!.toList(),
+        //     //     filename: multipleFile!.files[i].name,
+        //     //   ),
+        //     // ));
         //   }
+        // }
+        // fileList.add(selectedFilesForAll[index]);
+        // // for (var i = 0; i < multipleFileForAll!.files.length; i++) {
+        // //   // if (billNameList![index]["pdfInfo"][0]['invoiceFileName'] ==
+        // //   //     multipleFile!.files[i].name) {
+        // //   fileList.add(dio.MultipartFile.fromBytes(
+        // //     multipleFileForAll!.files[i].bytes!.toList(),
+        // //     filename: multipleFileForAll!.files[i].name,
+        // //   ));
+        // //   // formData.files.add(MapEntry(
+        // //   //   'files[$index].files',
+        // //   //   dio.MultipartFile.fromBytes(
+        // //   //     multipleFile!.files[i].bytes!.toList(),
+        // //   //     filename: multipleFile!.files[i].name,
+        // //   //   ),
+        // //   // ));
+        // //   // }
+        // // }
+        // print(fileList);
+        // formData.files.add(
+        //     MapEntry('files[$index].files', fileList as dio.MultipartFile));
+      }
+    });
+
+    Get.find<ConnectorControl>().POSTMETHOD_FORMDATA(
+      api: ApiFactory.EMAIL_BILL_DETAILS_GET_BILL_FILES_ALL,
+      json: formData,
+      fun: (value) {
+        Get.back();
+
+        // if (value is Map &&
+        //     value.containsKey("bills") &&
+        //     value["bills"] != null) {
+        //   LoadingDialog.callDataSaved(
+        //     msg: value["bills"],
+        //     callback: () {},
+        //   );
+        //   // if (value["asrunDetails"]["lstTempResponse"]
+        //   //         ['lstSaveTempDetailResponse'] !=
+        //   //     null) {
+        //   //   asrunData = <AsRunData>[];
+        //   //   value["asrunDetails"]["lstTempResponse"]
+        //   //           ['lstSaveTempDetailResponse']
+        //   //       .forEach((v) {
+        //   //     asrunData!.add(AsRunData.fromJson(v));
+        //   //   });
+        //   // }
+        //   // update(["fpcData"]);
+        //   // if (value["asrunDetails"]["lstTempResponse"]['showPopup'] != null &&
+        //   //     value["asrunDetails"]["lstTempResponse"]['showPopup']
+        //   //         ["isCheck"]) {
+        //   //   LoadingDialog.callInfoMessage(value["asrunDetails"]
+        //   //       ["lstTempResponse"]['showPopup']["message"]);
+        //   // }
         // }
 
         // update(["transButtons"]);
@@ -689,125 +1040,125 @@ class EmailBillDetailsController extends GetxController {
     print("object");
   }
 
-  sendBillFilesForAll() async {
-    var sendBillsDetailsForAll = [];
-    gridData.asMap().forEach((index, e) {
-      if (e["selected"]) {
-        sendBillsDetailsForAll.add({
-          "clientName": e["clientName"],
-          "agencyName": e["agencyName"],
-          "files": dio.MultipartFile.fromBytes(
-              multipleFile!.files[index].bytes!.toList(),
-              filename: multipleFile!.files[index].name),
-          "channelName": e["channel"],
-          "mailTo": e["mailto"]
-        });
-      }
-    });
-    // "files": multipleFile!.files.map((e) {
-    //         return dio.MultipartFile.fromBytes(
-    //           e.bytes!.toList(),
-    //           filename: e.name,
-    //         );
-    //       }).toList(),
-    LoadingDialog.call();
-    dio.FormData formData = dio.FormData.fromMap({
-      "companyCode": selectedCompany?.key ?? "",
-      "companyName": selectedCompany?.value ?? "",
-      "billdate": dateFormat(tecDate.text),
-      "testMailFrom": selectedFrom?.value ?? "",
-      "testMailTo": tecTestTo.text,
-      "testMailBody": tecbody.text,
-      "isEmailSendTest": sendTest.value,
-      "files": sendBillsDetailsForAll,
-      // "files": selectedFiles
-    });
+  // sendBillFilesForAll() async {
+  //   var sendBillsDetailsForAll = [];
+  //   gridData.asMap().forEach((index, e) {
+  //     if (e["selected"]) {
+  //       sendBillsDetailsForAll.add({
+  //         "clientName": e["clientName"],
+  //         "agencyName": e["agencyName"],
+  //         "files": dio.MultipartFile.fromBytes(
+  //             multipleFile!.files[index].bytes!.toList(),
+  //             filename: multipleFile!.files[index].name),
+  //         "channelName": e["channel"],
+  //         "mailTo": e["mailto"]
+  //       });
+  //     }
+  //   });
+  //   // "files": multipleFile!.files.map((e) {
+  //   //         return dio.MultipartFile.fromBytes(
+  //   //           e.bytes!.toList(),
+  //   //           filename: e.name,
+  //   //         );
+  //   //       }).toList(),
+  //   LoadingDialog.call();
+  //   dio.FormData formData = dio.FormData.fromMap({
+  //     "companyCode": selectedCompany?.key ?? "",
+  //     "companyName": selectedCompany?.value ?? "",
+  //     "billdate": dateFormat(tecDate.text),
+  //     "testMailFrom": selectedFrom?.value ?? "",
+  //     "testMailTo": tecTestTo.text,
+  //     "testMailBody": tecbody.text,
+  //     "isEmailSendTest": sendTest.value,
+  //     "files": sendBillsDetailsForAll,
+  //     // "files": selectedFiles
+  //   });
 
-    Get.find<ConnectorControl>().POSTMETHOD_FORMDATA(
-      api: ApiFactory.EMAIL_BILL_DETAILS_GET_BILL_FILES,
-      json: formData,
-      fun: (value) {
-        Get.back();
-        // if (value is Map && value.containsKey("asrunDetails")) {
-        //   if (value["asrunDetails"]["lstTempResponse"]
-        //           ['lstSaveTempDetailResponse'] !=
-        //       null) {
-        //     asrunData = <AsRunData>[];
-        //     value["asrunDetails"]["lstTempResponse"]
-        //             ['lstSaveTempDetailResponse']
-        //         .forEach((v) {
-        //       asrunData!.add(AsRunData.fromJson(v));
-        //     });
-        //   }
-        //   update(["fpcData"]);
-        //   if (value["asrunDetails"]["lstTempResponse"]['showPopup'] != null &&
-        //       value["asrunDetails"]["lstTempResponse"]['showPopup']
-        //           ["isCheck"]) {
-        //     LoadingDialog.callInfoMessage(value["asrunDetails"]
-        //         ["lstTempResponse"]['showPopup']["message"]);
-        //   }
-        // }
+  //   Get.find<ConnectorControl>().POSTMETHOD_FORMDATA(
+  //     api: ApiFactory.EMAIL_BILL_DETAILS_GET_BILL_FILES,
+  //     json: formData,
+  //     fun: (value) {
+  //       Get.back();
+  //       // if (value is Map && value.containsKey("asrunDetails")) {
+  //       //   if (value["asrunDetails"]["lstTempResponse"]
+  //       //           ['lstSaveTempDetailResponse'] !=
+  //       //       null) {
+  //       //     asrunData = <AsRunData>[];
+  //       //     value["asrunDetails"]["lstTempResponse"]
+  //       //             ['lstSaveTempDetailResponse']
+  //       //         .forEach((v) {
+  //       //       asrunData!.add(AsRunData.fromJson(v));
+  //       //     });
+  //       //   }
+  //       //   update(["fpcData"]);
+  //       //   if (value["asrunDetails"]["lstTempResponse"]['showPopup'] != null &&
+  //       //       value["asrunDetails"]["lstTempResponse"]['showPopup']
+  //       //           ["isCheck"]) {
+  //       //     LoadingDialog.callInfoMessage(value["asrunDetails"]
+  //       //         ["lstTempResponse"]['showPopup']["message"]);
+  //       //   }
+  //       // }
 
-        // update(["transButtons"]);
-      },
-    );
-  }
+  //       // update(["transButtons"]);
+  //     },
+  //   );
+  // }
 
-  getBillFiles() {
-    var model = {
-      "companyCode": selectedCompany?.key ?? "",
-      "companyName": selectedCompany?.value ?? "",
-      "billdate": "<dateTime>",
-      "details": [
-        {
-          "rowNo": "<integer>",
-          "locationcode": "<string>",
-          "channelcode": "<string>",
-          "clientcode": "<string>",
-          "clientName": "<string>",
-          "agencycode": "<string>",
-          "agencyName": "<string>",
-          "mailTo": "<string>"
-        },
-        {
-          "rowNo": "<integer>",
-          "locationcode": "<string>",
-          "channelcode": "<string>",
-          "clientcode": "<string>",
-          "clientName": "<string>",
-          "agencycode": "<string>",
-          "agencyName": "<string>",
-          "mailTo": "<string>"
-        }
-      ],
-      "testMailFrom": "<string>",
-      "testMailTo": "<string>",
-      "testMailBody": "<string>"
-    };
-    LoadingDialog.call();
-    Get.find<ConnectorControl>().POSTMETHOD(
-      api: ApiFactory.EMAIL_BILL_DETAILS_BILLS,
-      json: model,
-      fun: (resp) {
-        closeDialogIfOpen();
-        // if (resp != null &&
-        //     resp is Map<String, dynamic> &&
-        //     resp.toString().contains("successfully")) {
-        //   LoadingDialog.callDataSaved(
-        //     msg: resp["message"],
-        //     callback: () {
-        //       callClear();
-        //     },
-        //   );
-        // }
-      },
-      failed: (resp) {
-        closeDialogIfOpen();
+  // getBillFiles() {
+  //   var model = {
+  //     "companyCode": selectedCompany?.key ?? "",
+  //     "companyName": selectedCompany?.value ?? "",
+  //     "billdate": "<dateTime>",
+  //     "details": [
+  //       {
+  //         "rowNo": "<integer>",
+  //         "locationcode": "<string>",
+  //         "channelcode": "<string>",
+  //         "clientcode": "<string>",
+  //         "clientName": "<string>",
+  //         "agencycode": "<string>",
+  //         "agencyName": "<string>",
+  //         "mailTo": "<string>"
+  //       },
+  //       {
+  //         "rowNo": "<integer>",
+  //         "locationcode": "<string>",
+  //         "channelcode": "<string>",
+  //         "clientcode": "<string>",
+  //         "clientName": "<string>",
+  //         "agencycode": "<string>",
+  //         "agencyName": "<string>",
+  //         "mailTo": "<string>"
+  //       }
+  //     ],
+  //     "testMailFrom": "<string>",
+  //     "testMailTo": "<string>",
+  //     "testMailBody": "<string>"
+  //   };
+  //   LoadingDialog.call();
+  //   Get.find<ConnectorControl>().POSTMETHOD(
+  //     api: ApiFactory.EMAIL_BILL_DETAILS_BILLS,
+  //     json: model,
+  //     fun: (resp) {
+  //       closeDialogIfOpen();
+  //       // if (resp != null &&
+  //       //     resp is Map<String, dynamic> &&
+  //       //     resp.toString().contains("successfully")) {
+  //       //   LoadingDialog.callDataSaved(
+  //       //     msg: resp["message"],
+  //       //     callback: () {
+  //       //       callClear();
+  //       //     },
+  //       //   );
+  //       // }
+  //     },
+  //     failed: (resp) {
+  //       closeDialogIfOpen();
 
-        LoadingDialog.showErrorDialog(resp);
-      },
-    );
-  }
+  //       LoadingDialog.showErrorDialog(resp);
+  //     },
+  //   );
+  // }
 
   closeDialogIfOpen() {
     if (Get.isDialogOpen ?? false) {
