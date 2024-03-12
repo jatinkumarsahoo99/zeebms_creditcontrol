@@ -276,8 +276,9 @@ class ClientDealsView extends GetView<ClientDealsController> {
                     // isEnabled: btn['isDisabled'],
                     callback: () {
 
-                      controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.clear();
+
                       List<Map<String,dynamic>> data = controller.getDataFromGrid2(controller.addInfoStateManager);
+                      controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.clear();
                       for (var element in data) {
                         controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.add(AddInfo.fromJson(element));
                       }
