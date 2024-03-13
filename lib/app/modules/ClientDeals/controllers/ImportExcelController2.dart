@@ -191,6 +191,8 @@ extension ImportExcelController2 on ClientDealsController {
     }
     btnClearClick();
     btnDoubleClick == false;
+    isEnable2.value = false;
+    isEnable2.refresh();
     update(['grid']);
 
 
