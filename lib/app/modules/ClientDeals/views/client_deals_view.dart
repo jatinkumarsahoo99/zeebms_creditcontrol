@@ -666,7 +666,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                             child: (controller.compareModelList != null &&
                                 controller.compareModelList?.model != null &&
                                 (controller.compareModelList?.model?.length ?? 0) > 0) ?
-                            DataGridFromMap3(
+                            DataGridFromMapCompareDialog(
                               showSrNo: true,
                               hideCode: false,
                               formatDate: false,
@@ -681,10 +681,10 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                   : Colors.white,
                               exportFileName: "Client Deals",
                               mode: PlutoGridMode.normal,
-                              noEditcheckBoxColumnKey: ["selected"],
-                              checkBoxStrComparison: true,
-                              uncheckCheckBoxStr: false,
-                              checkBoxColumnKey: const ["selected"],
+                              // noEditcheckBoxColumnKey: ["selected"],
+                              // checkBoxStrComparison: true,
+                              // uncheckCheckBoxStr: false,
+                              // checkBoxColumnKey: const ["selected"],
                               onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
                                 controller.linkDealDialogFirstGridDoubleClick(event);
                               },
@@ -695,8 +695,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
 
 
                               // hideKeys: ["isrequired", "allowedvalues"],
-                              mapData: controller.compareModelList!.model!.
-                              map((e) => e.toJson()).toList(),
+                              mapData: (controller.compareModelList!.model!.
+                              map((e) => e.toJson()).toList()),
                               // mapData: (controllerX.dataList)!,
                               widthRatio: Get.width / 9 - 1,
                               onload: (PlutoGridOnLoadedEvent load) {
