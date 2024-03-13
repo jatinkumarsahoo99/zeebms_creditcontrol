@@ -353,6 +353,7 @@ class ClientDealsController extends GetxController {
                 accountList.refresh();
               }
             }
+            locationFocus.requestFocus();
           },
           failed: (map) {
             closeDialogIfOpen();
