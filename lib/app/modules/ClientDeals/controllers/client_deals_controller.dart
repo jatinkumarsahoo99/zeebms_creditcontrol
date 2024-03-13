@@ -25,6 +25,7 @@ import '../CompareModelList.dart';
 import '../LinkDealDoubleClickModel.dart';
 import '../LinkDealRetrieveModel.dart';
 import '../LinkDealRetrieveModel.dart' as ld;
+import 'dart:html' as html;
 
 part 'ImportExcelController.dart';
 part 'ImportExcelController2.dart';
@@ -194,8 +195,9 @@ class ClientDealsController extends GetxController {
   }
 
   clearAll() {
-    Get.delete<ClientDealsController>();
-    Get.find<HomeController>().clearPage1();
+    // Get.delete<ClientDealsController>();
+    // Get.find<HomeController>().clearPage1();
+    html.window.location.reload();
   }
 
   dialogDocs() async {
@@ -240,6 +242,7 @@ class ClientDealsController extends GetxController {
   formHandler(String text) {
     if (text == "Clear") {
       clearAll();
+      // html.window.location.reload();
     }
     if (text == "Search") {
       Get.to(SearchPage(
