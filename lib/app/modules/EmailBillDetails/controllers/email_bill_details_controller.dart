@@ -983,6 +983,31 @@ class EmailBillDetailsController extends GetxController {
       fun: (value) {
         Get.back();
 
+        if (value is Map && value.toString().contains("successfully")) {
+          // LoadingDialog.callDataSaved()
+          LoadingDialog.callDataSaved(
+            msg: value["bills"],
+            callback: () {},
+          );
+          // if (value["asrunDetails"]["lstTempResponse"]
+          //         ['lstSaveTempDetailResponse'] !=
+          //     null) {
+          //   asrunData = <AsRunData>[];
+          //   value["asrunDetails"]["lstTempResponse"]
+          //           ['lstSaveTempDetailResponse']
+          //       .forEach((v) {
+          //     asrunData!.add(AsRunData.fromJson(v));
+          //   });
+          // }
+          // update(["fpcData"]);
+          // if (value["asrunDetails"]["lstTempResponse"]['showPopup'] != null &&
+          //     value["asrunDetails"]["lstTempResponse"]['showPopup']
+          //         ["isCheck"]) {
+          //   LoadingDialog.callInfoMessage(value["asrunDetails"]
+          //       ["lstTempResponse"]['showPopup']["message"]);
+          // }
+        }
+
         // if (value is Map &&
         //     value.containsKey("bills") &&
         //     value["bills"] != null) {
