@@ -2166,8 +2166,8 @@ class DataGridFromMapCompareDialog extends StatelessWidget {
 
 Color getColors(PlutoColumnRendererContext plutoCon) {
   Color color = Colors.white;
-  print(">>>>>>>>>>>>>>>>>>>keyGet ${plutoCon.cell.column.title} - ${plutoCon.rowIdx}");
-  print(">>>>>>>>>>>>>>>>>>>keyGet field ${plutoCon.cell.column.field} - ${plutoCon.rowIdx}");
+  // print(">>>>>>>>>>>>>>>>>>>keyGet ${plutoCon.cell.column.title} - ${plutoCon.rowIdx}");
+  // print(">>>>>>>>>>>>>>>>>>>keyGet field ${plutoCon.cell.column.field} - ${plutoCon.rowIdx}");
   try {
     /*if (plutoCon.stateManager.currentRowIdx == plutoCon.rowIdx) {
       color = Colors.deepPurple.shade200;
