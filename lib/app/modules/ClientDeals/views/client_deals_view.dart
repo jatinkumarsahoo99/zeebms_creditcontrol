@@ -189,8 +189,17 @@ class ClientDealsView extends GetView<ClientDealsController> {
                       child: IconButton(
                         splashRadius: 20,
                         onPressed: () {
+                          List<Map<String, dynamic>> data = controller.getDataFromGrid2(
+                              controller.addInfoStateManager);
+                          controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.clear();
+                          for (var element in data) {
+                            controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.add(
+                                AddInfo.fromJson(element));
+                          }
+
                           controller.dialogWidget = null;
                           controller.canDialogShow.value = false;
+
                         },
                         icon: const Icon(Icons.close),
                       ),
@@ -230,27 +239,33 @@ class ClientDealsView extends GetView<ClientDealsController> {
                               : Colors.white,
                           exportFileName: "Client Deals",
                           mode: PlutoGridMode.normal,
-                          onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event){
-                          List<String>? data =  ( event.cell.row.cells['allowedvalues']?.value ?? "").toString().split("~").toList();
-                          // List<String>? data =  dataLst.getRange(1, dataLst.length-1).toList();
-                          // print(">>>>>>>>dataList${data}");
-                          if(data != null && data.length > 0 ){
+                          onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) {
+                            List<String>? data = (event.cell.row.cells['allowedvalues']?.value ??
+                                "").toString().split("~").toList();
+                            // List<String>? data =  dataLst.getRange(1, dataLst.length-1).toList();
+                            // print(">>>>>>>>dataList${data}");
+                            if (data != null && data.length > 0) {
+                              if (int.parse(
+                                  (event.cell.row.cells['selectIndex']?.value ?? "0").toString()) <
+                                  (data.length - 1)) {
+                                event.cell.row.cells['selectIndex']?.value = (int.parse(
+                                    (event.cell.row.cells['selectIndex']?.value ?? "0")
+                                        .toString()) + 1).toString();
+                              } else {
+                                event.cell.row.cells['selectIndex']?.value = "0";
+                              }
 
-                            if(int.parse((event.cell.row.cells['selectIndex']?.value??"0").toString()) < (data.length -1)){
-                              event.cell.row.cells['selectIndex']?.value =  (int.parse((event.cell.row.cells['selectIndex']?.value??"0").toString()) + 1).toString();
-                            }else{
-                              event.cell.row.cells['selectIndex']?.value = "0";
+                              if (data.length == 1) {
+                                event.cell.row.cells['infovalue']?.value = data[0];
+                              } else {
+                                event.cell.row.cells['infovalue']?.value = data[int.parse(
+                                    (event.cell.row.cells['selectIndex']?.value ?? "0")
+                                        .toString())];
+                              }
+                              controller.addInfoStateManager?.notifyListeners();
                             }
-
-                            if(data.length == 1){
-                              event.cell.row.cells['infovalue']?.value = data[0];
-                            }else{
-                              event.cell.row.cells['infovalue']?.value = data[int.parse((event.cell.row.cells['selectIndex']?.value??"0").toString())];
-                            }
-                            controller.addInfoStateManager?.notifyListeners();
-                          }
                           },
-                          hideKeys: ["isrequired", "allowedvalues","selectIndex","lstData"],
+                          hideKeys: ["isrequired", "allowedvalues", "selectIndex", "lstData"],
                           mapData: controller.clientDealRetrieveModel!
                               .agencyLeaveModel!.addInfo!.
                           map((e) => e.toJson()).toList(),
@@ -275,12 +290,12 @@ class ClientDealsView extends GetView<ClientDealsController> {
                     showIcon: false,
                     // isEnabled: btn['isDisabled'],
                     callback: () {
-
-
-                      List<Map<String,dynamic>> data = controller.getDataFromGrid2(controller.addInfoStateManager);
+                      List<Map<String, dynamic>> data = controller.getDataFromGrid2(
+                          controller.addInfoStateManager);
                       controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.clear();
                       for (var element in data) {
-                        controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.add(AddInfo.fromJson(element));
+                        controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.add(
+                            AddInfo.fromJson(element));
                       }
                       controller.dialogWidget = null;
                       controller.canDialogShow.value = false;
@@ -766,22 +781,23 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             child: Obx(() {
                                               return DropDownField
                                                   .formDropDown1WidthMapExpand(
-                                                controller.locationList.value ?? [],
-                                                    (value) {
-                                                  controller.selectedLocation?.value =
-                                                      value;
-                                                  controller.getChannel(
-                                                      locationCode: value.key ?? "");
-                                                },
-                                                "Location",
-                                                // .20,
-                                                autoFocus: true,
-                                                titleInLeft: true,
-                                                inkWellFocusNode: controller
-                                                    .locationFocus,
-                                                selected: controller.selectedLocation
-                                                    ?.value,
-                                                titleSizeBoxWidth: 45,
+                                                  controller.locationList.value ?? [],
+                                                      (value) {
+                                                    controller.selectedLocation?.value =
+                                                        value;
+                                                    controller.getChannel(
+                                                        locationCode: value.key ?? "");
+                                                  },
+                                                  "Location",
+                                                  // .20,
+                                                  autoFocus: true,
+                                                  titleInLeft: true,
+                                                  inkWellFocusNode: controller
+                                                      .locationFocus,
+                                                  selected: controller.selectedLocation
+                                                      ?.value,
+                                                  titleSizeBoxWidth: 45,
+                                                  isEnable: controller.isEnable1.value
                                               );
                                             }),
                                           ),
@@ -806,7 +822,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                   selected: controller.selectedChannel
                                                       ?.value,
                                                   titleSizeBoxWidth: 50,
-                                                  autoFocus: false
+                                                  autoFocus: false,
+                                                  isEnable: controller.isEnable1.value
                                                 // onFocusChange: (val){
                                                 //   if(val == false){
                                                 //     controller.dealNoFocus.requestFocus();
@@ -826,15 +843,16 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                               descendantsAreFocusable: false,
                                               child: DropDownField
                                                   .formDropDown1WidthMapExpand(
-                                                controller.payMode.value ?? [],
-                                                    (data) {
-                                                  controller.selectPayMode?.value = data;
-                                                },
-                                                "Pay Mode",
-                                                titleInLeft: true,
-                                                autoFocus: false,
-                                                selected: controller.selectPayMode?.value,
-                                                titleSizeBoxWidth: 50,
+                                                  controller.payMode.value ?? [],
+                                                      (data) {
+                                                    controller.selectPayMode?.value = data;
+                                                  },
+                                                  "Pay Mode",
+                                                  titleInLeft: true,
+                                                  autoFocus: false,
+                                                  selected: controller.selectPayMode?.value,
+                                                  titleSizeBoxWidth: 50,
+                                                  isEnable: controller.isEnable2.value
                                                 // .23,
                                               ),
                                             );
@@ -855,14 +873,15 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                 child: FocusTraversalOrder(
                                                   order: NumericFocusOrder(2),
                                                   child: InputFields.formFieldExpand2(
-                                                    hintTxt: "Deal No",
-                                                    controller: controller
-                                                        .dealNoController,
-                                                    titleInLeft: true,
-                                                    titleSizeboxWidth: 50,
-                                                    focusNode: controller.dealNoFocus,
-                                                    bottomPadding: false,
-                                                    autoFocus: false,
+                                                      hintTxt: "Deal No",
+                                                      controller: controller
+                                                          .dealNoController,
+                                                      titleInLeft: true,
+                                                      titleSizeboxWidth: 50,
+                                                      focusNode: controller.dealNoFocus,
+                                                      bottomPadding: false,
+                                                      autoFocus: false,
+                                                      isEnable: controller.isEnable2.value
                                                   ),
                                                 ),
                                               ),
@@ -871,13 +890,16 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                               Expanded(
                                                 child: FocusTraversalOrder(
                                                   order: NumericFocusOrder(3),
-                                                  child: DateWithThreeTextFieldExpanded(
-                                                    title: "Date",
-                                                    mainTextController: controller
-                                                        .dateController,
-                                                    // widthRation: .135,
-                                                    titleInLeft: true,
-                                                  ),
+                                                  child: Obx(() {
+                                                    return DateWithThreeTextFieldExpanded(
+                                                        title: "Date",
+                                                        mainTextController: controller
+                                                            .dateController,
+                                                        // widthRation: .135,
+                                                        titleInLeft: true,
+                                                        isEnable: controller.isEnable2.value
+                                                    );
+                                                  }),
                                                 ),
                                               ),
 
@@ -895,45 +917,49 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                         ),
                                         sizedBoxWidth(10),
                                         Expanded(
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: FocusTraversalOrder(
-                                                  order: const NumericFocusOrder(4),
-                                                  child: DateWithThreeTextFieldExpanded(
-                                                    title: "From",
-                                                    mainTextController:
-                                                    controller.fromDateController,
-                                                    // widthRation: .135,
-                                                    titleInLeft: true,
-                                                    titleInSizeBox: 50,
+                                          child: Obx(() {
+                                            return Row(
+                                              children: [
+                                                Expanded(
+                                                  child: FocusTraversalOrder(
+                                                    order: const NumericFocusOrder(4),
+                                                    child: DateWithThreeTextFieldExpanded(
+                                                        title: "From",
+                                                        mainTextController:
+                                                        controller.fromDateController,
+                                                        // widthRation: .135,
+                                                        titleInLeft: true,
+                                                        titleInSizeBox: 50,
+                                                        isEnable: controller.isEnable2.value
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              sizedBoxWidth(5),
-                                              Expanded(
-                                                child: FocusTraversalOrder(
-                                                  order: const NumericFocusOrder(5),
-                                                  child: DateWithThreeTextFieldExpanded(
-                                                    title: "To",
-                                                    mainTextController: controller
-                                                        .toDateController,
-                                                    // widthRation: .135,
-                                                    titleInLeft: true,
-                                                    onFocusChange: (val, sta) {
-                                                      if (sta == false) {
-                                                        controller.clientFocus
-                                                            .requestFocus();
-                                                      }
-                                                    },
+                                                sizedBoxWidth(5),
+                                                Expanded(
+                                                  child: FocusTraversalOrder(
+                                                    order: const NumericFocusOrder(5),
+                                                    child: DateWithThreeTextFieldExpanded(
+                                                        title: "To",
+                                                        mainTextController: controller
+                                                            .toDateController,
+                                                        // widthRation: .135,
+                                                        titleInLeft: true,
+                                                        onFocusChange: (val, sta) {
+                                                          if (sta == false) {
+                                                            controller.clientFocus
+                                                                .requestFocus();
+                                                          }
+                                                        },
+                                                        isEnable: controller.isEnable2.value
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              // InputFields.formField(hintTxt: hintTxt, controller: controller)
-                                            ],
-                                          ),
+                                                // InputFields.formField(hintTxt: hintTxt, controller: controller)
+                                              ],
+                                            );
+                                          }),
                                         ),
                                         sizedBoxWidth(10),
                                         SizedBox(
@@ -944,16 +970,17 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             child: Obx(() {
                                               return DropDownField
                                                   .formDropDown1WidthMapExpand(
-                                                controller.currency.value ?? [],
-                                                    (data) {
-                                                  controller.selectCurrency?.value = data;
-                                                },
-                                                "Currency",
-                                                titleInLeft: true,
-                                                autoFocus: false,
-                                                selected: controller.selectCurrency
-                                                    ?.value,
-                                                titleSizeBoxWidth: 50,
+                                                  controller.currency.value ?? [],
+                                                      (data) {
+                                                    controller.selectCurrency?.value = data;
+                                                  },
+                                                  "Currency",
+                                                  titleInLeft: true,
+                                                  autoFocus: false,
+                                                  selected: controller.selectCurrency
+                                                      ?.value,
+                                                  titleSizeBoxWidth: 50,
+                                                  isEnable: controller.isEnable2.value
                                                 // .23,
                                               );
                                             }),
@@ -996,7 +1023,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                   parseKeyForValue: "clientname",
                                                   titleInLeft: true,
                                                   autoFocus: false,
-                                                  inkwellFocus: controller.clientFocus
+                                                  inkwellFocus: controller.clientFocus,
+                                                  isEnable: controller.isEnable2.value
                                               );
                                             }),
                                           ),
@@ -1009,7 +1037,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             btnText: "@",
                                             callback: () {
                                               controller.getClientAddress(
-                                                  code: controller.selectedClient?.value?.key ?? "");
+                                                  code: controller.selectedClient?.value?.key ??
+                                                      "");
                                             },
                                           ),
                                         ),
@@ -1031,7 +1060,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                   titleInLeft: true,
                                                   autoFocus: false,
                                                   titleSizeBoxWidth: 50,
-                                                  inkWellFocusNode: controller.agencyFocus
+                                                  inkWellFocusNode: controller.agencyFocus,
+                                                  isEnable: controller.isEnable2.value
                                                 // .20,
                                               );
                                             }),
@@ -1057,16 +1087,17 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             child: Obx(() {
                                               return DropDownField
                                                   .formDropDown1WidthMapExpand(
-                                                controller.dealType.value ?? [],
-                                                    (data) {
-                                                  controller.selectDealType?.value = data;
-                                                },
-                                                "Deal Type",
-                                                selected: controller.selectDealType
-                                                    ?.value,
-                                                titleInLeft: true,
-                                                autoFocus: false,
-                                                titleSizeBoxWidth: 50,
+                                                  controller.dealType.value ?? [],
+                                                      (data) {
+                                                    controller.selectDealType?.value = data;
+                                                  },
+                                                  "Deal Type",
+                                                  selected: controller.selectDealType
+                                                      ?.value,
+                                                  titleInLeft: true,
+                                                  autoFocus: false,
+                                                  titleSizeBoxWidth: 50,
+                                                  isEnable: controller.isEnable2.value
                                                 // .23,
                                               );
                                             }),
@@ -1082,41 +1113,45 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                     Row(
                                       children: [
                                         Expanded(
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: FocusTraversalOrder(
-                                                  order: const NumericFocusOrder(8),
-                                                  child: InputFields.formFieldExpand2(
-                                                    hintTxt: "Reference",
-                                                    controller: controller
-                                                        .referenceController,
-                                                    titleInLeft: true,
-                                                    titleSizeboxWidth: 50,
-                                                    bottomPadding: false,
-                                                    autoFocus: false,
+                                          child: Obx(() {
+                                            return Row(
+                                              children: [
+                                                Expanded(
+                                                  child: FocusTraversalOrder(
+                                                    order: const NumericFocusOrder(8),
+                                                    child: InputFields.formFieldExpand2(
+                                                        hintTxt: "Reference",
+                                                        controller: controller
+                                                            .referenceController,
+                                                        titleInLeft: true,
+                                                        titleSizeboxWidth: 50,
+                                                        bottomPadding: false,
+                                                        autoFocus: false,
+                                                        isEnable: controller.isEnable2.value
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              sizedBoxWidth(5),
-                                              Expanded(
-                                                child: FocusTraversalOrder(
-                                                  order: NumericFocusOrder(9),
-                                                  child: DateWithThreeTextFieldExpanded(
-                                                    title: "Reference Date",
-                                                    mainTextController:
-                                                    controller.referenceDateController,
-                                                    // widthRation: .135,
-                                                    titleInLeft: true,
-                                                    titleInSizeBox: 50,
+                                                sizedBoxWidth(5),
+                                                Expanded(
+                                                  child: FocusTraversalOrder(
+                                                    order: NumericFocusOrder(9),
+                                                    child: DateWithThreeTextFieldExpanded(
+                                                        title: "Reference Date",
+                                                        mainTextController:
+                                                        controller.referenceDateController,
+                                                        // widthRation: .135,
+                                                        titleInLeft: true,
+                                                        titleInSizeBox: 50,
+                                                        isEnable: controller.isEnable2.value
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
 
-                                              // InputFields.formField(hintTxt: hintTxt, controller: controller)
-                                            ],
-                                          ),
+                                                // InputFields.formField(hintTxt: hintTxt, controller: controller)
+                                              ],
+                                            );
+                                          }),
                                           // child: DropDownField.formDropDown1WidthMapExpand(
                                           //   [],
                                           //   (value) {},
@@ -1136,17 +1171,18 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                   child: Obx(() {
                                                     return DropDownField
                                                         .formDropDown1WidthMapExpand(
-                                                      controller.brandList.value ?? [],
-                                                          (data) {
-                                                        controller.selectBrand?.value =
-                                                            data;
-                                                      },
-                                                      "Brand",
-                                                      titleInLeft: true,
-                                                      autoFocus: false,
-                                                      selected: controller.selectBrand
-                                                          ?.value,
-                                                      titleSizeBoxWidth: 50,
+                                                        controller.brandList.value ?? [],
+                                                            (data) {
+                                                          controller.selectBrand?.value =
+                                                              data;
+                                                        },
+                                                        "Brand",
+                                                        titleInLeft: true,
+                                                        autoFocus: false,
+                                                        selected: controller.selectBrand
+                                                            ?.value,
+                                                        titleSizeBoxWidth: 50,
+                                                        isEnable: controller.isEnable2.value
                                                       // .20,
                                                     );
                                                   }),
@@ -1168,22 +1204,25 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                           ),
                                         ),
                                         sizedBoxWidth(10),
-                                        SizedBox(
-                                          width: Get.width * 0.2,
-                                          child: Focus(
-                                            skipTraversal: true,
-                                            // descendantsAreFocusable: false,
-                                            // focusNode: FocusNode(),
-                                            // canRequestFocus: true,
-                                            child: InputFields.numbers4(
-                                              hintTxt: "Bk Dur",
-                                              controller: controller.bkDurationController,
-                                              titleInLeft: true,
-                                              titleSizeboxWidth: 45,
-                                              isNegativeReq: false,
+                                        Obx(() {
+                                          return SizedBox(
+                                            width: Get.width * 0.2,
+                                            child: Focus(
+                                              skipTraversal: true,
+                                              // descendantsAreFocusable: false,
+                                              // focusNode: FocusNode(),
+                                              // canRequestFocus: true,
+                                              child: InputFields.numbers4(
+                                                  hintTxt: "Bk Dur",
+                                                  controller: controller.bkDurationController,
+                                                  titleInLeft: true,
+                                                  titleSizeboxWidth: 45,
+                                                  isNegativeReq: false,
+                                                  isEnabled: controller.isEnable2.value
+                                              ),
                                             ),
-                                          ),
-                                        ),
+                                          );
+                                        }),
                                         sizedBoxWidth(10),
 
                                       ],
@@ -1197,117 +1236,129 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                         Expanded(
                                           child: Column(
                                             children: [
-                                              Row(
-                                                children: [
-                                                  Expanded(
-                                                    child: Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: FocusTraversalOrder(
-                                                            order: NumericFocusOrder(11),
-                                                            child: InputFields.numbers4(
-                                                              hintTxt: "Max Spend",
-                                                              controller:
-                                                              controller
-                                                                  .maxSpeedController,
-                                                              titleInLeft: true,
-                                                              titleSizeboxWidth: 40,
+                                              Obx(() {
+                                                return Row(
+                                                  children: [
+                                                    Expanded(
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: FocusTraversalOrder(
+                                                              order: NumericFocusOrder(11),
+                                                              child: InputFields.numbers4(
+                                                                  hintTxt: "Max Spend",
+                                                                  controller:
+                                                                  controller
+                                                                      .maxSpeedController,
+                                                                  titleInLeft: true,
+                                                                  isNegativeReq: false,
+                                                                  titleSizeboxWidth: 40,
+                                                                  isEnabled: controller.isEnable2
+                                                                      .value
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
 
-                                                        sizedBoxWidth(5),
-                                                        Expanded(
-                                                          child: Focus(
-                                                            skipTraversal: true,
-                                                            // descendantsAreFocusable: false,
-                                                            child: InputFields.numbers4(
-                                                                hintTxt: "Amount",
-                                                                controller:
-                                                                controller.amountController,
-                                                                titleInLeft: true,
-                                                                isNegativeReq: false
-                                                              // titleSizeboxWidth: 45,
+                                                          sizedBoxWidth(5),
+                                                          Expanded(
+                                                            child: Focus(
+                                                              skipTraversal: true,
+                                                              // descendantsAreFocusable: false,
+                                                              child: InputFields.numbers4(
+                                                                  hintTxt: "Amount",
+                                                                  controller:
+                                                                  controller.amountController,
+                                                                  titleInLeft: true,
+                                                                  isNegativeReq: false,
+                                                                  isEnabled: controller.isEnable2
+                                                                      .value
+                                                                // titleSizeboxWidth: 45,
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
 
-                                                        // InputFields.formField(hintTxt: hintTxt, controller: controller)
-                                                      ],
+                                                          // InputFields.formField(hintTxt: hintTxt, controller: controller)
+                                                        ],
+                                                      ),
+                                                      // child: DropDownField.formDropDown1WidthMapExpand(
+                                                      //   [],
+                                                      //   (value) {},
+                                                      //   "Location",
+                                                      //   // .20,
+                                                      //   autoFocus: true,
+                                                      //   titleInLeft: true,
+                                                      // ),
                                                     ),
-                                                    // child: DropDownField.formDropDown1WidthMapExpand(
-                                                    //   [],
-                                                    //   (value) {},
-                                                    //   "Location",
-                                                    //   // .20,
-                                                    //   autoFocus: true,
-                                                    //   titleInLeft: true,
-                                                    // ),
-                                                  ),
-                                                  sizedBoxWidth(10),
-                                                  Expanded(
-                                                    child: Row(
-                                                      children: [
-                                                        Expanded(
-                                                          child: Focus(
-                                                            // descendantsAreFocusable: false,
-                                                            skipTraversal: true,
-                                                            child: InputFields.numbers4(
-                                                                hintTxt: "Seconds",
-                                                                controller:
-                                                                controller
-                                                                    .secondsController,
-                                                                titleInLeft: true,
-                                                                titleSizeboxWidth: 45,
-                                                                isNegativeReq: false
+                                                    sizedBoxWidth(10),
+                                                    Expanded(
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            child: Focus(
+                                                              // descendantsAreFocusable: false,
+                                                              skipTraversal: true,
+                                                              child: InputFields.numbers4(
+                                                                  hintTxt: "Seconds",
+                                                                  controller:
+                                                                  controller
+                                                                      .secondsController,
+                                                                  titleInLeft: true,
+                                                                  titleSizeboxWidth: 45,
+                                                                  isNegativeReq: false,
+                                                                  isEnabled: controller.isEnable2
+                                                                      .value
+                                                              ),
                                                             ),
                                                           ),
-                                                        ),
 
-                                                        sizedBoxWidth(5),
-                                                        Expanded(
-                                                          child: FocusTraversalOrder(
-                                                            order: const NumericFocusOrder(
-                                                                12),
-                                                            child: Obx(() {
-                                                              return CheckBoxWidget1(
-                                                                title: "Effective Rate",
-                                                                value: controller
-                                                                    .effectiveRate
-                                                                    .value,
-                                                                onChanged: (val) {
-                                                                  controller.effectiveRate
-                                                                      .value = val!;
-                                                                  controller.effectiveRate
-                                                                      .refresh();
-                                                                },
-                                                              );
-                                                            }),
+                                                          sizedBoxWidth(5),
+                                                          Expanded(
+                                                            child: FocusTraversalOrder(
+                                                              order: const NumericFocusOrder(
+                                                                  12),
+                                                              child: Obx(() {
+                                                                return CheckBoxWidget1(
+                                                                    title: "Effective Rate",
+                                                                    value: controller
+                                                                        .effectiveRate
+                                                                        .value,
+                                                                    onChanged: (val) {
+                                                                      controller.effectiveRate
+                                                                          .value = val!;
+                                                                      controller.effectiveRate
+                                                                          .refresh();
+                                                                    },
+                                                                    isEnable: controller.isEnable2
+                                                                        .value
+                                                                );
+                                                              }),
+                                                            ),
                                                           ),
-                                                        ),
 
-                                                        // InputFields.formField(hintTxt: hintTxt, controller: controller)
-                                                      ],
-                                                    ),
-                                                  ),
-                                                  sizedBoxWidth(10),
-                                                  SizedBox(
-                                                    width: Get.width * 0.2,
-                                                    child: Focus(
-                                                      skipTraversal: true,
-                                                      // descendantsAreFocusable: false,
-                                                      child: InputFields.numbers4(
-                                                          hintTxt: "Bk Amt",
-                                                          controller: controller
-                                                              .bkAmountController,
-                                                          titleInLeft: true,
-                                                          titleSizeboxWidth: 45,
-                                                          isNegativeReq: false
+                                                          // InputFields.formField(hintTxt: hintTxt, controller: controller)
+                                                        ],
                                                       ),
                                                     ),
-                                                  ),
-                                                ],
-                                              ),
+                                                    sizedBoxWidth(10),
+                                                    SizedBox(
+                                                      width: Get.width * 0.2,
+                                                      child: Focus(
+                                                        skipTraversal: true,
+                                                        // descendantsAreFocusable: false,
+                                                        child: InputFields.numbers4(
+                                                            hintTxt: "Bk Amt",
+                                                            controller: controller
+                                                                .bkAmountController,
+                                                            titleInLeft: true,
+                                                            titleSizeboxWidth: 45,
+                                                            isNegativeReq: false,
+                                                            isEnabled: controller.isEnable2.value
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                );
+                                              }),
                                               sizedBoxHeight(5),
                                               Row(
                                                 children: [
@@ -1369,40 +1420,52 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                     child: InkWell(
                                                       onTap: () {
                                                         controller.getLinkDealRetriveApiCall(
-                                                            groupNumber: controller.linkedDealNumber.value)
+                                                            groupNumber: controller.linkedDealNumber
+                                                                .value)
                                                             .then((value) {
                                                           if (value == true &&
-                                                              controller.linkDealRetrieveModel != null &&
-                                                              controller.linkDealRetrieveModel?.model !=
+                                                              controller.linkDealRetrieveModel !=
+                                                                  null &&
+                                                              controller.linkDealRetrieveModel
+                                                                  ?.model !=
                                                                   null) {
-                                                            controller.dialogGroupNoController.text =
-                                                                (controller.linkDealRetrieveModel?.model
+                                                            controller.dialogGroupNoController
+                                                                .text =
+                                                                (controller.linkDealRetrieveModel
+                                                                    ?.model
                                                                     ?.dealcode ?? "").toString();
                                                             controller.dialogDateController.text =
                                                                 Utils.toDateFormat4(
-                                                                    (controller.linkDealRetrieveModel?.model
-                                                                        ?.groupdate ?? "").toString());
+                                                                    (controller
+                                                                        .linkDealRetrieveModel
+                                                                        ?.model
+                                                                        ?.groupdate ?? "")
+                                                                        .toString());
                                                             controller.selectedDialogClient?.value =
                                                                 DropDownValue(
-                                                                    value: controller.linkDealRetrieveModel
+                                                                    value: controller
+                                                                        .linkDealRetrieveModel
                                                                         ?.model?.clientName ?? "",
-                                                                    key: controller.linkDealRetrieveModel
+                                                                    key: controller
+                                                                        .linkDealRetrieveModel
                                                                         ?.model?.clientCode ?? "");
                                                             controller.selectedDialogAgency?.value =
                                                                 DropDownValue(
-                                                                    value: controller.linkDealRetrieveModel
+                                                                    value: controller
+                                                                        .linkDealRetrieveModel
                                                                         ?.model?.agencyName ?? "",
-                                                                    key: controller.linkDealRetrieveModel
+                                                                    key: controller
+                                                                        .linkDealRetrieveModel
                                                                         ?.model?.agencyCode ?? "");
                                                             dragInfoDialogLinkDeal();
                                                           } else {
-                                                            LoadingDialog.showErrorDialog("Data not found");
+                                                            LoadingDialog.showErrorDialog(
+                                                                "Data not found");
                                                           }
                                                         });
                                                       },
-                                                      onFocusChange: (sta){
+                                                      onFocusChange: (sta) {
                                                         controller.typeFocus.requestFocus();
-
                                                       },
                                                       child: Padding(
                                                         padding: const EdgeInsets.only(
@@ -1410,7 +1473,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                         child: Obx(() {
                                                           return Container(
                                                             child: text_m_w700(
-                                                              controller.linkedDealNumberWithText.value ?? "",
+                                                              controller.linkedDealNumberWithText
+                                                                  .value ?? "",
                                                               color: Colors.blue,
                                                             ),
                                                           );
@@ -1501,71 +1565,80 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                     ),
                                   ),
                                   const SizedBox(height: 5),
-                                  SizedBox(
-                                    width: Get.width * 0.2,
-                                    child: DropDownField
-                                        .formDropDown1WidthMapExpand(
-                                      controller.locationList2.value ?? [],
-                                          (data) {
-                                        controller.selectedLocation2?.value =
-                                            data;
-                                      },
-                                      "Location",
-                                      titleInLeft: true,
-                                      autoFocus: false,
-                                      inkWellFocusNode: controller.locationFocus1,
-                                      selected: controller.selectedLocation2
-                                          ?.value,
-                                      titleSizeBoxWidth: 50,
-                                      // .23,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  SizedBox(
-                                    width: Get.width * 0.2,
-                                    child: DropDownField
-                                        .formDropDown1WidthMapExpand(
-                                      controller.channelList2.value ?? [],
-                                          (data) {
-                                        controller.selectedChannel2?.value = data;
-                                        controller.channelLeave();
-                                        controller.getSearchClient();
-                                      },
-                                      "Channel",
-                                      selected: controller.selectedChannel2
-                                          ?.value,
-                                      inkWellFocusNode: controller.channelFocus1,
-                                      titleInLeft: true,
-                                      autoFocus: false,
-                                      titleSizeBoxWidth: 50,
-                                      // .23,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  SizedBox(
-                                    width: Get.width * 0.2,
-                                    child: Obx(() {
-                                      return DropDownField
-                                          .formDropDown1WidthMapExpand(
-                                        controller.clientList2.value ?? [],
-                                            (data) {
-                                          controller.selectedClient2?.value =
-                                              data;
-                                          controller.getSearchDealNumber();
-                                        },
-                                        "Client",
-                                        titleInLeft: true,
-                                        selected: controller.selectedClient2
-                                            ?.value,
-                                        inkWellFocusNode: controller.clientFocus1,
-                                        titleSizeBoxWidth: 50,
-                                        onFocusChange: (sta){
+                                  Obx(() {
+                                    return Column(
+                                      children: [
+                                        SizedBox(
+                                          width: Get.width * 0.2,
+                                          child: DropDownField
+                                              .formDropDown1WidthMapExpand(
+                                              controller.locationList2.value ?? [],
+                                                  (data) {
+                                                controller.selectedLocation2?.value =
+                                                    data;
+                                              },
+                                              "Location",
+                                              titleInLeft: true,
+                                              autoFocus: false,
+                                              inkWellFocusNode: controller.locationFocus1,
+                                              selected: controller.selectedLocation2
+                                                  ?.value,
+                                              titleSizeBoxWidth: 50,
+                                              isEnable: controller.isEnable2.value
+                                            // .23,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        SizedBox(
+                                          width: Get.width * 0.2,
+                                          child: DropDownField
+                                              .formDropDown1WidthMapExpand(
+                                              controller.channelList2.value ?? [],
+                                                  (data) {
+                                                controller.selectedChannel2?.value = data;
+                                                controller.channelLeave();
+                                                controller.getSearchClient();
+                                              },
+                                              "Channel",
+                                              selected: controller.selectedChannel2
+                                                  ?.value,
+                                              inkWellFocusNode: controller.channelFocus1,
+                                              titleInLeft: true,
+                                              autoFocus: false,
+                                              titleSizeBoxWidth: 50,
+                                              isEnable: controller.isEnable2.value
+                                            // .23,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 5),
+                                        SizedBox(
+                                          width: Get.width * 0.2,
+                                          child: Obx(() {
+                                            return DropDownField
+                                                .formDropDown1WidthMapExpand(
+                                                controller.clientList2.value ?? [],
+                                                    (data) {
+                                                  controller.selectedClient2?.value =
+                                                      data;
+                                                  controller.getSearchDealNumber();
+                                                },
+                                                "Client",
+                                                titleInLeft: true,
+                                                selected: controller.selectedClient2
+                                                    ?.value,
+                                                inkWellFocusNode: controller.clientFocus1,
+                                                titleSizeBoxWidth: 50,
+                                                onFocusChange: (sta) {
 
-                                        }
-                                        // .23,
-                                      );
-                                    }),
-                                  ),
+                                                },
+                                                isEnable: controller.isEnable2.value
+                                              // .23,
+                                            );
+                                          }),
+                                        ),
+                                      ],
+                                    );
+                                  }),
                                   const SizedBox(height: 5),
                                   Focus(
                                     focusNode: controller.lstFocus,
@@ -1582,14 +1655,15 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                             controller: controller.scrollController,
                                             thumbVisibility: true,
                                             child: RawKeyboardListener(
-                                              onKey: (event){
-                                                if(event is RawKeyEvent){
+                                              onKey: (event) {
+                                                if (event is RawKeyEvent) {
                                                   print(">>>>>>>>>>>>>>>event call");
-                                                  if ( (event.logicalKey == LogicalKeyboardKey.arrowUp) &&
-                                                      event is RawKeyDownEvent ){
+                                                  if ((event.logicalKey ==
+                                                      LogicalKeyboardKey.arrowUp) &&
+                                                      event is RawKeyDownEvent) {
                                                     print(">>>>>>>>>>>>>>>event call arrow UP");
-                                                    if( (controller.selectedDealNo
-                                                        .value != 0) ){
+                                                    if ((controller.selectedDealNo
+                                                        .value != 0)) {
                                                       controller.selectedDealNo
                                                           .value = (controller.selectedDealNo
                                                           .value - 1);
@@ -1604,14 +1678,16 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                         duration: const Duration(milliseconds: 500),
                                                         curve: Curves.bounceOut,
                                                       );
-
                                                     }
                                                   }
 
-                                                  else if ((event.logicalKey == LogicalKeyboardKey.arrowDown) && event is RawKeyDownEvent ){
+                                                  else if ((event.logicalKey ==
+                                                      LogicalKeyboardKey.arrowDown) &&
+                                                      event is RawKeyDownEvent) {
                                                     print(">>>>>>>>>>>>>>>event call arrow down");
-                                                    if(controller.selectedDealNo
-                                                        .value != (controller.dealNoList.length - 1)){
+                                                    if (controller.selectedDealNo
+                                                        .value !=
+                                                        (controller.dealNoList.length - 1)) {
                                                       controller.selectedDealNo
                                                           .value = controller.selectedDealNo
                                                           .value + 1;
@@ -1646,7 +1722,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                             .refresh();
                                                         controller.lsnFocus.requestFocus();
                                                       },
-                                                      onDoubleTap: (){
+                                                      onDoubleTap: () {
                                                         controller.selectedDealNo
                                                             .value =
                                                             index;
@@ -2022,12 +2098,12 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       SizedBox(
                                         width: Get.width * 0.18,
                                         child: InputFields.numbers4(
-                                            hintTxt: "Amount",
-                                            controller: controller.amountController2,
-                                            // titleInLeft: true,
-                                            // titleSizeboxWidth: 45,
-                                            fieldWidth: 0.15,
-                                            isNegativeReq: false,
+                                          hintTxt: "Amount",
+                                          controller: controller.amountController2,
+                                          // titleInLeft: true,
+                                          // titleSizeboxWidth: 45,
+                                          fieldWidth: 0.15,
+                                          isNegativeReq: false,
                                         ),
                                       ),
                                       SizedBox(

@@ -185,6 +185,9 @@ class ClientDealsController extends GetxController {
 
   CompareModelList? compareModelList;
 
+  Rx<bool> isEnable1 = Rx<bool>(true);
+  Rx<bool> isEnable2 = Rx<bool>(true);
+
   fetchUserSetting1() async {
     userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
     update(["grid"]);
@@ -976,17 +979,22 @@ class ClientDealsController extends GetxController {
                 clientEmb.value = "Client Emb";
                 clientEmb.refresh();
                 linkedDealNumberWithText.refresh();
-              } else {
+              }
+              else {
                 linkedDealNumberWithText.value = "sssssss";
                 clientEmb.value = "sssssss";
                 clientEmb.refresh();
                 linkedDealNumberWithText.refresh();
 
               }
+              isEnable1.value = false;
+              isEnable1.refresh();
 
               update(["grid"]);
             } else {
               clientDealRetrieveModel = null;
+              isEnable1.value = true;
+              isEnable1.refresh();
             }
           });
     } catch (e) {
@@ -1257,6 +1265,10 @@ class ClientDealsController extends GetxController {
     type.refresh();
     label24.refresh();
     label25.refresh();
+
+    isEnable2.value = false;
+    isEnable2.refresh();
+
     update(['middle']);
   }
 
