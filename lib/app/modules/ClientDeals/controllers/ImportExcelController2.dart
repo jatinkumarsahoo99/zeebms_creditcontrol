@@ -190,7 +190,7 @@ extension ImportExcelController2 on ClientDealsController {
       importGridList[index].eventname = selectSubType?.value?.value ?? "";
     }
     btnClearClick();
-
+    btnDoubleClick == false;
     update(['grid']);
 
 

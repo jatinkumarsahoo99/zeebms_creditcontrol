@@ -125,7 +125,7 @@ class AsrunVerificationController extends GetxController {
 
   getRetrieve() {
     if (selectLocation.value == null) {
-      LoadingDialog.showErrorDialog("Please select loaction.", callback: () {
+      LoadingDialog.showErrorDialog("Please select location.", callback: () {
         Get.back();
       });
     } else if (selectChannel.value == null) {

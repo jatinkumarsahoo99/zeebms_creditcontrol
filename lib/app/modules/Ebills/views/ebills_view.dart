@@ -430,13 +430,16 @@ class EbillsView extends GetView<EbillsController> {
                                     onChanged: (val) {
                                       if (controller.isAll.isTrue) {
                                         controller.checkAll();
+                                        print("All");
                                       } else {
-                                        controller.isBills.value = true;
+                                        controller.isBills.value =
+                                            !controller.isBills.value;
                                       }
                                       if (controller.isBills.isTrue &&
                                           controller.isTC.isTrue &&
                                           controller.isSummary.isTrue) {
                                         controller.isAll.value = true;
+                                        print("All true");
                                       }
                                     },
                                   );
@@ -449,7 +452,8 @@ class EbillsView extends GetView<EbillsController> {
                                       if (controller.isAll.isTrue) {
                                         controller.checkAll();
                                       } else {
-                                        controller.isTC.value = true;
+                                        controller.isTC.value =
+                                            !controller.isTC.value;
                                       }
                                       if (controller.isBills.isTrue &&
                                           controller.isTC.isTrue &&
@@ -467,7 +471,8 @@ class EbillsView extends GetView<EbillsController> {
                                       if (controller.isAll.isTrue) {
                                         controller.checkAll();
                                       } else {
-                                        controller.isSummary.value = true;
+                                        controller.isSummary.value =
+                                            !controller.isSummary.value;
                                       }
                                       if (controller.isBills.isTrue &&
                                           controller.isTC.isTrue &&
