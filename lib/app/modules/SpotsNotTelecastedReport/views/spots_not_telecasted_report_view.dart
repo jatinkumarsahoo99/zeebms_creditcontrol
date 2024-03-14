@@ -1,3 +1,4 @@
+import 'package:bms_creditcontrol/widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -122,7 +123,10 @@ class SpotsNotTelecastedReportView
                     }).toList(),
                     onload: (event) {
                       controller.sm = event.stateManager;
+                      event.stateManager
+                          .setSelectingMode(PlutoGridSelectingMode.row);
                     },
+                    hideCode: false,
                     widthSpecificColumn:
                         Get.find<HomeController>().getGridWidthByKey(
                       userGridSettingList: controller.userGridSetting1?.value,
