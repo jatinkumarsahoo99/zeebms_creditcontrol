@@ -73,8 +73,8 @@ class SecondaryAsrunModificationView extends StatelessWidget {
               SizedBox(
                 height: 4,
               ),
-              Expanded(
-                // height: Get.height * 0.55,
+              SizedBox(
+                height: Get.height * 0.55,
                 child: GetBuilder<SecondaryAsrunModificationController>(
                     id: "diaGrid",
                     builder: (controllerX) {
