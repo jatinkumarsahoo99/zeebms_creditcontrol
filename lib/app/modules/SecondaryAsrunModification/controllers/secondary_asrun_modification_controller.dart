@@ -53,6 +53,8 @@ class SecondaryAsrunModificationController extends GetxController {
 
   Rx<bool> isEnable = Rx<bool>(true);
 
+  var rebuildSecModKey = GlobalKey<ScaffoldState>();
+
   Offset? getOffSetValue(BoxConstraints constraints) {
     switch (initialOffset.value) {
       case 1:
@@ -167,7 +169,7 @@ class SecondaryAsrunModificationController extends GetxController {
             if (map is Map && map['bindGrid'] != null) {
               secondaryAsrunGridModel =
                   SecondaryAsrunGridModel.fromJson(map as Map<String, dynamic>);
-              lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun;
+              lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun??[];
               isEnable.value = false;
               isEnable.refresh();
               update(['grid']);
@@ -211,7 +213,7 @@ class SecondaryAsrunModificationController extends GetxController {
 
   telFun(int index) {
     bool? blnRowUpdated = false;
-    lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun;
+    lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun??[];
 
     for (int i = 0; i < (stateManager?.rows.length ?? 0); i++) {
       if (index == i) {
@@ -223,7 +225,7 @@ class SecondaryAsrunModificationController extends GetxController {
               ((stateManager?.rows[i].cells['telecastTime']?.value) ==
                   secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun?[j].telecastTime)) {
             secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun?[j].spotStatus = "U";
-            lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun;
+            lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun??[];
             blnRowUpdated = true;
           }
         }
