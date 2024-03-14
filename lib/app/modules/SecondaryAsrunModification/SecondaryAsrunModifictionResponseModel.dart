@@ -1,86 +1,68 @@
-class SecondaryAsrunGridModel {
-  BindGrid? bindGrid;
+class SecondaryAsrunModifictionResponseModel {
+  PostSave? postSave;
 
-  SecondaryAsrunGridModel({this.bindGrid});
+  SecondaryAsrunModifictionResponseModel({this.postSave});
 
-  SecondaryAsrunGridModel.fromJson(Map<String, dynamic> json) {
-    bindGrid = json['bindGrid'] != null
-        ? new BindGrid.fromJson(json['bindGrid'])
+  SecondaryAsrunModifictionResponseModel.fromJson(Map<String, dynamic> json) {
+    postSave = json['postSave'] != null
+        ? new PostSave.fromJson(json['postSave'])
         : null;
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    if (this.bindGrid != null) {
-      data['bindGrid'] = this.bindGrid!.toJson();
+    if (this.postSave != null) {
+      data['postSave'] = this.postSave!.toJson();
     }
     return data;
   }
 }
 
-class BindGrid {
-  List<Lstbookingdetail>? lstbookingdetail;
-  List<LstAsRunBookingDetails>? lstAsRunBookingDetails;
-  List<LstFinalAsRun>? lstFinalAsRun;
+class PostSave {
+  List<DgvAsRunModification>? dgvAsRunModification;
+  List<DgvTelecasted>? dgvTelecasted;
+  String? message;
 
-  BindGrid(
-      {
-        // this.lstbookingdetail,
-        this.lstAsRunBookingDetails, this.lstFinalAsRun});
+  PostSave({this.dgvAsRunModification, this.dgvTelecasted, this.message});
 
-  BindGrid.fromJson(Map<String, dynamic> json) {
-
-    if (json['lstbookingdetail'] != null) {
-      lstbookingdetail = <Lstbookingdetail>[];
-      json['lstbookingdetail'].forEach((v) {
-        lstbookingdetail!.add(new Lstbookingdetail.fromJson(v));
+  PostSave.fromJson(Map<String, dynamic> json) {
+    if (json['dgvAsRunModification'] != null) {
+      dgvAsRunModification = <DgvAsRunModification>[];
+      json['dgvAsRunModification'].forEach((v) {
+        dgvAsRunModification!.add(new DgvAsRunModification.fromJson(v));
       });
     }
-
-    if (json['lstAsRunBookingDetails'] != null) {
-      lstAsRunBookingDetails = <LstAsRunBookingDetails>[];
-      json['lstAsRunBookingDetails'].forEach((v) {
-        lstAsRunBookingDetails!.add(new LstAsRunBookingDetails.fromJson(v));
+    if (json['dgvTelecasted'] != null) {
+      dgvTelecasted = <DgvTelecasted>[];
+      json['dgvTelecasted'].forEach((v) {
+        dgvTelecasted!.add(new DgvTelecasted.fromJson(v));
       });
     }
-
-    if (json['lstFinalAsRun'] != null) {
-      lstFinalAsRun = <LstFinalAsRun>[];
-      json['lstFinalAsRun'].forEach((v) {
-        lstFinalAsRun!.add(new LstFinalAsRun.fromJson(v));
-      });
-    }
-
+    message = json['message'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    // data['lstbookingdetail'] = this.lstbookingdetail;
-
-    if (this.lstbookingdetail != null) {
-      data['lstbookingdetail'] =
-          this.lstbookingdetail!.map((v) => v.toJson()).toList();
+    if (this.dgvAsRunModification != null) {
+      data['dgvAsRunModification'] =
+          this.dgvAsRunModification!.map((v) => v.toJson()).toList();
     }
-
-    if (this.lstAsRunBookingDetails != null) {
-      data['lstAsRunBookingDetails'] =
-          this.lstAsRunBookingDetails!.map((v) => v.toJson()).toList();
+    if (this.dgvTelecasted != null) {
+      data['dgvTelecasted'] =
+          this.dgvTelecasted!.map((v) => v.toJson()).toList();
     }
-    if (this.lstFinalAsRun != null) {
-      data['lstFinalAsRun'] =
-          this.lstFinalAsRun!.map((v) => v.toJson()).toList();
-    }
+    data['message'] = this.message;
     return data;
   }
 }
 
-class LstAsRunBookingDetails {
+class DgvAsRunModification {
   String? bookingNumber;
   String? tapeID;
   int? tapeDuration;
   String? programName;
   String? spotStatus;
-  String? telecastDuration;
+  int? telecastDuration;
   String? scheduleTime;
   String? telecastTime;
   String? rosTimeBand;
@@ -112,7 +94,7 @@ class LstAsRunBookingDetails {
   String? accountCode;
   String? bookedProgramCode;
 
-  LstAsRunBookingDetails(
+  DgvAsRunModification(
       {this.bookingNumber,
         this.tapeID,
         this.tapeDuration,
@@ -150,17 +132,17 @@ class LstAsRunBookingDetails {
         this.accountCode,
         this.bookedProgramCode});
 
-  LstAsRunBookingDetails.fromJson(Map<String, dynamic> json) {
+  DgvAsRunModification.fromJson(Map<String, dynamic> json) {
     bookingNumber = json['bookingNumber'];
     tapeID = json['tapeID'];
     tapeDuration = json['tapeDuration'];
     programName = json['programName'];
     spotStatus = json['spotStatus'];
-    telecastDuration = (json['telecastDuration']??"").toString();
+    telecastDuration = json['telecastDuration'];
     scheduleTime = json['scheduleTime'];
     telecastTime = json['telecastTime'];
     rosTimeBand = json['rosTimeBand'];
-    spotAmount = (json['SpotAmount']??"0.00").toString();
+    spotAmount = json['SpotAmount'];
     bookingdetailcode = json['bookingdetailcode'];
     clientName = json['clientName'];
     agencyName = json['agencyName'];
@@ -188,7 +170,6 @@ class LstAsRunBookingDetails {
     accountCode = json['accountCode'];
     bookedProgramCode = json['bookedProgramCode'];
   }
-//miD_Pre
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -197,17 +178,17 @@ class LstAsRunBookingDetails {
     data['tapeDuration'] = this.tapeDuration;
     data['programName'] = this.programName;
     data['spotStatus'] = this.spotStatus;
-    data['telecastDuration'] = (telecastDuration == "0")?"":(telecastDuration??"");
+    data['telecastDuration'] = this.telecastDuration;
     data['scheduleTime'] = this.scheduleTime;
     data['telecastTime'] = this.telecastTime;
     data['rosTimeBand'] = this.rosTimeBand;
-    data['spotAmount'] = this.spotAmount;
+    data['SpotAmount'] = this.spotAmount;
     data['bookingdetailcode'] = this.bookingdetailcode;
     data['clientName'] = this.clientName;
     data['agencyName'] = this.agencyName;
     data['brandName'] = this.brandName;
     data['caption'] = this.caption;
-    data['MID/Pre'] = this.miDPre;
+    data['midPre'] = this.miDPre;
     data['billnumber'] = this.billnumber;
     data['status'] = this.status;
     data['remarks'] = this.remarks;
@@ -232,7 +213,7 @@ class LstAsRunBookingDetails {
   }
 }
 
-class LstFinalAsRun {
+class DgvTelecasted {
   String? exportTapeCode;
   String? exportTapeCaption;
   String? tapeDuration;
@@ -243,7 +224,7 @@ class LstFinalAsRun {
   String? segmentNumber;
   String? programCode;
 
-  LstFinalAsRun(
+  DgvTelecasted(
       {this.exportTapeCode,
         this.exportTapeCaption,
         this.tapeDuration,
@@ -254,7 +235,7 @@ class LstFinalAsRun {
         this.segmentNumber,
         this.programCode});
 
-  LstFinalAsRun.fromJson(Map<String, dynamic> json) {
+  DgvTelecasted.fromJson(Map<String, dynamic> json) {
     exportTapeCode = json['exportTapeCode'];
     exportTapeCaption = json['exportTapeCaption'];
     tapeDuration = (json['tapeDuration']??"0").toString();
@@ -279,40 +260,4 @@ class LstFinalAsRun {
     data['programCode'] = this.programCode;
     return data;
   }
-
-  Map<String, dynamic> toJson1() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['exportTapeCode'] = this.exportTapeCode;
-    data['exportTapeCaption'] = this.exportTapeCaption;
-    data['tapeDuration'] = (this.tapeDuration != null && this.tapeDuration != "")?int.parse(this.tapeDuration??"0"):0;
-    data['programname'] = this.programname;
-    data['telecastTime'] = this.telecastTime;
-    data['spotStatus'] = this.spotStatus;
-    data['spotPosition'] = this.spotPosition;
-    data['segmentNumber'] = this.segmentNumber;
-    data['programCode'] = this.programCode;
-    return data;
-  }
-
 }
-
-
-class Lstbookingdetail {
-  String? tapecode;
-  String? schtime;
-
-  Lstbookingdetail({this.tapecode, this.schtime});
-
-  Lstbookingdetail.fromJson(Map<String, dynamic> json) {
-    tapecode = json['tapecode'];
-    schtime = json['schtime'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['tapecode'] = this.tapecode;
-    data['schtime'] = this.schtime;
-    return data;
-  }
-}
-
