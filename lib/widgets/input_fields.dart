@@ -2776,10 +2776,11 @@ class InputFields {
                         /* controller.text =
                             "${(int.tryParse(controller.text) ?? 1) - 1}";*/
                         if (!isNegativeReq) {
-                          if (int.tryParse(controller.text) != 1 ||
+                          if (int.tryParse(controller.text) != 1 &&
                               int.tryParse(controller.text) != 0) {
-                            controller.text =
-                                "${(int.tryParse(controller.text) ?? 1) - 1}";
+                            controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
+                          }else{
+                            controller.text = "0";
                           }
                         } else {
                           controller.text =

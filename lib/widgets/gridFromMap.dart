@@ -349,6 +349,9 @@ class DataGridFromMap extends StatelessWidget {
   }
 }
 
+
+
+
 class DataGridFromMap6 extends StatelessWidget {
   final Map<String, double>? widthSpecificColumn;
   DataGridFromMap6({
@@ -1806,5 +1809,598 @@ class DataGridFromMap4 extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+
+
+class DataGridFromMapCompareDialog extends StatelessWidget {
+  final Map<String, double>? widthSpecificColumn;
+  DataGridFromMapCompareDialog({
+    Key? key,
+    required this.mapData,
+    this.colorCallback,
+    this.showSrNo = true,
+    this.hideCode = true,
+    this.widthRatio,
+    this.showonly,
+    this.enableSort = false,
+    this.onload,
+    this.hideKeys,
+    this.mode,
+    this.editKeys,
+    this.onEdit,
+    this.actionIcon,
+    this.keyMapping,
+    this.actionIconKey,
+    this.columnAutoResize = false,
+    this.actionOnPress,
+    this.onSelected,
+    this.checkRowKey = "selected",
+    this.onRowDoubleTap,
+    this.formatDate = true,
+    this.dateFromat = "dd-MM-yyyy",
+    this.onFocusChange,
+    this.checkRow,
+    this.doPasccal = true,
+    this.exportFileName,
+    this.focusNode,
+    this.previousWidgetFN,
+    this.specificWidth,
+    this.rowHeight = 25,
+    this.headerHeight = 30,
+    this.minimumWidth,
+    this.widthSpecificColumn,
+  }) : super(key: key);
+  final List mapData;
+  final double rowHeight;
+  final double headerHeight;
+  final double? minimumWidth;
+  bool enableSort;
+  final Map<String, double>? specificWidth;
+  final bool? showSrNo;
+  final bool? hideCode;
+  final PlutoGridMode? mode;
+  final bool? formatDate;
+  final bool? checkRow;
+  final String? checkRowKey;
+  final Map? keyMapping;
+  final String? dateFromat;
+  final String? exportFileName;
+  final List<String>? showonly;
+  final Function(PlutoGridOnRowDoubleTapEvent)? onRowDoubleTap;
+  final Function(PlutoGridOnChangedEvent)? onEdit;
+  final Function(bool)? onFocusChange;
+  final List? hideKeys;
+  final Function(PlutoGridOnSelectedEvent)? onSelected;
+  final double? widthRatio;
+  final IconData? actionIcon;
+  final String? actionIconKey;
+  final bool columnAutoResize;
+  final List<String>? editKeys;
+  final Function? actionOnPress;
+  final bool doPasccal;
+  Color Function(PlutoRowColorContext)? colorCallback;
+  Function(PlutoGridOnLoadedEvent)? onload;
+  final GlobalKey rebuildKey = GlobalKey();
+  FocusNode? focusNode;
+  FocusNode? previousWidgetFN;
+
+  @override
+  Widget build(BuildContext context) {
+    List<PlutoColumn> segColumn = [];
+
+    focusNode ??= FocusNode();
+    List<PlutoRow> segRows = [];
+    if (showSrNo!) {
+      segColumn.add(PlutoColumn(
+          title: "Sr. No.",
+          enableRowChecked: false,
+          readOnly: true,
+          enableSorting: enableSort,
+          enableRowDrag: false,
+          enableDropToResize: true,
+          enableContextMenu: false,
+          minWidth: 10,
+          width: (widthSpecificColumn != null &&
+              widthSpecificColumn!.containsKey("no"))
+              ? widthSpecificColumn!["no"]!
+              : Utils.getColumnSize(key: "no", value: mapData[0][key]),
+          enableAutoEditing: false,
+          hide: hideCode! &&
+              key.toString().toLowerCase() != "hourcode" &&
+              key.toString().toLowerCase().contains("code"),
+          enableColumnDrag: false,
+          field: "no",
+          type: PlutoColumnType.text()));
+    }
+    if (showonly != null && showonly!.isNotEmpty) {
+      for (var key in showonly!) {
+        if ((mapData[0] as Map).containsKey(key)) {
+          segColumn.add(
+            PlutoColumn(
+                title: doPasccal
+                    ? keyMapping != null
+                    ? keyMapping!.containsKey(key)
+                    ? keyMapping![key]
+                    : key == "fpcCaption"
+                    ? "FPC Caption"
+                    : key.toString().pascalCaseToNormal()
+                    : key.toString().pascalCaseToNormal()
+                    : key.toString(),
+                enableRowChecked:
+                (checkRow == true && key == checkRowKey) ? true : false,
+                renderer: ((rendererContext) {
+                  if (actionIconKey != null && key == actionIconKey) {
+                    return GestureDetector(
+                      child: Icon(
+                        actionIcon,
+                        size: 19,
+                      ),
+                      onTap: () {
+                        actionOnPress!(rendererContext.rowIdx);
+                      },
+                    );
+                    // if () {
+                    // } else {
+                    //   return GestureDetector(
+                    //     onSecondaryTapDown: (detail) {
+                    //       DataGridMenu().showGridMenu(
+                    //           rendererContext.stateManager, detail, context);
+                    //     },
+                    //     child: Text(
+                    //       rendererContext.cell.value.toString(),
+                    //       style: TextStyle(
+                    //         fontSize: SizeDefine.columnTitleFontSize,
+                    //       ),
+                    //     ),
+                    //   );
+                    // }
+                  } else {
+                    return GestureDetector(
+                      onSecondaryTapDown: (detail) {
+                        DataGridMenu().showGridMenu(
+                            rendererContext.stateManager, detail, context,
+                            data: mapData, exportFileName: exportFileName);
+                      },
+                      child: Container(
+                        color: getColors(rendererContext),
+                        height: 30,
+                        child: Text(
+                          (rendererContext.cell.value ?? "").toString(),
+                          style: TextStyle(
+                            fontSize: SizeDefine.columnTitleFontSize,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    );
+                  }
+                }),
+                enableSorting: enableSort,
+                enableRowDrag: false,
+                enableEditingMode: editKeys != null && editKeys!.contains(key),
+                enableDropToResize: true,
+                enableContextMenu: false,
+                /*width: Utils.getColumnSize(
+                  key: key,
+                  value: mapData[0][key].toString(),
+                ),*/
+                minWidth: minimumWidth ?? 25,
+                width: (widthSpecificColumn != null &&
+                    widthSpecificColumn!.containsKey(key))
+                    ? widthSpecificColumn![key]!
+                    : Utils.getColumnSize(key: key, value: mapData[0][key]),
+                enableAutoEditing: false,
+                hide: showonly == null
+                    ? (hideKeys != null && hideKeys!.contains(key)) ||
+                    hideCode! &&
+                        key.toString().toLowerCase() != "hourcode" &&
+                        key.toString().toLowerCase().contains("code")
+                    : !showonly!.contains(key),
+                enableColumnDrag: false,
+                field: key,
+                type: PlutoColumnType.text()),
+          );
+        }
+      }
+    } else {
+      for (var key in mapData[0].keys) {
+        segColumn.add(PlutoColumn(
+            titlePadding: EdgeInsets.only(),
+            title: doPasccal
+                ? key == "fpcCaption"
+                ? "FPC Caption"
+                : Utils.normalCaseToPascalCase(key)
+                : key,
+            enableRowChecked:
+            (checkRow == true && key == checkRowKey) ? true : false,
+            renderer: ((rendererContext) {
+              if (actionIconKey != null) {
+                if (key == actionIconKey) {
+                  return GestureDetector(
+                    child: Icon(
+                      actionIcon,
+                      size: 19,
+                      color: Theme.of(context).primaryColor,
+                    ),
+                    onTap: () {
+                      actionOnPress!(rendererContext.rowIdx);
+                    },
+                  );
+                } else {
+                  return GestureDetector(
+                    onSecondaryTapDown: (detail) {
+                      DataGridMenu().showGridMenu(
+                          rendererContext.stateManager, detail, context,
+                          data: mapData, exportFileName: exportFileName);
+                    },
+                    child: Container(
+                      color: getColors(rendererContext),
+                      height: 30,
+                      child: Text(
+                        rendererContext.cell.value.toString(),
+                        style: TextStyle(
+                          fontSize: SizeDefine.columnTitleFontSize,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  );
+                }
+              } else {
+                return GestureDetector(
+                  onSecondaryTapDown: (detail) {
+                    DataGridMenu().showGridMenu(
+                        rendererContext.stateManager, detail, context,
+                        data: mapData, exportFileName: exportFileName);
+                  },
+                  child: Container(
+                    color: getColors(rendererContext),
+                    height: 30,
+                    child: Text(
+                      rendererContext.cell.value.toString(),
+                      style: TextStyle(
+                        fontSize: SizeDefine.columnTitleFontSize,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                );
+              }
+            }),
+            enableSorting: enableSort,
+            enableRowDrag: false,
+            enableEditingMode: editKeys != null && editKeys!.contains(key),
+            enableDropToResize: true,
+            enableContextMenu: false,
+            // width: Utils.getColumnSize(key: key, value: mapData[0][key]),
+            minWidth: minimumWidth ?? 25,
+            width: (widthSpecificColumn != null &&
+                widthSpecificColumn!.containsKey(key))
+                ? widthSpecificColumn![key]!
+                : Utils.getColumnSize(key: key, value: mapData[0][key]),
+            enableAutoEditing: false,
+            hide: showonly == null
+                ? (hideKeys != null && hideKeys!.contains(key)) ||
+                hideCode! &&
+                    key.toString().toLowerCase() != "hourcode" &&
+                    key.toString().toLowerCase().contains("code")
+                : !showonly!.contains(key),
+            enableColumnDrag: false,
+            field: key,
+            type: PlutoColumnType.text()));
+      }
+    }
+
+    for (var i = 0; i < mapData.length; i++) {
+      Map row = mapData[i];
+
+      Map<String, PlutoCell> cells = {};
+      if (showSrNo!) {
+        cells["no"] = PlutoCell(value: i + 1);
+      }
+      try {
+        for (var element in row.entries) {
+          cells[element.key] = PlutoCell(
+            value: element.key == "selected" ||
+                element.value == null ||
+                (element.value is Map)
+                ? ""
+                : element.key.toString().toLowerCase().contains("date") &&
+                formatDate!
+                ? DateFormat(dateFromat).format(DateTime.parse(
+                element.value.toString().replaceAll("T", " ")))
+                : element.value.toString(),
+          );
+        }
+        segRows.add(PlutoRow(cells: cells, sortIdx: i));
+      } catch (e) {
+        print("problem in adding rows ${e.toString()}");
+      }
+    }
+
+    return Scaffold(
+      key: rebuildKey,
+      body: Focus(
+        onFocusChange: onFocusChange,
+        focusNode: focusNode,
+        autofocus: false,
+        child: PlutoGrid(
+            onChanged: onEdit,
+            mode: mode ?? PlutoGridMode.normal,
+            configuration: plutoGridConfiguration(
+                focusNode: focusNode!,
+                autoScale: columnAutoResize,
+                actionOnPress: actionOnPress,
+                actionKey: actionIconKey,
+                previousWidgetFN: previousWidgetFN,
+                rowHeight: rowHeight,
+                headerHeight: headerHeight),
+            rowColorCallback: colorCallback,
+            onLoaded: (load) {
+              if (widthSpecificColumn == null || widthSpecificColumn == {}) {
+                load.stateManager.setColumnSizeConfig(PlutoGridColumnSizeConfig(
+                    autoSizeMode: PlutoAutoSizeMode.none,
+                    resizeMode: PlutoResizeMode.normal));
+              }
+
+              load.stateManager.setKeepFocus(false);
+              if (onload != null) {
+                onload!(load);
+              }
+            },
+            columns: segColumn,
+            onRowDoubleTap: onRowDoubleTap,
+            onSelected: onSelected,
+            rows: segRows),
+      ),
+    );
+  }
+}
+
+
+
+Color getColors(PlutoColumnRendererContext plutoCon) {
+  Color color = Colors.white;
+  // print(">>>>>>>>>>>>>>>>>>>keyGet ${plutoCon.cell.column.title} - ${plutoCon.rowIdx}");
+  // print(">>>>>>>>>>>>>>>>>>>keyGet field ${plutoCon.cell.column.field} - ${plutoCon.rowIdx}");
+  try {
+    /*if (plutoCon.stateManager.currentRowIdx == plutoCon.rowIdx) {
+      color = Colors.deepPurple.shade200;
+      return color;
+    }*/
+
+    if (plutoCon.cell.column.title.toString().trim().toLowerCase() ==
+        "Starttime_current".toLowerCase()) {
+      DateTime dateTime1 = DateFormat("yyyy-MM-dd HH:mm:ss").parse("2024-03-28 ${plutoCon.cell.value}");
+      String ? dateTimeString = plutoCon
+          .stateManager.rows[plutoCon.rowIdx].cells['starttime_Proposed']?.value
+          .toString();
+      DateTime dateTime2 = DateFormat("yyyy-MM-dd HH:mm:ss").parse("2024-03-28 ${dateTimeString}");
+
+      // print(">>>>>>>>>> sta dateTime1.isAfter(dateTime2) ${dateTime1} - ${dateTime1.isAfter(dateTime2)} dateTime1.isBefore(dateTime2) ${dateTime2} ${dateTime1.isBefore(dateTime2)}");
+
+      if(dateTime1.isBefore(dateTime2)){
+        color = Colors.lightGreen;
+      }else{
+        color = Colors.white;
+      }
+      return color;
+    }
+
+    if (plutoCon.cell.column.title.toString().trim().toLowerCase() ==
+        "Starttime_proposed".toLowerCase()) {
+      DateTime dateTime1 = DateFormat("yyyy-MM-dd HH:mm:ss").parse("2024-03-28 ${plutoCon.cell.value}");
+      String ? dateTimeString = plutoCon
+          .stateManager.rows[plutoCon.rowIdx].cells['starttime_Current']?.value
+          .toString();
+      DateTime dateTime2 = DateFormat("yyyy-MM-dd HH:mm:ss").parse("2024-03-28 ${dateTimeString}");
+
+      // print(">>>>>>>>>> sta dateTime1.isAfter(dateTime2) ${dateTime1} - ${dateTime1.isAfter(dateTime2)} dateTime1.isBefore(dateTime2) ${dateTime2} ${dateTime1.isBefore(dateTime2)}");
+
+      if(dateTime1.isBefore(dateTime2)){
+        color = Colors.pink;
+      }else{
+        color = Colors.white;
+      }
+      return color;
+    }
+
+     if(plutoCon.cell.column.title.toString().trim().toLowerCase() ==
+        "Endtime_proposed".toLowerCase()){
+
+      DateTime dateTime1 = DateFormat("yyyy-MM-dd HH:mm:ss").parse("2024-03-28 ${plutoCon.cell.value}");
+      String ? dateTimeString = plutoCon
+          .stateManager.rows[plutoCon.rowIdx].cells['endTime_Current']?.value
+          .toString();
+      DateTime dateTime2 = DateFormat("yyyy-MM-dd HH:mm:ss").parse("2024-03-28 ${dateTimeString}");
+
+      print(">>>>>>>>>> sta????? dateTime1.isAfter(dateTime2) ${dateTime1} - ${dateTime1.isAfter(dateTime2)} dateTime1.isBefore(dateTime2) ${dateTime2} ${dateTime1.isBefore(dateTime2)}");
+
+
+      if(dateTime1.isAfter(dateTime2)){
+        color = Colors.lightGreen;
+      }else{
+        color = Colors.white;
+      }
+      return color;
+    }
+
+    if(plutoCon.cell.column.title.toString().trim().toLowerCase() ==
+        "Endtime_current".toLowerCase()){
+
+      DateTime dateTime1 = DateFormat("yyyy-MM-dd HH:mm:ss").parse("2024-03-28 ${plutoCon.cell.value}");
+      String ? dateTimeString = plutoCon
+          .stateManager.rows[plutoCon.rowIdx].cells['endTime_Proposed']?.value
+          .toString();
+      DateTime dateTime2 = DateFormat("yyyy-MM-dd HH:mm:ss").parse("2024-03-28 ${dateTimeString}");
+
+      print(">>>>>>>>>> sta>>> dateTime1.isAfter(dateTime2) ${dateTime1} - ${dateTime1.isAfter(dateTime2)} dateTime1.isBefore(dateTime2) ${dateTime2} ${dateTime1.isBefore(dateTime2)}");
+
+
+      if(dateTime1.isAfter(dateTime2)){
+        color = Colors.lightGreen;
+      }else{
+        color = Colors.white;
+      }
+      return color;
+    }
+
+    if(plutoCon.cell.column.title.toString().trim().toLowerCase() ==
+        "seconds_Proposed".toLowerCase()){
+
+      double data1 = getNumType(text: plutoCon.cell.value);
+      double data2 = getNumType(text: (plutoCon
+          .stateManager.rows[plutoCon.rowIdx].cells['seconds_Current']?.value??"").toString());
+
+      if(data1 > data2){
+        color = Colors.lightGreen;
+      }else{
+        color = Colors.white;
+      }
+      return color;
+    }
+
+     if(plutoCon.cell.column.title.toString().trim().toLowerCase() ==
+        "Seconds_current".toLowerCase()){
+
+
+      double data1 = getNumType(text: plutoCon.cell.value);
+      double data2 = getNumType(text: (plutoCon
+          .stateManager.rows[plutoCon.rowIdx].cells['seconds_Proposed']?.value??"").toString());
+
+      if(data1 > data2){
+        color = Colors.lightGreen;
+      }else{
+        color = Colors.white;
+      }
+      return color;
+    }
+
+    if(plutoCon.cell.column.title.toString().trim().toLowerCase() ==
+        "rate_Proposed".toLowerCase()){
+
+      double data1 = getNumType(text: plutoCon.cell.value);
+      double data2 = getNumType(text: (plutoCon
+          .stateManager.rows[plutoCon.rowIdx].cells['rate_current']?.value??"").toString());
+
+      if(data1 > data2){
+        color = Colors.lightGreen;
+      }else{
+        color = Colors.white;
+      }
+      return color;
+    }
+
+     if(plutoCon.cell.column.title.toString().trim().toLowerCase() ==
+        "Rate_current".toLowerCase()){
+
+       double data1 = getNumType(text: plutoCon.cell.value);
+       double data2 = getNumType(text: (plutoCon
+           .stateManager.rows[plutoCon.rowIdx].cells['rate_Proposed']?.value??"").toString());
+
+       if(data1 > data2){
+         color = Colors.lightGreen;
+       }else{
+         color = Colors.white;
+       }
+      return color;
+    }
+
+    if(plutoCon.cell.column.title.toString().trim().toLowerCase() ==
+        "amount_Proposed".toLowerCase()){
+
+      double data1 = getNumType(text: plutoCon.cell.value);
+      double data2 = getNumType(text: (plutoCon
+          .stateManager.rows[plutoCon.rowIdx].cells['amount_Current']?.value??"").toString());
+
+      if(data1 > data2){
+        color = Colors.lightGreen;
+      }else{
+        color = Colors.white;
+      }
+      return color;
+    }
+
+    if(plutoCon.cell.column.title.toString().trim().toLowerCase() ==
+        "amount_Current".toLowerCase()){
+
+      double data1 = getNumType(text: plutoCon.cell.value);
+      double data2 = getNumType(text: (plutoCon
+          .stateManager.rows[plutoCon.rowIdx].cells['amount_Proposed']?.value??"").toString());
+
+      if(data1 > data2){
+        color = Colors.lightGreen;
+      }else{
+        color = Colors.white;
+      }
+
+      return color;
+    }
+
+
+
+    if(plutoCon.cell.column.title.toString().trim().toLowerCase() ==
+        "valuationRate_Proposed".toLowerCase()){
+
+      double data1 = getNumType(text: plutoCon.cell.value);
+      double data2 = getNumType(text: (plutoCon
+          .stateManager.rows[plutoCon.rowIdx].cells['valuationRate_Current']?.value??"").toString());
+
+      if(data1 > data2){
+        color = Colors.lightGreen;
+      }else{
+        color = Colors.white;
+      }
+      return color;
+    }
+
+     if(plutoCon.cell.column.title.toString().trim().toLowerCase() ==
+        "Valuationrate_current".toLowerCase()){
+
+       double data1 = getNumType(text: plutoCon.cell.value);
+       double data2 = getNumType(text: (plutoCon
+           .stateManager.rows[plutoCon.rowIdx].cells['valuationRate_Proposed']?.value??"").toString());
+
+       if(data1 > data2){
+         color = Colors.lightGreen;
+       }else{
+         color = Colors.white;
+       }
+      return color;
+    }
+
+     if (plutoCon.stateManager.currentCell == plutoCon.cell) {
+      color = Colors.deepPurple.shade200;
+      return color;
+    }
+
+     color = Colors.white;
+     return color;
+
+  } catch (e) {
+    if (plutoCon.stateManager.currentCell == plutoCon.cell) {
+      color = Colors.deepPurple.shade200;
+    } else {
+      color = Colors.white;
+    }
+  }
+
+  return color;
+}
+
+double getNumType({String ? text}){
+  try{
+    if(text != null && text != ""){
+      return double.parse(text);
+    }else{
+      return 0.0;
+    }
+  }catch(e){
+    return 0.0;
   }
 }
