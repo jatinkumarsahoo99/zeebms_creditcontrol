@@ -580,9 +580,24 @@ class SecondaryAsrunModificationController extends GetxController {
 
   clearAll() {
     LoadingDialog.modify4("Unsaved data will be lost, want to continue?", () {
-      Get.delete<SecondaryAsrunModificationController>();
-      Get.find<HomeController>().clearPage1();
+      // Get.delete<SecondaryAsrunModificationController>();
+      // Get.find<HomeController>().clearPage1();
+      clearAllVariable();
     }, () {}, deleteTitle: "Yes", confirmTitle: "No");
+  }
+
+  clearAllVariable(){
+    secondaryAsrunModifictionResponseModel = null;
+    secondaryAsrunGridModel = null;
+    isEnable.value = true;
+    isEnable.refresh();
+    lstFinalAsRunDataList = [];
+     selectedLocation = null;
+     selectedChannel = null;
+    dialogWidget = null;
+    canDialogShow.value = false;
+     update(['grid']);
+
   }
 
   formHandler(String text) {
