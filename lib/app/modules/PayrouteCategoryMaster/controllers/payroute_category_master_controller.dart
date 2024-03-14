@@ -60,13 +60,13 @@ class PayrouteCategoryMasterController extends GetxController {
     tecPayRouteCategory.value.text =
         tecPayRouteCategory.value.text.toUpperCase();
     payrouteCategoryCode = "";
-    LoadingDialog.call();
+    // LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
       api: ApiFactory.PAYROUTE_CATEGORY_MASTER_GET_RECORD(
         tecPayRouteCategory.value.text,
       ),
       fun: (resp) {
-        Get.back();
+        // Get.back();
         if (resp != null &&
             resp is Map<String, dynamic> &&
             resp.containsKey("retrieve")) {
@@ -85,7 +85,7 @@ class PayrouteCategoryMasterController extends GetxController {
         }
       },
       failed: (resp) {
-        Get.back();
+        // Get.back();
         LoadingDialog.showErrorDialog(resp.toString());
       },
     );
