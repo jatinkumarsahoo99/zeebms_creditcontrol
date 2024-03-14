@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../widgets/LoadingDialog.dart';
 import '../../../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import '../../../controller/ConnectorControl.dart';
+import '../../../controller/HomeController.dart';
 import '../../../providers/ApiFactory.dart';
 import '../views/email_bill_details_view.dart';
 import 'package:dio/dio.dart' as dio;
@@ -51,6 +52,7 @@ class EmailBillDetailsController extends GetxController {
   TextEditingController counter2_ = TextEditingController(text: "0");
 
   TextEditingController tecTestTo = TextEditingController();
+  // TextEditingController tecDate = TextEditingController(text: "30-4-2018");
   TextEditingController tecDate = TextEditingController();
 
   TextEditingController tecPath = TextEditingController();
@@ -442,6 +444,35 @@ class EmailBillDetailsController extends GetxController {
     );
   }
 
+  void callChangeAllFromTo({
+    required bool isChecked,
+    required int txtToRowValue,
+    required int txtFromNoValue,
+  }) {
+    int j;
+    if (txtToRowValue > gridData.length) {
+      j = gridData.length;
+    } else {
+      j = txtToRowValue;
+    }
+    for (int i = txtFromNoValue; i <= j; i++) {
+      if (i > 0) {
+        gridData.value[stateManager!.refRows[i - 1].sortIdx]['selected'] =
+            isChecked.toString();
+        stateManager!.changeCellValue(
+          stateManager!.getRowByIdx(i - 1)!.cells['selected']!,
+          isChecked.toString(),
+          callOnChangedEvent: false,
+          force: true,
+          notify: true,
+        );
+      }
+
+      // print(responseData);
+      // gridData.refresh();
+    }
+  }
+
   onSummary() {
     var summaryDetails = [];
     gridData.asMap().forEach((index, e) {
@@ -459,6 +490,66 @@ class EmailBillDetailsController extends GetxController {
         });
       }
     });
+    if (selectedFrom == null) {
+      LoadingDialog.showErrorDialog("Please select From");
+    } else if (tecTestTo.text.isEmpty) {
+      LoadingDialog.showErrorDialog("Test to cannot be empty");
+    } else if (summaryDetails.isEmpty) {
+      LoadingDialog.showErrorDialog("Please select data from grid");
+    } else {
+      var model = {
+        "companyCode": selectedCompany?.key ?? "",
+        "companyName": selectedCompany?.value ?? "",
+        "billdate": dateFormat(tecDate.text),
+        "details": summaryDetails,
+        "testMailFrom": selectedFrom?.value ?? "",
+        "testMailTo": tecTestTo.text,
+        "testMailBody": tecbody.text,
+        "isEmailSendTest": sendTest.value
+      };
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.EMAIL_BILL_DETAILS_SUMMARY,
+        json: model,
+        fun: (resp) {
+          closeDialogIfOpen();
+          if (resp != null && resp is Map<String, dynamic>) {
+            if (resp.toString().contains("successfully")) {
+              LoadingDialog.callDataSaved(
+                msg: resp["summary"]["message"],
+                callback: () {
+                  // callClear();
+                },
+              );
+            } else {
+              LoadingDialog.showErrorDialog(resp["summary"]["message"]);
+            }
+          }
+        },
+        failed: (resp) {
+          closeDialogIfOpen();
+
+          LoadingDialog.showErrorDialog(resp);
+        },
+      );
+    }
+
+    // var summaryDetails = [];
+    // gridData.asMap().forEach((index, e) {
+    //   // print
+    //   if (e["selected"].toString() == "true") {
+    //     summaryDetails.add({
+    //       "rowNo": index,
+    //       "locationcode": e["locationcode"],
+    //       "channelcode": e["channelCode"],
+    //       "clientcode": e["clientCode"],
+    //       "clientName": e["clientName"],
+    //       "agencycode": e["agencyCode"],
+    //       "agencyName": e["agencyName"],
+    //       "mailTo": e["mailto"]
+    //     });
+    //   }
+    // });
     // gridData.map((e) {
     //   if (e["selected"]) {
     //     summaryDetails.add({
@@ -473,41 +564,6 @@ class EmailBillDetailsController extends GetxController {
     //     });
     //   }
     // });
-    var model = {
-      "companyCode": selectedCompany?.key ?? "",
-      "companyName": selectedCompany?.value ?? "",
-      "billdate": dateFormat(tecDate.text),
-      "details": summaryDetails,
-      "testMailFrom": selectedFrom?.value ?? "",
-      "testMailTo": tecTestTo.text,
-      "testMailBody": tecbody.text,
-      "isEmailSendTest": sendTest.value
-    };
-    LoadingDialog.call();
-    Get.find<ConnectorControl>().POSTMETHOD(
-      api: ApiFactory.EMAIL_BILL_DETAILS_SUMMARY,
-      json: model,
-      fun: (resp) {
-        closeDialogIfOpen();
-        if (resp != null && resp is Map<String, dynamic>) {
-          if (resp.toString().contains("successfully")) {
-            LoadingDialog.callDataSaved(
-              msg: resp["summary"]["message"],
-              callback: () {
-                // callClear();
-              },
-            );
-          } else {
-            LoadingDialog.showErrorDialog(resp["summary"]["message"]);
-          }
-        }
-      },
-      failed: (resp) {
-        closeDialogIfOpen();
-
-        LoadingDialog.showErrorDialog(resp);
-      },
-    );
   }
 
   onBills(bool isBills) {
@@ -529,76 +585,84 @@ class EmailBillDetailsController extends GetxController {
         });
       }
     });
-    var model = {
-      "companyCode": selectedCompany?.key ?? "",
-      "companyName": selectedCompany?.value ?? "",
-      "billdate": dateFormat(tecDate.text),
-      "details": billsDetails,
-      "testMailFrom": selectedFrom?.value ?? "",
-      "testMailTo": tecTestTo.text,
-      "testMailBody": tecbody.text,
-    };
-    LoadingDialog.call();
-    Get.find<ConnectorControl>().POSTMETHOD(
-      api: ApiFactory.EMAIL_BILL_DETAILS_BILLS,
-      json: model,
-      fun: (resp) {
-        closeDialogIfOpen();
-        if (resp != null &&
-            resp is Map<String, dynamic> &&
-            resp.toString().contains("bills") &&
-            resp["bills"].isNotEmpty) {
-          billNameList = resp["bills"];
-          for (var i = 0; i < billNameList!.length; i++) {
-            fileNameFromApi +=
-                "${resp["bills"][i]["pdfInfo"][0]["invoiceFileName"]}, ";
-          }
-          fileNameFromApi =
-              fileNameFromApi.substring(0, fileNameFromApi.length - 1);
+    if (selectedFrom == null) {
+      LoadingDialog.showErrorDialog("Please select From");
+    } else if (tecTestTo.text.isEmpty) {
+      LoadingDialog.showErrorDialog("Test to cannot be empty");
+    } else if (billsDetails.isEmpty) {
+      LoadingDialog.showErrorDialog("Please select data from grid");
+    } else {
+      var model = {
+        "companyCode": selectedCompany?.key ?? "",
+        "companyName": selectedCompany?.value ?? "",
+        "billdate": dateFormat(tecDate.text),
+        "details": billsDetails,
+        "testMailFrom": selectedFrom?.value ?? "",
+        "testMailTo": tecTestTo.text,
+        "testMailBody": tecbody.text,
+      };
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.EMAIL_BILL_DETAILS_BILLS,
+        json: model,
+        fun: (resp) {
+          closeDialogIfOpen();
+          if (resp != null &&
+              resp is Map<String, dynamic> &&
+              resp.toString().contains("bills") &&
+              resp["bills"].isNotEmpty) {
+            billNameList = resp["bills"];
+            for (var i = 0; i < billNameList!.length; i++) {
+              fileNameFromApi +=
+                  "${resp["bills"][i]["pdfInfo"][0]["invoiceFileName"]}, ";
+            }
+            fileNameFromApi =
+                fileNameFromApi.substring(0, fileNameFromApi.length - 1);
 
-          if (isBills) {
-            LoadingDialog.selectFileDailog(
-              "Select the followig files",
-              fileNameFromApi,
-              controllerX: Get.put<EmailBillDetailsController>(
-                  EmailBillDetailsController()),
-              fun1: () {
-                pickFiles(fromSendAll: false);
-              },
-              fun2: () {
-                Get.back();
-                if (isBills) {
-                  sendBillFiles();
-                } else {
-                  sendAllBillFiles();
-                }
-              },
-              fun1Title: "Select Files",
-              fun2Title: "Send Files",
-            );
-          } else {
-            LoadingDialog.selectFileDailog(
-              "Select the followig files",
-              fileNameFromApi,
-              controllerX: Get.put<EmailBillDetailsController>(
-                  EmailBillDetailsController()),
-              showOneButton: true,
-              fun1: () {
-                pickFiles(fromSendAll: true);
-              },
-              fun2: () {},
-              fun1Title: "Select Files",
-              fun2Title: "",
-            );
+            if (isBills) {
+              LoadingDialog.selectFileDailog(
+                "Select the followig files",
+                fileNameFromApi,
+                controllerX: Get.put<EmailBillDetailsController>(
+                    EmailBillDetailsController()),
+                fun1: () {
+                  pickFiles(fromSendAll: false);
+                },
+                fun2: () {
+                  Get.back();
+                  if (isBills) {
+                    sendBillFiles();
+                  } else {
+                    sendAllBillFiles();
+                  }
+                },
+                fun1Title: "Select Files",
+                fun2Title: "Send Files",
+              );
+            } else {
+              LoadingDialog.selectFileDailog(
+                "Select the followig files",
+                fileNameFromApi,
+                controllerX: Get.put<EmailBillDetailsController>(
+                    EmailBillDetailsController()),
+                showOneButton: true,
+                fun1: () {
+                  pickFiles(fromSendAll: true);
+                },
+                fun2: () {},
+                fun1Title: "Select Files",
+                fun2Title: "",
+              );
+            }
           }
-        }
-      },
-      failed: (resp) {
-        closeDialogIfOpen();
+        },
+        failed: (resp) {
+          closeDialogIfOpen();
 
-        LoadingDialog.showErrorDialog(resp);
-      },
-    );
+          LoadingDialog.showErrorDialog(resp);
+        },
+      );
+    }
   }
 
   sendBillFiles() async {
@@ -889,6 +953,8 @@ class EmailBillDetailsController extends GetxController {
                 filename: selectedFilesForAll[index]!.files[i].name,
               )));
         }
+
+        // callChangeAllFromTo() {}
 
         // var fileList = [];
         // if (selectedFilesForAll[index] != null) {
@@ -1192,5 +1258,35 @@ class EmailBillDetailsController extends GetxController {
     }
   }
 
-  formHandler(btn) {}
+  formHandler(btn) {
+    switch (btn) {
+      case "Clear":
+        // callClear() {
+
+        Get.delete<EmailBillDetailsController>();
+        Get.find<HomeController>().clearPage1();
+        // }
+        break;
+      case "Save":
+        break;
+      case "Delete":
+        break;
+      case "Refresh":
+        break;
+      case "Exit":
+        print("Im in Exit");
+        try {
+          // Get.find<HomeController>().postUserGridSetting1(listStateManager: [
+          //   sm,
+          // ]);
+        } catch (e) {
+          print("Exit Error ===>" + e.toString());
+        }
+        break;
+      case "Docs":
+        break;
+      case "Search":
+        break;
+    }
+  }
 }
