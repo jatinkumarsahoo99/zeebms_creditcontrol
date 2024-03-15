@@ -1,5 +1,6 @@
 import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
@@ -41,7 +42,9 @@ class ClientEmbargoController extends GetxController {
           // "https://jsonkeeper.com/b/D537"
           fun: (map) {
             closeDialogIfOpen();
-            print(">>>>>>>>>>mapData" + map.toString());
+            if (kDebugMode) {
+              print(">>>>>>>>>>mapData" + map.toString());
+            }
             if (map is Map &&
                 map['ceLoad'] != null &&
                 map['ceLoad']['lstclientEmbs'] != null &&
@@ -49,7 +52,9 @@ class ClientEmbargoController extends GetxController {
               clientEmbargoModel = ClientEmbargoModel.fromJson(map as Map<String, dynamic>);
               dateController.text = Utils.getMMDDYYYYFromDDMMYYYYInString3(
                   clientEmbargoModel?.ceLoad?.minfromDate ?? "");
-              print(">>>>>>>>>>>>>>>>>>data${clientEmbargoModel?.toJson()}");
+              if (kDebugMode) {
+                print(">>>>>>>>>>>>>>>>>>data${clientEmbargoModel?.toJson()}");
+              }
               update(['grid1']);
             } else {
               clientEmbargoModel = null;
@@ -110,7 +115,9 @@ class ClientEmbargoController extends GetxController {
         "reason": reasonController.text??"",
         "strCode": "0"
       };
-      print(">>>>>>>>>>postData$postData");
+      if (kDebugMode) {
+        print(">>>>>>>>>>postData$postData");
+      }
       Get.find<ConnectorControl>().POSTMETHOD(
           api: ApiFactory.CLIENT_EMBARGO_POST,
           json: postData,
