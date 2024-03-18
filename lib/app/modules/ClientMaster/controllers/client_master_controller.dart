@@ -7,6 +7,9 @@ import 'package:get/get.dart';
 import '../../../controller/ConnectorControl.dart';
 import '../../../controller/HomeController.dart';
 import '../../../providers/ApiFactory.dart';
+import '../../CommonDocs/controllers/common_docs_controller.dart';
+import '../../CommonDocs/views/common_docs_view.dart';
+import '../../CommonSearch/views/common_search_view.dart';
 import '../ClientMasterModel.dart';
 import '../ClientRetriveDataModel.dart';
 
@@ -221,10 +224,39 @@ class ClientMasterController extends GetxController {
         });
   }
 
+  docs() async {
+    String documentKey = "";
+    if (selectClientName == null) {
+      documentKey = "";
+    } else {
+      documentKey = "ClientMaster ${selectClientName?.key}";
+    }
+    if (documentKey == "") {
+      return;
+    }
+    Get.defaultDialog(
+      title: "Documents",
+      content: CommonDocsView(documentKey: documentKey),
+    ).then((value) {
+      Get.delete<CommonDocsController>(tag: "commonDocs");
+    });
+  }
+
   formHandler(name) {
     switch (name) {
       case "Save":
         save();
+        break;
+      case "Docs":
+        docs();
+        break;
+      case "Search":
+        Get.to(SearchPage(
+            screenName: "Client Master",
+            isAppBarReq: true,
+            // isPopup: true,
+            appBarName: "Client Master",
+            strViewName: "BMS_View_clientMaster"));
         break;
       case "Clear":
         Get.delete<ClientMasterController>();
@@ -330,10 +362,10 @@ class ClientMasterController extends GetxController {
       payTermList = [];
     }
     LstPayTerm data = LstPayTerm();
-    data.clientcode = selectClientName?.key??"";
-    data.clientName = selectClientName?.value??"";
-    data.paymentmodecode = selectPayMode?.key??"";
-    data.paymentMode = selectPayMode?.value??"";
+    data.clientcode = selectClientName?.key ?? "";
+    data.clientName = selectClientName?.value ?? "";
+    data.paymentmodecode = selectPayMode?.key ?? "";
+    data.paymentMode = selectPayMode?.value ?? "";
     data.ibfRemark = ibfRemark1_.text;
     data.agencyCode = selectAgency1?.key ?? "";
     data.agencyName = selectAgency1?.value ?? "";

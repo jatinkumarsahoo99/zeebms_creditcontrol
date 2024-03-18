@@ -221,9 +221,9 @@ class AppPages {
       // binding: SalesExecutiveMasterBinding(),
     ),
     GetPage(
-      name: _Paths.S_A_P_B_ILL_CHECK_REPORT,
+      name: _Paths.SAP_BILL_CHECK_REPORT,
       // page: () =>  SAPBIllCheckReportView(),
-      page: () => AuthGuard(childName: _Paths.S_A_P_B_ILL_CHECK_REPORT),
+      page: () => AuthGuard(childName: _Paths.SAP_BILL_CHECK_REPORT),
       binding: SAPBIllCheckReportBinding(),
     ),
     GetPage(

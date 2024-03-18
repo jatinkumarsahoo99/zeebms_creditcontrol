@@ -18,7 +18,7 @@ import '../views/email_bill_details_view.dart';
 import 'package:dio/dio.dart' as dio;
 
 import 'dart:html' as html;
-// import 'package:file_selector/file_selector.dart';
+// import 'package:file_selector/file_selector.dart';F
 
 class EmailBillDetailsController extends GetxController {
   double widthRatio = 0.24;
@@ -619,41 +619,42 @@ class EmailBillDetailsController extends GetxController {
             fileNameFromApi =
                 fileNameFromApi.substring(0, fileNameFromApi.length - 1);
 
-            if (isBills) {
-              LoadingDialog.selectFileDailog(
-                "Select the followig files",
-                fileNameFromApi,
-                controllerX: Get.put<EmailBillDetailsController>(
-                    EmailBillDetailsController()),
-                fun1: () {
-                  pickFiles(fromSendAll: false);
-                },
-                fun2: () {
-                  Get.back();
-                  if (isBills) {
-                    sendBillFiles();
-                  } else {
-                    sendAllBillFiles();
-                  }
-                },
-                fun1Title: "Select Files",
-                fun2Title: "Send Files",
-              );
-            } else {
-              LoadingDialog.selectFileDailog(
-                "Select the followig files",
-                fileNameFromApi,
-                controllerX: Get.put<EmailBillDetailsController>(
-                    EmailBillDetailsController()),
-                showOneButton: true,
-                fun1: () {
-                  pickFiles(fromSendAll: true);
-                },
-                fun2: () {},
-                fun1Title: "Select Files",
-                fun2Title: "",
-              );
-            }
+            // if (isBills) {
+            LoadingDialog.selectFileDailog(
+              "Select the followig files",
+              fileNameFromApi,
+              controllerX: Get.put<EmailBillDetailsController>(
+                  EmailBillDetailsController()),
+              fun1: () {
+                pickFiles(fromSendAll: false);
+              },
+              fun2: () {
+                Get.back();
+                if (isBills) {
+                  sendBillFiles();
+                } else {
+                  sendAllBillFiles();
+                }
+              },
+              fun1Title: "Select Files",
+              fun2Title: "Send Files",
+            );
+            // }
+            // else {
+            //   LoadingDialog.selectFileDailog(
+            //     "Select the followig files",
+            //     fileNameFromApi,
+            //     controllerX: Get.put<EmailBillDetailsController>(
+            //         EmailBillDetailsController()),
+            //     showOneButton: true,
+            //     fun1: () {
+            //       pickFiles(fromSendAll: true);
+            //     },
+            //     fun2: () {},
+            //     fun1Title: "Select Files",
+            //     fun2Title: "",
+            //   );
+            // }
           }
         },
         failed: (resp) {
@@ -945,14 +946,14 @@ class EmailBillDetailsController extends GetxController {
           }
         }
 
-        for (var i = 0; i < selectedFilesForAll[index]!.files.length; i++) {
-          formData.files.add(MapEntry(
-              "files[$index].ExtraFiles",
-              dio.MultipartFile.fromBytes(
-                selectedFilesForAll[index]!.files[i].bytes!.toList(),
-                filename: selectedFilesForAll[index]!.files[i].name,
-              )));
-        }
+        // for (var i = 0; i < selectedFilesForAll[index]!.files.length; i++) {
+        //   formData.files.add(MapEntry(
+        //       "files[$index].ExtraFiles",
+        //       dio.MultipartFile.fromBytes(
+        //         selectedFilesForAll[index]!.files[i].bytes!.toList(),
+        //         filename: selectedFilesForAll[index]!.files[i].name,
+        //       )));
+        // }
 
         // callChangeAllFromTo() {}
 

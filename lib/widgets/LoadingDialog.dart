@@ -743,7 +743,7 @@ class LoadingDialog {
             Get.back();
             cancel!();
           },
-          btnText: confirmTitle  ?? "Delete"),
+          btnText: confirmTitle ?? "Delete"),
       contentPadding: EdgeInsets.only(
           left: SizeDefine.popupMarginHorizontal,
           right: SizeDefine.popupMarginHorizontal,
@@ -939,13 +939,15 @@ class LoadingDialog {
                                     width: 5,
                                   ),
                                   // Obx(() =>
-                                  Text(
-                                    controllerX.selectedFileNames.value,
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 10,
+                                  Expanded(
+                                    child: Text(
+                                      controllerX.selectedFileNames.value,
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 10,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    textAlign: TextAlign.center,
                                   )
                                   // ),
                                 ],

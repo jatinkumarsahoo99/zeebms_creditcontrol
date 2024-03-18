@@ -16,7 +16,7 @@ import '../../../data/user_data_settings_model.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/sap_bill_check_report_controller.dart';
 
-class SAPBIllCheckReportView extends GetView<SAPBIllCheckReportController> {
+class SAPBIllCheckReportView extends StatelessWidget {
   SAPBIllCheckReportView({Key? key}) : super(key: key);
 
   SAPBIllCheckReportController controllerX =
@@ -95,19 +95,19 @@ class SAPBIllCheckReportView extends GetView<SAPBIllCheckReportController> {
                               showSrNo: true,
                               exportFileName: "Sap Bill Check Report",
                               mode: PlutoGridMode.normal,
-                              mapData: controller.dataList!,
+                              mapData: controllerX.dataList!,
                               colorCallback: (row) => (row.rowIdx ==
-                                      controller.gridManager?.currentRowIdx)
+                                  controllerX.gridManager?.currentRowIdx)
                                   ? Colors.deepPurple.shade200
                                   : Colors.white,
                               // mapData: (controllerX.dataList)!,
                               widthRatio: Get.width / 9 - 1,
                               onload: (PlutoGridOnLoadedEvent load) {
-                                controller.gridManager = load.stateManager;
+                                controllerX.gridManager = load.stateManager;
                                 load.stateManager.setSelectingMode(
                                     PlutoGridSelectingMode.row);
                               },
-                              widthSpecificColumn: (controller
+                              widthSpecificColumn: (controllerX
                                   .userDataSettings?.userSetting
                                   ?.firstWhere(
                                       (element) =>
