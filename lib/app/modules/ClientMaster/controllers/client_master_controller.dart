@@ -199,12 +199,13 @@ class ClientMasterController extends GetxController {
                 (element) => element.key == retrieveData?.lstRecords?[0].city);
           }
 
-          if (retrieveData?.lstRecords?[0].countrycode != null) {
+          if (retrieveData?.lstRecords?[0].countrycode != null && retrieveData?.lstRecords?[0].countrycode != "") {
             selectCountry = masterModel?.lstCountryCodes?.firstWhere(
                 (element) =>
                     element.key == retrieveData?.lstRecords?[0].countrycode);
           }
-          if (retrieveData?.lstRecords?[0].paymentmodecode != null) {
+          if (retrieveData?.lstRecords?[0].paymentmodecode != null &&
+              retrieveData?.lstRecords?[0].paymentmodecode != "") {
             selectPayment = masterModel?.lstPaymentModes?.firstWhere(
                 (element) =>
                     element.key ==
