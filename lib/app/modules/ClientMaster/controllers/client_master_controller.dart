@@ -211,7 +211,7 @@ class ClientMasterController extends GetxController {
                     element.key ==
                     retrieveData?.lstRecords?[0].paymentmodecode);
           }
-          if (retrieveData?.lstRecords?[0].creditRateCode != null) {
+          if (retrieveData?.lstRecords?[0].creditRateCode != null && retrieveData?.lstRecords?[0].creditRateCode != "") {
             selectCredit = masterModel?.lstCreditRates?.firstWhere((element) =>
                 element.key == retrieveData?.lstRecords?[0].creditRateCode);
           }
