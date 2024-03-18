@@ -1,5 +1,6 @@
 
 import '../../data/DropDownValue.dart';
+import '../../providers/Utils.dart';
 
 class ClientRetriveDataModel {
   List<LstRecords>? lstRecords;
@@ -342,7 +343,7 @@ class ClientAgencyMaster {
     payroutecode = json['payroutecode'];
     payrouteName = json['payrouteName'];
     effectiveFrom = json['effectiveFrom'];
-    plantid = json['plantid'];
+    plantid = json['plantid'].toString();
     plantName = json['plantName'];
     clientName = json['clientName'];
   }
@@ -374,7 +375,7 @@ class ClientAgencyMaster {
     data['agencyCode'] = this.agencyCode;
     data['executiveCode'] = this.executiveCode;
     data['payroutecode'] = this.payroutecode;
-    data['effectiveFromDate'] = this.effectiveFrom;
+    data['effectiveFromDate'] = Utils.dateFormatChange(this.effectiveFrom??"","yyyy-MM-ddThh:mm:ss","dd-MM-yyyy");
     data['plantid'] = int.tryParse(this.plantid.toString());
     return data;
   }
