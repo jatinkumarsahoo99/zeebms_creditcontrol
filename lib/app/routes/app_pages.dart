@@ -37,7 +37,7 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.SAP_BILL_CHECK_REPORT +
+      : (Routes.CLIENT_MASTER +
           "?personalNo=%2F7i0zDr%2FLpXNOAIr8lUluw%3D%3D&loginCode=1BWIoBKeDl7qDSAAhxvXsQ%3D%3D&formName=3XqNlmb4iUhjNDeTzTXJ7mp9BePdeY1injLPvII1YVU%3D");
 
   static final routes = [
