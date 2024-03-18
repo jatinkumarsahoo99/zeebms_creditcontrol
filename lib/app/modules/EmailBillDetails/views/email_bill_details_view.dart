@@ -564,12 +564,32 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
             ],
           ),
           InputFields.formField1WidthBox(
-              hintTxt: "",
-              controller: controllerX.tecbody,
-              widthRatio: Get.width * 0.58,
-              height: Get.height * 0.43,
-              maxLen: 10000,
-              paddingLeft: 0)
+            hintTxt: "",
+            controller: controllerX.tecbody,
+            widthRatio: Get.width * 0.58,
+            height: Get.height * 0.43,
+            maxLen: 10000,
+            paddingLeft: 0,
+          ),
+          // InputFields.formFieldExpand2(
+          //   // bottomPaddingHeight: 3,
+          //   hintTxt: "",
+          //   controller: controllerX.tecbody,
+          //   // keyboardType: TextInputType.multiline,
+          //   inputformatters: [],
+
+          //   maxLen: null,
+          //   // height: 60,
+          //   expands: true,
+          // ),
+          // InputFields.formFieldExpand2(
+          //   hintTxt: "Remarks",
+          //   // titleInLeft: true,
+          //   controller: controllerX.tecbody,
+          //   titleSizeboxWidth: 80,
+          //   removeHeight: true,
+          //   expands: true,
+          // )
         ],
       ),
     );
