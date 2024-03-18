@@ -1,3 +1,5 @@
+import '../../../providers/Utils.dart';
+
 class CancellationRetrieveModel {
   InfoCancellationBookingList? infoCancellationBookingList;
 
@@ -295,4 +297,34 @@ class LstCancellations {
     data['editable'] = this.editable;
     return data;
   }
+
+  Map<String, dynamic> toJson1() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['audited'] = this.audited;
+    data['requested'] = this.requested;
+    data['cancelNumber'] = this.cancelNumber;
+    data['locationCode'] = this.locationCode;
+    data['channelCode'] = this.channelCode;
+    data['bookingNumber'] = this.bookingNumber;
+    data['bookingDetailCode'] = this.bookingDetailCode;
+    data['commercialCaption'] = this.commercialCaption;
+    data['exportTapeCode'] = this.exportTapeCode;
+    data['tapeDuration'] = this.tapeDuration;
+    data['programName'] = this.programName;
+    data['scheduleDate'] = Utils.toDateFormat9(this.scheduleDate);
+    data['scheduleTime'] = this.scheduleTime;
+    data['spotAmount'] = this.spotAmount;
+    data['spotStatus'] = this.spotStatus;
+    data['bookingStatus'] = this.bookingStatus;
+    data['logged'] = this.logged;
+    data['telecastProgramCode'] = this.telecastProgramCode;
+    data['status'] = this.status;
+    data['dealno'] = this.dealno;
+    data['recordnumber'] = this.recordnumber;
+    data['auditedBy'] = this.auditedBy;
+    data['auditedOn'] = Utils.toDateFormat11(this.auditedOn);
+    data['editable'] = this.editable;
+    return data;
+  }
+
 }

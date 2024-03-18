@@ -89,7 +89,7 @@ class PaymentRouteMasterView extends GetView<PaymentRouteMasterController> {
                             controller.selectLocation = data;
                             controller.locationLeave(data.key.toString());
                           },
-                          "Loaction Name",
+                          "Location Name",
                           .34,
                           titleInLeft: true,
                           padLeft: 42,

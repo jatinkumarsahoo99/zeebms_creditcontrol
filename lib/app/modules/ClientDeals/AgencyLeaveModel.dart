@@ -18,6 +18,8 @@ class AgencyLeaveDataModel {
   }
 }
 
+
+
 class AgencyLeaveModel {
   List<PaymentModels>? paymentModels;
   String? paymentErrorMsg;
@@ -32,6 +34,7 @@ class AgencyLeaveModel {
   String? zonename;
   String? payroutename;
   String? plantname;
+  // List<RemarksData>? remarks;
 
   AgencyLeaveModel(
       {this.paymentModels,
@@ -55,6 +58,12 @@ class AgencyLeaveModel {
         paymentModels!.add(new PaymentModels.fromJson(v));
       });
     }
+    /*if (json['remarks'] != null) {
+      remarks = <RemarksData>[];
+      json['remarks'].forEach((v) {
+        remarks!.add(new RemarksData.fromJson(v));
+      });
+    }*/
     paymentErrorMsg = json['paymentErrorMsg'];
     panErrorMsg = json['panErrorMsg'];
     gstErrorMsg = json['gstErrorMsg'];
@@ -75,6 +84,11 @@ class AgencyLeaveModel {
       data['paymentModels'] =
           this.paymentModels!.map((v) => v.toJson()).toList();
     }
+
+   /* if (this.remarks != null) {
+      data['remarks'] = this.remarks!.map((v) => v.toJson()).toList();
+    }*/
+
     data['paymentErrorMsg'] = this.paymentErrorMsg;
     data['panErrorMsg'] = this.panErrorMsg;
     data['gstErrorMsg'] = this.gstErrorMsg;

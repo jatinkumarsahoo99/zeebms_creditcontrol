@@ -104,20 +104,8 @@ class AuditRescheduleController extends GetxController {
         channelList.addAll(dataList2);
         channelList.refresh();
 
-        fpcEffectiveDateController.text = Utils.toDateFormat4(
-                reScheduleRetriveDataModel?.infoReschduleBookingList?.effectiveDate ?? "") ??
-            "";
-
-        reschDateController.text = Utils.toDateFormat4(
-                reScheduleRetriveDataModel?.infoReschduleBookingList?.reschduleDate ?? "") ??
-            "";
-
         refNoController.text =
             reScheduleRetriveDataModel?.infoReschduleBookingList?.referenceNumber ?? "";
-
-        refDateController.text = Utils.toDateFormat4(
-                reScheduleRetriveDataModel?.infoReschduleBookingList?.referenceDate ?? "") ??
-            "";
 
         bookingNoController.text =
             reScheduleRetriveDataModel?.infoReschduleBookingList?.bookingNumber ?? "";
@@ -154,6 +142,25 @@ class AuditRescheduleController extends GetxController {
         selectedAgency?.refresh();
         selectedChannel?.refresh();
         selectedLocation?.refresh();
+
+        Future.delayed(Duration(milliseconds: 800),() {
+          fpcEffectiveDateController.text = Utils.toDateFormat4(
+              reScheduleRetriveDataModel?.infoReschduleBookingList?.effectiveDate ?? "") ??
+              "";
+
+          reschDateController.text = Utils.toDateFormat4(
+              reScheduleRetriveDataModel?.infoReschduleBookingList?.reschduleDate ?? "") ??
+              "";
+
+          refDateController.text = Utils.toDateFormat4(
+              reScheduleRetriveDataModel?.infoReschduleBookingList?.referenceDate ?? "") ??
+              "";
+          print(">>>>>>>>>>>>>>>>>>>>refDateController${refDateController.text}");
+        },);
+
+
+
+
 
         update(['wrightGrid','leftGrid']);
       }

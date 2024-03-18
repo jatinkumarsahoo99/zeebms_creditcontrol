@@ -184,7 +184,7 @@ class InvoiceRevisionController extends GetxController {
         "channelCode": selectChannel.value?.key ?? '',
         "bookingNumber": bookingNo.text,
         "billNumber": invoice.text,
-        "billDate": billDate.text,
+        "billDate": dateConvertToddMMyyyy1(billDate.text),
         "clientCode": selectNewClient.value?.key ?? '',
         "agencyCode": selectAgency.value?.key ?? '',
         "payrouteCode": selectPayroute.value?.key ?? '',
@@ -195,12 +195,13 @@ class InvoiceRevisionController extends GetxController {
           json: payload,
           fun: (Map map) {
             Get.back();
-            if (map != null && map.containsKey('retrieve')) {
-              retrieveList.clear();
-              invoiceRevisionModel =
-                  InvoiceRevisionModel.fromJson(map as Map<String, dynamic>);
-              retrieveList = invoiceRevisionModel?.retrieve ?? [];
-              update(['init']);
+            if (map != null && map.containsKey('save')) {
+              LoadingDialog.callDataSaved(
+                  msg: map['save'],
+                  callback: () {
+                    Get.delete<InvoiceRevisionController>();
+                    Get.find<HomeController>().clearPage1();
+                  });
             }
           });
     }
@@ -217,6 +218,9 @@ class InvoiceRevisionController extends GetxController {
     payRoute.text = event.row.cells['payrouteName']?.value ?? "";
     bookingNo.text = event.row.cells['toNumber'].value ?? "";
     bookingAmt.text = event.row.cells['bookingAmount']?.value.toString() ?? "";
+    selectNewClient.value = null;
+    selectAgency.value = null;
+    selectPayroute.value = null;
     getBrand();
     update(['textFieldUpdate']);
   }
@@ -237,12 +241,20 @@ class InvoiceRevisionController extends GetxController {
             retrieveList = invoiceRevisionModel?.retrieve ?? [];
             update(['init']);
           }
+        },
+        failed: () {
+          print("Hello===>");
         });
   }
 
   String dateConvertToddMMyyyy(String date) {
     return (DateFormat('dd-MM-yyyy')
         .format(DateFormat('dd-MMM-yyyy').parse(date)));
+  }
+
+  String dateConvertToddMMyyyy1(String date) {
+    return (DateFormat('yyyy-MM-dd')
+        .format(DateFormat('dd-MM-yyyy').parse(date)));
   }
 
   formHandler(btn) {

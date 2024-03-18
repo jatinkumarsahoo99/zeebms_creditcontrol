@@ -97,6 +97,7 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
       Future.delayed(const Duration(seconds: 1)).then((value) {
         handleOnFocusChange();
         widget.mainTextController.addListener(() {
+          // print(">>>>>>>>>>>listenerCall${widget.mainTextController.text}");
           assignNewValeToEditTextField().then((value) {
             assignValueToMainTextEditingController();
           });

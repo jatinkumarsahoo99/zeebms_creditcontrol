@@ -33,6 +33,18 @@ class AuditRescheduleView extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
+                  AppBar(
+                    title: const Text('Audit Reschedule'),
+                    centerTitle: true,
+                    backgroundColor: Colors.deepPurple,
+                    leading: IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => Get.back(result: true),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -93,6 +105,12 @@ class AuditRescheduleView extends StatelessWidget {
                         title: "Ref. Date",
                         mainTextController: controllerX.refDateController,
                         widthRation: .1,
+                        onFocusChange: (str){
+                          print(">>>>>>>>>>>>> focus${str}");
+                          controllerX.refDateController.text = str;
+                        },
+                        startDate: DateTime.now().subtract(Duration(days: 700)),
+                        // intailDate: DateTime.now().subtract(Duration(days: 700)),
                         // isEnable: controllerX.isEnable.value,
                       ),
                       InputFields.formField1WidthBox(
@@ -234,124 +252,145 @@ class AuditRescheduleView extends StatelessWidget {
                               child: Row(
                                 children: [
                                   Expanded(
-                                    child: GetBuilder<AuditRescheduleController>(
-                                        id: "leftGrid",
-                                        builder: (controllerX) {
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all(color: Colors.grey)),
-                                            child: (controllerX
-                                                .reScheduleRetriveDataModel != null && controllerX
-                                                .reScheduleRetriveDataModel
-                                                ?.infoReschduleBookingList !=
-                                                null &&
-                                                controllerX
-                                                    .reScheduleRetriveDataModel
-                                                    ?.infoReschduleBookingList?.reschduleDisplay !=
-                                                    null &&
-                                                controllerX
-                                                    .reScheduleRetriveDataModel
-                                                    ?.infoReschduleBookingList?.reschduleDisplay
-                                                    ?.reschdule != null &&
-                                                (controllerX
-                                                    .reScheduleRetriveDataModel
-                                                    ?.infoReschduleBookingList?.reschduleDisplay
-                                                    ?.reschdule?.length ?? 0) > 0) ?
-                                            DataGridFromMap3(
-                                              showSrNo: true,
-                                              hideCode: false,
-                                              formatDate: false,
-                                              columnAutoResize: false,
-                                              doPasccal: true,
-                                                minimumWidth:130,
-                                              colorCallback: (row) =>
-                                              (row.row.cells
-                                                  .containsValue(
-                                                  controllerX.stateManagerLeft?.currentCell))
-                                                  ? Colors.deepPurple.shade200
-                                                  : Colors.white,
-                                              exportFileName: "Secondary Asrun Modification",
-                                              mode: PlutoGridMode.normal,
-                                              checkBoxColumnKey: ["auditStatus"],
-                                              checkBoxStrComparison: true,
-                                              hideKeys: const ['dealRowNumber'],
-                                              onRowDoubleTap: (
-                                                  PlutoGridOnRowDoubleTapEvent event) {},
-                                              // hideKeys: const [],
-                                              mapData: controllerX
-                                                  .reScheduleRetriveDataModel!
-                                                  .infoReschduleBookingList!
-                                                  .reschduleDisplay!.reschdule!
-                                                  .map((e) => e.toJson())
-                                                  .toList(),
-                                              // mapData: (controllerX.dataList)!,
-                                              widthRatio: Get.width / 9 - 1,
-                                              onload: (PlutoGridOnLoadedEvent load) {
-                                                controllerX.stateManagerLeft = load.stateManager;
-                                              },
-                                            ) : Container(),
-                                          );
-                                        }),
+                                    child: Column(
+                                      children: [
+                                        Text("Reschedule Details",style: TextStyle(fontWeight: FontWeight.bold)),
+                                        SizedBox(
+                                          height: 6,
+                                        ),
+                                        Expanded(
+                                          child: GetBuilder<AuditRescheduleController>(
+                                              id: "leftGrid",
+                                              builder: (controllerX) {
+                                                return Container(
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(color: Colors.grey)),
+                                                  child: (controllerX
+                                                      .reScheduleRetriveDataModel != null && controllerX
+                                                      .reScheduleRetriveDataModel
+                                                      ?.infoReschduleBookingList !=
+                                                      null &&
+                                                      controllerX
+                                                          .reScheduleRetriveDataModel
+                                                          ?.infoReschduleBookingList?.reschduleDisplay !=
+                                                          null &&
+                                                      controllerX
+                                                          .reScheduleRetriveDataModel
+                                                          ?.infoReschduleBookingList?.reschduleDisplay
+                                                          ?.reschdule != null &&
+                                                      (controllerX
+                                                          .reScheduleRetriveDataModel
+                                                          ?.infoReschduleBookingList?.reschduleDisplay
+                                                          ?.reschdule?.length ?? 0) > 0) ?
+                                                  DataGridFromMap3(
+                                                    showSrNo: true,
+                                                    hideCode: false,
+                                                    formatDate: false,
+                                                    columnAutoResize: false,
+                                                    doPasccal: true,
+                                                      minimumWidth:130,
+                                                    colorCallback: (row) =>
+                                                    (row.row.cells
+                                                        .containsValue(
+                                                        controllerX.stateManagerLeft?.currentCell))
+                                                        ? Colors.deepPurple.shade200
+                                                        : Colors.white,
+                                                    exportFileName: "Audit Reschedule",
+                                                    mode: PlutoGridMode.normal,
+                                                    checkBoxColumnKey: ["auditStatus"],
+                                                    checkBoxStrComparison: true,
+                                                    hideKeys: const ['dealRowNumber'],
+                                                    onRowDoubleTap: (
+                                                        PlutoGridOnRowDoubleTapEvent event) {},
+                                                    // hideKeys: const [],
+                                                    mapData: controllerX
+                                                        .reScheduleRetriveDataModel!
+                                                        .infoReschduleBookingList!
+                                                        .reschduleDisplay!.reschdule!
+                                                        .map((e) => e.toJson1())
+                                                        .toList(),
+                                                    // mapData: (controllerX.dataList)!,
+                                                    widthRatio: Get.width / 9 - 1,
+                                                    onload: (PlutoGridOnLoadedEvent load) {
+                                                      controllerX.stateManagerLeft = load.stateManager;
+                                                    },
+                                                  ) : Container(),
+                                                );
+                                              }),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                   SizedBox(
                                     width: 7,
                                   ),
                                   Expanded(
-                                    child: GetBuilder<AuditRescheduleController>(
-                                        id: "wrightGrid",
-                                        builder: (controllerX) {
-                                          return Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all(color: Colors.grey)),
-                                            child: (controllerX
-                                                .reScheduleRetriveDataModel != null && controllerX
-                                                .reScheduleRetriveDataModel
-                                                ?.infoReschduleBookingList !=
-                                                null &&
-                                                controllerX
-                                                    .reScheduleRetriveDataModel
-                                                    ?.infoReschduleBookingList?.reschduleDisplay !=
-                                                    null &&
-                                                controllerX
-                                                    .reScheduleRetriveDataModel
-                                                    ?.infoReschduleBookingList?.reschduleDisplay
-                                                    ?.originalBookings != null &&
-                                                (controllerX
-                                                    .reScheduleRetriveDataModel
-                                                    ?.infoReschduleBookingList?.reschduleDisplay
-                                                    ?.originalBookings?.length ?? 0) > 0) ?
-                                            DataGridFromMap(
-                                              showSrNo: true,
-                                              hideCode: false,
-                                              formatDate: false,
-                                              columnAutoResize: true,
-                                              doPasccal: true,
-                                              colorCallback: (row) =>
-                                              (row.row.cells
-                                                  .containsValue(
-                                                  controllerX.stateManagerRight?.currentCell))
-                                                  ? Colors.deepPurple.shade200
-                                                  : Colors.white,
-                                              exportFileName: "Secondary Asrun Modification",
-                                              mode: PlutoGridMode.normal,
+                                    child: Column(
+                                      children: [
+                                        Text("Booking Details",style: TextStyle(fontWeight: FontWeight.bold)),
+                                        SizedBox(
+                                          height: 6,
+                                        ),
+                                        Expanded(
+                                          child: GetBuilder<AuditRescheduleController>(
+                                              id: "wrightGrid",
+                                              builder: (controllerX) {
+                                                return Container(
+                                                  decoration: BoxDecoration(
+                                                      border: Border.all(color: Colors.grey)),
+                                                  child: (controllerX
+                                                      .reScheduleRetriveDataModel != null && controllerX
+                                                      .reScheduleRetriveDataModel
+                                                      ?.infoReschduleBookingList !=
+                                                      null &&
+                                                      controllerX
+                                                          .reScheduleRetriveDataModel
+                                                          ?.infoReschduleBookingList?.reschduleDisplay !=
+                                                          null &&
+                                                      controllerX
+                                                          .reScheduleRetriveDataModel
+                                                          ?.infoReschduleBookingList?.reschduleDisplay
+                                                          ?.originalBookings != null &&
+                                                      (controllerX
+                                                          .reScheduleRetriveDataModel
+                                                          ?.infoReschduleBookingList?.reschduleDisplay
+                                                          ?.originalBookings?.length ?? 0) > 0) ?
+                                                  DataGridFromMap(
+                                                    showSrNo: true,
+                                                    hideCode: false,
+                                                    formatDate: false,
+                                                    columnAutoResize: false,
+                                                    doPasccal: true,
+                                                    minimumWidth: 180,
+                                                    colorCallback: (row) =>
+                                                    (row.row.cells
+                                                        .containsValue(
+                                                        controllerX.stateManagerRight?.currentCell))
+                                                        ? Colors.deepPurple.shade200
+                                                        : Colors.white,
+                                                    exportFileName: "Audit Reschedule",
+                                                    mode: PlutoGridMode.normal,
 
-                                              onRowDoubleTap: (
-                                                  PlutoGridOnRowDoubleTapEvent event) {},
-                                              // hideKeys: const [],
-                                              mapData: controllerX
-                                                  .reScheduleRetriveDataModel!
-                                                  .infoReschduleBookingList!
-                                                  .reschduleDisplay!.originalBookings!
-                                                  .map((e) => e.toJson())
-                                                  .toList(),
-                                              // mapData: (controllerX.dataList)!,
-                                              widthRatio: Get.width / 9 - 1,
-                                              onload: (PlutoGridOnLoadedEvent load) {
-                                                controllerX.stateManagerRight = load.stateManager;
-                                              },
-                                            ) : Container(),
-                                          );
-                                        }),
+                                                    onRowDoubleTap: (
+                                                        PlutoGridOnRowDoubleTapEvent event) {},
+                                                    // hideKeys: const [],
+                                                    mapData: controllerX
+                                                        .reScheduleRetriveDataModel!
+                                                        .infoReschduleBookingList!
+                                                        .reschduleDisplay!.originalBookings!
+                                                        .map((e) => e.toJson())
+                                                        .toList(),
+                                                    // mapData: (controllerX.dataList)!,
+                                                    widthRatio: Get.width / 9 - 1,
+                                                    onload: (PlutoGridOnLoadedEvent load) {
+                                                      controllerX.stateManagerRight = load.stateManager;
+                                                    },
+                                                  ) : Container(),
+                                                );
+                                              }),
+                                        ),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -365,17 +404,21 @@ class AuditRescheduleView extends StatelessWidget {
                     height: 4,
                   ),
 
-                  Get.find<HomeController>().getCommonButton(
-                    Routes.R_O_AUDIT,
-                        (btnName) {
-                          if (btnName == "Save") {
-                            controllerX.saveFunCall();
-                          } else if (btnName == "Clear") {
-                            controllerX.clearAll();
-                          } else if (btnName == "Docs") {
-                            controllerX.docs();
-                          }
-                        },
+                  Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Get.find<HomeController>().getCommonButton1(
+                      Routes.R_O_AUDIT,
+                          (btnName) {
+                            if (btnName == "Save") {
+                              controllerX.saveFunCall();
+                            } else if (btnName == "Clear") {
+                              Get.back(result: true);
+                            } else if (btnName == "Docs") {
+                              controllerX.docs();
+                              // controllerX.refDateController.text ="03-Mar-2023" ;
+                            }
+                          },
+                    ),
                   ),
                   /*  Align(
                   alignment: Alignment.topLeft,
