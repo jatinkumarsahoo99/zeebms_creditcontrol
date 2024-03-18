@@ -1,6 +1,7 @@
 import 'dart:async';
 
 // import 'package:bms_creditcontrol/widgets/PlutoGridExport/lib/pluto_grid_export.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -317,7 +318,9 @@ class SecondaryAsrunModificationController extends GetxController {
     } else {
       if (finalProgramEditingController.text.toString().trim() !=
           strProgramName.toString().trim()) {
-        print(">>>>>>>>>>>>>in else if");
+        if (kDebugMode) {
+          print(">>>>>>>>>>>>>in else if");
+        }
         LoadingDialog.modify3("Program name not matching. Do you want to still continue?", () {},
             () {
           return;
@@ -596,6 +599,7 @@ class SecondaryAsrunModificationController extends GetxController {
      selectedChannel = null;
     dialogWidget = null;
     canDialogShow.value = false;
+    stateManager = null;
      update(['grid']);
 
   }

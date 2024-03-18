@@ -43,7 +43,7 @@ class ClientEmbargoController extends GetxController {
           fun: (map) {
             closeDialogIfOpen();
             if (kDebugMode) {
-              print(">>>>>>>>>>mapData" + map.toString());
+              print(">>>>>>>>>>mapData$map");
             }
             if (map is Map &&
                 map['ceLoad'] != null &&
