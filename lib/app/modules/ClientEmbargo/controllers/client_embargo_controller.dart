@@ -1,5 +1,6 @@
 import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../../../../widgets/LoadingDialog.dart';
@@ -31,8 +32,6 @@ class ClientEmbargoController extends GetxController {
 
   ClientEmbargoHistoryModel? clientEmbargoHistoryModel;
 
-
-
   getAllLoadData() {
     LoadingDialog.call();
     try {
@@ -41,15 +40,22 @@ class ClientEmbargoController extends GetxController {
           // "https://jsonkeeper.com/b/D537"
           fun: (map) {
             closeDialogIfOpen();
-            print(">>>>>>>>>>mapData" + map.toString());
+            if (kDebugMode) {
+              print(">>>>>>>>>>mapData$map");
+            }
             if (map is Map &&
                 map['ceLoad'] != null &&
                 map['ceLoad']['lstclientEmbs'] != null &&
                 map['ceLoad']['lstclientEmbs'].length > 0) {
               clientEmbargoModel = ClientEmbargoModel.fromJson(map as Map<String, dynamic>);
-              dateController.text = Utils.getMMDDYYYYFromDDMMYYYYInString3(
-                  clientEmbargoModel?.ceLoad?.minfromDate ?? "");
-              print(">>>>>>>>>>>>>>>>>>data${clientEmbargoModel?.toJson()}");
+              /*Future.delayed(Duration(seconds: 2),() {
+                dateController.text = Utils.getMMDDYYYYFromDDMMYYYYInString3(
+                    clientEmbargoModel?.ceLoad?.minfromDate ?? "");
+              },);*/
+
+              if (kDebugMode) {
+                print(">>>>>>>>>>>>>>>>>>data${clientEmbargoModel?.toJson()}");
+              }
               update(['grid1']);
             } else {
               clientEmbargoModel = null;
@@ -99,39 +105,105 @@ class ClientEmbargoController extends GetxController {
   }
 
   saveApiCall() {
-
-    try {
-      LoadingDialog.call();
-      Map<String, dynamic> postData = {
-        "clientcode": selectedClient.value?.key??"",
-        "embargoNo": embargoNoController.text??"",
-        "fromdate":(dateController.text)?? "",
-        "todate": (dateController.text)??"",
-        "reason": reasonController.text??"",
-        "strCode": "0"
-      };
-      print(">>>>>>>>>>postData$postData");
-      Get.find<ConnectorControl>().POSTMETHOD(
-          api: ApiFactory.CLIENT_EMBARGO_POST,
-          json: postData,
-          fun: (map) {
-            closeDialogIfOpen();
-            if(map is Map && map['message'] != null){
-              LoadingDialog.callDataSaved(msg: map['message']??"Something went wrong",callback: (){
-                clearAll();
-              });
-            }else{
-              LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
-            }
-          },
-          failed: (map) {
-            closeDialogIfOpen();
-            LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
-          });
-    } catch (e) {
-      closeDialogIfOpen();
-      LoadingDialog.showErrorDialog("Something went wrong");
+    if (selectedClient.value == null) {
+      LoadingDialog.showErrorDialog("Client Name cannot be empty.");
+    } else if (reasonController.text.trim() == "") {
+      LoadingDialog.showErrorDialog("Please enter reason.");
+    } else {
+      try {
+        LoadingDialog.call();
+        Map<String, dynamic> postData = {
+          "clientcode": selectedClient.value?.key ?? "",
+          "embargoNo": embargoNoController.text ?? "",
+          "fromdate": (dateController.text) ?? "",
+          "todate": (dateController.text) ?? "",
+          "reason": reasonController.text ?? "",
+          "strCode": "0"
+        };
+        if (kDebugMode) {
+          print(">>>>>>>>>>postData$postData");
+        }
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.CLIENT_EMBARGO_POST,
+            json: postData,
+            fun: (map) {
+              closeDialogIfOpen();
+              if (map is Map && map['message'] != null) {
+                LoadingDialog.callDataSaved(
+                    msg: map['message'] ?? "Something went wrong",
+                    callback: () {
+                      clearAll();
+                    });
+              } else {
+                LoadingDialog.showErrorDialog((map ?? "Something went wrong").toString());
+              }
+            },
+            failed: (map) {
+              closeDialogIfOpen();
+              LoadingDialog.showErrorDialog((map ?? "Something went wrong").toString());
+            });
+      } catch (e) {
+        closeDialogIfOpen();
+        LoadingDialog.showErrorDialog("Something went wrong");
+      }
     }
+  }
+
+  saveApiCallForClearEmbg({String? clientCode, String? embargoNo}) {
+    if (clientCode == null || clientCode == "") {
+      LoadingDialog.showErrorDialog("Client Name cannot be empty.");
+    } else if (embargoNo == null || embargoNo == "") {
+      LoadingDialog.showErrorDialog("Embargo no can not be empty.");
+    } else {
+      try {
+        LoadingDialog.call();
+        Map<String, dynamic> postData = {
+          "clientcode": clientCode ?? "",
+          "embargoNo": embargoNo ?? "",
+          "fromdate": (dateController.text) ?? "",
+          "todate": (dateController.text) ?? "",
+          "reason": reasonController.text ?? "",
+          "strCode": "0"
+        };
+        if (kDebugMode) {
+          print(">>>>>>>>>>postData$postData");
+        }
+        Get.find<ConnectorControl>().POSTMETHOD(
+            api: ApiFactory.CLIENT_EMBARGO_POST,
+            json: postData,
+            fun: (map) {
+              closeDialogIfOpen();
+              if (map is Map && map['message'] != null) {
+                LoadingDialog.callDataSaved(
+                    msg: map['message'] ?? "Something went wrong",
+                    callback: () {
+                      clearAll();
+                    });
+              } else {
+                LoadingDialog.showErrorDialog((map ?? "Something went wrong").toString());
+              }
+            },
+            failed: (map) {
+              closeDialogIfOpen();
+              LoadingDialog.showErrorDialog((map ?? "Something went wrong").toString());
+            });
+      } catch (e) {
+        closeDialogIfOpen();
+        LoadingDialog.showErrorDialog("Something went wrong");
+      }
+    }
+  }
+
+  btnClearEmbargo() {
+    LoadingDialog.modify4("Want to clear embargo?", () {
+      saveApiCallForClearEmbg(
+          clientCode: stateManager
+                  ?.rows[stateManager?.currentRowIdx ?? 0].cells['clientcode']?.value ??
+              "",
+          embargoNo: stateManager
+                  ?.rows[stateManager?.currentRowIdx ?? 0].cells['embargoNo']?.value ??
+              "");
+    }, () {}, confirmTitle: "No", deleteTitle: "Yes");
   }
 
   clearAll() {
@@ -161,7 +233,7 @@ class ClientEmbargoController extends GetxController {
 
   docs() async {
     String documentKey = "";
-    if (embargoNoController.text == "" ) {
+    if (embargoNoController.text == "") {
       documentKey = "";
     } else {
       documentKey = "ClientEmbargo ${embargoNoController.text}";
@@ -178,11 +250,11 @@ class ClientEmbargoController extends GetxController {
   }
 
   formHandler(String sta) {
-    if(sta == "Clear"){
+    if (sta == "Clear") {
       clearAll();
-    } else if( sta == "Save"){
+    } else if (sta == "Save") {
       saveApiCall();
-    }else if(sta == "Search"){
+    } else if (sta == "Search") {
       Get.to(
         const SearchPage(
           key: Key("Client Embargo"),
@@ -192,7 +264,7 @@ class ClientEmbargoController extends GetxController {
           isAppBarReq: true,
         ),
       );
-    }else if(sta == "Docs"){
+    } else if (sta == "Docs") {
       docs();
     }
   }

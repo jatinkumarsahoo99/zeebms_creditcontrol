@@ -1,4 +1,6 @@
+import 'package:bms_creditcontrol/app/providers/DataGridMenu.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -20,21 +22,19 @@ import '../controllers/client_embargo_controller.dart';
 class ClientEmbargoView extends StatelessWidget {
   ClientEmbargoView({Key? key}) : super(key: key);
 
-  ClientEmbargoController controllerX =
-  Get.put<ClientEmbargoController>(ClientEmbargoController());
+  ClientEmbargoController controllerX = Get.put<ClientEmbargoController>(ClientEmbargoController());
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery
-        .of(context)
-        .size;
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       body: Center(
-        child: SizedBox(
+        child: Container(
           width: size.width * .55,
           child: Dialog(
             child: Column(
               mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 AppBar(
                   title: Text('Client Embargo'),
@@ -44,11 +44,10 @@ class ClientEmbargoView extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
-                    // mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisSize: MainAxisSize.min,
+                      // crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        DropDownField.formDropDownSearchAPI2(
-                            GlobalKey(), context,
+                        DropDownField.formDropDownSearchAPI2(GlobalKey(), context,
                             title: "Client Name",
                             autoFocus: false,
                             // customInData: "empList",
@@ -60,13 +59,11 @@ class ClientEmbargoView extends StatelessWidget {
                             selectedValue: controllerX.selectedClient.value,
                             // selectedValue: controllerX.selectedEmployee.value,
                             onchanged: (data) {
-                              controllerX.selectedClient.value = data;
-                              controllerX.getClientNameClick(clientCode: data.key ?? "");
-                            },
-                            dialogHeight: 200,
-                            width: (Get.width * controllerX.fixedWidth)),
+                          controllerX.selectedClient.value = data;
+                          controllerX.getClientNameClick(clientCode: data.key ?? "");
+                        }, dialogHeight: 200, width: (Get.width * controllerX.fixedWidth)),
                         SizedBox(
-                          width: Get.width * controllerX.fixedWidth,
+                          width: size.width * controllerX.fixedWidth,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -81,6 +78,7 @@ class ClientEmbargoView extends StatelessWidget {
                                   widthRatio: 0.22,
                                   // height: 70,
                                   paddingLeft: 0,
+                                  isEnable: false,
                                   // focus: controllerX.remarkFocus,
                                   controller: controllerX.embargoNoController),
                             ],
@@ -93,8 +91,7 @@ class ClientEmbargoView extends StatelessWidget {
                             paddingLeft: 0,
                             maxLen: 500,
                             // focus: controllerX.remarkFocus,
-                            controller: controllerX.reasonController
-                        ),
+                            controller: controllerX.reasonController),
                         Obx(() {
                           // controllerX.selectedTab.value;
                           return Padding(
@@ -135,126 +132,150 @@ class ClientEmbargoView extends StatelessWidget {
                         Obx(() {
                           if (controllerX.selectedTab.value == 0) {
                             return SizedBox(
-                                height: Get.height * 0.4,
-                                child: GetBuilder<ClientEmbargoController>
-                                  (
+                                height: size.height * 0.3,
+                                child: GetBuilder<ClientEmbargoController>(
                                     id: "grid1",
                                     builder: (controllerX) {
-                                      return Container(decoration: BoxDecoration(
-                                          border: Border.all(color: Colors.grey)),
-                                        child: (controllerX
-                                            .clientEmbargoModel != null && controllerX
-                                            .clientEmbargoModel?.ceLoad != null &&
-                                            controllerX
-                                                .clientEmbargoModel?.ceLoad?.lstclientEmbs !=
-                                                null &&
-                                            (controllerX
-                                                .clientEmbargoModel?.ceLoad?.lstclientEmbs
-                                                ?.length ?? 0) > 0
-                                        ) ? DataGridFromMap(
-                                          showSrNo: true,
-                                          hideCode: false,
-                                          formatDate: false,
-                                          columnAutoResize: true,
-                                          doPasccal: true,
-                                          colorCallback: (row) =>
-                                          (row.row.cells
-                                              .containsValue(
-                                              controllerX.stateManager?.currentCell))
-                                              ? Colors.deepPurple.shade200
-                                              : Colors.white,
-                                          exportFileName: "Client Embargo",
-                                          hideKeys: ["locationcode","channelcode","clientcode"],
-                                          mode: PlutoGridMode.normal,
-                                          onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent? event) {
-                                            // print(">>>>>>>>>>>onRowDoubleTap${event?.cell.key??""}");
-                                            // print(">>>>>>>>>>>onRowDoubleTapVal${event?.cell.value??""}");
-                                            // print(">>>>>>>>>>>onRowDoubleTapRow${event?.cell.row??""}");
-                                            print(">>>>>>>>>>>onRowDoubleTapColField${event?.cell
-                                                .column.field ?? ""}");
-                                            print(
-                                                ">>>>>>>>>>>onRowDoubleTapColField${event?.cell.row
-                                                    .cells['clientcode']?.value ?? ""}");
-                                            // print(">>>>>>>>>>>onRowDoubleTapColKey${event?.cell.column.key??""}");
-                                            controllerX.getClientNameClick(
-                                                clientCode: event?.cell.row.cells['clientcode']
-                                                    ?.value ?? "");
-                                          },
-                                          mapData: (controllerX
-                                              .clientEmbargoModel!.ceLoad!.lstclientEmbs!
-                                              .map((e) => e.toJson())
-                                              .toList()),
-                                          // mapData: (controllerX.dataList)!,
-                                          widthRatio: Get.width / 9 - 1,
-                                          onload: (PlutoGridOnLoadedEvent? load) {
-                                            controllerX.stateManager =
-                                                load?.stateManager;
-                                          },
-                                        ) : const Center(child: Text("Data not found"),),
+                                      return Container(
+                                        decoration:
+                                            BoxDecoration(border: Border.all(color: Colors.grey)),
+                                        child: (controllerX.clientEmbargoModel != null &&
+                                                controllerX.clientEmbargoModel?.ceLoad != null &&
+                                                controllerX.clientEmbargoModel?.ceLoad
+                                                        ?.lstclientEmbs !=
+                                                    null &&
+                                                (controllerX.clientEmbargoModel?.ceLoad
+                                                            ?.lstclientEmbs?.length ??
+                                                        0) >
+                                                    0)
+                                            ? DataGridFromMap7(
+                                                showSrNo: true,
+                                                hideCode: false,
+                                                formatDate: false,
+                                                columnAutoResize: true,
+                                                doPasccal: true,
+                                                colorCallback: (row) => (row.row.cells
+                                                        .containsValue(
+                                                            controllerX.stateManager?.currentCell))
+                                                    ? Colors.deepPurple.shade200
+                                                    : Colors.white,
+                                                exportFileName: "Client Embargo",
+                                                hideKeys: const [
+                                                  "locationcode",
+                                                  "channelcode",
+                                                  "clientcode"
+                                                ],
+                                                mode: PlutoGridMode.normal,
+                                                onRowDoubleTap:
+                                                    (PlutoGridOnRowDoubleTapEvent? event) {
+                                                  // print(">>>>>>>>>>>onRowDoubleTap${event?.cell.key??""}");
+                                                  // print(">>>>>>>>>>>onRowDoubleTapVal${event?.cell.value??""}");
+                                                  // print(">>>>>>>>>>>onRowDoubleTapRow${event?.cell.row??""}");
+                                                  print(
+                                                      ">>>>>>>>>>>onRowDoubleTapColField${event?.cell.column.field ?? ""}");
+                                                  print(
+                                                      ">>>>>>>>>>>onRowDoubleTapColField${event?.cell.row.cells['clientcode']?.value ?? ""}");
+                                                  // print(">>>>>>>>>>>onRowDoubleTapColKey${event?.cell.column.key??""}");
+                                                  controllerX.getClientNameClick(
+                                                      clientCode: event?.cell.row
+                                                              .cells['clientcode']?.value ??
+                                                          "");
+                                                },
+                                                mapData: (controllerX
+                                                    .clientEmbargoModel!.ceLoad!.lstclientEmbs!
+                                                    .map((e) => e.toJson())
+                                                    .toList()),
+                                                // mapData: (controllerX.dataList)!,
+                                                widthRatio: Get.width / 9 - 1,
+                                                onContextMenuClick:
+                                                    (DataGridMenuItem itemType, int index) {
+                                                  switch (itemType) {
+                                                    case DataGridMenuItem.clearembargo:
+                                                      controllerX.btnClearEmbargo();
+                                                      break;
+                                                    default:
+                                                      if (kDebugMode) {
+                                                        print("break call");
+                                                      }
+                                                  }
+                                                },
+
+                                                onload: (PlutoGridOnLoadedEvent? load) {
+                                                  controllerX.stateManager = load?.stateManager;
+                                                },
+                                              )
+                                            : const Center(
+                                                child: Text("Data not found"),
+                                              ),
                                       );
                                     }));
-                          }
-                          else {
+                          } else {
                             return SizedBox(
                               child: GetBuilder<ClientEmbargoController>(
-                                id: "grid2",
+                                  id: "grid2",
                                   builder: (controllerX) {
-                                return Container(
-                                  height: Get.height * 0.4,
-                                  decoration: BoxDecoration(
-                                      border: Border.all(color: Colors.grey)),
-                                  child: (controllerX.clientEmbargoHistoryModel != null &&
-                                      controllerX.clientEmbargoHistoryModel?.clientNameClick !=
-                                          null &&
-                                      controllerX.clientEmbargoHistoryModel?.clientNameClick
-                                          ?.lstClient != null &&
-                                      (controllerX.clientEmbargoHistoryModel?.clientNameClick
-                                          ?.lstClient?.length ?? 0) > 0
-                                  ) ? DataGridFromMap(
-                                    showSrNo: true,
-                                    hideCode: false,
-                                    formatDate: false,
-                                    columnAutoResize: true,
-                                    doPasccal: true,
-                                    colorCallback: (row) =>
-                                    (row.row.cells
-                                        .containsValue(
-                                        controllerX.stateManagerHistory?.currentCell))
-                                        ? Colors.deepPurple.shade200
-                                        : Colors.white,
-                                    exportFileName: "Client Embargo",
-                                    mode: PlutoGridMode.normal,
-                                    onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent? event) {
-                                      // print(">>>>>>>>>>>onRowDoubleTap${event?.cell.key??""}");
-                                      // print(">>>>>>>>>>>onRowDoubleTapVal${event?.cell.value??""}");
-                                      // print(">>>>>>>>>>>onRowDoubleTapRow${event?.cell.row??""}");
-                                      print(">>>>>>>>>>>onRowDoubleTapColField${event?.cell.column
-                                          .field ?? ""}");
-                                      print(">>>>>>>>>>>onRowDoubleTapColField${event?.cell.row
-                                          .cells['clientcode']?.value ?? ""}");
-                                      // print(">>>>>>>>>>>onRowDoubleTapColKey${event?.cell.column.key??""}");
-                                      controllerX.getClientNameClick(
-                                          clientCode: event?.cell.row.cells['clientcode']?.value ??
-                                              "");
-                                    },
-                                    mapData: (controllerX
-                                        .clientEmbargoHistoryModel!.clientNameClick!.lstClient!
-                                        .map((e) => e.toJson())
-                                        .toList()),
-                                    // mapData: (controllerX.dataList)!,
-                                    widthRatio: Get.width / 9 - 1,
-                                    onload: (PlutoGridOnLoadedEvent? load) {
-                                      controllerX.stateManagerHistory =
-                                          load?.stateManager;
-                                    },
-                                  ) : const Center(child: Text("Data not found"),),
-                                );
-                              }),
+                                    return Container(
+                                      height: size.height * 0.3,
+                                      decoration:
+                                          BoxDecoration(border: Border.all(color: Colors.grey)),
+                                      child: (controllerX.clientEmbargoHistoryModel != null &&
+                                              controllerX
+                                                      .clientEmbargoHistoryModel?.clientNameClick !=
+                                                  null &&
+                                              controllerX.clientEmbargoHistoryModel?.clientNameClick
+                                                      ?.lstClient !=
+                                                  null &&
+                                              (controllerX.clientEmbargoHistoryModel
+                                                          ?.clientNameClick?.lstClient?.length ??
+                                                      0) >
+                                                  0)
+                                          ? DataGridFromMap(
+                                              showSrNo: true,
+                                              hideCode: false,
+                                              formatDate: false,
+                                              columnAutoResize: true,
+                                              doPasccal: true,
+                                              colorCallback: (row) => (row.row.cells.containsValue(
+                                                      controllerX.stateManagerHistory?.currentCell))
+                                                  ? Colors.deepPurple.shade200
+                                                  : Colors.white,
+                                              exportFileName: "Client Embargo",
+                                              mode: PlutoGridMode.normal,
+                                              onRowDoubleTap:
+                                                  (PlutoGridOnRowDoubleTapEvent? event) {
+                                                // print(">>>>>>>>>>>onRowDoubleTap${event?.cell.key??""}");
+                                                // print(">>>>>>>>>>>onRowDoubleTapVal${event?.cell.value??""}");
+                                                // print(">>>>>>>>>>>onRowDoubleTapRow${event?.cell.row??""}");
+                                                print(
+                                                    ">>>>>>>>>>>onRowDoubleTapColField${event?.cell.column.field ?? ""}");
+                                                print(
+                                                    ">>>>>>>>>>>onRowDoubleTapColField${event?.cell.row.cells['clientcode']?.value ?? ""}");
+                                                // print(">>>>>>>>>>>onRowDoubleTapColKey${event?.cell.column.key??""}");
+                                                controllerX.getClientNameClick(
+                                                    clientCode: event
+                                                            ?.cell.row.cells['clientcode']?.value ??
+                                                        "");
+                                              },
+                                              mapData: (controllerX.clientEmbargoHistoryModel!
+                                                  .clientNameClick!.lstClient!
+                                                  .map((e) => e.toJson())
+                                                  .toList()),
+                                              // mapData: (controllerX.dataList)!,
+                                              widthRatio: Get.width / 9 - 1,
+                                              onload: (PlutoGridOnLoadedEvent? load) {
+                                                controllerX.stateManagerHistory =
+                                                    load?.stateManager;
+                                              },
+                                            )
+                                          : const Center(
+                                              child: Text("Data not found"),
+                                            ),
+                                    );
+                                  }),
                             );
                           }
                         }),
-                      ]
-                  ),
+                      ]),
                 ),
                 SizedBox(height: 6),
 
@@ -266,13 +287,9 @@ class ClientEmbargoView extends StatelessWidget {
                       init: Get.find<HomeController>(),
                       builder: (controller) {
                         try {
-                          PermissionModel formPermissions =
-                          Get
-                              .find<MainController>()
+                          PermissionModel formPermissions = Get.find<MainController>()
                               .permissionList!
-                              .lastWhere((element) =>
-                          element.appFormName ==
-                              "frmClientEmbargo");
+                              .lastWhere((element) => element.appFormName == "frmClientEmbargo");
                           if (controller.buttons != null) {
                             return Wrap(
                               spacing: 5,
@@ -282,14 +299,13 @@ class ClientEmbargoView extends StatelessWidget {
                                 for (var btn in controller.buttons!)
                                   FormButtonWrapper(
                                     btnText: btn["name"],
-                                    callback: Utils.btnAccessHandler2(btn['name'],
-                                        controller, formPermissions) ==
-                                        null
+                                    callback: Utils.btnAccessHandler2(
+                                                btn['name'], controller, formPermissions) ==
+                                            null
                                         ? null
-                                        : () =>
-                                        controllerX.formHandler(
-                                          btn['name'],
-                                        ),
+                                        : () => controllerX.formHandler(
+                                              btn['name'],
+                                            ),
                                   )
                               ],
                             );
