@@ -769,6 +769,7 @@ class InputFields {
     bool readOnly = false,
     int? maxLen,
     bool expands = false,
+    bool removeHeight = false,
     bool titleInLeft = false,
     Color? backgroundColor,
   }) {
@@ -813,7 +814,8 @@ class InputFields {
             },
             Expanded(
               child: Container(
-                height: height ?? SizeDefine.heightInputField,
+                height:
+                    removeHeight ? null : height ?? SizeDefine.heightInputField,
                 color: backgroundColor ?? Colors.white,
                 child: TextFormField(
                   expands: expands,
@@ -2778,8 +2780,9 @@ class InputFields {
                         if (!isNegativeReq) {
                           if (int.tryParse(controller.text) != 1 &&
                               int.tryParse(controller.text) != 0) {
-                            controller.text = "${(int.tryParse(controller.text) ?? 1) - 1}";
-                          }else{
+                            controller.text =
+                                "${(int.tryParse(controller.text) ?? 1) - 1}";
+                          } else {
                             controller.text = "0";
                           }
                         } else {

@@ -4,6 +4,7 @@ import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
@@ -52,8 +53,8 @@ class EmailBillDetailsController extends GetxController {
   TextEditingController counter2_ = TextEditingController(text: "0");
 
   TextEditingController tecTestTo = TextEditingController();
-  // TextEditingController tecDate = TextEditingController(text: "30-4-2018");
-  TextEditingController tecDate = TextEditingController();
+  TextEditingController tecDate = TextEditingController(text: "30-4-2018");
+  // TextEditingController tecDate = TextEditingController();
 
   TextEditingController tecPath = TextEditingController();
   TextEditingController tecbody = TextEditingController();
@@ -64,6 +65,8 @@ class EmailBillDetailsController extends GetxController {
 
   // List<html.File>? selectedFiles;
   String fileNameFromApi = "";
+  String fileNamesForClipboard = "";
+
   var selectedFileNames = "".obs;
   FilePickerResult? multipleFile;
   FilePickerResult? multipleFileForAll;
@@ -570,6 +573,7 @@ class EmailBillDetailsController extends GetxController {
     onSaveConfig(showDailog: false);
     fileNameFromApi = "";
     selectedFileNames.value = "";
+    fileNamesForClipboard = '';
     var billsDetails = [];
     gridData.asMap().forEach((index, e) {
       if (e["selected"].toString() == "true") {
@@ -605,7 +609,7 @@ class EmailBillDetailsController extends GetxController {
       Get.find<ConnectorControl>().POSTMETHOD(
         api: ApiFactory.EMAIL_BILL_DETAILS_BILLS,
         json: model,
-        fun: (resp) {
+        fun: (resp) async {
           closeDialogIfOpen();
           if (resp != null &&
               resp is Map<String, dynamic> &&
@@ -616,8 +620,16 @@ class EmailBillDetailsController extends GetxController {
               fileNameFromApi +=
                   "${resp["bills"][i]["pdfInfo"][0]["invoiceFileName"]}, ";
             }
+
+            for (var i = 0; i < billNameList!.length; i++) {
+              fileNamesForClipboard +=
+                  '"${resp["bills"][i]["pdfInfo"][0]["invoiceFileName"]}" ';
+            }
+
+            await Clipboard.setData(ClipboardData(text: fileNamesForClipboard));
+
             fileNameFromApi =
-                fileNameFromApi.substring(0, fileNameFromApi.length - 1);
+                fileNameFromApi.substring(0, fileNameFromApi.length - 2);
 
             // if (isBills) {
             LoadingDialog.selectFileDailog(

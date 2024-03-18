@@ -1,3 +1,4 @@
+import 'package:bms_creditcontrol/app/controller/MainController.dart';
 import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:bms_creditcontrol/widgets/PlutoGrid/pluto_grid.dart';
@@ -72,6 +73,8 @@ class ClientMasterController extends GetxController {
   FocusNode payRouteFS = FocusNode();
   PlutoGridStateManager? payTermManager;
   PlutoGridStateManager? clientMasterManager;
+
+  String? strCLientCode;
 
   @override
   void onInit() {
@@ -163,65 +166,64 @@ class ClientMasterController extends GetxController {
   getRetriveData() {
     LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.CLIENT_MASTER_RETRIVE_DATA(
-            selectClientName?.key ?? "", selectClientName?.value ?? ""),
-        fun: (Map map) {
-          Get.back();
-          if (map.containsKey("cmRecord")) {
-            retrieveData = ClientRetriveDataModel.fromJson(map["cmRecord"]);
-            shortName_.text =
-                retrieveData?.lstRecords![0].clientShortName ?? "";
-            address1_.text = retrieveData?.lstRecords![0].address1 ?? "";
-            address2_.text = retrieveData?.lstRecords![0].address2 ?? "";
-            pin_.text = retrieveData?.lstRecords![0].pin ?? "";
-            ibfCode_.text = retrieveData?.lstRecords![0].ibfcode ?? "";
-            phone_.text = retrieveData?.lstRecords![0].phone ?? "";
-            mob_.text = retrieveData?.lstRecords![0].mobile ?? "";
-            fax_.text = retrieveData?.lstRecords![0].fax ?? "";
-            email_.text = retrieveData?.lstRecords![0].email ?? "";
-            contact_.text = retrieveData?.lstRecords![0].contactPerson ?? "";
-            sapClie_.text = retrieveData?.lstRecords![0].sapClinetCode ?? "";
-            sector_.text = retrieveData?.lstRecords![0].groupFlag ?? "";
-            industry_.text = retrieveData?.lstRecords![0].psuFlag ?? "";
-            creditDays_.text =
-                retrieveData?.lstRecords![0].creditdays.toString() ?? "";
-            creditLimit_.text =
-                retrieveData?.lstRecords![0].osAmount.toString() ?? "";
-            name1_.text = retrieveData?.lstRecords![0].name1 ?? "";
-            name2_.text = retrieveData?.lstRecords![0].name2 ?? "";
-            name3_.text = retrieveData?.lstRecords![0].name3 ?? "";
-            ibfRemark_.text = retrieveData?.lstRecords![0].ibfremark ?? "";
-            if (retrieveData?.lstRecords![0].city != null) {
-              selectCity = masterModel?.lstCitys?.firstWhere((element) =>
-                  element.key == retrieveData?.lstRecords![0].city);
-            }
-
-            if (retrieveData?.lstRecords![0].countrycode != null) {
-              selectCountry = masterModel?.lstCountryCodes?.firstWhere(
-                  (element) =>
-                      element.key == retrieveData?.lstRecords![0].countrycode);
-            }
-            if (retrieveData?.lstRecords![0].paymentmodecode != null) {
-              selectPayment = masterModel?.lstPaymentModes?.firstWhere(
-                  (element) =>
-                      element.key ==
-                      retrieveData?.lstRecords![0].paymentmodecode);
-            }
-            if (retrieveData?.lstRecords![0].creditRateCode != null) {
-              selectCredit = masterModel?.lstCreditRates?.firstWhere(
-                  (element) =>
-                      element.key ==
-                      retrieveData?.lstRecords![0].creditRateCode);
-            }
-            payTermList = retrieveData?.lstPayTerm ?? [];
-
-            // selectPayment
-            // selectCredit
-          } else {
-            masterModel = null;
+      api: ApiFactory.CLIENT_MASTER_RETRIVE_DATA(
+          selectClientName?.key ?? "", selectClientName?.value ?? ""),
+      fun: (Map map) {
+        Get.back();
+        if (map.containsKey("cmRecord")) {
+          retrieveData = ClientRetriveDataModel.fromJson(map["cmRecord"]);
+          shortName_.text = retrieveData?.lstRecords?[0].clientShortName ?? "";
+          address1_.text = retrieveData?.lstRecords?[0].address1 ?? "";
+          address2_.text = retrieveData?.lstRecords?[0].address2 ?? "";
+          pin_.text = retrieveData?.lstRecords?[0].pin ?? "";
+          ibfCode_.text = retrieveData?.lstRecords?[0].ibfcode ?? "";
+          phone_.text = retrieveData?.lstRecords?[0].phone ?? "";
+          mob_.text = retrieveData?.lstRecords?[0].mobile ?? "";
+          fax_.text = retrieveData?.lstRecords?[0].fax ?? "";
+          email_.text = retrieveData?.lstRecords?[0].email ?? "";
+          contact_.text = retrieveData?.lstRecords?[0].contactPerson ?? "";
+          sapClie_.text = retrieveData?.lstRecords?[0].sapClinetCode ?? "";
+          sector_.text = retrieveData?.lstRecords?[0].groupFlag ?? "";
+          industry_.text = retrieveData?.lstRecords?[0].psuFlag ?? "";
+          creditDays_.text =
+              retrieveData?.lstRecords?[0].creditdays.toString() ?? "";
+          creditLimit_.text =
+              retrieveData?.lstRecords?[0].osAmount.toString() ?? "";
+          name1_.text = retrieveData?.lstRecords?[0].name1 ?? "";
+          name2_.text = retrieveData?.lstRecords?[0].name2 ?? "";
+          name3_.text = retrieveData?.lstRecords?[0].name3 ?? "";
+          ibfRemark_.text = retrieveData?.lstRecords?[0].ibfremark ?? "";
+          strCLientCode = retrieveData?.lstRecords?[0].clientCode ?? "";
+          if (retrieveData?.lstRecords?[0].city != null) {
+            selectCity = masterModel?.lstCitys?.firstWhere(
+                (element) => element.key == retrieveData?.lstRecords?[0].city);
           }
-          update(["main", "payTerm"]);
-        });
+
+          if (retrieveData?.lstRecords?[0].countrycode != null) {
+            selectCountry = masterModel?.lstCountryCodes?.firstWhere(
+                (element) =>
+                    element.key == retrieveData?.lstRecords?[0].countrycode);
+          }
+          if (retrieveData?.lstRecords?[0].paymentmodecode != null) {
+            selectPayment = masterModel?.lstPaymentModes?.firstWhere(
+                (element) =>
+                    element.key ==
+                    retrieveData?.lstRecords?[0].paymentmodecode);
+          }
+          if (retrieveData?.lstRecords?[0].creditRateCode != null) {
+            selectCredit = masterModel?.lstCreditRates?.firstWhere((element) =>
+                element.key == retrieveData?.lstRecords?[0].creditRateCode);
+          }
+          if (retrieveData?.lstClientAgencyMaster != null) {
+            lstClientAgencyMaster = retrieveData?.lstClientAgencyMaster;
+          }
+          payTermList = retrieveData?.lstPayTerm ?? [];
+        } else {
+          masterModel = null;
+        }
+        update(["main", "payTerm", "update"]);
+      },
+    );
   }
 
   docs() async {
@@ -292,41 +294,43 @@ class ClientMasterController extends GetxController {
     var jsonData = {
       "clientCode": selectClientName?.key ?? "",
       "clientName": selectClientName?.value ?? "",
-      "clientShortName": retrieveData?.lstRecords![0].clientShortName ?? "",
-      "address1": retrieveData?.lstRecords![0].address1 ?? "",
-      "address2": retrieveData?.lstRecords![0].address2 ?? "",
-      "city": retrieveData?.lstRecords![0].city ?? "",
-      "phone": retrieveData?.lstRecords![0].phone ?? "",
-      "fax": retrieveData?.lstRecords![0].fax ?? "",
-      "mobile": retrieveData?.lstRecords![0].mobile ?? "",
-      "email": retrieveData?.lstRecords![0].email ?? "",
-      "contactPerson": retrieveData?.lstRecords![0].contactPerson ?? "",
-      "creditRateCode": retrieveData?.lstRecords![0].creditRateCode ?? "",
-      "modifiedBy": retrieveData?.lstRecords![0].modifiedBy ?? "",
-      "pin": retrieveData?.lstRecords![0].pin ?? "",
-      "countrycode": retrieveData?.lstRecords![0].countrycode ?? "",
-      "ibf": retrieveData?.lstRecords![0].ibfcode != "" ? "Y" : "N",
-      "ibfcode": retrieveData?.lstRecords![0].ibfcode ?? "",
-      "sapClinetCode": retrieveData?.lstRecords![0].sapClinetCode ?? "",
-      "name1": retrieveData?.lstRecords![0].name1 ?? "",
-      "name2": retrieveData?.lstRecords![0].name2 ?? "",
-      "name3": retrieveData?.lstRecords![0].name3 ?? "",
+      "clientShortName": shortName_.text,
+      "address1": address1_.text,
+      "address2": address2_.text,
+      "city": selectCity?.value ?? "",
+      "phone": phone_.text,
+      "fax": fax_.text,
+      "mobile": mob_.text,
+      "email": email_.text,
+      "contactPerson": contact_.text,
+      "creditRateCode": selectCredit?.key ?? "",
+      "modifiedBy": Get.find<MainController>().user?.logincode ?? "",
+      "pin": pin_.text,
+      "countrycode": selectCountry?.key ?? "",
+      "ibf": ibfCode_.text != "" ? "Y" : "N",
+      "ibfcode": ibfCode_.text,
+      "sapClinetCode": sapClie_.text,
+      "name1": name1_.text,
+      "name2": name2_.text,
+      "name3": name3_.text,
       "paymentmodecode": retrieveData?.lstRecords![0].paymentmodecode ?? "",
-      "ibfremark": retrieveData?.lstRecords![0].ibfremark ?? "",
-      "groupFlag": retrieveData?.lstRecords![0].groupFlag ?? "",
+      "ibfremark": ibfRemark_.text,
+      "groupFlag": retrieveData?.lstRecords?[0].groupFlag ?? "",
       "contractual": retrieveData?.lstRecords![0].chkContractual ?? false,
-      "psuFlag": retrieveData?.lstRecords![0].psuFlag ?? "",
+      "psuFlag": retrieveData?.lstRecords?[0].psuFlag ?? "",
       "brandFlag": false,
       "surrogateflag": false,
       "slotsaleflag": false,
       "exposureflag": false,
       "pdc": false,
-      "creditdays":
-          retrieveData?.lstRecords![0].clientShortName.toString() ?? "",
-      "osAmount": retrieveData?.lstRecords![0].osAmount.toString() ?? "",
-      "lstClientAgencyMaster":
-          lstClientAgencyMaster?.map((e) => e.toJson1()).toList(),
-      "lstPayTerm": payTermList?.map((e) => e.toJson()).toList()
+      "creditdays": creditDays_.text,
+      "osAmount": creditLimit_.text,
+      "lstClientAgencyMaster": (lstClientAgencyMaster != null)
+          ? lstClientAgencyMaster?.map((e) => e.toJson1()).toList()
+          : [],
+      "lstPayTerm": (payTermList != null)
+          ? payTermList?.map((e) => e.toJson()).toList()
+          : []
     };
     LoadingDialog.call();
     Get.find<ConnectorControl>().POSTMETHOD(
@@ -345,7 +349,14 @@ class ClientMasterController extends GetxController {
 
   save() {
     // LoadingDialog.call();
-    postSave();
+    if (strCLientCode != null) {
+      LoadingDialog.modify("Record Already exist!\nDo you want to modify it?",
+          () {
+        postSave();
+      }, () {}, deleteTitle: "Yes", cancelTitle: "No");
+    } else {
+      postSave();
+    }
   }
 
   void getAgencyFromList() {
