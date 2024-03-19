@@ -20,6 +20,19 @@ class Utils {
 
   static String twoDigitsString(String n) => n.padLeft(2, "0");
 
+  static String toDoubleString({String ?data}){
+    try{
+      if(data != null && data != ""){
+        return double.parse(data).toStringAsFixed(2);
+      }else{
+        return "";
+      }
+    }catch(e){
+      return (data??"");
+    }
+
+  }
+
   static toDateFormat(String? date, {bool? isStringRequired}) {
     final DateTime formatter =
         DateFormat("yyyy-MM-dd\'T\'HH:mm:ss").parse(date!);
