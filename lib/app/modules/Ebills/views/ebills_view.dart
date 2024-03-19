@@ -362,30 +362,87 @@ class EbillsView extends GetView<EbillsController> {
                             ? Container(
                                 decoration: BoxDecoration(
                                     border: Border.all(color: Colors.grey)),
-                                child: ListView.builder(
-                                  itemBuilder: (c, i) {
-                                    return Row(
+                                child: Column(
+                                  children: [
+                                    Row(
                                       children: [
-                                        Checkbox(
-                                            value: controller
-                                                .agencyGroupList![i].isSelected,
-                                            onChanged: (v) {
-                                              controller.agencyGroupList![i]
-                                                  .isSelected = v;
-                                              controller
-                                                  .update(["agencyGroupList"]);
-                                            }),
-                                        Text(
-                                          controller
-                                                  .agencyGroupList![i].value ??
-                                              "",
-                                          style: const TextStyle(fontSize: 13),
-                                        )
+                                        Container(
+                                          width: 80,
+                                          height: 25,
+                                          decoration: BoxDecoration(
+                                            border:
+                                                Border.all(color: Colors.grey),
+                                          ),
+                                          child: const Align(
+                                            alignment: Alignment.centerLeft,
+                                            child: Text(
+                                              "  Check",
+                                              style:
+                                                  const TextStyle(fontSize: 13),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Container(
+                                            height: 25,
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                  color: Colors.grey),
+                                            ),
+                                            child: const Align(
+                                              alignment: Alignment.centerLeft,
+                                              child: Text(
+                                                "  AgencyName",
+                                                style: const TextStyle(
+                                                    fontSize: 13),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
                                       ],
-                                    );
-                                  },
-                                  itemCount:
-                                      controller.agencyGroupList?.length ?? 0,
+                                    ),
+                                    Expanded(
+                                      child: ListView.builder(
+                                        shrinkWrap: true,
+                                        itemBuilder: (c, i) {
+                                          return Row(
+                                            children: [
+                                              Container(
+                                                width: 80,
+                                                child: Center(
+                                                  child: Checkbox(
+                                                      value: controller
+                                                          .agencyGroupList![i]
+                                                          .isSelected,
+                                                      onChanged: (v) {
+                                                        controller
+                                                            .agencyGroupList![i]
+                                                            .isSelected = v;
+                                                        controller.update([
+                                                          "agencyGroupList"
+                                                        ]);
+                                                      }),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                controller.agencyGroupList![i]
+                                                        .value ??
+                                                    "",
+                                                style: const TextStyle(
+                                                    fontSize: 13),
+                                              )
+                                            ],
+                                          );
+                                        },
+                                        itemCount: controller
+                                                .agencyGroupList?.length ??
+                                            0,
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               )
                             : Container(
