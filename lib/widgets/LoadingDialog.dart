@@ -75,7 +75,9 @@ class LoadingDialog {
         autoFocus: true,
         callback: () {
           Get.back();
-          callback!();
+          if(callback!=null) {
+            callback!();
+          }
         },
         btnText: "Ok",
         iconDataM: Icons.done,
@@ -693,6 +695,64 @@ class LoadingDialog {
     );
   }
 
+  static modify4(String title, Function? confirm, Function? cancel,
+      {String? deleteTitle, String? confirmTitle}) {
+    Get.defaultDialog(
+      title: "",
+      titleStyle: TextStyle(fontSize: 1),
+      content: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            CupertinoIcons.check_mark_circled_solid,
+            color: Colors.green,
+            size: 55,
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Text(
+            title,
+            style: TextStyle(
+                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            textAlign: TextAlign.center,
+          )
+        ],
+      ),
+      radius: 10,
+      /*confirm: MaterialButton(
+          onPressed: () {
+            Get.back();
+            confirm!();
+          },
+          child: Text(deleteTitle ?? "Delete")),*/
+      confirm: DailogCloseButton(
+          autoFocus: false,
+          callback: () {
+            Get.back();
+            confirm!();
+          },
+          btnText: deleteTitle ?? "Cancel"),
+      /*cancel: MaterialButton(
+          onPressed: () {
+            Get.back();
+            cancel!();
+          },
+          child: Text(cancelTitle ?? "Cancel")),*/
+      cancel: DailogCloseButton(
+          autoFocus: true,
+          callback: () {
+            Get.back();
+            cancel!();
+          },
+          btnText: confirmTitle ?? "Delete"),
+      contentPadding: EdgeInsets.only(
+          left: SizeDefine.popupMarginHorizontal,
+          right: SizeDefine.popupMarginHorizontal,
+          bottom: 16),
+    );
+  }
+
   static modify3(String title, Function? confirm, Function? cancel,
       {String? confirmTitle, String? cancelTitle}) {
     Get.defaultDialog(
@@ -881,13 +941,15 @@ class LoadingDialog {
                                     width: 5,
                                   ),
                                   // Obx(() =>
-                                  Text(
-                                    controllerX.selectedFileNames.value,
-                                    style: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 10,
+                                  Expanded(
+                                    child: Text(
+                                      controllerX.selectedFileNames.value,
+                                      style: TextStyle(
+                                        color: Colors.red,
+                                        fontSize: 10,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    textAlign: TextAlign.center,
                                   )
                                   // ),
                                 ],

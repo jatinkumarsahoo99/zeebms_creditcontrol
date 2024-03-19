@@ -1,4 +1,5 @@
 import 'package:bms_creditcontrol/app/modules/CompanyChannelLink/ChannelLinkMasterData.dart';
+import 'package:bms_creditcontrol/app/routes/app_pages.dart';
 import 'package:bms_creditcontrol/widgets/PlutoGrid/src/pluto_grid.dart';
 import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
 import 'package:bms_creditcontrol/widgets/input_fields.dart';
@@ -126,44 +127,55 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                       );
                     })),
           ),
-          GetBuilder<HomeController>(
-              id: "buttons",
-              init: Get.find<HomeController>(),
-              builder: (controller) {
-                try {
-                  PermissionModel formPermissions = Get.find<MainController>()
-                      .permissionList!
-                      .lastWhere(
-                          (element) => element.appFormName == "frmBilling");
-                  if (controller.buttons != null) {
-                    return Padding(
-                      padding: const EdgeInsets.only(left: 5.0, bottom: 5),
-                      child: Wrap(
-                        spacing: 5,
-                        runSpacing: 15,
-                        alignment: WrapAlignment.start,
-                        children: [
-                          for (var btn in controller.buttons!)
-                            FormButtonWrapper(
-                              btnText: btn["name"],
-                              callback: Utils.btnAccessHandler2(btn['name'],
-                                          controller, formPermissions) ==
-                                      null
-                                  ? null
-                                  : () => controllerX.formHandler(
-                                        btn['name'],
-                                      ),
-                            )
-                        ],
-                      ),
-                    );
-                  } else {
-                    return Container();
-                  }
-                } catch (e) {
-                  return const Text("No Access");
-                }
-              })
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Get.find<HomeController>().getCommonButton(
+              Routes.EMAIL_BILL_DETAILS,
+              // handleAutoClear: false,
+              // disableBtns: ['Save', 'Refresh'],
+              (btnName) {
+                controllerX.formHandler(btnName);
+              },
+            ),
+          ),
+          // GetBuilder<HomeController>(
+          //     id: "buttons",
+          //     init: Get.find<HomeController>(),
+          //     builder: (controller) {
+          //       try {
+          //         PermissionModel formPermissions = Get.find<MainController>()
+          //             .permissionList!
+          //             .lastWhere(
+          //                 (element) => element.appFormName == "frmBilling");
+          //         if (controller.buttons != null) {
+          //           return Padding(
+          //             padding: const EdgeInsets.only(left: 5.0, bottom: 5),
+          //             child: Wrap(
+          //               spacing: 5,
+          //               runSpacing: 15,
+          //               alignment: WrapAlignment.start,
+          //               children: [
+          //                 for (var btn in controller.buttons!)
+          //                   FormButtonWrapper(
+          //                     btnText: btn["name"],
+          //                     callback: Utils.btnAccessHandler2(btn['name'],
+          //                                 controller, formPermissions) ==
+          //                             null
+          //                         ? null
+          //                         : () => controllerX.formHandler(
+          //                               btn['name'],
+          //                             ),
+          //                   )
+          //               ],
+          //             ),
+          //           );
+          //         } else {
+          //           return Container();
+          //         }
+          //       } catch (e) {
+          //         return const Text("No Access");
+          //       }
+          //     })
         ],
       ),
     );
@@ -247,7 +259,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                                 //     force: true,
                                 //     notify: true,
                                 //   );
-                                //   controllerX.gridData.value =
+                                //   controllerX.gridData.value =F
                                 //       controllerX.gridData.value;
 
                                 //   // print(controller.responseData);
@@ -302,7 +314,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
-                  child: InputFields.numbersWithoutHint(
+                  child: InputFields.numbersWithoutHint1(
                       hintTxt: "",
                       controller: controllerX.counter1_,
                       isNegativeReq: false,
@@ -310,7 +322,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
-                  child: InputFields.numbersWithoutHint(
+                  child: InputFields.numbersWithoutHint1(
                       hintTxt: "",
                       controller: controllerX.counter2_,
                       isNegativeReq: false,
@@ -328,6 +340,21 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                               value: controllerX.all2.value,
                               onChanged: (val) {
                                 controllerX.all2.value = val!;
+                                controllerX.callChangeAllFromTo(
+                                  isChecked: controllerX.all2.value,
+                                  txtToRowValue: int.tryParse(
+                                          controllerX.counter2_.text) ??
+                                      0,
+                                  txtFromNoValue: int.tryParse(
+                                          controllerX.counter1_.text) ??
+                                      0,
+                                );
+                                // controllerX.callChangeAllFromTo(
+                                //   controllerX.all2.value,
+                                //   int.tryParse(controllerX.),
+                                //   txtFromNoValue,
+                                //   tblLogRows,
+                                // );
                               },
                               materialTapTargetSize:
                                   MaterialTapTargetSize.shrinkWrap,
@@ -537,12 +564,32 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
             ],
           ),
           InputFields.formField1WidthBox(
-              hintTxt: "",
-              controller: controllerX.tecbody,
-              widthRatio: Get.width * 0.58,
-              height: Get.height * 0.43,
-              maxLen: 10000,
-              paddingLeft: 0)
+            hintTxt: "",
+            controller: controllerX.tecbody,
+            widthRatio: Get.width * 0.58,
+            height: Get.height * 0.43,
+            maxLen: 10000,
+            paddingLeft: 0,
+          ),
+          // InputFields.formFieldExpand2(
+          //   // bottomPaddingHeight: 3,
+          //   hintTxt: "",
+          //   controller: controllerX.tecbody,
+          //   // keyboardType: TextInputType.multiline,
+          //   inputformatters: [],
+
+          //   maxLen: null,
+          //   // height: 60,
+          //   expands: true,
+          // ),
+          // InputFields.formFieldExpand2(
+          //   hintTxt: "Remarks",
+          //   // titleInLeft: true,
+          //   controller: controllerX.tecbody,
+          //   titleSizeboxWidth: 80,
+          //   removeHeight: true,
+          //   expands: true,
+          // )
         ],
       ),
     );

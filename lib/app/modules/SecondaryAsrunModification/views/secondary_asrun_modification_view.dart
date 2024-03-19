@@ -22,7 +22,7 @@ class SecondaryAsrunModificationView extends StatelessWidget {
   SecondaryAsrunModificationController controllerX =
   Get.put<SecondaryAsrunModificationController>(SecondaryAsrunModificationController());
 
-  var rebuildSecModKey = GlobalKey<ScaffoldState>();
+
 
   dragInfoDialog() {
     controllerX.initialOffset.value = 2;
@@ -73,8 +73,8 @@ class SecondaryAsrunModificationView extends StatelessWidget {
               SizedBox(
                 height: 4,
               ),
-              Expanded(
-                // height: Get.height * 0.55,
+              SizedBox(
+                height: Get.height * 0.55,
                 child: GetBuilder<SecondaryAsrunModificationController>(
                     id: "diaGrid",
                     builder: (controllerX) {
@@ -316,7 +316,7 @@ class SecondaryAsrunModificationView extends StatelessWidget {
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
       return Scaffold(
-        key: rebuildSecModKey,
+        key: controllerX.rebuildSecModKey,
         floatingActionButton: Obx(() {
           return controllerX.canDialogShow.value
               ? DraggableFab(

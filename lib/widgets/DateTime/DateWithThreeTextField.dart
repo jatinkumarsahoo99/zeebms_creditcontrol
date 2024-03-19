@@ -94,10 +94,10 @@ class _DateWithThreeTextFieldState extends State<DateWithThreeTextField> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       assignNewValeToEditTextField();
-      Future.delayed(const Duration(milliseconds: 800)).then((value) {
+      Future.delayed(const Duration(seconds: 1)).then((value) {
         handleOnFocusChange();
         widget.mainTextController.addListener(() {
-          print(">>>>>>>>>>>listenerCall${widget.mainTextController.text}");
+          // print(">>>>>>>>>>>listenerCall${widget.mainTextController.text}");
           assignNewValeToEditTextField().then((value) {
             assignValueToMainTextEditingController();
           });

@@ -37,8 +37,8 @@ class AppPages {
 
   static const INITIAL = kReleaseMode
       ? Routes.HOME
-      : (Routes.EBILLS +
-          "?personalNo=CX5CP1oS3%2FepJloRhT%2F7JQ%3D%3D&loginCode=GhNK0fgJ1lghoL8cGVvoKg%3D%3D&formName=7oYiBP3RreAfdu8s4fTXFRRvKk7DO51oLYWwYurI6G4%3D");
+      : (Routes.CLIENT_EMBARGO +
+          "?personalNo=CX5CP1oS3%2FepJloRhT%2F7JQ%3D%3D&loginCode=GhNK0fgJ1lghoL8cGVvoKg%3D%3D&formName=MIwQ7EMo0EfEHhtKQnpM9kezFFoojACI6t01pVYRjxg%3D");
 
   static final routes = [
     GetPage(
@@ -221,9 +221,9 @@ class AppPages {
       // binding: SalesExecutiveMasterBinding(),
     ),
     GetPage(
-      name: _Paths.S_A_P_B_ILL_CHECK_REPORT,
+      name: _Paths.SAP_BILL_CHECK_REPORT,
       // page: () =>  SAPBIllCheckReportView(),
-      page: () => AuthGuard(childName: _Paths.S_A_P_B_ILL_CHECK_REPORT),
+      page: () => AuthGuard(childName: _Paths.SAP_BILL_CHECK_REPORT),
       binding: SAPBIllCheckReportBinding(),
     ),
     GetPage(

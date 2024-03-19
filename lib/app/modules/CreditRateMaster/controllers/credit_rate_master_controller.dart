@@ -44,13 +44,13 @@ class CreditRateMasterController extends GetxController {
     tecGradeInShort.value.clear();
     tecLowerLimit.value.clear();
     tecUpperLimit.value.clear();
-    LoadingDialog.call();
+    // LoadingDialog.call();
     Get.find<ConnectorControl>().GETMETHODCALL(
       api: ApiFactory.CREDIT_RATE_MASTER_RETRIEVE_RECORD(
         tecDescription.value.text,
       ),
       fun: (resp) {
-        Get.back();
+        // Get.back();
         if (resp != null &&
             resp is Map<String, dynamic> &&
             resp.containsKey("crRecord") &&
@@ -65,7 +65,7 @@ class CreditRateMasterController extends GetxController {
         }
       },
       failed: (resp) {
-        Get.back();
+        // Get.back();
         LoadingDialog.showErrorDialog(resp.toString());
       },
     );

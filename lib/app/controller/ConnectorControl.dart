@@ -424,7 +424,7 @@ class ConnectorControl extends GetConnect {
           Get.back();
         }
         if (e.response?.data is Map && e.response?.data.containsKey("status")) {
-          LoadingDialog.showErrorDialog(e.response?.data["status"]);
+          LoadingDialog.showErrorDialog(e.response?.data["status"].toString()??"");
         }
       } else {
         if (Get.isDialogOpen ?? false) {
@@ -443,10 +443,14 @@ class ConnectorControl extends GetConnect {
           case DioErrorType.sendTimeout:
           case DioErrorType.receiveTimeout:
           case DioErrorType.unknown:
-            failed!(failedMap);
+            if (failed != null) {
+              failed!(failedMap);
+            }
             break;
           case DioErrorType.badResponse:
-            failed!(e.response?.data);
+            if (failed != null) {
+              failed!(e.response?.data);
+            }
         }
       }
     }
@@ -726,7 +730,8 @@ class ConnectorControl extends GetConnect {
           Get.back();
         }
         if (e.response?.data is Map && e.response?.data.containsKey("status")) {
-          LoadingDialog.showErrorDialog(e.response?.data["status"].toString()??"");
+          LoadingDialog.showErrorDialog(
+              e.response?.data["status"].toString() ?? "");
         }
       } else {
         if (Get.isDialogOpen ?? false) {

@@ -40,7 +40,7 @@ abstract class Routes {
   static const CURRENCY_TYPE_MASTER = _Paths.CURRENCY_TYPE_MASTER;
   static const EXPORT_BILLING_F_P_C = _Paths.EXPORT_BILLING_F_P_C;
   static const CLIENT_DEALS = _Paths.CLIENT_DEALS;
-  static const SAP_BILL_CHECK_REPORT = _Paths.S_A_P_B_ILL_CHECK_REPORT;
+  static const SAP_BILL_CHECK_REPORT = _Paths.SAP_BILL_CHECK_REPORT;
   static const GENERATE_BOOKING_REPORT = _Paths.GENERATE_BOOKING_REPORT;
   static const E_BILL_AGENCY_GROUP_MASTER = _Paths.E_BILL_AGENCY_GROUP_MASTER;
   static const ASRUN_SPECIFICATION_AD_REVENUE =
@@ -85,7 +85,7 @@ abstract class RoutesList {
     _Paths.CLIENT_EMBARGO,
     _Paths.AGENCY_GROUP_MASTER,
     _Paths.GENERATE_BOOKING_REPORT,
-    _Paths.S_A_P_B_ILL_CHECK_REPORT,
+    _Paths.SAP_BILL_CHECK_REPORT,
     _Paths.E_BILL_AGENCY_GROUP_MASTER,
     _Paths.ASRUN_SPECIFICATION_AD_REVENUE,
     _Paths.SECONDARY_ASRUN_MODIFICATION,
@@ -99,8 +99,11 @@ abstract class RoutesList {
     _Paths.AUDIT_RESCHEDULE,
     _Paths.BILL_TRANSFER,
     _Paths.DEAL_REPORT,
+    _Paths.CLIENT_DEALS,
     _Paths.TRAFFIC_ORDER_CORRECTION,
     _Paths.CLIENT_MASTER,
+    _Paths.EMAIL_BILL_DETAILS,
+    _Paths.CLIENT_EMBARGO,
   ];
 }
 
@@ -142,7 +145,7 @@ abstract class _Paths {
   static const CURRENCY_TYPE_MASTER = '/frmCurrencyTypeMaster';
   static const EXPORT_BILLING_F_P_C = '/Frmcarrtoonnetworkasrun';
   static const CLIENT_DEALS = '/frmDealMaster';
-  static const S_A_P_B_ILL_CHECK_REPORT = '/frmSapBillcheckreport';
+  static const SAP_BILL_CHECK_REPORT = '/frmSapBillcheckreport';
   static const GENERATE_BOOKING_REPORT = '/frmGenerateBookingReport';
   static const E_BILL_AGENCY_GROUP_MASTER = '/Skybreakpattern';
   static const ASRUN_SPECIFICATION_AD_REVENUE = '/frmAsrunSpecification';

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 // import 'package:bms_creditcontrol/widgets/PlutoGridExport/lib/pluto_grid_export.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +17,7 @@ import '../../../providers/SizeDefine.dart';
 import '../../../providers/Utils.dart';
 import '../../CommonSearch/views/common_search_view.dart';
 import '../SecondaryAsrunGridModel.dart';
+import '../SecondaryAsrunModifictionResponseModel.dart';
 
 class SecondaryAsrunModificationController extends GetxController {
   //TODO: Implement SecondaryAsrunModificationController
@@ -51,6 +53,8 @@ class SecondaryAsrunModificationController extends GetxController {
   TextEditingController finalDurationEditingController = TextEditingController();
 
   Rx<bool> isEnable = Rx<bool>(true);
+
+  var rebuildSecModKey = GlobalKey<ScaffoldState>();
 
   Offset? getOffSetValue(BoxConstraints constraints) {
     switch (initialOffset.value) {
@@ -166,7 +170,7 @@ class SecondaryAsrunModificationController extends GetxController {
             if (map is Map && map['bindGrid'] != null) {
               secondaryAsrunGridModel =
                   SecondaryAsrunGridModel.fromJson(map as Map<String, dynamic>);
-              lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun;
+              lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun??[];
               isEnable.value = false;
               isEnable.refresh();
               update(['grid']);
@@ -210,7 +214,7 @@ class SecondaryAsrunModificationController extends GetxController {
 
   telFun(int index) {
     bool? blnRowUpdated = false;
-    lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun;
+    lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun??[];
 
     for (int i = 0; i < (stateManager?.rows.length ?? 0); i++) {
       if (index == i) {
@@ -222,7 +226,7 @@ class SecondaryAsrunModificationController extends GetxController {
               ((stateManager?.rows[i].cells['telecastTime']?.value) ==
                   secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun?[j].telecastTime)) {
             secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun?[j].spotStatus = "U";
-            lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun;
+            lstFinalAsRunDataList = secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun??[];
             blnRowUpdated = true;
           }
         }
@@ -314,7 +318,9 @@ class SecondaryAsrunModificationController extends GetxController {
     } else {
       if (finalProgramEditingController.text.toString().trim() !=
           strProgramName.toString().trim()) {
-        print(">>>>>>>>>>>>>in else if");
+        if (kDebugMode) {
+          print(">>>>>>>>>>>>>in else if");
+        }
         LoadingDialog.modify3("Program name not matching. Do you want to still continue?", () {},
             () {
           return;
@@ -380,6 +386,37 @@ class SecondaryAsrunModificationController extends GetxController {
       closeDialogIfOpen();
     }
   }
+  SecondaryAsrunModifictionResponseModel? secondaryAsrunModifictionResponseModel;
+
+  saveResBindData(Map<String,dynamic>? map){
+    try{
+      if(map != null && map['postSave'] != null){
+        secondaryAsrunModifictionResponseModel =
+            SecondaryAsrunModifictionResponseModel.fromJson(map);
+
+        if(secondaryAsrunModifictionResponseModel?.postSave != null &&
+            secondaryAsrunModifictionResponseModel?.postSave?.dgvAsRunModification != null ){
+          secondaryAsrunGridModel?.bindGrid?.lstAsRunBookingDetails?.clear();
+          secondaryAsrunModifictionResponseModel?.postSave?.dgvAsRunModification?.forEach((element) {
+            secondaryAsrunGridModel?.bindGrid?.lstAsRunBookingDetails?.add(LstAsRunBookingDetails.fromJson(element.toJson()));
+          });
+        }
+        if(secondaryAsrunModifictionResponseModel?.postSave != null &&
+            secondaryAsrunModifictionResponseModel?.postSave?.dgvTelecasted != null ){
+          secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun?.clear();
+          secondaryAsrunModifictionResponseModel?.postSave?.dgvTelecasted?.forEach((element) {
+            secondaryAsrunGridModel?.bindGrid?.lstFinalAsRun?.add(LstFinalAsRun.fromJson(element.toJson()));
+          });
+        }
+        update(['grid']);
+      }else{
+        secondaryAsrunModifictionResponseModel = null;
+      }
+
+    }catch(e){
+      secondaryAsrunModifictionResponseModel = null;
+    }
+  }
 
   postSave() {
     if ((stateManager?.rows.length ?? 0) > 0) {
@@ -400,6 +437,7 @@ class SecondaryAsrunModificationController extends GetxController {
             fun: (map) {
               closeDialogIfOpen();
               if (map is Map && map['postSave'] != null) {
+                saveResBindData(map as Map<String,dynamic>);
                 LoadingDialog.callDataSaved(
                     msg: map['postSave']['message'] ?? "Something went wrong",
                     callback: () {
@@ -411,7 +449,7 @@ class SecondaryAsrunModificationController extends GetxController {
             },
             failed: (map) {
               closeDialogIfOpen();
-              LoadingDialog.showErrorDialog(("Something went wrong").toString());
+              LoadingDialog.showErrorDialog((map ?? "Something went wrong").toString());
             });
       } catch (e) {
         closeDialogIfOpen();
@@ -424,18 +462,20 @@ class SecondaryAsrunModificationController extends GetxController {
 
   btnClearMisMatch() {
     try {
-      if (secondaryAsrunGridModel != null &&
-          secondaryAsrunGridModel?.bindGrid != null
-      /* &&
+      if (secondaryAsrunGridModel != null && secondaryAsrunGridModel?.bindGrid != null
+          /* &&
           secondaryAsrunGridModel?.bindGrid?.lstbookingdetail != null
            && (secondaryAsrunGridModel?.bindGrid?.lstbookingdetail?.length ?? 0) > 0*/
-      ) {
+          ) {
         LoadingDialog.call();
         Map<String, dynamic> postData = {
           "locationcode": selectedLocation?.key ?? "",
           "channelcode": selectedChannel?.key ?? "",
           "date": Utils.getMMDDYYYYFromDDMMYYYYInString3(logDateController.text) ?? "",
-          "lstTape": (secondaryAsrunGridModel?.bindGrid?.lstbookingdetail?.map((e) => e.toJson()).toList())??[]
+          "lstTape": (secondaryAsrunGridModel?.bindGrid?.lstbookingdetail
+                  ?.map((e) => e.toJson())
+                  .toList()) ??
+              []
         };
         Get.find<ConnectorControl>().POSTMETHOD(
             api: ApiFactory.SECONDARY_ASRUN_MODIFICATION_GET_CLEAR_MISMATCH,
@@ -443,26 +483,25 @@ class SecondaryAsrunModificationController extends GetxController {
             // "https://jsonkeeper.com/b/D537"
             fun: (map) {
               closeDialogIfOpen();
-              if(map is Map && map['clearmismatch'] != null && map['clearmismatch']['message'] != null){
-                LoadingDialog.callDataSaved2(msg: (map['clearmismatch']['message']??"").toString(),
-                    callback: (){
+              if (map is Map &&
+                  map['clearmismatch'] != null &&
+                  map['clearmismatch']['message'] != null) {
+                LoadingDialog.callDataSaved2(
+                    msg: (map['clearmismatch']['message'] ?? "").toString(),
+                    callback: () {
                       getBindData();
-                });
-              }else{
-                LoadingDialog.showErrorDialog((map??"Something went wrong").toString());
+                    });
+              } else {
+                LoadingDialog.showErrorDialog((map ?? "Something went wrong").toString());
               }
-
             },
             failed: (map) {
               closeDialogIfOpen();
               LoadingDialog.showErrorDialog(("Something went wrong").toString());
             });
-      }
-      else{
+      } else {
         LoadingDialog.callInfoMessage("No miss Match found");
       }
-
-
     } catch (e) {
       closeDialogIfOpen();
       LoadingDialog.showErrorDialog(("Something went wrong").toString());
@@ -493,11 +532,9 @@ class SecondaryAsrunModificationController extends GetxController {
               // rowMap[key] = DateFormat("yyyy-MM-dd").format(DateTime.now()) + (row.cells[key]?.value ?? "");
               rowMap[key] = 0;
             }
-          }
-          else if((key.toString().trim() == "MID/Pre")){
-            rowMap["miD_Pre"] = row.cells[key]?.value ?? "";
-          }
-          else {
+          } else if ((key.toString().trim() == "MID/Pre")) {
+            rowMap["midPre"] = row.cells[key]?.value ?? "";
+          } else {
             rowMap[key] = row.cells[key]?.value ?? "";
           }
         }
@@ -545,8 +582,26 @@ class SecondaryAsrunModificationController extends GetxController {
   }
 
   clearAll() {
-    Get.delete<SecondaryAsrunModificationController>();
-    Get.find<HomeController>().clearPage1();
+    LoadingDialog.modify4("Unsaved data will be lost, want to continue?", () {
+      // Get.delete<SecondaryAsrunModificationController>();
+      // Get.find<HomeController>().clearPage1();
+      clearAllVariable();
+    }, () {}, deleteTitle: "Yes", confirmTitle: "No");
+  }
+
+  clearAllVariable(){
+    secondaryAsrunModifictionResponseModel = null;
+    secondaryAsrunGridModel = null;
+    isEnable.value = true;
+    isEnable.refresh();
+    lstFinalAsRunDataList = [];
+     selectedLocation = null;
+     selectedChannel = null;
+    dialogWidget = null;
+    canDialogShow.value = false;
+    stateManager = null;
+     update(['grid']);
+
   }
 
   formHandler(String text) {

@@ -36,6 +36,7 @@ class ClientMasterView extends GetView<ClientMasterController> {
                   return Expanded(
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           flex: 11,
@@ -486,34 +487,65 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                     // focusNode: controllerX.productLevel1Focus
                                     // autoFocus: true,
                                   ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
+                                  Stack(
                                     children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 14.0, left: 10, right: 10),
-                                        child: FormButtonWrapper(
-                                          btnText: "Block Client",
-                                          callback: () {
-                                            controllerX.postBlockClient();
-                                          },
-                                          showIcon: true,
-                                        ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 14.0, left: 10, right: 10),
+                                            child: FormButtonWrapper(
+                                              btnText: "Block Client",
+                                              callback: () {
+                                                controllerX.postBlockClient();
+                                              },
+                                              showIcon: true,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 8,
+                                          ),
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 14.0, left: 10, right: 10),
+                                            child: FormButtonWrapper(
+                                              btnText: "Un-Block Client",
+                                              callback: () {
+                                                controllerX.postUnblockClient();
+                                              },
+                                              showIcon: true,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      SizedBox(
-                                        width: 8,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 14.0, left: 10, right: 10),
-                                        child: FormButtonWrapper(
-                                          btnText: "Un-Block Client",
-                                          callback: () {
-                                            controllerX.postUnblockClient();
-                                          },
-                                          showIcon: true,
-                                        ),
-                                      ),
+                                      GetBuilder<ClientMasterController>(
+                                          init: controllerX,
+                                          id: "update",
+                                          builder: (logic) {
+                                            return Positioned(
+                                                top: 15,
+                                                right: 15,
+                                                child: Text(
+                                                  ((controllerX
+                                                              .retrieveData
+                                                              ?.lstRecords?[0]
+                                                              .changeClientCode !=
+                                                          null)
+                                                      ? (controllerX
+                                                              .retrieveData
+                                                              ?.lstRecords?[0]
+                                                              .lblBlockedClient ??
+                                                          "")
+                                                      : ""),
+                                                  style: TextStyle(
+                                                      color: Colors.red,
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ));
+                                          })
                                     ],
                                   ),
                                   SizedBox(
@@ -533,16 +565,17 @@ class ClientMasterView extends GetView<ClientMasterController> {
                             decoration: BoxDecoration(
                                 border: Border.all(color: Colors.grey)),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(5.0),
                               child: SingleChildScrollView(
                                 child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     Container(
                                       decoration: BoxDecoration(
                                         border: Border.all(color: Colors.grey),
                                       ),
                                       child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
+                                        padding: const EdgeInsets.all(5.0),
                                         child: Column(
                                           children: [
                                             Row(
@@ -687,20 +720,40 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                     title: "Effective",
                                                     mainTextController:
                                                         controllerX.effective_,
-                                                    widthRation:
-                                                        controllerX.fixedWidth2,
+                                                    widthRation: controllerX
+                                                            .fixedWidth2 -
+                                                        0.05,
                                                     // isEnable: controllerX.isEnable.value,
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: Get.width * 0.005,
+                                                  width: 10,
                                                 ),
+                                                Obx(() => Expanded(
+                                                      child: DropDownField
+                                                          .formDropDown1WidthMapExpand(
+                                                        controllerX.plantList
+                                                                ?.value ??
+                                                            [],
+                                                        (value) {
+                                                          controllerX
+                                                                  .selectPlant =
+                                                              value;
+                                                        },
+                                                        "Plant",
+                                                        // 0.413,
+                                                        selected: controllerX
+                                                            .selectPlant,
+                                                        // isEnable: controllerX.isEnable,
+                                                        autoFocus: false,
+                                                      ),
+                                                    )),
                                               ],
                                             ),
                                             SizedBox(
                                               height: 4,
                                             ),
-                                            Obx(() => DropDownField
+                                            /*Obx(() => DropDownField
                                                     .formDropDown1WidthMap(
                                                   controllerX
                                                           .plantList?.value ??
@@ -715,7 +768,7 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                       controllerX.selectPlant,
                                                   // isEnable: controllerX.isEnable,
                                                   autoFocus: false,
-                                                )),
+                                                )),*/
                                             Row(
                                               mainAxisAlignment:
                                                   MainAxisAlignment
@@ -727,7 +780,7 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          top: 14.0,
+                                                          top: 4,
                                                           left: 10,
                                                           right: 1),
                                                   child: FormButtonWrapper(
@@ -837,7 +890,8 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                     },
                                                     "Agency",
                                                     0.3,
-                                                    selected: controllerX.selectAgency1,
+                                                    selected: controllerX
+                                                        .selectAgency1,
                                                     autoFocus: false,
                                                   );
                                                 }),
@@ -955,7 +1009,7 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                               false))
                                                       ? SizedBox(
                                                           height:
-                                                              Get.height * 0.12,
+                                                              Get.height * 0.16,
                                                           child:
                                                               DataGridFromMap(
                                                             showSrNo: true,
@@ -986,7 +1040,7 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                               controllerX
                                                                   .fixedWidth3,
                                                           height:
-                                                              Get.height * 0.12,
+                                                              Get.height * 0.16,
                                                           decoration:
                                                               BoxDecoration(
                                                             border: Border.all(
