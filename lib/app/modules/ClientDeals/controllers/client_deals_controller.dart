@@ -1629,20 +1629,20 @@ class ClientDealsController extends GetxController {
           "agencyCode": selectAgency?.value?.key ?? "",
           "brandCode": selectBrand?.value?.key ?? "",
           "currencytypecode": selectCurrency?.value?.key ?? "ZARUP00003",
-          "seconds": (secondsController.text.trim() != "") ? int.parse(secondsController.text) : 0,
-          "dealAmount": (amountController.text.trim() != "") ? int.parse(amountController.text) : 0,
+          "seconds": (secondsController.text.trim() != "") ? double.parse(secondsController.text) : 0.0,
+          "dealAmount": (amountController.text.trim() != "") ? double.parse(amountController.text) : 0.0,
           "fromDate":Utils.getMMDDYYYYFromDDMMYYYYInString( fromDateController.text ?? ""),
           "todate":Utils.getMMDDYYYYFromDDMMYYYYInString( toDateController.text ?? ""),
           "secondused": (secondsController2.text.trim() != "")
-              ? int.parse(secondsController2.text)
-              : 0,
+              ? double.parse(secondsController2.text)
+              : 0.0,
           "bookedamount": (amountController2.text.trim() != "")
-              ? int.parse(amountController2.text)
-              : 0,
+              ? double.parse(amountController2.text)
+              : 0.0,
           "paymentmodecode": selectPayMode?.value?.key ?? "",
           "maxspend": (maxSpeedController.text.trim() != "")
-              ? int.parse(maxSpeedController.text)
-              : 0,
+              ? double.parse(maxSpeedController.text)
+              : 0.0,
           "dealTypeCode": selectDealType?.value?.key ?? "",
           "effectiveRate_YN": getOneZero(sta: effectiveRate.value)
         };

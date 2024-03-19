@@ -75,6 +75,10 @@ class ApiFactory {
 
   static String COMMON_DOCS_DELETE(String docId) =>
       "$BASE_URL_COMMON/api/CommonDoc/DeleteDocument?DocumentID=$docId";
+
+  static String COMMON_ADD_INFO(String formName) =>
+      "$BASE_URL_COMMON/api/Common/AddInfo?formName=$formName";
+
   static String USER_SETTINGS = "$BASE_URL_COMMON/api/MDI/SaveUserSettingData";
   static String FETCH_USER_SETTING = "$BASE_URL_COMMON/api/MDI/GetUserSetting";
 
@@ -1280,6 +1284,7 @@ class ApiFactory {
 
   static String get AGENCY_MASTER_POST =>
       "$BASE_URL/api/AgencyMasters/PostValidateAndSaveRecord";
+
 
   /// //////////////////  Agency Group Master ////////////////////////
   static String get AGENCY_GROUP_MASTER_GET_RETRIEVE_RECORD =>
