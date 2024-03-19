@@ -318,6 +318,36 @@ class ComboDealEntryController extends GetxController {
     }
   }
 
+  handleOnDoubleClick(PlutoGridOnRowDoubleTapEvent event) {
+    lastSelectedIdx = tabelDealGrid?.refRows[event.rowIdx ?? 0].sortIdx ?? 0;
+    if (tabelDealList[lastSelectedIdx].selected == true) {
+      getDealContent(
+        "0",
+        tabelDealList[lastSelectedIdx].locationcode,
+        tabelDealList[lastSelectedIdx].channelcode,
+        tabelDealList[lastSelectedIdx].dealnumber,
+      );
+    } else {
+      for (var i = 0; i < tabelLinkDealList.length; i++) {
+        if (tabelDealList[lastSelectedIdx].locationcode ==
+                tabelLinkDealList[i]['locationcode'] &&
+            tabelDealList[lastSelectedIdx].channelcode ==
+                tabelLinkDealList[i]['channelcode'] &&
+            tabelDealList[lastSelectedIdx].dealnumber ==
+                tabelLinkDealList[i]['dealnumber']) {
+          tabelLinkDealList.removeWhere((element) {
+            return element['locationcode'] ==
+                    tabelDealList[lastSelectedIdx].locationcode &&
+                element['channelcode'] ==
+                    tabelDealList[lastSelectedIdx].channelcode &&
+                element['dealnumber'] ==
+                    tabelDealList[lastSelectedIdx].dealnumber;
+          });
+        }
+      }
+    }
+  }
+
   Future<void> doubleClickFilterGrid(gridController, field, value) async {
     print("Hashcode======================> ${gridController!.hashCode}");
 

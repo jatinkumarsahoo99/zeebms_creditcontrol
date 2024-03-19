@@ -315,6 +315,7 @@ class EbillsView extends GetView<EbillsController> {
                                 width: 0.37,
                                 onchanged: (value) {},
                                 autoFocus: false,
+                                maxLen: 200,
                               ),
                               InputFields.formField1(
                                 hintTxt: "CC:",
@@ -322,6 +323,7 @@ class EbillsView extends GetView<EbillsController> {
                                 width: 0.37,
                                 onchanged: (value) {},
                                 autoFocus: false,
+                                maxLen: 200,
                               ),
                             ],
                           ),

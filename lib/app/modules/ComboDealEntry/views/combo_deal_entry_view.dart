@@ -151,6 +151,9 @@ class ComboDealEntryView extends GetView<ComboDealEntryController> {
                           onEdit: (row) {
                             controller.handleOnCheckBoxChangeInward(row);
                           },
+                          onRowDoubleTap: (row) {
+                            controller.handleOnDoubleClick(row);
+                          },
                           colorCallback: (colorEvent) {
                             if (colorEvent.row.cells.containsValue(
                                 controller.tabelDealGrid?.currentCell)) {
