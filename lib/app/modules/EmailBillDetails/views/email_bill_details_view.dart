@@ -563,14 +563,72 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
               )
             ],
           ),
-          InputFields.formField1WidthBox(
-            hintTxt: "",
-            controller: controllerX.tecbody,
-            widthRatio: Get.width * 0.58,
-            height: Get.height * 0.43,
-            maxLen: 10000,
-            paddingLeft: 0,
-          ),
+
+          Expanded(
+            child: InputFields.formFieldExpandedVertical(
+              hintTxt: "",
+              controller: controllerX.tecbody,
+              expands: true,
+            ),
+          )
+
+          // Expanded(
+          //   child: TextField(
+          //     controller: controllerX.tecbody,
+          //     maxLines: null, // AcontrollerX.tecbodyllows unlimited lines
+          //     expands: true,
+          //     textAlign: TextAlign.start,
+          //     textAlignVertical: TextAlignVertical.top,
+          //     decoration: InputDecoration(
+          //       hintText: 'Enter your text here...',
+          //       border: InputBorder.none,
+          //       // filled: true,
+          //     ),
+          //   ),
+          // ),
+          // InputFields.formField1WidthBox(
+          //   hintTxt: "",
+          //   controller: controllerX.tecbody,
+          //   widthRatio: Get.width * 0.58,
+          //   // height: Get.height * 0.43,
+          //   maxLen: 10000,
+          //   paddingLeft: 0,
+          // ),
+          // Container(
+          //   height: 200.0, // Set the desired height here
+          //   // decoration: BoxDecoration(
+          //   //   border: Border.all(color: Colors.grey),
+          //   //   borderRadius: BorderRadius.circular(10.0),
+          //   // ),
+          //   child: TextField(
+          //     controller: controllerX.tecbody,
+          //     maxLines: null, // Allows unlimited lines
+          //     decoration: InputDecoration(
+          //       contentPadding: EdgeInsets.all(16.0),
+          //       hintText: 'Enter your text here...',
+          //       border: InputBorder.none,
+          //     ),
+          //   ),
+          // ),
+
+          // Expanded(
+          //   child: Container(
+          //     // decoration: BoxDecoration(
+          //     //   border: Border.all(color: Colors.grey),
+          //     //   borderRadius: BorderRadius.circular(10.0),
+          //     // ),
+          //     padding: EdgeInsets.all(16.0),
+          //     child: TextField(
+          //       controller: controllerX.tecbody,
+          //       maxLines: null, // Allows unlimited lines
+          //       decoration: InputDecoration(
+          //         hintText: 'Enter your text here...',
+          //         border: InputBorder.none,
+          //       ),
+          //     ),
+          //   ),
+          // ),
+
           // InputFields.formFieldExpand2(
           //   // bottomPaddingHeight: 3,
           //   hintTxt: "",
@@ -582,13 +640,18 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
           //   // height: 60,
           //   expands: true,
           // ),
-          // InputFields.formFieldExpand2(
-          //   hintTxt: "Remarks",
-          //   // titleInLeft: true,
-          //   controller: controllerX.tecbody,
-          //   titleSizeboxWidth: 80,
-          //   removeHeight: true,
-          //   expands: true,
+          // Expanded(
+          //   child: Container(
+          //     color: Colors.amber,
+          //     child: InputFields.formFieldExpand2(
+          //       hintTxt: "Remarks",
+          //       // titleInLeft: true,
+          //       controller: controllerX.tecbody,
+          //       titleSizeboxWidth: 80,
+          //       removeHeight: true,
+          //       expands: true,
+          //     ),
+          //   ),
           // )
         ],
       ),
