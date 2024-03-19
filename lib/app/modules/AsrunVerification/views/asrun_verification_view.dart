@@ -3,6 +3,7 @@ import 'package:bms_creditcontrol/app/routes/app_pages.dart';
 import 'package:bms_creditcontrol/widgets/DateTime/DateWithThreeTextField.dart';
 import 'package:bms_creditcontrol/widgets/FormButton.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
+import 'package:bms_creditcontrol/widgets/PlutoGrid/src/pluto_grid.dart';
 import 'package:bms_creditcontrol/widgets/dropdown.dart';
 import 'package:bms_creditcontrol/widgets/floating_dialog.dart';
 import 'package:bms_creditcontrol/widgets/gridFromMap.dart';
@@ -11,6 +12,7 @@ import 'package:flutter/services.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../widgets/PlutoGrid/src/manager/pluto_grid_state_manager.dart';
 import '../controllers/asrun_verification_controller.dart';
 
 class AsrunVerificationView extends GetView<AsrunVerificationController> {
@@ -110,7 +112,10 @@ class AsrunVerificationView extends GetView<AsrunVerificationController> {
                                     .toList(),
                                 onload: (value) {
                                   controller.asRunDataGrid = value.stateManager;
+                                  value.stateManager.setSelectingMode(
+                                      PlutoGridSelectingMode.row);
                                 },
+                                mode: PlutoGridMode.normal,
                                 colorCallback: (colorEvent) {
                                   if (colorEvent.row.cells.containsValue(
                                       controller.asRunDataGrid?.currentCell)) {

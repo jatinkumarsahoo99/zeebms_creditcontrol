@@ -2944,6 +2944,9 @@ class InputFields {
                         LengthLimitingTextInputFormatter(
                             maxchar ?? SizeDefine.maxcharlimit),
                         FilteringTextInputFormatter.digitsOnly,
+                        // FilteringTextInputFormatter.allow(
+                        //   RegExp(r'^\d*\.?\d{0,4}$'),
+                        // ),
                       ],
                       enabled: isEnabled ?? true,
                       decoration: InputDecoration(

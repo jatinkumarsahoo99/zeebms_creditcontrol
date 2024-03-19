@@ -266,6 +266,10 @@ class ClientDealsView extends GetView<ClientDealsController> {
                             }
                           },
                           hideKeys: ["isrequired", "allowedvalues", "selectIndex", "lstData"],
+                          editKeys: ['infovalue'],
+                          onEdit: (PlutoGridOnChangedEvent event){
+                            controller.addInfoStateManager?.notifyListeners();
+                          },
                           mapData: controller.clientDealRetrieveModel!
                               .agencyLeaveModel!.addInfo!.
                           map((e) => e.toJson()).toList(),
@@ -815,7 +819,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                         data;
                                                     controller.channelLeave();
                                                   },
-                                                  "",
+                                                  "Channel",
                                                   inkWellFocusNode: controller
                                                       .channelFocus,
                                                   titleInLeft: true,

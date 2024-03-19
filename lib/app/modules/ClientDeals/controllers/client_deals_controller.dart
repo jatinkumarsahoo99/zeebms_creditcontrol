@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:bms_creditcontrol/widgets/PlutoGrid/pluto_grid.dart';
 import 'package:excel/excel.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -925,10 +926,10 @@ class ClientDealsController extends GetxController {
                         toDateController.text = Utils.toDateFormat4(
                             clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].todate);
                         secondsController.text =
-                            (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].seconds ?? "0")
+                            (clientDealRetrieveModel?.agencyLeaveModel?.totalSeconds ?? "0")
                                 .toString();
                         amountController.text =
-                            (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].dealAmount ??
+                            (clientDealRetrieveModel?.agencyLeaveModel?.totalDeaAmount ??
                                     "0")
                                 .toString();
                         maxSpeedController.text =
@@ -968,7 +969,7 @@ class ClientDealsController extends GetxController {
                       });
                     });
 
-                    bkDurationController.text = (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].secondused??"0").toString();
+                    bkDurationController.text = (clientDealRetrieveModel?.agencyLeaveModel?.totalSecondsUsed ??"0").toString();
                     bkAmountController.text = (clientDealRetrieveModel?.agencyLeaveModel?.retrieve?[0].bookedamount??"0").toString();
                   }
                 } catch (e) {}
@@ -1529,48 +1530,78 @@ class ClientDealsController extends GetxController {
   }
 
   postSaveFunCall() async {
-    try {
-      print(">>>>>>>>>>fun call${importGridList}");
-
-      if(selectedLocation?.value == null || selectedChannel?.value == null ||
-          dealNoController.text == "" || selectedClient?.value == null ||
-          selectAgency?.value == null || selectCurrency?.value == null || selectPayMode?.value == null){
-        return;
-      }else if(importGridList.isEmpty){
-        LoadingDialog.showErrorDialog1("No details to add",callback: (){
+    if(selectedLocation?.value == null){
+      LoadingDialog.showErrorDialog("Location can not be empty",callback: (){
+        locationFocus.requestFocus();
+      });
+    }else if(selectedChannel?.value == null){
+      LoadingDialog.showErrorDialog("Channel can not be empty",callback: (){
+        channelFocus.requestFocus();
+      });
+    }else if(dealNoController.text.trim()  == ""){
+      LoadingDialog.showErrorDialog("Deal No can not be empty",callback: (){
+        dealNoFocus.requestFocus();
+      });
+    }else if(selectAgency?.value == null){
+      LoadingDialog.showErrorDialog("Agency can not be empty",callback: (){
+        agencyFocus.requestFocus();
+      });
+    }else if(selectCurrency?.value == null){
+      LoadingDialog.showErrorDialog("Currency can not be empty");
+    }else if(selectPayMode?.value == null){
+      LoadingDialog.showErrorDialog("Payment can not be empty");
+    }else {
+      try {
+        if (selectedLocation?.value == null || selectedChannel?.value == null ||
+            dealNoController.text == "" || selectedClient?.value == null ||
+            selectAgency?.value == null || selectCurrency?.value == null ||
+            selectPayMode?.value == null) {
           return;
-        });
-        return;
+        }
+        else if (importGridList.isEmpty) {
+          LoadingDialog.showErrorDialog1("No details to add", callback: () {
+            return;
+          });
+          return;
+        }
+
+        double valuationAmount = 0,
+            billingAmount = 0;
+
+        for (int i = 0; i < importGridList.length; i++) {
+          valuationAmount = valuationAmount + ((importGridList[i].seconds != null &&
+              importGridList[i].seconds != "") ? int.parse(importGridList[i].seconds ?? "0") : 0) *
+              ((importGridList[i].valuationRate != null &&
+                  importGridList[i].valuationRate != "") ? int.parse(
+                  importGridList[i].valuationRate ?? "0") : 0);
+
+          billingAmount = billingAmount + ((importGridList[i].seconds != null &&
+              importGridList[i].seconds != "") ? int.parse(importGridList[i].seconds ?? "0") : 0) *
+              ((importGridList[i].rate != null &&
+                  importGridList[i].rate != "") ? int.parse(importGridList[i].rate ?? "0") : 0);
+        }
+        if (kDebugMode) {
+          print(">>>>>>>>>>fun call11>>> ${(valuationAmount - billingAmount)}");
+        }
+
+        if ((valuationAmount - billingAmount) > 100) {
+          bool sta = await LoadingDialog.modifyWithAsync(
+              "The difference between the billing and valuation amount is ${((valuationAmount -
+                  billingAmount).toStringAsFixed(2))}\nDo you want to save?",
+              cancelTitle: "Ok", deleteTitle: "Cancel");
+          if (!sta) {
+            return;
+          } else {
+            callSaveApi();
+          }
+        } else {
+          callSaveApi();
+        }
+      } catch (e) {
+        if (kDebugMode) {
+          print(">>>>>>>>>>>exception${e}");
+        }
       }
-
-      double valuationAmount =0,billingAmount = 0;
-
-      for(int i=0;i<importGridList.length;i++){
-        valuationAmount =  valuationAmount + ((importGridList[i].seconds != null &&
-            importGridList[i].seconds != "")?int.parse(importGridList[i].seconds??"0"):0) *
-            ((importGridList[i].valuationRate != null &&
-            importGridList[i].valuationRate != "")?int.parse(importGridList[i].valuationRate??"0"):0) ;
-
-        billingAmount =  billingAmount + ((importGridList[i].seconds != null &&
-            importGridList[i].seconds != "")?int.parse(importGridList[i].seconds??"0"):0) *
-            ((importGridList[i].rate != null &&
-                importGridList[i].rate != "")?int.parse(importGridList[i].rate??"0"):0) ;
-      }
-      print(">>>>>>>>>>fun call11>>> ${(valuationAmount - billingAmount )}");
-
-      if((valuationAmount - billingAmount ) > 100){
-       bool sta =  await LoadingDialog.modifyWithAsync("The difference between the billing and valuation amount is ${((valuationAmount - billingAmount ).toStringAsFixed(2))}\nDo you want to save?",
-       cancelTitle:"Ok" ,deleteTitle: "Cancel");
-       if(!sta){
-         return;
-       }else{
-         callSaveApi();
-       }
-      }else{
-        callSaveApi();
-      }
-    } catch (e) {
-      print(">>>>>>>>>>>execption${e}");
     }
   }
 
