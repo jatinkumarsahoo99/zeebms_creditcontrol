@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:bms_creditcontrol/app/controller/ConnectorControl.dart';
 import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
 import 'package:bms_creditcontrol/app/providers/ApiFactory.dart';
+import 'package:bms_creditcontrol/app/providers/ExportData.dart';
 import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
@@ -175,28 +176,33 @@ class EBillsForBonusActivityController extends GetxController {
                   map['infoCreateXml']['sendMails']['message'];
 
               if (tcXMLMessage.contains('XML created successfully.')) {
-                String fileName = extractFileName(
-                    map['infoCreateXml']['tcXml']['ebillsTCpath']);
+                String fileName = map['infoCreateXml']['tcXml']
+                    ['filesInBytesList'][0]['fileName'];
+                // extractFileName(
+                //     map['infoCreateXml']['tcXml']['ebillsTCpath']);
                 await FileSaver.instance.saveFile(
                   name: (fileName),
-                  bytes: base64Decode(map['infoCreateXml']['tcXml']['tc']),
+                  bytes: base64Decode(map['infoCreateXml']['tcXml']
+                      ['filesInBytesList'][0]['fileInBytes']),
                 );
+                // ExportData().exportFilefromBase64(
+                //     map["infoCreateXml"]["tcXml"]['filesInBytesList'][0]
+                //         ['fileInBytes'],
+                //     fileName);
                 if (sendMailsMessage.contains('XML mailed successfully.')) {
                   LoadingDialog.callDataSaved(
-                      msg: map['infoCreateXml']['sendMails']['message'],
+                      msg: sendMailsMessage,
                       callback: () {
                         LoadingDialog.callDataSaved(
-                            msg: map['infoCreateXml']['tcXml']['message'],
+                            msg: tcXMLMessage,
                             callback: () {
                               Get.back();
                             });
                       });
                 } else {
-                  LoadingDialog.showErrorDialog(
-                      map['infoCreateXml']['sendMails']['message'],
-                      callback: () {
+                  LoadingDialog.showErrorDialog(sendMailsMessage, callback: () {
                     LoadingDialog.callDataSaved(
-                        msg: map['infoCreateXml']['tcXml']['message'],
+                        msg: tcXMLMessage,
                         callback: () {
                           Get.back();
                         });
@@ -205,20 +211,16 @@ class EBillsForBonusActivityController extends GetxController {
               } else {
                 if (sendMailsMessage.contains('XML mailed successfully.')) {
                   LoadingDialog.callDataSaved(
-                      msg: map['infoCreateXml']['sendMails']['message'],
+                      msg: sendMailsMessage,
                       callback: () {
-                        LoadingDialog.showErrorDialog(
-                            map['infoCreateXml']['tcXml']['message'],
+                        LoadingDialog.showErrorDialog(tcXMLMessage,
                             callback: () {
                           Get.back();
                         });
                       });
                 } else {
-                  LoadingDialog.showErrorDialog(
-                      map['infoCreateXml']['sendMails']['message'],
-                      callback: () {
-                    LoadingDialog.showErrorDialog(
-                        map['infoCreateXml']['tcXml']['message'], callback: () {
+                  LoadingDialog.showErrorDialog(sendMailsMessage, callback: () {
+                    LoadingDialog.showErrorDialog(tcXMLMessage, callback: () {
                       Get.back();
                     });
                   });

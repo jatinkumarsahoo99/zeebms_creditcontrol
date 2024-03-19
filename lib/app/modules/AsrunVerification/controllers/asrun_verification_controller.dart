@@ -315,10 +315,22 @@ class AsrunVerificationController extends GetxController {
           width: Get.width * 0.60,
           height: Get.height * 0.6,
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(left: 8, right: 8, bottom: 8),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: IconButton(
+                      onPressed: () {
+                        drgabbleDialog.value = null;
+                      },
+                      icon: const Icon(Icons.close),
+                    ),
+                  ),
+                ),
                 Obx(
                   () => Expanded(
                     child: finalAsRunList.isEmpty
@@ -824,7 +836,7 @@ class AsrunVerificationController extends GetxController {
             finalAsRunDataGrid,
           ], tableNamesList: [
             'key1',
-            'key2,'
+            'key2',
           ]);
         } catch (e) {
           print("Exit Error ===>" + e.toString());

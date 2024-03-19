@@ -172,7 +172,7 @@ class AsRunData {
     _data["tapeDuration"] = tapeDuration;
     _data["programName"] = programName;
     _data["midPre"] = midPre;
-    _data["spotAmount"] = spotAmount;
+    _data["spotAmount"] = spotAmount!.toStringAsFixed(2);
     _data["spotStatus"] = spotStatus;
     _data["telecastDuration"] = telecastDuration;
     _data["telecastTime"] = telecastTime;
