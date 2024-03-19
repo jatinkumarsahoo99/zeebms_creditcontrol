@@ -65,8 +65,7 @@ class LoadingDialog {
           ),
           Text(
             msg ?? Const.SAVED_MSG,
-            style: TextStyle(
-                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.green, fontSize: SizeDefine.popupTxtSize),
           )
         ],
       ),
@@ -153,8 +152,7 @@ class LoadingDialog {
           ),
           Text(
             msg ?? Const.SAVED_MSG,
-            style: TextStyle(
-                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.green, fontSize: SizeDefine.popupTxtSize),
           )
         ],
       ),
@@ -235,8 +233,7 @@ class LoadingDialog {
           const SizedBox(height: 10),
           Text(
             msg,
-            style: TextStyle(
-                color: Colors.black, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.black, fontSize: SizeDefine.popupTxtSize),
           )
         ],
       ),
@@ -284,8 +281,7 @@ class LoadingDialog {
           const SizedBox(height: 10),
           Text(
             msg,
-            style: TextStyle(
-                color: Colors.black, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.black, fontSize: SizeDefine.popupTxtSize),
           )
         ],
       ),
@@ -337,8 +333,7 @@ class LoadingDialog {
           ),
           Text(
             value,
-            style: TextStyle(
-                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.green, fontSize: SizeDefine.popupTxtSize),
           )
         ],
       ),
@@ -385,8 +380,7 @@ class LoadingDialog {
           const SizedBox(height: 20),
           Text(
             value,
-            style: TextStyle(
-                color: Colors.black, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.black, fontSize: SizeDefine.popupTxtSize),
           )
         ],
       ),
@@ -430,8 +424,7 @@ class LoadingDialog {
               const SizedBox(height: 20),
               Text(
                 value,
-                style: TextStyle(
-                    color: Colors.red, fontSize: SizeDefine.popupTxtSize),
+                style: TextStyle(color: Colors.red, fontSize: SizeDefine.popupTxtSize),
               )
             ],
           ),
@@ -534,8 +527,7 @@ class LoadingDialog {
           ),
           Text(
             title,
-            style:
-                TextStyle(color: Colors.red, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.red, fontSize: SizeDefine.popupTxtSize),
             textAlign: TextAlign.center,
           )
         ],
@@ -596,8 +588,7 @@ class LoadingDialog {
           ),
           Text(
             title,
-            style: TextStyle(
-                color: Colors.blueAccent, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.blueAccent, fontSize: SizeDefine.popupTxtSize),
             textAlign: TextAlign.center,
           )
         ],
@@ -653,8 +644,7 @@ class LoadingDialog {
           ),
           Text(
             title,
-            style: TextStyle(
-                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.green, fontSize: SizeDefine.popupTxtSize),
             textAlign: TextAlign.center,
           )
         ],
@@ -711,8 +701,7 @@ class LoadingDialog {
           ),
           Text(
             title,
-            style: TextStyle(
-                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.green, fontSize: SizeDefine.popupTxtSize),
             textAlign: TextAlign.center,
           )
         ],
@@ -728,9 +717,9 @@ class LoadingDialog {
           autoFocus: false,
           callback: () {
             Get.back();
-            confirm!();
+            cancel!();
           },
-          btnText: deleteTitle ?? "Cancel"),
+          btnText: confirmTitle ?? "Delete"),
       /*cancel: MaterialButton(
           onPressed: () {
             Get.back();
@@ -741,9 +730,9 @@ class LoadingDialog {
           autoFocus: true,
           callback: () {
             Get.back();
-            cancel!();
+            confirm!();
           },
-          btnText: confirmTitle ?? "Delete"),
+          btnText: deleteTitle ?? "Cancel"),
       contentPadding: EdgeInsets.only(
           left: SizeDefine.popupMarginHorizontal,
           right: SizeDefine.popupMarginHorizontal,
@@ -769,8 +758,7 @@ class LoadingDialog {
           ),
           Text(
             title,
-            style: TextStyle(
-                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.green, fontSize: SizeDefine.popupTxtSize),
             textAlign: TextAlign.center,
           )
         ],
@@ -828,8 +816,7 @@ class LoadingDialog {
           ),
           Text(
             title,
-            style: TextStyle(
-                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.green, fontSize: SizeDefine.popupTxtSize),
             textAlign: TextAlign.center,
           )
         ],
@@ -901,8 +888,7 @@ class LoadingDialog {
                 ),
                 Text(
                   title,
-                  style: TextStyle(
-                      color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+                  style: TextStyle(color: Colors.green, fontSize: SizeDefine.popupTxtSize),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(
@@ -994,8 +980,7 @@ class LoadingDialog {
     );
   }
 
-  static Future<bool> modifyWithAsync(String title,
-      {String? deleteTitle, String? cancelTitle}) {
+  static Future<bool> modifyWithAsync(String title, {String? deleteTitle, String? cancelTitle}) {
     Completer<bool> completer = Completer<bool>();
 
     Get.defaultDialog(
@@ -1014,8 +999,7 @@ class LoadingDialog {
           ),
           Text(
             title,
-            style: TextStyle(
-                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.green, fontSize: SizeDefine.popupTxtSize),
             textAlign: TextAlign.center,
           )
         ],
@@ -1073,8 +1057,7 @@ class LoadingDialog {
           ),
           Text(
             msg ?? "Data Deleted Successfully",
-            style: TextStyle(
-                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.green, fontSize: SizeDefine.popupTxtSize),
           )
         ],
       ),
@@ -1115,8 +1098,7 @@ class LoadingDialog {
           ),
           Text(
             "Are you sure you want to exit this form?",
-            style: TextStyle(
-                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.green, fontSize: SizeDefine.popupTxtSize),
           ),
           SizedBox(
             height: 10,
@@ -1160,8 +1142,7 @@ class LoadingDialog {
           ),
           Text(
             title,
-            style: TextStyle(
-                color: Colors.green, fontSize: SizeDefine.popupTxtSize),
+            style: TextStyle(color: Colors.green, fontSize: SizeDefine.popupTxtSize),
             textAlign: TextAlign.center,
           )
         ],

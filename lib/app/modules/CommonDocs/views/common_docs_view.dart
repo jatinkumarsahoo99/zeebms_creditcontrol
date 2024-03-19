@@ -58,7 +58,7 @@ class CommonDocsView extends GetView<CommonDocsController> {
                             return DataGridShowOnlyKeys(
                               hideCode: true,
                               hideKeys: const ["documentId"],
-                              dateFromat: "dd-MM-yyyy HH:mm",
+                              dateFromat: "dd-MM-yyyy HH:mm:ss",
                               mode: PlutoGridMode.selectWithOneTap,
                               mapData: controller.documents.value
                                   .map((e) => e.toJson())

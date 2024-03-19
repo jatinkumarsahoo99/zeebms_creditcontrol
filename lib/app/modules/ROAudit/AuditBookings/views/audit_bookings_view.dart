@@ -149,7 +149,7 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
     bool? clientUnder = false,
     bool? agencyUnder = false,
     bool? commercialDur = false}) {
-    controller.initialOffset.value = 2;
+    controller.initialOffset.value = 1;
     // Completer<bool> completer = Completer<bool>();
     controller.dialogWidget = Material(
       color: Colors.white,
@@ -159,12 +159,12 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
         padding: const EdgeInsets.all(5.0),
         child: SizedBox(
           width: Get.width * 0.35,
-          height: Get.height * 0.4,
+          height: Get.height * 0.45,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: 30,
+                height: 24,
                 // color: Colors.grey[200],
                 child: Stack(
                   fit: StackFit.expand,
@@ -224,9 +224,6 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                   title: "Commercial Duration Mismatch",
                   isEnable: commercialDur ?? false,
                   value: commercialDur ?? false),
-              SizedBox(
-                height: 3,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -240,7 +237,10 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                     },
                   )
                 ],
-              )
+              ),
+              SizedBox(
+                height: 2,
+              ),
             ],
           ),
         ),
