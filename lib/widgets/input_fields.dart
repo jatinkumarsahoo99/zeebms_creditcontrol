@@ -918,6 +918,138 @@ class InputFields {
     );
   }
 
+  // TextField(
+  //             controller: controllerX.tecbody,
+  //             maxLines: null, // AcontrollerX.tecbodyllows unlimited lines
+  //             expands: true,
+  //             textAlign: TextAlign.start,
+  //             textAlignVertical: TextAlignVertical.top,
+  //             decoration: InputDecoration(
+  //               hintText: 'Enter your text here...',
+  //               border: InputBorder.none,
+  //               // filled: true,
+  //             ),
+  //           ),
+
+  static Widget formFieldExpandedVertical({
+    String? Function(String?)? validator,
+    double? bottomPaddingHeight,
+    required String hintTxt,
+    required TextEditingController controller,
+    Function(String)? onchanged,
+    double padLeft = 5,
+    FocusNode? focusNode,
+    Function()? onEditComplete,
+    List<TextInputFormatter> inputformatters = const [],
+    bool capital = false,
+    double? titleSizeboxWidth = 80,
+    String colorFromRespText = "",
+    bool? isEnable,
+    bool margin = false,
+    bool bottomPadding = true,
+    bool autoFocus = false,
+    bool showTitle = true,
+    double? height,
+    void Function(String)? onFieldSubmitted,
+    String? prefixText,
+    bool readOnly = false,
+    int? maxLen,
+    bool expands = false,
+    bool removeHeight = false,
+    bool titleInLeft = false,
+    Color? backgroundColor,
+  }) {
+    return TextFormField(
+      expands: true,
+      maxLines: null,
+      // readOnly: readOnly,
+      // focusNode: focusNode,
+      // minLines: expands ? null : 1,
+      // autofocus: autoFocus,
+      // onEditingComplete: onEditComplete,
+      // textCapitalization:
+      //     capital ? TextCapitalization.characters : TextCapitalization.none,
+      // validator: validator,
+      // enabled: isEnable ?? true,
+      // maxLength: maxLen,
+      // autovalidateMode: AutovalidateMode.onUserInteraction,
+      // onChanged: (onchanged != null) ? onchanged : null,
+      textAlignVertical: TextAlignVertical.top,
+      keyboardType: TextInputType.multiline,
+      textAlign: TextAlign.start,
+      // onFieldSubmitted: onFieldSubmitted,
+      // inputFormatters: inputformatters.isEmpty
+      //     ? [
+      //         // LengthLimitingTextInputFormatter(SizeDefine.maxcharlimit),
+      //         FilteringTextInputFormatter.deny("  "),
+      //         // FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
+      //       ]
+      //     : inputformatters,
+      controller: controller,
+      style: TextStyle(
+        fontSize: 12,
+        color:
+            // Colors.red
+            // colorFromResp != null ? Colors.red : Colors.black),
+            // colorFromRespText == ""
+            //     ?
+            ((isEnable ?? true) ? Colors.black : Colors.grey),
+        // : colorFromResp,
+      ),
+      decoration: InputDecoration(
+          // enabled: isEnable ?? true,
+          // prefixText: prefixText,
+
+          // prefixIcon: prefixText != null
+          //     ? SizedBox(
+          //         child: Center(
+          //           widthFactor: 0.0,
+          //           child: Text(
+          //             " $prefixText ",
+          //             style: TextStyle(
+          //               backgroundColor: Colors.grey.shade500,
+          //               color: Colors.white,
+          //               fontSize: 12,
+          //             ),
+          //           ),
+          //         ),
+          //       )
+          //     : null,
+          // prefixStyle: TextStyle(
+          //   backgroundColor: Colors.grey.shade500,
+          //   color: Colors.white,
+          //   fontSize: 12,
+          // ),
+          errorBorder: InputBorder.none,
+          counterText: "",
+          // hintText: "dd/MM/yyyy",
+          contentPadding: EdgeInsets.all(10),
+          // labelText: hintTxt,
+          labelStyle: TextStyle(
+              fontSize: SizeDefine.labelSize,
+              color: (isEnable ?? true) ? Colors.black : Colors.grey),
+          border: InputBorder.none,
+          // suffixIcon: Icon(
+          //   Icons.calendar_today,
+          //   size: 14,
+          //   color: Colors.deepPurpleAccent,
+          // ),
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.deepPurpleAccent),
+            borderRadius: BorderRadius.circular(0),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.deepPurpleAccent),
+            borderRadius: BorderRadius.circular(0),
+          ),
+          disabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+            borderRadius: BorderRadius.circular(0),
+          ),
+          floatingLabelBehavior: FloatingLabelBehavior.always),
+    );
+  }
+
   static Widget formFieldWidthWithValidation(
       {String? Function(String?)? validator,
       required String hintTxt,
