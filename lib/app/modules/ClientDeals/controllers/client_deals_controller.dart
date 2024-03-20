@@ -1671,7 +1671,7 @@ class ClientDealsController extends GetxController {
         );
       }catch(e){
         closeDialogIfOpen();
-        LoadingDialog.showErrorDialog("Something went wrong${e}");
+        LoadingDialog.showErrorDialog("Something went wrong$e");
       }
     }
 
