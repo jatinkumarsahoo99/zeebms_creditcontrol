@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:bms_creditcontrol/app/data/DropDownValue.dart';
+import 'package:bms_creditcontrol/app/providers/Utils.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -626,7 +627,8 @@ class EmailBillDetailsController extends GetxController {
                   '"${resp["bills"][i]["pdfInfo"][0]["invoiceFileName"]}" ';
             }
 
-            await Clipboard.setData(ClipboardData(text: fileNamesForClipboard));
+            // await Clipboard.setData(ClipboardData(text: fileNamesForClipboard));
+            Utils.copyToClipboardHack(fileNamesForClipboard);
 
             fileNameFromApi =
                 fileNameFromApi.substring(0, fileNameFromApi.length - 2);
@@ -1275,6 +1277,8 @@ class EmailBillDetailsController extends GetxController {
     switch (btn) {
       case "Clear":
         // callClear() {
+        //         Get.delete<ClearSecondarySpotsController>();
+        // Get.find<HomeController>().clearPage1();
 
         Get.delete<EmailBillDetailsController>();
         Get.find<HomeController>().clearPage1();

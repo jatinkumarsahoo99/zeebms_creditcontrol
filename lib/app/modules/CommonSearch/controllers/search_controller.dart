@@ -32,13 +32,13 @@ import '../views/searchResult.dart';
 
 class SearchController extends GetxController {
   SearchController(
-      this.strViewName,
-      this.screenName, {
-        this.isPopUp = false,
-        this.actionableSearch = false,
-        this.actionableMap,
-        this.dialogClose,
-      });
+    this.strViewName,
+    this.screenName, {
+    this.isPopUp = false,
+    this.actionableSearch = false,
+    this.actionableMap,
+    this.dialogClose,
+  });
 
   final String screenName;
   final void Function(dynamic)? dialogClose;
@@ -71,11 +71,11 @@ class SearchController extends GetxController {
   int? selectVarianceId;
   String searchQuery = "";
 
-  String ?formName;
+  String? formName;
   @override
   void onInit() {
     formName = Utils.getPageRouteName();
-    print(">>>>>formName onInit"+formName.toString());
+    print(">>>>>formName onInit" + formName.toString());
     getInitialData();
     super.onInit();
   }
@@ -288,21 +288,21 @@ class SearchController extends GetxController {
                   try {
                     await Get.find<ConnectorControl>()
                         .POSTMETHOD_FORMDATA_HEADER(
-                        json: {},
-                        api: ApiFactory.DELETE_SEARCH_VARIANCE(
-                            screenName: screenName,
-                            varianceId: selectVarianceId.toString(),
-                            loginCode: Get.find<MainController>()
-                                .user
-                                ?.logincode ??
-                                ""),
-                        fun: (value) async {
-                          Get.back();
-                          Get.back();
-                          LoadingDialog.callDataSavedMessage(
-                              "Variance Deleted Successfully");
-                          //Snack.callSuccess("Varinat Deleted Successfully");
-                        });
+                            json: {},
+                            api: ApiFactory.DELETE_SEARCH_VARIANCE(
+                                screenName: screenName,
+                                varianceId: selectVarianceId.toString(),
+                                loginCode: Get.find<MainController>()
+                                        .user
+                                        ?.logincode ??
+                                    ""),
+                            fun: (value) async {
+                              Get.back();
+                              Get.back();
+                              LoadingDialog.callDataSavedMessage(
+                                  "Variance Deleted Successfully");
+                              //Snack.callSuccess("Varinat Deleted Successfully");
+                            });
                   } catch (e) {
                     Get.back();
                     // Snack.callError("Something Went Wrong");
@@ -352,10 +352,10 @@ class SearchController extends GetxController {
                   LoadingDialog.showErrorDialog("NO Data");
                 } else {
                   Get.to(() => SearchResultPage(
-                    controller: this,
-                    appFormName: this.strViewName,
-                    fromNameString:formName,
-                  ));
+                        controller: this,
+                        appFormName: this.strViewName,
+                        fromNameString: formName,
+                      ));
                 }
               }
             });
@@ -382,10 +382,10 @@ class SearchController extends GetxController {
             } else {
               searchPivotResult = json;
               Get.to(() => SearchPivotPage(
-                directPivot: true,
-                controller: this,
-                searchForm: strViewName,
-              ));
+                    directPivot: true,
+                    controller: this,
+                    searchForm: strViewName,
+                  ));
             }
           },
         );
@@ -438,8 +438,7 @@ class SearchController extends GetxController {
       var dataFields = RxList(chklstDataField);
       var rowFields = RxList(chklstRows);
       var columnFields = RxList(chklstColumns);
-      var aggerateFnc =
-      cboAggregrateFunction == "" ? "Average" : cboAggregrateFunction;
+      var aggerateFnc = "";
       Get.defaultDialog(
           title: "Pivot Your Data",
           content: Column(
@@ -448,7 +447,7 @@ class SearchController extends GetxController {
                 ["Average", "Sum", "Count", "Min", "Max"]
                     .map((e) => DropDownValue(key: e, value: e))
                     .toList(),
-                    (value) {
+                (value) {
                   aggerateFnc = value.value!;
                 },
                 "Aggergate Function",
@@ -483,7 +482,7 @@ class SearchController extends GetxController {
                               children: [
                                 Obx(() => Checkbox(
                                     value:
-                                    dataFields.contains(allFields[index]),
+                                        dataFields.contains(allFields[index]),
                                     onChanged: (value) {
                                       if (value!) {
                                         dataFields.add(allFields[index]);
@@ -536,7 +535,7 @@ class SearchController extends GetxController {
                               children: [
                                 Obx(() => Checkbox(
                                     value:
-                                    columnFields.contains(allFields[index]),
+                                        columnFields.contains(allFields[index]),
                                     onChanged: (value) {
                                       if (value!) {
                                         columnFields.add(allFields[index]);
@@ -565,33 +564,39 @@ class SearchController extends GetxController {
             ),
             FormButton(
               callback: () async {
-                LoadingDialog.call();
-                cboAggregrateFunction = aggerateFnc;
-                chklstDataField = dataFields;
-                chklstRows = rowFields;
-                chklstColumns = columnFields;
-                try {
-                  await Get.find<ConnectorControl>().POSTMETHOD_FORMDATA_HEADER(
-                      api: ApiFactory.SEARCH_PIVOT(
-                        screenName: screenName,
-                      ),
-                      json: {
-                        "AggregateSelected": aggerateFnc,
-                        "DataFields": dataFields,
-                        "RowFields": rowFields,
-                        "ColumnFields": columnFields,
-                        "originalData": searchResult
-                      },
-                      fun: (value) async {
-                        searchPivotResult = value;
-                        Get.back();
-                        Get.back();
-                        Get.to(() => SearchPivotPage(controller: this));
-                      });
-                } catch (e) {
-                  Get.back();
-                  // Snack.callError("Something Went Wrong");
-                  LoadingDialog.showErrorDialog("Something Went Wrong");
+                if (aggerateFnc == "") {
+                  LoadingDialog.showErrorDialog(
+                      "Please select the summary you want");
+                } else {
+                  LoadingDialog.call();
+                  cboAggregrateFunction = aggerateFnc;
+                  chklstDataField = dataFields;
+                  chklstRows = rowFields;
+                  chklstColumns = columnFields;
+                  try {
+                    await Get.find<ConnectorControl>()
+                        .POSTMETHOD_FORMDATA_HEADER(
+                            api: ApiFactory.SEARCH_PIVOT(
+                              screenName: screenName,
+                            ),
+                            json: {
+                              "AggregateSelected": aggerateFnc,
+                              "DataFields": dataFields,
+                              "RowFields": rowFields,
+                              "ColumnFields": columnFields,
+                              "originalData": searchResult
+                            },
+                            fun: (value) async {
+                              searchPivotResult = value;
+                              Get.back();
+                              Get.back();
+                              Get.to(() => SearchPivotPage(controller: this));
+                            });
+                  } catch (e) {
+                    Get.back();
+                    // Snack.callError("Something Went Wrong");
+                    LoadingDialog.showErrorDialog("Something Went Wrong");
+                  }
                 }
               },
               // icon: Icon(Icons.done),
@@ -610,36 +615,36 @@ class SearchController extends GetxController {
           size: ColumnSize.S,
           label: key == "name"
               ? Text(
-            key.capitalizeFirst!,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold,
-              fontSize: 12,
-            ),
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-          )
+                  key.capitalizeFirst!,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 12,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                )
               : Center(
-            heightFactor: 1,
-            child: Text(
-              key.capitalizeFirst!,
-              textAlign: TextAlign.center,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12),
-            ),
-          ),
+                  heightFactor: 1,
+                  child: Text(
+                    key.capitalizeFirst!,
+                    textAlign: TextAlign.center,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12),
+                  ),
+                ),
         ));
       }
     }
     for (var variance in value == ""
         ? grid!.variances!
         : grid!.variances!.where((element) =>
-        element.name!.toLowerCase().contains(value!.toLowerCase()))) {
+            element.name!.toLowerCase().contains(value!.toLowerCase()))) {
       var row = variance.toJson();
       if (!(row["name"]).contains("code")) {
         List<DataCell> cells = [];
@@ -650,77 +655,77 @@ class SearchController extends GetxController {
             log(row["searchCriteria"].toString());
             cells.add(DataCell(key != "name"
                 ? Center(
-              child: row[key] is bool
-                  ? Checkbox(
-                  focusColor: Colors.deepPurple[200],
-                  value: row[key],
-                  onChanged: (value) {
-                    if (key == "selected") {
-                      var selected = grid!.variances!.where(
-                              (element) => element.selected == true);
-                      if (selected.isEmpty) {
-                        row["sequence"] = 1;
-                      } else {
-                        var _variance = grid!.variances!
-                            .where(
-                                (element) => element.selected == true)
-                            .map((e) => e.sequence)
-                            .toList();
-                        row["sequence"] = (_variance.reduce(
-                                (value, nxtvalue) =>
-                            (value!) > (nxtvalue!)
-                                ? value
-                                : nxtvalue) ??
-                            1) +
-                            1;
-                      }
-                    }
-                    row[key] = value;
-                    grid!.variances![grid!.variances!.indexWhere(
-                            (element) =>
-                        element.name == row["name"])] =
-                        Variances.fromJson(row);
+                    child: row[key] is bool
+                        ? Checkbox(
+                            focusColor: Colors.deepPurple[200],
+                            value: row[key],
+                            onChanged: (value) {
+                              if (key == "selected") {
+                                var selected = grid!.variances!.where(
+                                    (element) => element.selected == true);
+                                if (selected.isEmpty) {
+                                  row["sequence"] = 1;
+                                } else {
+                                  var _variance = grid!.variances!
+                                      .where(
+                                          (element) => element.selected == true)
+                                      .map((e) => e.sequence)
+                                      .toList();
+                                  row["sequence"] = (_variance.reduce(
+                                              (value, nxtvalue) =>
+                                                  (value!) > (nxtvalue!)
+                                                      ? value
+                                                      : nxtvalue) ??
+                                          1) +
+                                      1;
+                                }
+                              }
+                              row[key] = value;
+                              grid!.variances![grid!.variances!.indexWhere(
+                                      (element) =>
+                                          element.name == row["name"])] =
+                                  Variances.fromJson(row);
 
-                    updateGrid();
-                  })
-                  : key == "searchCriteria"
-                  ? ChangableText(
-                focusColor: Colors.deepPurple[200],
-                key: Key(row["name"] +
-                    "${math.Random().nextInt(342)}"),
-                intialtext: row["searchCriteria"].toString(),
-                onChange: (value) {
-                  grid!
-                      .variances![grid!.variances!.indexWhere(
-                          (element) =>
-                      element.name == row["name"])]
-                      .searchCriteria = value;
-                },
-                onDoubleTap: () {
-                  print("onDoubleTap===>>>>>>>>>>>>");
-                  doubleClickHandler(variance);
-                },
-              )
-                  : Text(
-                row[key].toString(),
-                textAlign: TextAlign.left,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            )
+                              updateGrid();
+                            })
+                        : key == "searchCriteria"
+                            ? ChangableText(
+                                focusColor: Colors.deepPurple[200],
+                                key: Key(row["name"] +
+                                    "${math.Random().nextInt(342)}"),
+                                intialtext: row["searchCriteria"].toString(),
+                                onChange: (value) {
+                                  grid!
+                                      .variances![grid!.variances!.indexWhere(
+                                          (element) =>
+                                              element.name == row["name"])]
+                                      .searchCriteria = value;
+                                },
+                                onDoubleTap: () {
+                                  print("onDoubleTap===>>>>>>>>>>>>");
+                                  doubleClickHandler(variance);
+                                },
+                              )
+                            : Text(
+                                row[key].toString(),
+                                textAlign: TextAlign.left,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                  )
                 : Text(
-              row[key].toString(),
-              textAlign: TextAlign.left,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            )));
+                    row[key].toString(),
+                    textAlign: TextAlign.left,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  )));
           }
         }
         searchGridRows.add(DataRow2(
           cells: cells,
           selected: grid!
               .variances![grid!.variances!
-              .indexWhere((element) => element.name == row["name"])]
+                  .indexWhere((element) => element.name == row["name"])]
               .selected!,
         ));
       }
@@ -772,8 +777,7 @@ class SearchController extends GetxController {
               Get.back();
               if (json is String) {
                 LoadingDialog.showErrorDialog(json);
-              }
-              else {
+              } else {
                 searchPivotResult = json;
                 if (dialogClose != null) {
                   dialogClose!(null);
@@ -785,10 +789,10 @@ class SearchController extends GetxController {
                   ));
                 } else {
                   Get.to(() => SearchPivotPage(
-                    directPivot: true,
-                    controller: this,
-                    searchForm: strViewName,
-                  ));
+                        directPivot: true,
+                        controller: this,
+                        searchForm: strViewName,
+                      ));
                 }
               }
             },
@@ -847,12 +851,12 @@ class SearchController extends GetxController {
                     ));
                   } else {
                     Get.to(() => SearchResultPage(
-                      controller: this,
-                      appFormName: this.strViewName,
-                      actionableMap: this.actionableMap,
-                      actionableSearch: this.actionableSearch,
-                      fromNameString: formName,
-                    ));
+                          controller: this,
+                          appFormName: this.strViewName,
+                          actionableMap: this.actionableMap,
+                          actionableSearch: this.actionableSearch,
+                          fromNameString: formName,
+                        ));
                   }
                 }
               }
@@ -956,23 +960,23 @@ class SearchController extends GetxController {
                 children: dateTypes
                     .map(
                       (e) => Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: Row(
-                      children: [
-                        Obx(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Row(
+                          children: [
+                            Obx(
                               () => Radio<String>(
-                              value: e,
-                              groupValue: dateType.value,
-                              onChanged: (value) {
-                                log(dateType.value);
-                                dateType.value = value as String;
-                              }),
+                                  value: e,
+                                  groupValue: dateType.value,
+                                  onChanged: (value) {
+                                    log(dateType.value);
+                                    dateType.value = value as String;
+                                  }),
+                            ),
+                            Text(e),
+                          ],
                         ),
-                        Text(e),
-                      ],
-                    ),
-                  ),
-                )
+                      ),
+                    )
                     .toList(),
               )
             ],
@@ -989,15 +993,15 @@ class SearchController extends GetxController {
               callback: () {
                 if (dateType.value == "My Dates") {
                   grid!.variances!
-                      .firstWhere((element) => element.name == rowvariance.name)
-                      .searchCriteria =
-                  "between '${DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(fromTextCtr.text))}' and '${DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(toTextCtr.text))}'";
+                          .firstWhere((element) => element.name == rowvariance.name)
+                          .searchCriteria =
+                      "between '${DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(fromTextCtr.text))}' and '${DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(toTextCtr.text))}'";
                 } else {
                   grid!.variances!
-                      .firstWhere((element) => element.name == rowvariance.name)
-                      .searchCriteria =
-                  queries[
-                  dateTypes.indexWhere((dType) => dateType == dType)];
+                          .firstWhere((element) => element.name == rowvariance.name)
+                          .searchCriteria =
+                      queries[
+                          dateTypes.indexWhere((dType) => dateType == dType)];
                 }
                 // grid!.variances!
                 //         .firstWhere((element) => element.name == rowvariance.name)
@@ -1043,21 +1047,20 @@ class SearchController extends GetxController {
                 label: Text("Cancel")),*/
           ],
           radius: 10.0);
-    }
-    else if ((rowvariance.dataType == "varchar" ||
-        rowvariance.dataType == "char") &&
+    } else if ((rowvariance.dataType == "varchar" ||
+            rowvariance.dataType == "char") &&
         rowvariance.tableName != "") {
       var allselect = RxBool(false);
       if (rowvariance.searchCriteria != "") {
         List<String> tempser = [];
         try {
           tempser = rowvariance.searchCriteria
-              ?.replaceAll("In ('", "")
-              .replaceAll("in ( '", "")
-              .replaceAll("Not In('", "")
-              .replaceAll(")", "")
-              .replaceAll("'", "")
-              .split(",") ??
+                  ?.replaceAll("In ('", "")
+                  .replaceAll("in ( '", "")
+                  .replaceAll("Not In('", "")
+                  .replaceAll(")", "")
+                  .replaceAll("'", "")
+                  .split(",") ??
               [];
         } catch (e) {
           print(e.toString());
@@ -1070,338 +1073,340 @@ class SearchController extends GetxController {
       }
       ///// Master Dialog /////
       Get.defaultDialog(
-          title: rowvariance.name.toString(),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
+              title: rowvariance.name.toString(),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Obx(
+                      Row(
+                        children: [
+                          Obx(
                             () => Checkbox(
-                            value: checknotcheck.value,
-                            onChanged: (value) {
-                              checknotcheck.value = value!;
-                            }),
+                                value: checknotcheck.value,
+                                onChanged: (value) {
+                                  checknotcheck.value = value!;
+                                }),
+                          ),
+                          Text("Like / Not Like")
+                        ],
                       ),
-                      Text("Like / Not Like")
+                      SizedBox(
+                        width: 5,
+                      ),
+                      InputFields.formField1(
+                          hintTxt: "",
+                          autoFocus: true,
+                          controller: TextEditingController(),
+                          inputformatters: [
+                            FilteringTextInputFormatter.deny("  "),
+                            // FilteringTextInputFormatter.deny("  "),
+                          ],
+                          onchanged: (value) {
+                            if (value == "%%" || value.length > 2) {
+                              masterDialogList.removeWhere(
+                                  (element) => element["selected"] == false);
+                              Get.find<ConnectorControl>()
+                                  .GET_METHOD_CALL_HEADER(
+                                      api: ApiFactory.SEARCH_MASTER_SEARCH(
+                                          screenName: screenName,
+                                          name: rowvariance.name.toString(),
+                                          valuecolumnname:
+                                              rowvariance.valueColumnName!,
+                                          TableName: rowvariance.tableName!,
+                                          chkLikeNotLike: checknotcheck.value,
+                                          searchvalue: value),
+                                      fun: (map) {
+                                        if (map is List) {
+                                          var templist = [];
+                                          for (var element in map) {
+                                            if (masterDialogList
+                                                    .firstWhereOrNull((value) =>
+                                                        element["name"] ==
+                                                        value["name"]) ==
+                                                null) {
+                                              element["selected"] = false;
+                                              templist.add(element);
+                                            }
+                                          }
+                                          masterDialogList.addAll(templist);
+
+                                          for (var value1 in masterDialogList) {
+                                            for (var element in map) {
+                                              if (value1['code'] != null &&
+                                                  value1['code'] != "") {
+                                                break;
+                                              }
+                                              if (value1['name'] ==
+                                                  element['name']) {
+                                                value1['code'] =
+                                                    element['code'];
+                                                break;
+                                              }
+                                            }
+                                          }
+
+                                          print(map.toString());
+                                        } else {
+                                          // Snack.callError("Failed To Get Data");
+                                          LoadingDialog.showErrorDialog(
+                                              "Failed To Get Data");
+                                        }
+                                      });
+                            }
+                          }),
                     ],
                   ),
                   SizedBox(
-                    width: 5,
+                    height: 30.0,
                   ),
-                  InputFields.formField1(
-                      hintTxt: "",
-                      autoFocus: true,
-                      controller: TextEditingController(),
-                      inputformatters: [
-                        FilteringTextInputFormatter.deny("  "),
-                        // FilteringTextInputFormatter.deny("  "),
-                      ],
-                      onchanged: (value) {
-                        if (value == "%%" || value.length > 2) {
-                          masterDialogList.removeWhere(
-                                  (element) => element["selected"] == false);
-                          Get.find<ConnectorControl>()
-                              .GET_METHOD_CALL_HEADER(
-                              api: ApiFactory.SEARCH_MASTER_SEARCH(
-                                  screenName: screenName,
-                                  name: rowvariance.name.toString(),
-                                  valuecolumnname:
-                                  rowvariance.valueColumnName!,
-                                  TableName: rowvariance.tableName!,
-                                  chkLikeNotLike: checknotcheck.value,
-                                  searchvalue: value),
-                              fun: (map) {
-                                if (map is List) {
-                                  var templist = [];
-                                  for (var element in map) {
-                                    if (masterDialogList
-                                        .firstWhereOrNull((value) =>
-                                    element["name"] ==
-                                        value["name"]) ==
-                                        null) {
-                                      element["selected"] = false;
-                                      templist.add(element);
-                                    }
-                                  }
-                                  masterDialogList.addAll(templist);
-
-
-                                    for (var value1 in masterDialogList) {
-
-                                      for (var element in map) {
-                                        if (value1['code'] != null && value1['code'] != "") {
-                                          break;
-                                        }
-                                      if (value1['name'] == element['name']) {
-                                        value1['code'] = element['code'];
-                                        break;
-                                      }
-                                    }
-                                  }
-
-
-
-                                  print(map.toString());
-                                } else {
-                                  // Snack.callError("Failed To Get Data");
-                                  LoadingDialog.showErrorDialog(
-                                      "Failed To Get Data");
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Obx(() => masterDialogList.isEmpty
+                          ? Icon(
+                              Icons.check_box_outline_blank,
+                              color: Colors.grey,
+                            )
+                          : Checkbox(
+                              value: allselect.value,
+                              onChanged: (val) {
+                                allselect.value = val!;
+                                for (var i = 0;
+                                    i < masterDialogList.length;
+                                    i++) {
+                                  masterDialogList[i]["selected"] = val;
                                 }
-                              });
-                        }
-                      }),
-                ],
-              ),
-              SizedBox(
-                height: 30.0,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Obx(() => masterDialogList.isEmpty
-                      ? Icon(
-                    Icons.check_box_outline_blank,
-                    color: Colors.grey,
-                  )
-                      : Checkbox(
-                      value: allselect.value,
-                      onChanged: (val) {
-                        allselect.value = val!;
-                        for (var i = 0;
-                        i < masterDialogList.length;
-                        i++) {
-                          masterDialogList[i]["selected"] = val;
-                        }
-                        masterDialogList.refresh();
-                      })),
-                  Text("Select All")
-                ],
-              ),
-              Obx(() => Container(
-                width: Get.width / 4,
-                height: Get.height / 2,
-                decoration: BoxDecoration(
-                  border: Border.all(
-                      style: masterDialogList.isEmpty
-                          ? BorderStyle.none
-                          : BorderStyle.solid),
-                ),
-                child: ListView.builder(
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    var item = masterDialogList[index];
-                    return ListTile(
-                      visualDensity: const VisualDensity(vertical: -3),
-                      leading: Checkbox(
-                          value: item["selected"],
-                          onChanged: (value) {
-                            item["selected"] = value;
-                            masterDialogList.refresh();
-                          }),
-                      title: Text(item["name"]),
-                    );
-                  },
-                  itemCount: masterDialogList.length,
-                ),
-              )),
-              const SizedBox(
-                height: 5,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  /*FormButton(
+                                masterDialogList.refresh();
+                              })),
+                      Text("Select All")
+                    ],
+                  ),
+                  Obx(() => Container(
+                        width: Get.width / 4,
+                        height: Get.height / 2,
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              style: masterDialogList.isEmpty
+                                  ? BorderStyle.none
+                                  : BorderStyle.solid),
+                        ),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) {
+                            var item = masterDialogList[index];
+                            return ListTile(
+                              visualDensity: const VisualDensity(vertical: -3),
+                              leading: Checkbox(
+                                  value: item["selected"],
+                                  onChanged: (value) {
+                                    item["selected"] = value;
+                                    masterDialogList.refresh();
+                                  }),
+                              title: Text(item["name"]),
+                            );
+                          },
+                          itemCount: masterDialogList.length,
+                        ),
+                      )),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      /*FormButton(
                     onPressed: () {
 
                     },
                     icon: Icon(Icons.done),
                     label: Text("Done")),*/
 
-                  /*FormButton(
+                      /*FormButton(
                     onPressed: () {
 
                     },
                     icon: Icon(Icons.clear),
                     label: Text("Cancel")),*/
-                  FormButton(
-                      btnText: "Done",
-                      callback: () {
-                        String _searchCriteria = "";
-                        String _searchCriteria1 = "";
-                        if ((grid!.type!) == "V") {
-                          for (var i = 0;
-                          i <
-                              masterDialogList
-                                  .where((e) => e["selected"] == true)
-                                  .length;
-                          i++) {
-                            print(">>>>>>>>>>masterDialogList"+masterDialogList.toString());
+                      FormButton(
+                          btnText: "Done",
+                          callback: () {
+                            String _searchCriteria = "";
+                            String _searchCriteria1 = "";
+                            if ((grid!.type!) == "V") {
+                              for (var i = 0;
+                                  i <
+                                      masterDialogList
+                                          .where((e) => e["selected"] == true)
+                                          .length;
+                                  i++) {
+                                print(">>>>>>>>>>masterDialogList" +
+                                    masterDialogList.toString());
 
-                            _searchCriteria = _searchCriteria +
-                                (i ==
-                                    (masterDialogList
-                                        .where((e) =>
-                                    e["selected"] == true)
-                                        .length -
-                                        1)
-                                    ? "'" +
-                                    masterDialogList
-                                        .where((e) =>
-                                    e["selected"] == true)
-                                        .toList()[i]["name"] +
-                                    "'"
-                                    : "'" +
-                                    masterDialogList
-                                        .where((e) =>
-                                    e["selected"] == true)
-                                        .toList()[i]["name"] +
-                                    "',");
+                                _searchCriteria = _searchCriteria +
+                                    (i ==
+                                            (masterDialogList
+                                                    .where((e) =>
+                                                        e["selected"] == true)
+                                                    .length -
+                                                1)
+                                        ? "'" +
+                                            masterDialogList
+                                                .where((e) =>
+                                                    e["selected"] == true)
+                                                .toList()[i]["name"] +
+                                            "'"
+                                        : "'" +
+                                            masterDialogList
+                                                .where((e) =>
+                                                    e["selected"] == true)
+                                                .toList()[i]["name"] +
+                                            "',");
 
-                            _searchCriteria1 = _searchCriteria1 +
-                                (i ==
-                                    (masterDialogList
-                                        .where((e) =>
-                                    e["selected"] == true)
-                                        .length -
-                                        1)
-                                    ? "'" +
-                                    (masterDialogList
-                                        .where((e) =>
-                                    e["selected"] == true)
-                                        .toList()[i]["code"]??"") +
-                                    "'"
-                                    : "'" +
-                                    (masterDialogList
-                                        .where((e) =>
-                                    e["selected"] == true)
-                                        .toList()[i]["code"] ??"")+
-                                    "',");
+                                _searchCriteria1 = _searchCriteria1 +
+                                    (i ==
+                                            (masterDialogList
+                                                    .where((e) =>
+                                                        e["selected"] == true)
+                                                    .length -
+                                                1)
+                                        ? "'" +
+                                            (masterDialogList
+                                                    .where((e) =>
+                                                        e["selected"] == true)
+                                                    .toList()[i]["code"] ??
+                                                "") +
+                                            "'"
+                                        : "'" +
+                                            (masterDialogList
+                                                    .where((e) =>
+                                                        e["selected"] == true)
+                                                    .toList()[i]["code"] ??
+                                                "") +
+                                            "',");
+                              }
+                            } else {
+                              for (var i = 0;
+                                  i <
+                                      masterDialogList
+                                          .where((e) => e["selected"] == true)
+                                          .length;
+                                  i++) {
+                                _searchCriteria = _searchCriteria +
+                                    (i ==
+                                            (masterDialogList
+                                                    .where((e) =>
+                                                        e["selected"] == true)
+                                                    .length -
+                                                1)
+                                        ? masterDialogList
+                                            .where((e) => e["selected"] == true)
+                                            .toList()[i]["name"]
+                                        : (masterDialogList
+                                                .where((e) =>
+                                                    e["selected"] == true)
+                                                .toList()[i]["name"] +
+                                            ","));
+                                _searchCriteria1 = _searchCriteria1 +
+                                    (i ==
+                                            (masterDialogList
+                                                    .where((e) =>
+                                                        e["selected"] == true)
+                                                    .length -
+                                                1)
+                                        ? (masterDialogList
+                                                .where((e) =>
+                                                    e["selected"] == true)
+                                                .toList()[i]["code"] ??
+                                            "")
+                                        : ((masterDialogList
+                                                    .where((e) =>
+                                                        e["selected"] == true)
+                                                    .toList()[i]["code"] ??
+                                                "") +
+                                            ","));
+                              }
+                            }
+                            Variances varData1 = grid!.variances!.firstWhere(
+                                (element) => element.name == rowvariance.name,
+                                orElse: () => Variances());
 
-                          }
-                        }
-                        else {
-                          for (var i = 0;
-                          i <
-                              masterDialogList
-                                  .where((e) => e["selected"] == true)
-                                  .length;
-                          i++) {
-                            _searchCriteria = _searchCriteria +
-                                (i ==
-                                    (masterDialogList
-                                        .where((e) =>
-                                    e["selected"] == true)
-                                        .length -
-                                        1)
-                                    ? masterDialogList
-                                    .where((e) => e["selected"] == true)
-                                    .toList()[i]["name"]
-                                    : (masterDialogList
-                                    .where((e) =>
-                                e["selected"] == true)
-                                    .toList()[i]["name"] +
-                                    ","));
-                            _searchCriteria1 = _searchCriteria1 +
-                                (i ==
-                                    (masterDialogList
-                                        .where((e) =>
-                                    e["selected"] == true)
-                                        .length -
-                                        1)
-                                    ? (masterDialogList
-                                    .where((e) => e["selected"] == true)
-                                    .toList()[i]["code"]??"")
-                                    : ((masterDialogList
-                                    .where((e) =>
-                                e["selected"] == true)
-                                    .toList()[i]["code"]??"" )+
-                                    ","));
+                            if (varData1.name != null) {
+                              varData1.searchCriteria = (grid!.type!) == "V"
+                                  ? "${checknotcheck.value ? "Not In" : "In"} ($_searchCriteria)"
+                                  : _searchCriteria;
+                            }
 
-                          }
-                        }
-                        Variances varData1 =   grid!.variances!
-                            .firstWhere((element) =>
-                        element.name == rowvariance.name,orElse: () =>  Variances());
+                            Variances varData2 = grid!.variances!.firstWhere(
+                                (element) =>
+                                    element.name.toString() ==
+                                    rowvariance.valueColumnName
+                                        .toString()
+                                        .toLowerCase(),
+                                orElse: () => Variances());
 
-                        if(varData1.name != null ){
-                          varData1.searchCriteria = (grid!.type!) ==
-                              "V"
-                              ? "${checknotcheck.value ? "Not In" : "In"} ($_searchCriteria)"
-                              : _searchCriteria;
-                        }
+                            if (varData2.name != null) {
+                              varData2.searchCriteria = (grid!.type!) == "V"
+                                  ? "${checknotcheck.value ? "Not In" : "In"} ($_searchCriteria1)"
+                                  : _searchCriteria1;
+                            }
 
-
-                        Variances varData2 = grid!.variances!
-                            .firstWhere((element) =>
-                        element.name.toString() == rowvariance.valueColumnName.toString().toLowerCase(), orElse: ()=> Variances());
-
-                        if(varData2.name != null){
-                          varData2.searchCriteria = (grid!.type!) ==
-                              "V"
-                              ? "${checknotcheck.value ? "Not In" : "In"} ($_searchCriteria1)"
-                              : _searchCriteria1;
-                        }
-
-                        updateGrid();
-                        Get.back();
-                      }),
-                  const SizedBox(
-                    width: 5,
-                  ),
-                  FormButton(
-                    btnText: "Clear",
-                    callback: () {
-                      grid!.variances!
-                          .firstWhere(
-                              (element) => element.name == rowvariance.name)
-                          .searchCriteria = "";
-                      updateGrid();
-                      Get.back();
-                    },
-                  ),
-                  /*FormButton(
+                            updateGrid();
+                            Get.back();
+                          }),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      FormButton(
+                        btnText: "Clear",
+                        callback: () {
+                          grid!.variances!
+                              .firstWhere(
+                                  (element) => element.name == rowvariance.name)
+                              .searchCriteria = "";
+                          updateGrid();
+                          Get.back();
+                        },
+                      ),
+                      /*FormButton(
                     onPressed: () {
 
                     },
                     icon: Icon(Icons.remove_circle_outline),
                     label: Text("Clear")),*/
-                  const SizedBox(
-                    width: 5,
+                      const SizedBox(
+                        width: 5,
+                      ),
+                      FormButton(
+                        btnText: "Cancel",
+                        callback: () {
+                          masterDialogList.value = [];
+                          checknotcheck.value = false;
+                          Get.back();
+                        },
+                      ),
+                    ],
                   ),
-                  FormButton(
-                    btnText: "Cancel",
-                    callback: () {
-                      masterDialogList.value = [];
-                      checknotcheck.value = false;
-                      Get.back();
-                    },
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                      "Note: Type %% to fetch all records. Tick for Not Like",
+                      style: TextStyle(fontSize: 15),
+                    ),
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Align(
-                alignment: Alignment.bottomCenter,
-                child: Text(
-                  "Note: Type %% to fetch all records. Tick for Not Like",
-                  style: TextStyle(fontSize: 15),
-                ),
-              ),
-            ],
-          ),
-          radius: 10.0)
+              radius: 10.0)
           .then((value) {
         masterDialogList.value = [];
         checknotcheck.value = false;
       });
-    }
-    else if (rowvariance.dataType == "time" ||
+    } else if (rowvariance.dataType == "time" ||
         rowvariance.dataType == "ime(0)") {
       // var timenow = DateTime.now();
 
@@ -1448,10 +1453,10 @@ class SearchController extends GetxController {
                 callback: () {
                   try {
                     grid!.variances!
-                        .firstWhere(
-                            (element) => element.name == rowvariance.name)
-                        .searchCriteria =
-                    "between '${DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(fromctrl.text))}' and '${DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(toctrl.text))}'";
+                            .firstWhere(
+                                (element) => element.name == rowvariance.name)
+                            .searchCriteria =
+                        "between '${DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(fromctrl.text))}' and '${DateFormat("dd-MMM-yyyy").format(DateFormat('dd-MM-yyyy').parse(toctrl.text))}'";
                     updateGrid();
                     Get.back();
                   } catch (e) {
@@ -1478,8 +1483,7 @@ class SearchController extends GetxController {
                 btnText: "Cancel"),
           ],
           radius: 10.0);
-    }
-    else if (rowvariance.dataType == "money" ||
+    } else if (rowvariance.dataType == "money" ||
         rowvariance.dataType == "float" ||
         rowvariance.dataType == "int" ||
         rowvariance.dataType == "numeric") {
@@ -1546,9 +1550,8 @@ class SearchController extends GetxController {
                 btnText: "Cancel"),
           ],
           radius: 10.0);
-    }
-    else if ((rowvariance.dataType == "varchar" ||
-        rowvariance.dataType == "char") &&
+    } else if ((rowvariance.dataType == "varchar" ||
+            rowvariance.dataType == "char") &&
         rowvariance.tableName == "") {
       var multiValue = RxBool(false);
       String valueText = "";
@@ -1570,7 +1573,7 @@ class SearchController extends GetxController {
               Row(
                 children: [
                   Obx(
-                        () => Checkbox(
+                    () => Checkbox(
                         value: multiValue.value,
                         onChanged: (value) {
                           multiValue.value = value!;
@@ -1587,7 +1590,7 @@ class SearchController extends GetxController {
                   grid!.variances!
                       .firstWhere((element) => element.name == rowvariance.name)
                       .searchCriteria = multiValue
-                      .value
+                          .value
                       ? "in ${valueText.split(",").map((e) => "'${e.trim()}'")}"
                       : "like \'%$valueText%\'";
                   updateGrid();
@@ -1613,8 +1616,7 @@ class SearchController extends GetxController {
                 btnText: "Cancel"),
           ],
           radius: 10.0);
-    }
-    else if ((rowvariance.dataType!.toLowerCase() == "datetime") &&
+    } else if ((rowvariance.dataType!.toLowerCase() == "datetime") &&
         grid!.type == "P") {
       // String valueText = DateFormat('dd-MMM-yyyy').format(DateTime.now());
       var tempCtr = TextEditingController();
@@ -1639,7 +1641,7 @@ class SearchController extends GetxController {
                   grid!.variances!
                       .firstWhere((element) => element.name == rowvariance.name)
                       .searchCriteria = DateFormat(
-                      "dd-MMM-yyyy")
+                          "dd-MMM-yyyy")
                       .format(DateFormat('dd-MM-yyyy').parse(tempCtr.text));
                   updateGrid();
                   Get.back();
@@ -1667,8 +1669,7 @@ class SearchController extends GetxController {
                 btnText: "Cancel"),
           ],
           radius: 10.0);
-    }
-    else if ((rowvariance.dataType!.toLowerCase() == "date") &&
+    } else if ((rowvariance.dataType!.toLowerCase() == "date") &&
         grid!.type == "P") {
       List dateTypes = [
         "My Dates",
@@ -1701,23 +1702,23 @@ class SearchController extends GetxController {
                 children: dateTypes
                     .map(
                       (e) => Padding(
-                    padding: const EdgeInsets.only(left: 5),
-                    child: Row(
-                      children: [
-                        Obx(
+                        padding: const EdgeInsets.only(left: 5),
+                        child: Row(
+                          children: [
+                            Obx(
                               () => Radio<String>(
-                              value: e,
-                              groupValue: selectedType.value,
-                              onChanged: (value) {
-                                log(selectedType.value);
-                                selectedType.value = value as String;
-                              }),
+                                  value: e,
+                                  groupValue: selectedType.value,
+                                  onChanged: (value) {
+                                    log(selectedType.value);
+                                    selectedType.value = value as String;
+                                  }),
+                            ),
+                            Text(e),
+                          ],
                         ),
-                        Text(e),
-                      ],
-                    ),
-                  ),
-                )
+                      ),
+                    )
                     .toList(),
               )
             ],
