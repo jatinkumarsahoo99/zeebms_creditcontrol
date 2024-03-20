@@ -76,7 +76,7 @@ class AuditBookingsController extends GetxController {
     bool? clientUnder = false ,
     bool? agencyUnder = false,
     bool? commercialDur = false}) {
-    initialOffset.value = 2;
+    initialOffset.value = 1;
     // Completer<bool> completer = Completer<bool>();
     dialogWidget = Material(
       color: Colors.white,
@@ -86,12 +86,12 @@ class AuditBookingsController extends GetxController {
         padding: const EdgeInsets.all(5.0),
         child: SizedBox(
           width: Get.width * 0.35,
-          height: Get.height * 0.4,
+          height: Get.height * 0.45,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                height: 30,
+                height: 24,
                 // color: Colors.grey[200],
                 child: Stack(
                   fit: StackFit.expand,
@@ -131,9 +131,6 @@ class AuditBookingsController extends GetxController {
               CheckBoxWidget1(title: "Client Under embargo", isEnable:clientUnder?? false,value:clientUnder?? false ,),
               CheckBoxWidget1(title: "Agency Under Embargo", isEnable: agencyUnder??false,value:agencyUnder??false ),
               CheckBoxWidget1(title: "Commercial Duration Mismatch", isEnable: commercialDur??false,value: commercialDur??false),
-              SizedBox(
-                height: 3,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
@@ -147,6 +144,9 @@ class AuditBookingsController extends GetxController {
                     },
                   )
                 ],
+              ),
+              SizedBox(
+                height: 2,
               )
             ],
           ),

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:bms_creditcontrol/app/modules/GSTPlantInfo/GSTPlantInfoModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,7 @@ import '../../CommonDocs/controllers/common_docs_controller.dart';
 import '../../CommonDocs/views/common_docs_view.dart';
 import '../../CommonSearch/views/common_search_view.dart';
 import '../AgencyMasterRetrieveModel.dart';
+import '../InfoDataList.dart';
 
 class AgencyMasterController extends GetxController {
   //TODO: Implement AgencyMasterController
@@ -20,6 +23,10 @@ class AgencyMasterController extends GetxController {
   double fixedWidth = 0.49;
   double fixedWidth1 = 0.23;
   double fixedWidth2 = 0.43;
+  Widget? dialogWidget;
+  var canDialogShow = false.obs;
+  Rxn<int> initialOffset = Rxn<int>(null);
+  Completer<bool>? completerDialog;
   ScrollController scrollController = ScrollController();
 
   Rx<bool> disable = Rx<bool>(false);
@@ -51,11 +58,24 @@ class AgencyMasterController extends GetxController {
   AgencyMasterRetrieveModel? agencyMasterRetrieveModel;
 
   PlutoGridStateManager? stateManager;
+  PlutoGridStateManager? addInfoStateManager;
 
   String agencyCode = "";
   String strShortName = "";
   String strCreditRateCode = "";
 
+  Offset? getOffSetValue(BoxConstraints constraints) {
+    switch (initialOffset.value) {
+      case 1:
+        return Offset((constraints.maxWidth / 3) + 30, constraints.maxHeight / 3);
+      case 2:
+        return Offset(Get.width * 0.09, Get.height * 0.12);
+      case 3:
+        return const Offset(20, 20);
+      default:
+        return null;
+    }
+  }
   getAllLoadData() {
     LoadingDialog.call();
     try {
@@ -235,7 +255,7 @@ class AgencyMasterController extends GetxController {
   saveFunCall() {
     print(">>>>>>>agencyCode$agencyCode");
     if (agencyCode != "") {
-      LoadingDialog.modify("Record Already exist!", () {
+      LoadingDialog.modify("Record Already exist!\nDo you want to modify it?", () {
         saveApiCall();
       }, () {
 
@@ -351,6 +371,91 @@ class AgencyMasterController extends GetxController {
       docs();
     }
   }
+
+  List<Map<String, dynamic>> getDataFromGrid2(PlutoGridStateManager? statemanager,{String? gridName}) {
+    if (statemanager != null) {
+      statemanager.setFilter((element) => true);
+      statemanager.notifyListeners();
+      List<Map<String, dynamic>> mapList = [];
+      for (var row in statemanager.rows) {
+        Map<String, dynamic> rowMap = {};
+        for (var key in row.cells.keys) {
+          if ((key.toString().trim() == "primaryEventCode") ||
+              (key.toString().trim() == "recordnumber") ||
+              (key.toString().trim() == "seconds") ||
+              (key.toString().trim() == "rate") ||
+              (key.toString().trim() == "amount") ||
+              (key.toString().trim() == "valuationRate") ||
+              (key.toString().trim() == "netCode") ||
+              (key.toString().trim() == "sun") ||
+              (key.toString().trim() == "mon") ||
+              (key.toString().trim() == "tue") ||
+              (key.toString().trim() == "wed") ||
+              (key.toString().trim() == "thu") ||
+              (key.toString().trim() == "fri") ||
+              (key.toString().trim() == "sat") ||
+              (key.toString().trim() == "eventcode") ||
+              (key.toString().trim() == "dealCode") ||
+              (key.toString().trim() == "dealDetailCode") ||
+              (key.toString().trim() == "primaryEventCode") ||
+              (key.toString().trim() == "recordnumber") ||
+              (key.toString().trim() == "groupValuationRate") ||
+              (key.toString().trim() == "isRequired")
+          ) {
+            if(row.cells[key]?.value != null && row.cells[key]?.value != ""){
+              try{
+                rowMap[key] = int.parse( row.cells[key]?.value ?? "0");
+              }catch(e){
+                rowMap[key] = double.parse( row.cells[key]?.value ?? "0");
+              }
+            }else{
+              rowMap[key] =  0;
+            }
+
+          } else {
+            rowMap[key] = row.cells[key]?.value ?? "";
+          }
+
+        }
+        mapList.add(rowMap);
+      }
+      return mapList;
+    }
+    else {
+      return [];
+    }
+  }
+
+  InfoDataList ? infoDataList;
+  Future<String>getInfoData(){
+    Completer<String> completer = Completer<String>();
+    LoadingDialog.call();
+    try {
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: ApiFactory.COMMON_ADD_INFO("frmAgencyMaster"),
+          // "https://jsonkeeper.com/b/D537"
+          fun: (map) {
+            closeDialogIfOpen();
+            if(map != null && map.length >0){
+              infoDataList = InfoDataList.fromJson({
+                "data":map
+              });
+            }
+            completer.complete("");
+            // print(">>>>>>>>>>mapData$map");
+          },
+          failed: (map) {
+            closeDialogIfOpen();
+            completer.complete("");
+          });
+    } catch (e) {
+      closeDialogIfOpen();
+      completer.complete("");
+    }
+    return completer.future;
+  }
+
+
 
   @override
   void onInit() {

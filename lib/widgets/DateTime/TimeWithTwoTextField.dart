@@ -52,19 +52,18 @@ class _DateTimeWithThreeTextFieldState extends State<TimeWithTwoTextField> {
 
   @override
   void initState() {
-    focus = List.generate(
-        widget.isTime ? 3 : 4, (index) => FocusNode(onKey: _handleOnKey));
+    focus = List.generate(2, (index) => FocusNode(onKey: _handleOnKey));
     if (widget.mainTextController.text.isEmpty) {
-      textCtr = List.generate(
-          widget.isTime ? 3 : 4, (index) => TextEditingController(text: "00"));
+      textCtr = List.generate(2, (index) => TextEditingController(text: "00"));
     } else {
-      textCtr = List.generate(
-          widget.isTime ? 3 : 4, (index) => TextEditingController(text: "00"));
+      textCtr = List.generate(2, (index) => TextEditingController(text: "00"));
       assignNewValeToEditTextField();
-      widget.mainTextController.addListener(() {
-        assignNewValeToEditTextField();
-      });
     }
+    widget.mainTextController.addListener(() {
+      if (widget.mainTextController.text.isNotEmpty)
+        assignNewValeToEditTextField();
+    });
+
     super.initState();
     handleOnFocusChange();
     focus[0].addListener(() {
@@ -76,13 +75,6 @@ class _DateTimeWithThreeTextFieldState extends State<TimeWithTwoTextField> {
     });
     focus[1].addListener(() {
       if (focus[1].hasFocus) {
-        widget.stateManager?.setCurrentCell(
-            widget.stateManager?.rows[widget.rowIdx!].cells["telecastTime"],
-            widget.rowIdx!);
-      }
-    });
-    focus[2].addListener(() {
-      if (focus[2].hasFocus) {
         widget.stateManager?.setCurrentCell(
             widget.stateManager?.rows[widget.rowIdx!].cells["telecastTime"],
             widget.rowIdx!);
@@ -174,7 +166,7 @@ class _DateTimeWithThreeTextFieldState extends State<TimeWithTwoTextField> {
   Widget build(BuildContext context) {
     final textColor = (widget.isEnable) ? Colors.black : Colors.grey;
     final borderColor =
-    (widget.isEnable) ? Colors.deepPurpleAccent : Colors.grey;
+        (widget.isEnable) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
@@ -355,7 +347,7 @@ class _DateTimeWithThreeTextFieldState extends State<TimeWithTwoTextField> {
                       ),
                     ),
 
-               /*     /// Split 2
+                    /*     /// Split 2
                     Text(
                       widget.splitType,
                       style: TextStyle(
@@ -526,27 +518,27 @@ class _DateTimeWithThreeTextFieldState extends State<TimeWithTwoTextField> {
                   focusNode: iconFocusNode,
                   onTap: widget.isEnable
                       ? () {
-                    showTimePicker(
-                      context: context,
-                      initialTime: TimeOfDay.now(),
-                      initialEntryMode: TimePickerEntryMode.dial,
-                      useRootNavigator: true,
-                    ).then((pickedTime) {
-                      if (pickedTime != null) {
-                        textCtr[1].text =
-                            pickedTime.minute.toString(); //minutes
-                        addZeroAndSetCursorAtLast(1,
-                            setCUrsor: false); // minutes
-                        textCtr[0].text =
-                            pickedTime.hour.toString(); // hour
-                        addZeroAndSetCursorAtLast(0,
-                            setCUrsor: false); // hours
-                        FocusScope.of(context)
-                            .requestFocus(iconFocusNode);
-                        FocusScope.of(context).previousFocus();
-                      }
-                    });
-                  }
+                          showTimePicker(
+                            context: context,
+                            initialTime: TimeOfDay.now(),
+                            initialEntryMode: TimePickerEntryMode.dial,
+                            useRootNavigator: true,
+                          ).then((pickedTime) {
+                            if (pickedTime != null) {
+                              textCtr[1].text =
+                                  pickedTime.minute.toString(); //minutes
+                              addZeroAndSetCursorAtLast(1,
+                                  setCUrsor: false); // minutes
+                              textCtr[0].text =
+                                  pickedTime.hour.toString(); // hour
+                              addZeroAndSetCursorAtLast(0,
+                                  setCUrsor: false); // hours
+                              FocusScope.of(context)
+                                  .requestFocus(iconFocusNode);
+                              FocusScope.of(context).previousFocus();
+                            }
+                          });
+                        }
                       : null,
                   child: Icon(Icons.date_range,
                       size: 16,
@@ -602,14 +594,10 @@ class _DateTimeWithThreeTextFieldState extends State<TimeWithTwoTextField> {
   );
 
   assignNewValeToEditTextField() {
-    if (widget.mainTextController.text.length == (widget.isTime ? 8 : 11)) {
+    if (widget.mainTextController.text.length == 5) {
       List<String?> tempTime = widget.mainTextController.text.split(":");
       textCtr[0].text = (tempTime[0] ?? "00"); //HH
       textCtr[1].text = (tempTime[1] ?? "00"); //MM
-      textCtr[2].text = tempTime[2] ?? "00"; //SS
-      if (!widget.isTime) {
-        textCtr[3].text = tempTime[3] ?? "00"; //FF
-      }
     }
   }
 
@@ -644,12 +632,7 @@ class _DateTimeWithThreeTextFieldState extends State<TimeWithTwoTextField> {
   assignValueToMainTextEditingController() {
     String time = textCtr[0].text +
         widget.splitType +
-        textCtr[1].text +
-        widget.splitType +
-        textCtr[2].text;
-    if (!widget.isTime) {
-      time = time + widget.splitType + textCtr[3].text;
-    }
+        textCtr[1].text;
     widget.mainTextController.text = time;
   }
 

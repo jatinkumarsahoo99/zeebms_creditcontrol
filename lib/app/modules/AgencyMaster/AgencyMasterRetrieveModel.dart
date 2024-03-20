@@ -73,14 +73,20 @@ class TblAddInfo {
   int? isRequired;
   String? allowedValues;
 
+  String? selectIndex;
+  List<String>? lstData = [];
+
   TblAddInfo(
-      {this.infoName, this.infoValue, this.isRequired, this.allowedValues});
+      {this.infoName, this.infoValue, this.isRequired, this.allowedValues,this.lstData,this.selectIndex});
 
   TblAddInfo.fromJson(Map<String, dynamic> json) {
     infoName = json['infoName'];
     infoValue = json['infoValue'];
     isRequired = json['isRequired'];
     allowedValues = json['allowedValues'];
+
+    selectIndex = json['selectIndex']??"0";
+    lstData = getListOfData(json['allowedvalues']);
   }
 
   Map<String, dynamic> toJson() {
@@ -89,8 +95,36 @@ class TblAddInfo {
     data['infoValue'] = this.infoValue??"";
     data['isRequired'] = this.isRequired??"";
     data['allowedValues'] = this.allowedValues??"";
+
+    data['lstData'] = (this.lstData).toString();
+    data['selectIndex'] = this.selectIndex;
+
     return data;
   }
+
+  getInfoValue(String? infoValue ){
+    if(infoValue == null){
+      String ? data = lstData?[int.parse(selectIndex??"0")];
+      return data;
+    }else{
+      return infoValue;
+    }
+  }
+
+
+  List<String> getListOfData(String? txt){
+    if(txt != null && txt != ""){
+      try{
+        List<String> data = txt.split("~").toList();
+        return data;
+      }catch(e){
+        return [""];
+      }
+    }else {
+      return [""];
+    }
+  }
+
 }
 
 
