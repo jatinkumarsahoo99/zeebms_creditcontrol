@@ -471,7 +471,14 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                 showSrNo: true,
                                 hideCode: false,
                                 formatDate: false,
-                                columnAutoResize: true,
+                                columnAutoResize: false,
+                                minimumWidth: 180,
+                                dateFromat: "dd/MM/yyyy",
+                                formateDateColumn: const {
+                                  "dealdate":"yyyy-MM-ddTHH:mm:ss",
+                                  "fromdate":"yyyy-MM-ddTHH:mm:ss",
+                                  "todate":"yyyy-MM-ddTHH:mm:ss",
+                                } ,
                                 doPasccal: true,
                                 colorCallback: (row) => (row.row.cells
                                         .containsValue(controller.dealStateManager?.currentCell))
@@ -491,7 +498,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                 // checkRowKey: "selected",
                                 // checkRow: true,
 
-                                hideKeys: ["locationcode", "channelcode"],
+                                hideKeys: const ["locationcode", "channelcode"],
                                 mapData: controller.linkDealRetrieveModel!.model!.deals!
                                     .map((e) => e.toJson())
                                     .toList(),
@@ -522,7 +529,8 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                   showSrNo: true,
                                   hideCode: false,
                                   formatDate: false,
-                                  columnAutoResize: true,
+                                  columnAutoResize: false,
+                                  minimumWidth: 180,
                                   doPasccal: true,
                                   colorCallback: (row) => (row.row.cells.containsValue(
                                           controller.linkDealStateManager?.currentCell))
@@ -1175,7 +1183,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                       Expanded(
                                                         child: FocusTraversalOrder(
                                                           order: NumericFocusOrder(11),
-                                                          child: InputFields.numbers4(
+                                                          child: InputFields.numbers5(
                                                               hintTxt: "Max Spend",
                                                               controller:
                                                                   controller.maxSpeedController,
