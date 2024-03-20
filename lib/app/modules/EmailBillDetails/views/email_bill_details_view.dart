@@ -35,7 +35,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
           Expanded(
             child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: GetBuilder<EmailBillDetailsController>(
+                child: GetBuilder(
                     init: controllerX,
                     builder: (builder) {
                       return Column(
@@ -408,7 +408,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                             },
                             colorCallback: (colorEvent) {
                               if (colorEvent.row.cells.containsValue(
-                                  controller.stateManager?.currentCell)) {
+                                  controllerX.stateManager?.currentCell)) {
                                 return Colors.deepPurple.shade100;
                               }
 
