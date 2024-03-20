@@ -14,8 +14,7 @@ import '../../../providers/SizeDefine.dart';
 import '../../../providers/Utils.dart';
 import '../controllers/asrun_specification_ad_revenue_controller.dart';
 
-class AsrunSpecificationAdRevenueView
-    extends GetView<AsrunSpecificationAdRevenueController> {
+class AsrunSpecificationAdRevenueView extends StatelessWidget {
   AsrunSpecificationAdRevenueView({Key? key}) : super(key: key);
 
   AsrunSpecificationAdRevenueController controllerX =
@@ -55,64 +54,99 @@ class AsrunSpecificationAdRevenueView
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                GetBuilder<AsrunSpecificationAdRevenueController>(
+                                GetBuilder<
+                                        AsrunSpecificationAdRevenueController>(
                                     id: "init",
                                     init: controllerX,
                                     builder: (logic) {
                                       return Container(
-                                        decoration: BoxDecoration(
+                                        /*decoration: BoxDecoration(
                                           border: Border.all(color: Colors.grey),
-                                        ),
+                                        ),*/
                                         child: Padding(
                                           padding: const EdgeInsets.only(
                                               left: 8.0,
                                               right: 26,
                                               top: 8,
-                                              bottom: 8),
+                                              bottom: 4),
                                           child: Column(
                                             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
-                                              DropDownField.formDropDown1WidthMap(
-                                                  controllerX.lstlocation ?? [],
-                                                  (value) {
-                                                controllerX.selectLocation =
-                                                    value;
-                                                controllerX.getChannel();
-                                              }, "Location ", .4,
-                                                  // isEnable: controllerX.isEnable.value,
-                                                  // selected: controllerX.selectedBMSVersionList,
-                                                  dialogHeight: Get.height * .35,
-                                                  // autoFocus: true,
-                                                  selected:
-                                                      controllerX.selectLocation,
-                                                  titleInLeft: true),
+                                              Obx(() {
+                                                return DropDownField
+                                                    .formDropDown1WidthMap(
+                                                        controllerX
+                                                                .lstlocation ??
+                                                            [], (value) {
+                                                  controllerX.selectLocation =
+                                                      value;
+                                                  controllerX.getChannel();
+                                                }, "Location ", .4,
+                                                        // isEnable: controllerX.isEnable.value,
+                                                        // selected: controllerX.selectedBMSVersionList,
+                                                        dialogHeight:
+                                                            Get.height * .35,
+                                                        autoFocus: true,
+                                                        selected: controllerX
+                                                            .selectLocation,
+                                                        titleInLeft: true,
+                                                        isEnable: controllerX
+                                                            .isDisable.value);
+                                              }),
                                               SizedBox(
                                                 height: 4,
                                               ),
-                                              DropDownField.formDropDown1WidthMap(
-                                                  controllerX.lstChannel ?? [],
-                                                  (value) {
-                                                controllerX.selectChannel = value;
-                                              }, "Channel  ", .4,
-                                                  dialogHeight: Get.height * .35,
-                                                  selected:
-                                                      controllerX.selectChannel,
-                                                  titleInLeft: true),
+                                              Obx(() {
+                                                return DropDownField
+                                                    .formDropDown1WidthMap(
+                                                        controllerX
+                                                                .lstChannel?.value ??
+                                                            [], (value) {
+                                                  controllerX.selectChannel =
+                                                      value;
+                                                  controllerX.isDisable.value =
+                                                      false;
+                                                  controllerX.selectFileType =
+                                                      controllerX
+                                                          .lstfiletype?[0];
+                                                  controllerX.update(["init"]);
+                                                  controllerX.getPopulate();
+                                                  controllerX.visibleSelected();
+                                                  controllerX.fileTypeFocus
+                                                      .requestFocus();
+                                                }, "Channel  ",
+                                                        .4,
+                                                        dialogHeight:
+                                                            Get.height * .35,
+                                                        selected: controllerX
+                                                            .selectChannel,
+                                                        titleInLeft: true,
+                                                        inkWellFocusNode:
+                                                            controllerX
+                                                                .chanlFocus,
+                                                        isEnable: controllerX
+                                                            .isDisable.value);
+                                              }),
                                               SizedBox(
                                                 height: 4,
                                               ),
-                                              DropDownField.formDropDown1WidthMap(
-                                                  controllerX.lstfiletype ?? [],
-                                                  (value) {
+                                              DropDownField
+                                                  .formDropDown1WidthMap(
+                                                      controllerX.lstfiletype ??
+                                                          [], (value) {
                                                 controllerX.selectFileType =
                                                     value;
                                                 controllerX.getPopulate();
                                                 controllerX.visibleSelected();
                                               }, "File Type ", .4,
-                                                  dialogHeight: Get.height * .35,
-                                                  selected:
-                                                      controllerX.selectFileType,
-                                                  titleInLeft: true),
+                                                      dialogHeight:
+                                                          Get.height * .35,
+                                                      selected: controllerX
+                                                          .selectFileType,
+                                                      titleInLeft: true,
+                                                      inkWellFocusNode:
+                                                          controllerX
+                                                              .fileTypeFocus),
                                             ],
                                           ),
                                         ),
@@ -127,7 +161,7 @@ class AsrunSpecificationAdRevenueView
                                       width: Get.width * 0.15,
                                     ),
                                     SizedBox(
-                                        width: Get.width * 0.155,
+                                        width: Get.width * 0.15,
                                         child: Text(
                                           "Column",
                                           style: TextStyle(
@@ -155,7 +189,8 @@ class AsrunSpecificationAdRevenueView
                                 SizedBox(
                                   height: 6,
                                 ),
-                                GetBuilder<AsrunSpecificationAdRevenueController>(
+                                GetBuilder<
+                                        AsrunSpecificationAdRevenueController>(
                                     id: "main1",
                                     init: controllerX,
                                     builder: (logic) {
@@ -163,31 +198,35 @@ class AsrunSpecificationAdRevenueView
                                         children: [
                                           Row(
                                             children: [
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "Embargo No",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: true,
-                                                  isEnable: controllerX
-                                                      .isEnableLeftSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.embarNo1),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      // hintTxt: "Embargo No",
+                                                      hintTxt: "Event",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      showTitle: true,
+                                                      maxLen: 4,
+                                                      isEnable: controllerX
+                                                          .isEnableLeftSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.embarNo1),
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: false,
-                                                  isEnable: controllerX
-                                                      .isEnableRightSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.embarNo2),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "",
+                                                      widthRatio: 0.155,
+                                                      paddingLeft: 0,
+                                                      showTitle: false,
+                                                      maxLen: 4,
+                                                      isEnable: controllerX
+                                                          .isEnableRightSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.embarNo2),
                                             ],
                                           ),
                                           SizedBox(
@@ -195,29 +234,35 @@ class AsrunSpecificationAdRevenueView
                                           ),
                                           Row(
                                             children: [
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "Telecast Date",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: true,
-                                                  isEnable: controllerX
-                                                      .isEnableLeftSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller: controllerX.telDt1),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "Telecast Date",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: true,
+                                                      isEnable: controllerX
+                                                          .isEnableLeftSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.telDt1),
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: false,
-                                                  isEnable: controllerX
-                                                      .isEnableRightSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller: controllerX.telDt2),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: false,
+                                                      isEnable: controllerX
+                                                          .isEnableRightSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.telDt2),
                                             ],
                                           ),
                                           SizedBox(
@@ -225,31 +270,35 @@ class AsrunSpecificationAdRevenueView
                                           ),
                                           Row(
                                             children: [
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "Telecast Time",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: true,
-                                                  isEnable: controllerX
-                                                      .isEnableLeftSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.telTime1),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "Telecast Time",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      showTitle: true,
+                                                      maxLen: 4,
+                                                      isEnable: controllerX
+                                                          .isEnableLeftSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.telTime1),
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: false,
-                                                  isEnable: controllerX
-                                                      .isEnableRightSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.telTime2),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: false,
+                                                      isEnable: controllerX
+                                                          .isEnableRightSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.telTime2),
                                             ],
                                           ),
                                           SizedBox(
@@ -257,31 +306,36 @@ class AsrunSpecificationAdRevenueView
                                           ),
                                           Row(
                                             children: [
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "Export Tape Code",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: true,
-                                                  isEnable: controllerX
-                                                      .isEnableLeftSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.expTapeCode1),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt:
+                                                          "Export Tape Code",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: true,
+                                                      isEnable: controllerX
+                                                          .isEnableLeftSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller: controllerX
+                                                          .expTapeCode1),
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: false,
-                                                  isEnable: controllerX
-                                                      .isEnableRightSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.expTapeCode2),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "",
+                                                      widthRatio: 0.155,
+                                                      maxLen: 4,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      showTitle: false,
+                                                      isEnable: controllerX
+                                                          .isEnableRightSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller: controllerX
+                                                          .expTapeCode2),
                                             ],
                                           ),
                                           SizedBox(
@@ -289,29 +343,35 @@ class AsrunSpecificationAdRevenueView
                                           ),
                                           Row(
                                             children: [
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "Segment No",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  isEnable: controllerX
-                                                      .isEnableLeftSide,
-                                                  showTitle: true,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller: controllerX.segNo1),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "Segment No",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      isEnable: controllerX
+                                                          .isEnableLeftSide,
+                                                      showTitle: true,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.segNo1),
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: false,
-                                                  isEnable: controllerX
-                                                      .isEnableRightSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller: controllerX.segNo2),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: false,
+                                                      isEnable: controllerX
+                                                          .isEnableRightSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.segNo2),
                                             ],
                                           ),
                                           SizedBox(
@@ -319,31 +379,36 @@ class AsrunSpecificationAdRevenueView
                                           ),
                                           Row(
                                             children: [
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "Export Tape Caption",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: true,
-                                                  isEnable: controllerX
-                                                      .isEnableLeftSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.expCap1),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt:
+                                                          "Export Tape Caption",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: true,
+                                                      isEnable: controllerX
+                                                          .isEnableLeftSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.expCap1),
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: false,
-                                                  // focus: controllerX.remarkFocus,
-                                                  isEnable: controllerX
-                                                      .isEnableRightSide,
-                                                  controller:
-                                                      controllerX.expCap2),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: false,
+                                                      // focus: controllerX.remarkFocus,
+                                                      isEnable: controllerX
+                                                          .isEnableRightSide,
+                                                      controller:
+                                                          controllerX.expCap2),
                                             ],
                                           ),
                                           SizedBox(
@@ -351,31 +416,35 @@ class AsrunSpecificationAdRevenueView
                                           ),
                                           Row(
                                             children: [
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "Tape Duration",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: true,
-                                                  isEnable: controllerX
-                                                      .isEnableLeftSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.tapDur1),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "Tape Duration",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: true,
+                                                      isEnable: controllerX
+                                                          .isEnableLeftSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.tapDur1),
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: false,
-                                                  isEnable: controllerX
-                                                      .isEnableRightSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.tapDur2),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: false,
+                                                      isEnable: controllerX
+                                                          .isEnableRightSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.tapDur2),
                                             ],
                                           ),
                                           SizedBox(
@@ -383,31 +452,35 @@ class AsrunSpecificationAdRevenueView
                                           ),
                                           Row(
                                             children: [
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "Recon Key",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: true,
-                                                  isEnable: controllerX
-                                                      .isEnableLeftSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.reconKey1),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "Recon Key",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: true,
+                                                      isEnable: controllerX
+                                                          .isEnableLeftSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller: controllerX
+                                                          .reconKey1),
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: false,
-                                                  isEnable: controllerX
-                                                      .isEnableRightSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.reconKey2),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: false,
+                                                      isEnable: controllerX
+                                                          .isEnableRightSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller: controllerX
+                                                          .reconKey2),
                                             ],
                                           ),
                                           SizedBox(
@@ -415,31 +488,35 @@ class AsrunSpecificationAdRevenueView
                                           ),
                                           Row(
                                             children: [
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "End Time",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: true,
-                                                  isEnable: controllerX
-                                                      .isEnableLeftSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.endTime1),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "End Time",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: true,
+                                                      isEnable: controllerX
+                                                          .isEnableLeftSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.endTime1),
                                               SizedBox(
                                                 width: 10,
                                               ),
-                                              InputFields.formField1WidthBox1(
-                                                  hintTxt: "",
-                                                  widthRatio: 0.155,
-                                                  // height: 70,
-                                                  paddingLeft: 0,
-                                                  showTitle: false,
-                                                  isEnable: controllerX
-                                                      .isEnableRightSide,
-                                                  // focus: controllerX.remarkFocus,
-                                                  controller:
-                                                      controllerX.endTime2),
+                                              InputFields
+                                                  .formField1WidthBoxNumeric(
+                                                      hintTxt: "",
+                                                      widthRatio: 0.155,
+                                                      // height: 70,
+                                                      paddingLeft: 0,
+                                                      maxLen: 4,
+                                                      showTitle: false,
+                                                      isEnable: controllerX
+                                                          .isEnableRightSide,
+                                                      // focus: controllerX.remarkFocus,
+                                                      controller:
+                                                          controllerX.endTime2),
                                             ],
                                           ),
                                         ],
@@ -448,14 +525,15 @@ class AsrunSpecificationAdRevenueView
                                 SizedBox(
                                   height: 5,
                                 ),
-                                GetBuilder<AsrunSpecificationAdRevenueController>(
+                                GetBuilder<
+                                        AsrunSpecificationAdRevenueController>(
                                     id: "main2",
                                     init: controllerX,
                                     builder: (logic) {
                                       return Container(
-                                        decoration: BoxDecoration(
+                                        /*decoration: BoxDecoration(
                                           border: Border.all(color: Colors.grey),
-                                        ),
+                                        ),*/
                                         child: Padding(
                                           padding: const EdgeInsets.only(
                                               left: 8.0,
@@ -480,7 +558,8 @@ class AsrunSpecificationAdRevenueView
                                                       DropDownValue(
                                                           key: "2", value: "-"),
                                                     ], (value) {
-                                                      controllerX.selectTimeDiff =
+                                                      controllerX
+                                                              .selectTimeDiff =
                                                           value;
                                                       // controllerX.getMatchDetails(programCode: value.key??"");
                                                     }, "Time Diff:", .12,
@@ -496,8 +575,7 @@ class AsrunSpecificationAdRevenueView
                                                       children: [
                                                         TimeWithTwoTextField(
                                                           title: " ",
-                                                          mainTextController:
-                                                              controllerX.hhMM,
+                                                          mainTextController: controllerX.hhMM,
                                                           widthRation: 0.12,
                                                           isTime: false,
                                                           isEnable: true,
@@ -514,8 +592,8 @@ class AsrunSpecificationAdRevenueView
                                                               style: TextStyle(
                                                                 fontSize: SizeDefine
                                                                     .labelSize1,
-                                                                color:
-                                                                    Colors.black,
+                                                                color: Colors
+                                                                    .black,
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .w500,
@@ -589,7 +667,8 @@ class AsrunSpecificationAdRevenueView
                                                                     .sapFlag),
                                                     InputFields
                                                         .formField1WidthBox(
-                                                            hintTxt: "New Format",
+                                                            hintTxt:
+                                                                "New Format",
                                                             widthRatio: 0.12,
                                                             // height: 70,
                                                             paddingLeft: 0,
@@ -615,26 +694,32 @@ class AsrunSpecificationAdRevenueView
                                                     Row(
                                                       children: [
                                                         Checkbox(
-                                                            value:
-                                                                controllerX.isFpc,
+                                                            value: controllerX
+                                                                .isFpc,
                                                             onChanged: (val) {
-                                                              controllerX.isFpc =
+                                                              controllerX
+                                                                      .isFpc =
                                                                   val ?? false;
-                                                              controllerX.update(
-                                                                  ["main2"]);
+                                                              controllerX
+                                                                  .update([
+                                                                "main2"
+                                                              ]);
                                                             },
                                                             visualDensity:
                                                                 const VisualDensity(
-                                                                    vertical: -4,
+                                                                    vertical:
+                                                                        -4,
                                                                     horizontal:
                                                                         -4)),
                                                         Text("FPC",
                                                             style: TextStyle(
                                                               fontSize: SizeDefine
                                                                   .labelSize1,
-                                                              color: Colors.black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                             )),
                                                       ],
                                                     ),
@@ -647,16 +732,20 @@ class AsrunSpecificationAdRevenueView
                                                               controllerX
                                                                       .isMarkSlot =
                                                                   val ?? false;
-                                                              controllerX.update(
-                                                                  ["main2"]);
+                                                              controllerX
+                                                                  .update([
+                                                                "main2"
+                                                              ]);
                                                             }),
                                                         Text("Mark Slot",
                                                             style: TextStyle(
                                                               fontSize: SizeDefine
                                                                   .labelSize1,
-                                                              color: Colors.black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                             )),
                                                       ],
                                                     ),
@@ -669,17 +758,21 @@ class AsrunSpecificationAdRevenueView
                                                               controllerX
                                                                       .isDontUpdate =
                                                                   val ?? false;
-                                                              controllerX.update(
-                                                                  ["main2"]);
+                                                              controllerX
+                                                                  .update([
+                                                                "main2"
+                                                              ]);
                                                             }),
                                                         Text(
                                                             "Don't Update Exposure",
                                                             style: TextStyle(
                                                               fontSize: SizeDefine
                                                                   .labelSize1,
-                                                              color: Colors.black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                             )),
                                                       ],
                                                     ),
@@ -692,17 +785,21 @@ class AsrunSpecificationAdRevenueView
                                                               controllerX
                                                                       .revRunOrder =
                                                                   val ?? false;
-                                                              controllerX.update(
-                                                                  ["main2"]);
+                                                              controllerX
+                                                                  .update([
+                                                                "main2"
+                                                              ]);
                                                             }),
                                                         Text(
                                                             "Reverse As Run Order",
                                                             style: TextStyle(
                                                               fontSize: SizeDefine
                                                                   .labelSize1,
-                                                              color: Colors.black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontWeight:
-                                                                  FontWeight.w500,
+                                                                  FontWeight
+                                                                      .w500,
                                                             )),
                                                       ],
                                                     ),
