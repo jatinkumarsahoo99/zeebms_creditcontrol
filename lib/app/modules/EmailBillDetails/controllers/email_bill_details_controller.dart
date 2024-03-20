@@ -1277,6 +1277,8 @@ class EmailBillDetailsController extends GetxController {
     switch (btn) {
       case "Clear":
         // callClear() {
+        //         Get.delete<ClearSecondarySpotsController>();
+        // Get.find<HomeController>().clearPage1();
 
         Get.delete<EmailBillDetailsController>();
         Get.find<HomeController>().clearPage1();
