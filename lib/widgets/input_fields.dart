@@ -1475,20 +1475,19 @@ class InputFields {
     );
   }
 
-
   static Widget formField1WidthBoxNumeric(
       {required String hintTxt,
-        required TextEditingController controller,
-        required double widthRatio,
-        double? height,
-        double? width,
-        double? paddingLeft,
-        bool capital = false,
-        bool showTitle = false,
-        bool? isEnable,
-        int? maxLen,
-        FocusNode? focus,
-        Function? onChange}) {
+      required TextEditingController controller,
+      required double widthRatio,
+      double? height,
+      double? width,
+      double? paddingLeft,
+      bool capital = false,
+      bool showTitle = false,
+      bool? isEnable,
+      int? maxLen,
+      FocusNode? focus,
+      Function? onChange}) {
     // var data = 0.obs;
     return Row(
       // mainAxisSize: MainAxisSize.min,
@@ -1496,18 +1495,18 @@ class InputFields {
       children: [
         (showTitle == true)
             ? SizedBox(
-          width: width ?? Get.width * 0.12,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(
-                    left: paddingLeft ?? 10, right: 1, top: 3),
-                child: LabelText.style(hint: hintTxt),
-              ),
-            ],
-          ),
-        )
+                width: width ?? Get.width * 0.12,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: paddingLeft ?? 10, right: 1, top: 3),
+                      child: LabelText.style(hint: hintTxt),
+                    ),
+                  ],
+                ),
+              )
             : Container(),
         Container(
           // padding: const EdgeInsets.only(
@@ -2801,6 +2800,7 @@ class InputFields {
     bool isNegativeReq = true,
     int? maxchar,
     bool? isEnabled,
+    bool removeArrowFocus = false,
   }) {
     // var data = 0.obs;
     var fN = FocusNode();
@@ -2888,7 +2888,8 @@ class InputFields {
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             InkWell(
-                              canRequestFocus: isEnabled ?? true,
+                              canRequestFocus:
+                                  removeArrowFocus ? false : isEnabled ?? true,
                               child: Icon(
                                 Icons.arrow_drop_up_sharp,
                                 size: 25,
@@ -2905,7 +2906,9 @@ class InputFields {
                               },
                             ),
                             InkWell(
-                              canRequestFocus: (isEnabled ?? true),
+                              canRequestFocus: removeArrowFocus
+                                  ? false
+                                  : (isEnabled ?? true),
                               child: Icon(
                                 Icons.arrow_drop_down_sharp,
                                 size: 25,

@@ -315,18 +315,22 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
                   child: InputFields.numbersWithoutHint1(
-                      hintTxt: "",
-                      controller: controllerX.counter1_,
-                      isNegativeReq: false,
-                      width: 0.10),
+                    hintTxt: "",
+                    controller: controllerX.counter1_,
+                    isNegativeReq: false,
+                    width: 0.10,
+                    removeArrowFocus: true,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
                   child: InputFields.numbersWithoutHint1(
-                      hintTxt: "",
-                      controller: controllerX.counter2_,
-                      isNegativeReq: false,
-                      width: 0.10),
+                    hintTxt: "",
+                    controller: controllerX.counter2_,
+                    isNegativeReq: false,
+                    width: 0.10,
+                    removeArrowFocus: true,
+                  ),
                 ),
                 SizedBox(
                   width: Get.width * 0.05,
