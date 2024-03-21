@@ -24,7 +24,9 @@ class StationMasterController extends GetxController {
       onKeyEvent: (node, event) {
         if (event.logicalKey == LogicalKeyboardKey.tab) {
           stationName.text = stationName.text.toUpperCase();
-          getRetrieveRecord(stationName.text);
+          if (stationName.text.isNotEmpty) {
+            getRetrieveRecord(stationName.text);
+          }
           return KeyEventResult.ignored;
         }
         return KeyEventResult.ignored;
@@ -63,9 +65,14 @@ class StationMasterController extends GetxController {
   }
 
   getRetrieveRecord(String placeNames) {
+    var payload = {
+      "stationCode": "",
+      "stationName": placeNames,
+    };
     LoadingDialog.call();
-    Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.STATION_MASTER_RETRIEVE_RECORD("", placeNames),
+    Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.STATION_MASTER_RETRIEVE_RECORD,
+        json: payload,
         fun: (Map map) {
           Get.back();
           if (map != null && map.containsKey('retrieveRecord')) {
