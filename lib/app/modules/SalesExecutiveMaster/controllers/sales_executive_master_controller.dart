@@ -114,8 +114,8 @@ class SalesExecutiveMasterController extends GetxController {
       api: ApiFactory.SALES_EXECUTIVE_SAVE,
       json: {
         "personnelCode": selectExecutiveModel?.personnelCode ?? "",
-        "userName": executiveName.value ?? "",
-        "personnelName": selectExecutiveModel?.personnelName ?? "",
+        "userName": selectExecutiveModel?.personnelNo ?? "",
+        "personnelName": executiveName.value??"",
         "personnelShortName": "",
         "departmentCode": department.value ?? "",
         "designationCode": designation.value ?? "",
