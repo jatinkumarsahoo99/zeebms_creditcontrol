@@ -103,6 +103,7 @@ abstract class RoutesList {
     _Paths.TRAFFIC_ORDER_CORRECTION,
     _Paths.CLIENT_MASTER,
     _Paths.EMAIL_BILL_DETAILS,
+    _Paths.SALES_EXECUTIVE_MASTER,
   ];
 }
 
