@@ -67,7 +67,7 @@ class CompanyChannelLinkController extends GetxController {
                   key: e["channelCode"], value: e["channelName"]));
             });
           }
-          update(["init"]);
+          // update(["init"]);
         });
   }
 
