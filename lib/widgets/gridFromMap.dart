@@ -547,7 +547,7 @@ class DataGridFromMap6 extends StatelessWidget {
                 ? key == "fpcCaption"
                     ? "FPC Caption"
                     : Utils.normalCaseToPascalCase(key)
-                : key,
+                : key.toString().capitalizeFirstLetter(),
             enableRowChecked:
                 (checkRow == true && key == checkRowKey) ? true : false,
             renderer: ((rendererContext) {

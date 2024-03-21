@@ -441,7 +441,7 @@ class SecondaryAsrunModificationView extends StatelessWidget {
                             hideCode: false,
                             formatDate: false,
                             columnAutoResize: true,
-                            doPasccal: true,
+                            doPasccal: false,
                             colorCallback: (row) =>
                             (row.row.cells
                                 .containsValue(controllerX.stateManager?.currentCell))
