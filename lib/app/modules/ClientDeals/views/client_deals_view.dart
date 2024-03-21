@@ -1191,7 +1191,9 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                               isNegativeReq: false,
                                                               titleSizeboxWidth: 40,
                                                               isEnabled:
-                                                                  controller.isEnable2.value),
+                                                                  controller.isEnable2.value,
+                                                            fn: controller.maxSpeedFocus
+                                                          ),
                                                         ),
                                                       ),
 
@@ -1200,13 +1202,14 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                         child: Focus(
                                                           skipTraversal: true,
                                                           // descendantsAreFocusable: false,
-                                                          child: InputFields.numbers4(
+                                                          child: InputFields.numbers5(
                                                               hintTxt: "Amount",
                                                               controller:
                                                                   controller.amountController,
                                                               titleInLeft: true,
                                                               isNegativeReq: false,
-                                                              isEnabled: controller.isEnable2.value
+                                                              isEnabled: controller.isEnable2.value,
+                                                              fn: controller.amountFocus
                                                               // titleSizeboxWidth: 45,
                                                               ),
                                                         ),
@@ -1275,12 +1278,13 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                   child: Focus(
                                                     skipTraversal: true,
                                                     // descendantsAreFocusable: false,
-                                                    child: InputFields.numbers4(
+                                                    child: InputFields.numbers5(
                                                         hintTxt: "Bk Amt",
                                                         controller: controller.bkAmountController,
                                                         titleInLeft: true,
                                                         titleSizeboxWidth: 45,
                                                         isNegativeReq: false,
+                                                        fn: controller.bkAmtFocus,
                                                         isEnabled: controller.isEnable2.value),
                                                   ),
                                                 ),
@@ -1950,6 +1954,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       return InputFields.numbers4(
                                           hintTxt: controller.label24.value ?? "Seconds",
                                           controller: controller.secondsController2,
+                                          // fn: controller.secFocus,
                                           // titleInLeft: true,
                                           // titleSizeboxWidth: 45,
                                           fieldWidth: 0.1,
@@ -1964,10 +1969,11 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                   SizedBox(
                                     width: Get.width * 0.18,
                                     child: Obx(() {
-                                      return InputFields.numbers4(
+                                      return InputFields.numbers5(
                                           hintTxt:
                                               controller.label25.value ?? "Rate per 100 seconds",
                                           controller: controller.ratePerTenSecondsController,
+                                          fn: controller.ratePerFocus,
                                           // titleInLeft: true,
                                           // titleSizeboxWidth: 45,
                                           fieldWidth: 0.15,
@@ -1979,9 +1985,10 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                   ),
                                   SizedBox(
                                     width: Get.width * 0.18,
-                                    child: InputFields.numbers4(
+                                    child: InputFields.numbers5(
                                       hintTxt: "Amount",
                                       controller: controller.amountController2,
+                                      fn: controller.amountFocus2,
                                       // titleInLeft: true,
                                       // titleSizeboxWidth: 45,
                                       fieldWidth: 0.15,
@@ -1993,9 +2000,10 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                   ),
                                   SizedBox(
                                     width: Get.width * 0.18,
-                                    child: InputFields.numbers4(
+                                    child: InputFields.numbers5(
                                         hintTxt: "Val Rate",
                                         controller: controller.valueRateController,
+                                        fn: controller.valRateFocus,
                                         // titleInLeft: true,
                                         // titleSizeboxWidth: 45,
                                         fieldWidth: 0.15,

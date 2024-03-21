@@ -3165,9 +3165,10 @@ class InputFields {
     bool isNegativeReq = true,
     int? maxchar,
     bool? isEnabled,
+    FocusNode? fn
   }) {
     // var data = 0.obs;
-    var fN = FocusNode();
+    var fN = fn ?? FocusNode();
     final iconColor =
     (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
