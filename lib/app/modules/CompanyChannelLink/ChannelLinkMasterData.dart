@@ -147,11 +147,11 @@ class CompanyChannelLinkDatas {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['locationname'] = this.locationname;
     data['channelname'] = this.channelname;
-    data['payrouteCategoryName'] = this.payrouteCategoryName;
-    data['currencyTypename'] = this.currencyTypename;
-    data['colagentName'] = this.colagentName;
-    data['companyName'] = this.companyName;
-    data['sapProfitCentre'] = this.sapProfitCentre;
+    data['Payroute CategoryName'] = this.payrouteCategoryName;
+    data['currency Typename'] = this.currencyTypename;
+    data['Colagent Name'] = this.colagentName;
+    data['Company Name'] = this.companyName;
+    data['sap ProfitCentre'] = this.sapProfitCentre;
     return data;
   }
 }
