@@ -115,7 +115,7 @@ class SalesExecutiveMasterController extends GetxController {
       json: {
         "personnelCode": selectExecutiveModel?.personnelCode ?? "",
         "userName": selectExecutiveModel?.personnelNo ?? "",
-        "personnelName": selectExecutiveModel?.personnelName ?? "",
+        "personnelName": executiveName.value??"",
         "personnelShortName": "",
         "departmentCode": department.value ?? "",
         "designationCode": designation.value ?? "",
