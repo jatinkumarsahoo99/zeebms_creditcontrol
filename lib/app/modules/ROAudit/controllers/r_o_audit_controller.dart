@@ -36,7 +36,7 @@ class ROAuditController extends GetxController {
 
   TextEditingController scheduleDateController = TextEditingController();
 
-  List<Map<String,Map<String, double>>>? userGridSetting1;
+  List<Map<String,Map<String, double>>>? userGridSetting1 = [];
 
 
 

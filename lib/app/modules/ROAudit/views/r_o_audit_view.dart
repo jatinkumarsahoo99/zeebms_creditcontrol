@@ -183,7 +183,7 @@ class ROAuditView extends StatelessWidget {
                             showSrNo: true,
                             hideCode: false,
                             formatDate: false,
-                            columnAutoResize: true,
+                            columnAutoResize: false,
                             doPasccal: true,
                             colorCallback: (row) {
                               if (row.row.cells['auditedSpots']?.value == "" ||
@@ -219,8 +219,10 @@ class ROAuditView extends StatelessWidget {
                                 controllerX.showDetails(name: controllerX.selectTab.value);
                               }
                             },
-                           widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(
-                           userGridSettingList: controllerX.userGridSetting1,key:controllerX.getTableNo((controllerX.selectedInt.value)) ??"tbl1"),
+                            widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(
+                           userGridSettingList: controllerX.userGridSetting1,
+                               key:controllerX.getTableNo(controllerX.selectedInt.value)),
+                            // widthSpecificColumn: const {"bookingnumber": 900},
 
                             // hideKeys: const [],
                             mapData: controllerX.roAuditRetrieveModel!.infoBindList!.lstAdditions!
@@ -261,22 +263,23 @@ class ROAuditView extends StatelessWidget {
                             showSrNo: true,
                             hideCode: false,
                             formatDate: false,
-                            columnAutoResize: true,
+                            columnAutoResize: false,
                             doPasccal: true,
                             colorCallback: (row) {
                               if (row.row.cells['auditedSpots']?.value == "" ||
                                   row.row.cells['auditedSpots']?.value == null) {
                                 return const Color(0xFF96FF96);
                               } else if (int.parse(
-                                  (row.row.cells['auditedSpots']?.value ?? '0').toString()) <
+                                      (row.row.cells['auditedSpots']?.value ?? '0').toString()) <
                                   int.parse(
                                       (row.row.cells['totalspots']?.value ?? '0').toString())) {
                                 return const Color(0xFFFF9696);
                               }
-                                return (row.row.cells.containsValue(controllerX.stateManager2?.currentCell))
-                                    ? Colors.deepPurple.shade200
-                                    : Colors.white ;
-                                },
+                              return (row.row.cells
+                                      .containsValue(controllerX.stateManager2?.currentCell))
+                                  ? Colors.deepPurple.shade200
+                                  : Colors.white;
+                            },
                             exportFileName: "Audit Status",
                             mode: PlutoGridMode.normal,
                             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
@@ -290,15 +293,18 @@ class ROAuditView extends StatelessWidget {
                                 "BookingNumber": event.cell.row.cells['bookingnumber']?.value ?? "",
                                 "clientName": event.cell.row.cells['clientname']?.value ?? "",
                                 "agencyName": event.cell.row.cells['agencyname']?.value ?? "",
-                                "spotamount": Utils.toDoubleString(data: event.cell.row.cells['spotamount']?.value ?? ""),
+                                "spotamount": Utils.toDoubleString(
+                                    data: event.cell.row.cells['spotamount']?.value ?? ""),
                                 "brandName": event.cell.row.cells['brandName']?.value ?? ""
                               });
                               if (sta) {
                                 controllerX.showDetails(name: controllerX.selectTab.value);
                               }
                             },
-                          widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(
-                          userGridSettingList: controllerX.userGridSetting1,key:controllerX.getTableNo(controllerX.selectedInt.value) ??"tbl1"),
+                            widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                                userGridSettingList: controllerX.userGridSetting1,
+                                key: controllerX.getTableNo(controllerX.selectedInt.value) ??
+                                    "tbl1"),
                             // hideKeys: const [],
                             mapData: controllerX
                                 .roAuditRetrieveModel!.infoBindList!.lstCancellation!
@@ -338,7 +344,7 @@ class ROAuditView extends StatelessWidget {
                             showSrNo: true,
                             hideCode: false,
                             formatDate: false,
-                            columnAutoResize: true,
+                            columnAutoResize: false,
                             doPasccal: true,
                             enableSort: true,
                             colorCallback: (row) {
@@ -346,7 +352,7 @@ class ROAuditView extends StatelessWidget {
                                   row.row.cells['auditedSpots']?.value == null) {
                                 return const Color(0xFF96FF96);
                               } else if (int.parse(
-                                  (row.row.cells['auditedSpots']?.value ?? '0').toString()) <
+                                      (row.row.cells['auditedSpots']?.value ?? '0').toString()) <
                                   int.parse(
                                       (row.row.cells['totalspots']?.value ?? '0').toString())) {
                                 return const Color(0xFFFF9696);
@@ -358,8 +364,10 @@ class ROAuditView extends StatelessWidget {
                             },
                             exportFileName: "Audit Status",
                             mode: PlutoGridMode.normal,
-                            widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(
-                            userGridSettingList: controllerX.userGridSetting1,key:controllerX.getTableNo(controllerX.selectedInt.value) ??"tbl1"),
+                            widthSpecificColumn: Get.find<HomeController>().getGridWidthByKey(
+                                userGridSettingList: controllerX.userGridSetting1,
+                                key: controllerX.getTableNo(controllerX.selectedInt.value) ??
+                                    "tbl1"),
                             onRowDoubleTap: (PlutoGridOnRowDoubleTapEvent event) async {
                               bool sta = await Get.toNamed(Routes.AUDIT_RESCHEDULE, arguments: {
                                 "LocationCode": controllerX.selectLocation?.key ?? "",
@@ -417,7 +425,7 @@ class ROAuditView extends StatelessWidget {
                             showSrNo: true,
                             hideCode: false,
                             formatDate: false,
-                            columnAutoResize: true,
+                            columnAutoResize: false,
                             doPasccal: true,
                             enableSort: true,
                             colorCallback: (row) =>
