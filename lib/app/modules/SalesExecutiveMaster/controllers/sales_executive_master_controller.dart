@@ -113,7 +113,7 @@ class SalesExecutiveMasterController extends GetxController {
     Get.find<ConnectorControl>().POSTMETHOD(
       api: ApiFactory.SALES_EXECUTIVE_SAVE,
       json: {
-        "personnelCode": selectSapName?.key ?? "",
+        "personnelCode": selectExecutiveModel?.personnelCode ?? "",
         "userName": executiveName.value ?? "",
         "personnelName": selectExecutiveModel?.personnelName ?? "",
         "personnelShortName": "",
