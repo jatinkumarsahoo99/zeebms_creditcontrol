@@ -99,7 +99,8 @@ class SalesExecutiveMasterView extends StatelessWidget {
                                   height: 6,
                                 ),
                                 DropDownField.formDropDown1WidthMap(
-                                  controllerX.masterModel?.lstCompanyMaster1??[],
+                                  controllerX.masterModel?.lstCompanyMaster1 ??
+                                      [],
                                   (value) {
                                     // controllerX.selectedBMSVersionList = value;
                                     // controllerX.getMatchDetails(programCode: value.key??"");
@@ -118,7 +119,9 @@ class SalesExecutiveMasterView extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     DropDownField.formDropDown1WidthMap(
-                                      controllerX.masterModel?.lstLocationMaster1??[],
+                                      controllerX.masterModel
+                                              ?.lstLocationMaster1 ??
+                                          [],
                                       (value) {
                                         // controllerX.selectedBMSVersionList = value;
                                         // controllerX.getMatchDetails(programCode: value.key??"");
@@ -135,7 +138,9 @@ class SalesExecutiveMasterView extends StatelessWidget {
                                       width: 2,
                                     ),
                                     DropDownField.formDropDown1WidthMap(
-                                      controllerX.masterModel?.lstStationMaster1??[],
+                                      controllerX
+                                              .masterModel?.lstStationMaster1 ??
+                                          [],
                                       (value) {
                                         controllerX.selectStation = value;
                                       },
@@ -155,7 +160,9 @@ class SalesExecutiveMasterView extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     DropDownField.formDropDown1WidthMap(
-                                      controllerX.masterModel?.lstPlaceMaster1??[],
+                                      controllerX
+                                              .masterModel?.lstPlaceMaster1 ??
+                                          [],
                                       (value) {
                                         controllerX.selectPlace = value;
                                       },
@@ -199,10 +206,13 @@ class SalesExecutiveMasterView extends StatelessWidget {
                                                 child: Checkbox(
                                                   value: controllerX
                                                       .isActive.value,
-                                                  onChanged: (val) {
-                                                    controllerX.isActive.value =
-                                                        val!;
-                                                  },
+                                                  onChanged: controllerX
+                                                          .isActive1.value
+                                                      ? (val) {
+                                                          controllerX.isActive
+                                                              .value = val!;
+                                                        }
+                                                      : null,
                                                   materialTapTargetSize:
                                                       MaterialTapTargetSize
                                                           .shrinkWrap,
