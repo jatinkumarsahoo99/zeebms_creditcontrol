@@ -104,6 +104,7 @@ abstract class RoutesList {
     _Paths.CLIENT_MASTER,
     _Paths.EMAIL_BILL_DETAILS,
     _Paths.SALES_EXECUTIVE_MASTER,
+    _Paths.COMPANY_CHANNEL_LINK,
   ];
 }
 
