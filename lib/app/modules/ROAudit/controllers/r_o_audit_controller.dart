@@ -24,6 +24,9 @@ class ROAuditController extends GetxController {
   DropDownValue? selectChannel;
 
   PlutoGridStateManager? stateManager;
+  PlutoGridStateManager? stateManager1;
+  PlutoGridStateManager? stateManager2;
+  PlutoGridStateManager? stateManager3;
   Map<String, dynamic> responseData = {'report': []};
 
  /* (String x,String y)funTest(){
@@ -35,6 +38,8 @@ class ROAuditController extends GetxController {
 
   List<Map<String,Map<String, double>>>? userGridSetting1;
 
+
+
   Rx<bool>additionClick = Rx<bool>(false);
 
   Color backColor = const Color(0xFFE7ECEF);
@@ -43,10 +48,23 @@ class ROAuditController extends GetxController {
   Rx<int> selectedInt = Rx<int>(0);
   Rx<String> selectTab = Rx<String>("Additions");
   formHandler(String sta) {
+    if(sta == "Exit"){
+      Get.find<HomeController>().postUserGridSetting1(
+          listStateManager: [
+            stateManager1,
+            stateManager2,
+            stateManager3,
+          ],tableNamesList: ["tbl1","tbl2","tbl3"]);
+    }
     if(sta == "Clear"){
       clearAll();
     }
 
+  }
+
+  fetchUserSetting1() async {
+    userGridSetting1 = await Get.find<HomeController>().fetchUserSetting1();
+    update(["grid"]);
   }
 
   clearAll() {
@@ -153,8 +171,32 @@ class ROAuditController extends GetxController {
     }
   }
 
+  String getTableNo(int ? key){
+    switch(key){
+      case 0:
+        return "tbl1";
+        break;
+      case 1:
+        return "tbl2";
+        break;
+      case 2:
+        return "tbl3";
+        break;
+      case 3:
+        return "tbl4";
+        break;
+      case 4:
+        return "tbl5";
+        break;
+      default:
+        return "tbl1";
+        break;
+    }
+  }
+
   @override
   void onInit() {
+    fetchUserSetting1();
     super.onInit();
   }
 
