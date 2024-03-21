@@ -36,6 +36,10 @@ class EmailBillDetailsController extends GetxController {
   RxBool all1 = RxBool(false);
   RxBool all2 = RxBool(false);
 
+  // FocusNode counter1FN = FocusNode();
+  // FocusNode counter2FN = FocusNode();
+  // FocusNode all2FN = FocusNode();
+
   var companyList = <DropDownValue>[].obs;
   var fromList = <DropDownValue>[].obs;
 
@@ -84,6 +88,16 @@ class EmailBillDetailsController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    // counter1FN.addListener(() {
+    //   if (!counter1FN.hasFocus) {
+    //     counter2FN.requestFocus();
+    //   }
+    // });
+    // counter2FN.addListener(() {
+    //   if (!counter2FN.hasFocus) {
+    //     all2FN.requestFocus();
+    //   }
+    // });
   }
 
   @override
@@ -1277,6 +1291,8 @@ class EmailBillDetailsController extends GetxController {
     switch (btn) {
       case "Clear":
         // callClear() {
+        //         Get.delete<ClearSecondarySpotsController>();
+        // Get.find<HomeController>().clearPage1();
 
         Get.delete<EmailBillDetailsController>();
         Get.find<HomeController>().clearPage1();

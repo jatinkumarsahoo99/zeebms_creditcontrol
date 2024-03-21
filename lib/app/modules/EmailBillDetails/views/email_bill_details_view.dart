@@ -35,7 +35,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
           Expanded(
             child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: GetBuilder<EmailBillDetailsController>(
+                child: GetBuilder(
                     init: controllerX,
                     builder: (builder) {
                       return Column(
@@ -315,18 +315,22 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
                   child: InputFields.numbersWithoutHint1(
-                      hintTxt: "",
-                      controller: controllerX.counter1_,
-                      isNegativeReq: false,
-                      width: 0.10),
+                    hintTxt: "",
+                    controller: controllerX.counter1_,
+                    isNegativeReq: false,
+                    width: 0.10,
+                    removeArrowFocus: true,
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 5.0),
                   child: InputFields.numbersWithoutHint1(
-                      hintTxt: "",
-                      controller: controllerX.counter2_,
-                      isNegativeReq: false,
-                      width: 0.10),
+                    hintTxt: "",
+                    controller: controllerX.counter2_,
+                    isNegativeReq: false,
+                    width: 0.10,
+                    removeArrowFocus: true,
+                  ),
                 ),
                 SizedBox(
                   width: Get.width * 0.05,
@@ -408,7 +412,7 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                             },
                             colorCallback: (colorEvent) {
                               if (colorEvent.row.cells.containsValue(
-                                  controller.stateManager?.currentCell)) {
+                                  controllerX.stateManager?.currentCell)) {
                                 return Colors.deepPurple.shade100;
                               }
 

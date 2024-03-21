@@ -17,7 +17,7 @@ class LinkDealRetrieveModel {
 }
 
 class Model {
-  int? dealcode;
+  double? dealcode;
   int? groupNumber;
   String? clientCode;
   String? agencyCode;
@@ -89,7 +89,7 @@ class Deals {
   String? dealdate;
   String? fromdate;
   String? todate;
-  int? maxspend;
+  double? maxspend;
 
   Deals(
       {this.selected,
@@ -135,8 +135,8 @@ class Deals {
 class LinkedDeal {
   String? locationname;
   String? channelName;
-  int? dealCode;
-  int? dealDetailCode;
+  double? dealCode;
+  double? dealDetailCode;
   int? primaryEventCode;
   String? locationcode;
   String? channelcode;
@@ -150,12 +150,12 @@ class LinkedDeal {
   String? programCategoryName;
   String? starttime;
   String? endTime;
-  int? seconds;
-  int? rate;
-  int? amount;
+  double? seconds;
+  double? rate;
+  double? amount;
   String? bandcode;
   String? timeband;
-  int? valuationrate;
+  double? valuationrate;
   int? netcode;
   String? networkname;
   int? sun;
@@ -172,7 +172,7 @@ class LinkedDeal {
   String? eventname;
   int? bookedSeconds;
   int? spots;
-  int? groupValuationRate;
+  double? groupValuationRate;
 
   LinkedDeal(
       {this.locationname,
