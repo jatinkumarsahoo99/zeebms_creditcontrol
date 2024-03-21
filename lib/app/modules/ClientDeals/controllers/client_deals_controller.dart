@@ -571,7 +571,7 @@ class ClientDealsController extends GetxController {
     return completer.future;
   }
 
-  channelLeave({String? netCode}) {
+  channelLeave({String? netCode,bool fromDoubleTap = true}) {
     try {
       LoadingDialog.call();
       Map<String, dynamic> postData = {
@@ -589,7 +589,11 @@ class ClientDealsController extends GetxController {
               if (map['channelLeaveModel'] != null &&
                   map['channelLeaveModel']['dealNumber'] != null &&
                   map['channelLeaveModel']['dealNumber'] != "") {
-                dealNoController.text = map['channelLeaveModel']['dealNumber'] ?? "";
+
+                if(fromDoubleTap){
+                  dealNoController.text = map['channelLeaveModel']['dealNumber'] ?? "";
+                }
+
               }
               if (map['channelLeaveModel'] != null &&
                   map['channelLeaveModel']['timeBand'] != null &&
@@ -1193,7 +1197,7 @@ class ClientDealsController extends GetxController {
       }
 
       print("I am from controller");
-      channelLeave(netCode: stateManager?.rows[selectedIndex].cells['netWorkName']?.value ?? "");
+      channelLeave(netCode: stateManager?.rows[selectedIndex].cells['netWorkName']?.value ?? "",fromDoubleTap: false);
 
       txtDRecordNumber.value =
           (stateManager?.rows[selectedIndex].cells['recordnumber']?.value ?? "").toString();
