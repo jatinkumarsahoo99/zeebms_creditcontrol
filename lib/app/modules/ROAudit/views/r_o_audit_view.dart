@@ -220,7 +220,7 @@ class ROAuditView extends StatelessWidget {
                               }
                             },
                            widthSpecificColumn:  Get.find<HomeController>().getGridWidthByKey(
-                           userGridSettingList: controllerX.userGridSetting1,key:controllerX.getTableNo(controllerX.selectedInt.value) ??"tbl1"),
+                           userGridSettingList: controllerX.userGridSetting1,key:controllerX.getTableNo((controllerX.selectedInt.value)) ??"tbl1"),
 
                             // hideKeys: const [],
                             mapData: controllerX.roAuditRetrieveModel!.infoBindList!.lstAdditions!
