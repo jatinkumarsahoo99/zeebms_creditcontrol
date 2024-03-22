@@ -755,6 +755,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                     initPosition: controller.getOffSetValue(constraints),
                     child: controller.dialogWidget!,
                     dragEndCall: () {
+
                       controller.update(['all']);
                     },
                   )

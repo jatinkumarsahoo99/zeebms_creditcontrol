@@ -4,6 +4,7 @@ class DraggableFab extends StatefulWidget {
   final Widget child;
   final Offset? initPosition;
   final Function? dragEndCall;
+  final Function? dragStartCall;
   final double securityBottom;
 
   const DraggableFab(
@@ -11,6 +12,7 @@ class DraggableFab extends StatefulWidget {
         required this.child,
         this.initPosition,
         this.dragEndCall,
+        this.dragStartCall,
         this.securityBottom = 0})
       : super(key: key);
 
@@ -67,6 +69,7 @@ class _DraggableFabState extends State<DraggableFab> {
               onDragEnd: _handleDragEnded,
               childWhenDragging: widget.child,
               child: widget.child,
+              onDragStarted:_handleDragStart ,
             ),
           ),
         )
@@ -81,6 +84,12 @@ class _DraggableFabState extends State<DraggableFab> {
     }
   }
 
+  void _handleDragStart() {
+    // _calculatePosition(draggableDetails.offset);
+    if(widget.dragStartCall!=null){
+      widget.dragStartCall!();
+    }
+  }
   void _calculatePosition(Offset targetOffset) {
     if (_screenWidthMid == null || _screenHeightMid == null) {
       Size screenSize = MediaQuery.of(context).size;
