@@ -170,7 +170,7 @@ class AgencyMasterView extends StatelessWidget {
                     callback: () {
                       try{
                         LoadingDialog.call();
-                        controllerX.addInfoStateManager?.moveCurrentCell(PlutoMoveDirection.right,force: true);
+                        controllerX.addInfoStateManager?.moveCurrentCell(PlutoMoveDirection.left,force: true);
                         Future.delayed(const Duration(seconds: 1),() {
                           if(controllerX.agencyMasterRetrieveModel != null &&
                               controllerX.agencyMasterRetrieveModel?.retrieve != null &&
@@ -219,8 +219,37 @@ class AgencyMasterView extends StatelessWidget {
                 ? DraggableFab(
               initPosition: controllerX.getOffSetValue(constraints),
               child: controllerX.dialogWidget!,
+              dragStartCall: (){
+                print(">>>>>>>>>>start call");
+                controllerX.addInfoStateManager?.moveCurrentCell(PlutoMoveDirection.left,force: true);
+              },
               dragEndCall: () {
-                controllerX.update(['all']);
+                LoadingDialog.call();
+                Future.delayed(Duration(seconds: 1),() {
+                  if(controllerX.infoDataList != null){
+                    List<Map<String, dynamic>> data = controllerX.getDataFromGrid2(
+                        controllerX.addInfoStateManager);
+                    // controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo?.clear();
+                    controllerX.infoDataList = InfoDataList(data: []);
+                    for (var element in data) {
+                      print(">>>>>element ${element}\n");
+                      // controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo?.add(TblAddInfo.fromJson(element));
+
+                      controllerX.infoDataList?.data?.add(DataLst.fromJson(element));
+                    }
+                   /* controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo?.forEach((element) {
+                      controllerX.infoDataList?.data?.add(DataLst.fromJson(element.toJson()));
+                    });*/
+
+                  }
+                  if (Get.isDialogOpen ?? false) {
+                    Get.back();
+                  }
+                  controllerX.update(['all']);
+
+                });
+
+
               },
             )
                 : const SizedBox();
