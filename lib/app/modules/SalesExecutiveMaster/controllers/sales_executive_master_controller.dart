@@ -109,38 +109,48 @@ class SalesExecutiveMasterController extends GetxController {
   }
 
   saveData() {
-    LoadingDialog.call();
-    Get.find<ConnectorControl>().POSTMETHOD(
-      api: ApiFactory.SALES_EXECUTIVE_SAVE,
-      json: {
-        "personnelCode": selectExecutiveModel?.personnelCode ?? "",
-        "userName": selectExecutiveModel?.personnelNo ?? "",
-        "personnelName": executiveName.value??"",
-        "personnelShortName": "",
-        "departmentCode": department.value ?? "",
-        "designationCode": designation.value ?? "",
-        "locationCode": selectLocation?.key,
-        "companyCode": selectCompany?.key,
-        "address1": "",
-        "address2": "",
-        "placeCode": selectPlace?.key,
-        "pin1": 0,
-        "phone": "",
-        "mobile": mobileno.value,
-        "fax": "",
-        "email": email.value,
-        "activeNonActive": isActive.value,
-        "stationCode": selectStation?.key
-      },
-      fun: (map) {
-        Get.back();
-        if (map is Map && map.containsKey("postsave")) {
-          LoadingDialog.callDataSaved(msg: map["postsave"]);
-        } else {
-          LoadingDialog.callErrorMessage1(msg: map.toString());
-        }
-      },
-    );
+    if (selectCompany == null) {
+      LoadingDialog.callErrorMessage1(msg: "Please select company");
+    } else if (selectLocation == null) {
+      LoadingDialog.callErrorMessage1(msg: "Please select location");
+    } else if (selectStation == null) {
+      LoadingDialog.callErrorMessage1(msg: "Please select station");
+    } else if (selectPlace == null) {
+      LoadingDialog.callErrorMessage1(msg: "Please select place");
+    } else {
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().POSTMETHOD(
+        api: ApiFactory.SALES_EXECUTIVE_SAVE,
+        json: {
+          "personnelCode": selectExecutiveModel?.personnelCode ?? "",
+          "userName": selectExecutiveModel?.personnelNo ?? "",
+          "personnelName": executiveName.value ?? "",
+          "personnelShortName": "",
+          "departmentCode": department.value ?? "",
+          "designationCode": designation.value ?? "",
+          "locationCode": selectLocation?.key,
+          "companyCode": selectCompany?.key,
+          "address1": "",
+          "address2": "",
+          "placeCode": selectPlace?.key,
+          "pin1": 0,
+          "phone": "",
+          "mobile": mobileno.value,
+          "fax": "",
+          "email": email.value,
+          "activeNonActive": isActive.value,
+          "stationCode": selectStation?.key
+        },
+        fun: (map) {
+          Get.back();
+          if (map is Map && map.containsKey("postsave")) {
+            LoadingDialog.callDataSaved(msg: map["postsave"]);
+          } else {
+            LoadingDialog.callErrorMessage1(msg: map.toString());
+          }
+        },
+      );
+    }
   }
 
   formHandler(btn) {
