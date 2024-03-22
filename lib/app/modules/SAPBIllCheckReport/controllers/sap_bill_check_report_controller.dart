@@ -45,23 +45,26 @@ class SAPBIllCheckReportController extends GetxController {
   }
 
   void showApiCall() {
-    LoadingDialog.call();
-    Get.find<ConnectorControl>().GETMETHODCALL(
-        api: ApiFactory.SAP_BILL_CHECK_GENERATE(
-            Utils.dateFormatChange(fromDt.text, "dd-MM-yyyy", "yyyy-MM-dd"),
-            Utils.dateFormatChange(toDt.text, "dd-MM-yyyy", "yyyy-MM-dd"),
-            (selectedR4?.key ?? "")),
-        fun: (map) {
-          Get.back();
-          if (map is Map &&
-              map.containsKey("genrate") &&
-              map["genrate"] != null &&
-              map["genrate"].containsKey("lstcompany") &&
-              map["genrate"]["lstcompany"] != null) {
-            dataList = map["genrate"]["lstcompany"];
-            update(["grid"]);
-          }
-        });
+    if (selectedR4 == null) {
+    } else {
+      LoadingDialog.call();
+      Get.find<ConnectorControl>().GETMETHODCALL(
+          api: ApiFactory.SAP_BILL_CHECK_GENERATE(
+              Utils.dateFormatChange(fromDt.text, "dd-MM-yyyy", "yyyy-MM-dd"),
+              Utils.dateFormatChange(toDt.text, "dd-MM-yyyy", "yyyy-MM-dd"),
+              (selectedR4?.key ?? "")),
+          fun: (map) {
+            Get.back();
+            if (map is Map &&
+                map.containsKey("genrate") &&
+                map["genrate"] != null &&
+                map["genrate"].containsKey("lstcompany") &&
+                map["genrate"]["lstcompany"] != null) {
+              dataList = map["genrate"]["lstcompany"];
+              update(["grid"]);
+            }
+          });
+    }
   }
 
   fetchUserGridSetting() async {
