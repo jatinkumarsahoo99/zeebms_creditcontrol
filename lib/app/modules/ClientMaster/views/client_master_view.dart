@@ -810,7 +810,7 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                               false))
                                                       ? SizedBox(
                                                           height:
-                                                              Get.height * 0.16,
+                                                              Get.height * 0.2,
                                                           child:
                                                               DataGridFromMap(
                                                             showSrNo: true,
@@ -844,7 +844,7 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                               controllerX
                                                                   .fixedWidth3,
                                                           height:
-                                                              Get.height * 0.16,
+                                                              Get.height * 0.2,
                                                           decoration:
                                                               BoxDecoration(
                                                             border: Border.all(
@@ -1009,7 +1009,7 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                               false))
                                                       ? SizedBox(
                                                           height:
-                                                              Get.height * 0.16,
+                                                              Get.height * 0.2,
                                                           child:
                                                               DataGridFromMap(
                                                             showSrNo: true,
@@ -1040,7 +1040,7 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                               controllerX
                                                                   .fixedWidth3,
                                                           height:
-                                                              Get.height * 0.16,
+                                                              Get.height * 0.2,
                                                           decoration:
                                                               BoxDecoration(
                                                             border: Border.all(
