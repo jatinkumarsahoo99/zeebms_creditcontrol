@@ -1905,9 +1905,11 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       hintTxt: "Start Time",
                                       controller: controller.startTime,
                                       widthRatio: 0.08,
+                                      isTime: true,
 
                                       // isEnable: controllerX.isEnable,
                                       onEditComplete: (val) {
+                                        controller.startTime.text = val;
                                         // controllerX.calculateDuration();
                                       },
                                       textFieldFN: controller.startTimeFocus,
@@ -1920,8 +1922,10 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       hintTxt: "End Time",
                                       controller: controller.endTime,
                                       widthRatio: 0.08,
+                                      isTime: true,
                                       // isEnable: controllerX.isEnable,
                                       onEditComplete: (val) {
+                                        controller.endTime.text = val ;
                                         // controllerX.calculateDuration();
                                       },
                                       textFieldFN: controller.endTimeFocus,
