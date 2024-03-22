@@ -221,9 +221,9 @@ class BillExportView extends GetView<BillExportController> {
                                       },
                                     ),
                                     sizedBoxWidth(10),
-                                    FormButton1(
+                                    FormButtonWrapper(
                                       btnText: "Exit",
-                                      callback: () {},
+                                      callback: (){},
                                     ),
                                     sizedBoxWidth(10),
                                     FormButton1(
