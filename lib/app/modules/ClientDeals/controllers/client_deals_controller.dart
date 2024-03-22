@@ -1551,9 +1551,9 @@ class ClientDealsController extends GetxController {
               (key.toString().trim() == "isrequired")) {
             if (row.cells[key]?.value != null && row.cells[key]?.value != "") {
               try {
-                rowMap[key] = int.parse(row.cells[key]?.value ?? "0");
+                rowMap[key] = int.parse((row.cells[key]?.value ?? "0").toString());
               } catch (e) {
-                rowMap[key] = double.parse(row.cells[key]?.value ?? "0");
+                rowMap[key] = double.parse((row.cells[key]?.value ?? "0").toString());
               }
             } else {
               rowMap[key] = 0;

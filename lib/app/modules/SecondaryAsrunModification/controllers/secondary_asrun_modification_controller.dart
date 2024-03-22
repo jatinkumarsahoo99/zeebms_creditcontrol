@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/LoadingDialog.dart';
@@ -449,7 +450,9 @@ class SecondaryAsrunModificationController extends GetxController {
             },
             failed: (map) {
               closeDialogIfOpen();
-              LoadingDialog.showErrorDialog((map ?? "Something went wrong").toString());
+              LoadingDialog.showErrorDialog((map ?? "Something went wrong").toString(),callback: (){
+                clearAll();
+              });
             });
       } catch (e) {
         closeDialogIfOpen();
@@ -600,6 +603,7 @@ class SecondaryAsrunModificationController extends GetxController {
     dialogWidget = null;
     canDialogShow.value = false;
     stateManager = null;
+    logDateController.text = DateFormat("dd-MM-yyyy").format(DateTime.now());
      update(['grid']);
 
   }

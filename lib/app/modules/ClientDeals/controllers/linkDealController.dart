@@ -159,53 +159,56 @@ extension LinkDealController on ClientDealsController {
     for (int j = 0; j < (linkDealStateManager?.rows.length ?? 0); j++) {
       if (int.parse((linkDealStateManager?.rows[j].cells['']?.value != null &&
                   linkDealStateManager?.rows[j].cells['recordnumber']?.value != "")
-              ? (linkDealStateManager?.rows[j].cells['recordnumber']?.value ?? "0")
+              ? (linkDealStateManager?.rows[j].cells['recordnumber']?.value ?? "0").toString()
               : "0") >
           1000) {
         valuationAmount = valuationAmount +
-            ((int.parse((linkDealStateManager?.rows[j].cells['seconds']?.value != null &&
+            ((double.parse((linkDealStateManager?.rows[j].cells['seconds']?.value != null &&
                         linkDealStateManager?.rows[j].cells['seconds']?.value != "")
-                    ? linkDealStateManager?.rows[j].cells['seconds']?.value
+                    ? (linkDealStateManager?.rows[j].cells['seconds']?.value).toString()
                     : "0")) *
-                (int.parse(
+                (double.parse(
                     (linkDealStateManager?.rows[j].cells['groupValuationRate']?.value != null &&
                             linkDealStateManager?.rows[j].cells['groupValuationRate']?.value != "")
-                        ? linkDealStateManager?.rows[j].cells['groupValuationRate']?.value
+                        ? (linkDealStateManager?.rows[j].cells['groupValuationRate']?.value).toString()
                         : "0")));
 
         billingAmount = billingAmount +
-            ((int.parse((linkDealStateManager?.rows[j].cells['seconds']?.value != null &&
+            ((double.parse((linkDealStateManager?.rows[j].cells['seconds']?.value != null &&
                         linkDealStateManager?.rows[j].cells['seconds']?.value != "")
-                    ? linkDealStateManager?.rows[j].cells['seconds']?.value
+                    ? (linkDealStateManager?.rows[j].cells['seconds']?.value).toString()
                     : "0")) *
-                (int.parse((linkDealStateManager?.rows[j].cells['rate']?.value != null &&
+                (double.parse((linkDealStateManager?.rows[j].cells['rate']?.value != null &&
                         linkDealStateManager?.rows[j].cells['rate']?.value != "")
-                    ? linkDealStateManager?.rows[j].cells['rate']?.value
+                    ? (linkDealStateManager?.rows[j].cells['rate']?.value).toString()
                     : "0")));
       } else {
         valuationAmount = valuationAmount +
-            (((int.parse((linkDealStateManager?.rows[j].cells['seconds']?.value != null &&
+            (((double.parse((linkDealStateManager?.rows[j].cells['seconds']?.value != null &&
                             linkDealStateManager?.rows[j].cells['seconds']?.value != "")
-                        ? linkDealStateManager?.rows[j].cells['seconds']?.value
+                        ? (linkDealStateManager?.rows[j].cells['seconds']?.value).toString()
                         : "0")) *
-                    (int.parse((linkDealStateManager?.rows[j].cells['groupValuationRate']?.value !=
+                    (double.parse((linkDealStateManager?.rows[j].cells['groupValuationRate']?.value !=
                                 null &&
                             linkDealStateManager?.rows[j].cells['groupValuationRate']?.value != "")
-                        ? linkDealStateManager?.rows[j].cells['groupValuationRate']?.value
+                        ? (linkDealStateManager?.rows[j].cells['groupValuationRate']?.value).toString()
                         : "0"))) /
                 10);
 
         billingAmount = billingAmount +
-            ((int.parse((linkDealStateManager?.rows[j].cells['seconds']?.value != null &&
+            ((double.parse((linkDealStateManager?.rows[j].cells['seconds']?.value != null &&
                         linkDealStateManager?.rows[j].cells['seconds']?.value != "")
-                    ? linkDealStateManager?.rows[j].cells['seconds']?.value
+                    ? (linkDealStateManager?.rows[j].cells['seconds']?.value).toString()
                     : "0")) *
-                (int.parse((linkDealStateManager?.rows[j].cells['rate']?.value != null &&
+                (double.parse((linkDealStateManager?.rows[j].cells['rate']?.value != null &&
                         linkDealStateManager?.rows[j].cells['rate']?.value != "")
-                    ? linkDealStateManager?.rows[j].cells['rate']?.value
+                    ? (linkDealStateManager?.rows[j].cells['rate']?.value).toString()
                     : "0")));
       }
     }
+
+    print(">>>>>>>>>>>>>>>>>val$valuationAmount     $billingAmount");
+    print(">>>>>>>>>>>>>>>>>val${(billingAmount + 100) < valuationAmount}");
 
     if ((billingAmount + 100) < valuationAmount) {
       LoadingDialog.showErrorDialog1(
@@ -214,15 +217,17 @@ extension LinkDealController on ClientDealsController {
         return;
       });
     }
+
     callSaveApiFun();
   }
 
   callSaveApiFun() {
     try {
+      print(">>>>>>>fun call");
       LoadingDialog.call();
       Map<String, dynamic> postData = {
-        "dealnumber":linkDealRetrieveModel?.model?.linkedDeal?? "",
-        "groupNumber": linkDealRetrieveModel?.model?.groupNumber?? "",
+        "dealnumber":(linkDealRetrieveModel?.model?.dealcode?? "").toString(),
+        "groupNumber":( linkDealRetrieveModel?.model?.groupNumber?? "").toString(),
         "clientCode": linkDealRetrieveModel?.model?.clientCode?? "",
         "agencyCode":linkDealRetrieveModel?.model?.agencyCode?? "",
         "groupdate": linkDealRetrieveModel?.model?.groupdate?? "",
@@ -233,11 +238,19 @@ extension LinkDealController on ClientDealsController {
           json: postData,
           fun: (map) {
             closeDialogIfOpen();
+            if(map is Map && map['model'] != null){
+              LoadingDialog.callDataSaved (msg:(map['model']??"").toString());
+            }else{
+              LoadingDialog.showErrorDialog((map??"").toString());
+            }
+
           },
           failed: (map) {
             closeDialogIfOpen();
+            LoadingDialog.showErrorDialog((map??"").toString());
           });
     } catch (e) {
+      print(">>>>>>>exception$e");
       closeDialogIfOpen();
     }
   }
