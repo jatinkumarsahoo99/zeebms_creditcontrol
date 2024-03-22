@@ -16,7 +16,7 @@ import '../controllers/sales_executive_master_controller.dart';
 class SalesExecutiveMasterView extends StatelessWidget {
   SalesExecutiveMasterView({Key? key}) : super(key: key);
   SalesExecutiveMasterController controllerX =
-      Get.put<SalesExecutiveMasterController>(SalesExecutiveMasterController());
+  Get.put<SalesExecutiveMasterController>(SalesExecutiveMasterController());
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class SalesExecutiveMasterView extends StatelessWidget {
                   ),
                   GetBuilder<SalesExecutiveMasterController>(
                       init: controllerX,
-                      id: "main",
+                      id: "main1",
                       builder: (logic) {
                         return Container(
                           decoration: BoxDecoration(
@@ -64,176 +64,199 @@ class SalesExecutiveMasterView extends StatelessWidget {
                                     parseKeyForValue: "employees",
                                     selectedValue: controllerX.selectSapName,
                                     onchanged: (data) {
-                                  controllerX.selectSapName = data;
-                                  controllerX.getDetails();
-                                }, width: (Get.width * controllerX.widthRatio)),
-                                SizedBox(
-                                  height: 6,
-                                ),
-                                InputFields.formFieldDisable(
-                                    hintTxt: "SAP Code",
-                                    value: controllerX.sapCode.value,
-                                    widthRatio: controllerX.widthRatio),
-                                SizedBox(
-                                  height: 6,
-                                ),
-                                InputFields.formFieldDisable(
-                                    hintTxt: "Executive Name",
-                                    value: controllerX.executiveName.value,
-                                    widthRatio: controllerX.widthRatio),
-                                SizedBox(
-                                  height: 6,
-                                ),
-                                InputFields.formFieldDisable(
-                                    hintTxt: "Department",
-                                    value: controllerX.department.value,
-                                    widthRatio: controllerX.widthRatio),
-                                SizedBox(
-                                  height: 6,
-                                ),
-                                InputFields.formFieldDisable(
-                                    hintTxt: "Designation",
-                                    value: controllerX.designation.value,
-                                    widthRatio: controllerX.widthRatio),
-                                SizedBox(
-                                  height: 6,
-                                ),
-                                DropDownField.formDropDown1WidthMap(
-                                  controllerX.masterModel?.lstCompanyMaster1 ??
-                                      [],
-                                  (value) {
-                                    // controllerX.selectedBMSVersionList = value;
-                                    // controllerX.getMatchDetails(programCode: value.key??"");
-                                    controllerX.selectCompany = value;
-                                  },
-                                  "Company",
-                                  controllerX.widthRatio,
-                                  dialogHeight:
-                                      Get.height * controllerX.widthRatio,
-                                  selected: controllerX.selectCompany,
-                                ),
-                                SizedBox(
-                                  height: 6,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    DropDownField.formDropDown1WidthMap(
-                                      controllerX.masterModel
-                                              ?.lstLocationMaster1 ??
-                                          [],
-                                      (value) {
-                                        // controllerX.selectedBMSVersionList = value;
-                                        // controllerX.getMatchDetails(programCode: value.key??"");
-                                        controllerX.selectLocation = value;
-                                      },
-                                      "Location",
-                                      (controllerX.widthRatio / 2),
-                                      // isEnable: controllerX.isEnable.value,
-                                      selected: controllerX.selectLocation,
-                                      dialogHeight:
-                                          Get.height * controllerX.widthRatio,
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                    DropDownField.formDropDown1WidthMap(
-                                      controllerX
-                                              .masterModel?.lstStationMaster1 ??
-                                          [],
-                                      (value) {
-                                        controllerX.selectStation = value;
-                                      },
-                                      "Station",
-                                      (controllerX.widthRatio / 2),
-                                      // isEnable: controllerX.isEnable.value,
-                                      selected: controllerX.selectStation,
-                                      dialogHeight:
-                                          Get.height * controllerX.widthRatio,
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 6,
-                                ),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    DropDownField.formDropDown1WidthMap(
-                                      controllerX
-                                              .masterModel?.lstPlaceMaster1 ??
-                                          [],
-                                      (value) {
-                                        controllerX.selectPlace = value;
-                                      },
-                                      "Place",
-                                      (controllerX.widthRatio / 2),
-                                      dialogHeight:
-                                          Get.height * controllerX.widthRatio,
-                                      selected: controllerX.selectPlace,
-                                    ),
-                                    SizedBox(
-                                      width: 2,
-                                    ),
-                                    InputFields.formFieldDisable(
-                                        hintTxt: "Mobile No",
-                                        widthRatio: controllerX.widthRatio / 2,
-                                        value: controllerX.mobileno.value),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 6,
-                                ),
-                                InputFields.formFieldDisable(
-                                    hintTxt: "Email ID",
-                                    widthRatio: controllerX.widthRatio,
-                                    value: controllerX.email.value),
-                                Row(
-                                  children: [
-                                    SizedBox(
-                                      width: Get.width * 0.022,
-                                    ),
-                                    SizedBox(
-                                      width: Get.width * 0.079,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
+                                      controllerX.selectSapName = data;
+                                      controllerX.getDetails();
+                                    },
+                                    width: (Get.width *
+                                        controllerX.widthRatio)),
+                                GetBuilder<SalesExecutiveMasterController>(
+                                    init: controllerX,
+                                    id: "main",
+                                    builder: (logic) {
+                                  return Column(
+                                    children: [
+                                      SizedBox(
+                                        height: 6,
+                                      ),
+                                      InputFields.formFieldDisable(
+                                          hintTxt: "SAP Code",
+                                          value: controllerX.sapCode.value,
+                                          widthRatio: controllerX.widthRatio),
+                                      SizedBox(
+                                        height: 6,
+                                      ),
+                                      InputFields.formFieldDisable(
+                                          hintTxt: "Executive Name",
+                                          value: controllerX.executiveName
+                                              .value,
+                                          widthRatio: controllerX.widthRatio),
+                                      SizedBox(
+                                        height: 6,
+                                      ),
+                                      InputFields.formFieldDisable(
+                                          hintTxt: "Department",
+                                          value: controllerX.department.value,
+                                          widthRatio: controllerX.widthRatio),
+                                      SizedBox(
+                                        height: 6,
+                                      ),
+                                      InputFields.formFieldDisable(
+                                          hintTxt: "Designation",
+                                          value: controllerX.designation.value,
+                                          widthRatio: controllerX.widthRatio),
+                                      SizedBox(
+                                        height: 6,
+                                      ),
+                                      DropDownField.formDropDown1WidthMap(
+                                        controllerX.masterModel
+                                            ?.lstCompanyMaster1 ??
+                                            [],
+                                            (value) {
+                                          // controllerX.selectedBMSVersionList = value;
+                                          // controllerX.getMatchDetails(programCode: value.key??"");
+                                          controllerX.selectCompany = value;
+                                        },
+                                        "Company",
+                                        controllerX.widthRatio,
+                                        dialogHeight:
+                                        Get.height * controllerX.widthRatio,
+                                        selected: controllerX.selectCompany,
+                                      ),
+                                      SizedBox(
+                                        height: 6,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .center,
                                         children: [
-                                          SizedBox(width: 5),
-                                          Obx(() => Padding(
-                                                padding: const EdgeInsets.only(
-                                                    top: 5.0),
-                                                child: Checkbox(
-                                                  value: controllerX
-                                                      .isActive.value,
-                                                  onChanged: controllerX
-                                                          .isActive1.value
-                                                      ? (val) {
+                                          DropDownField.formDropDown1WidthMap(
+                                            controllerX.masterModel
+                                                ?.lstLocationMaster1 ??
+                                                [],
+                                                (value) {
+                                              // controllerX.selectedBMSVersionList = value;
+                                              // controllerX.getMatchDetails(programCode: value.key??"");
+                                              controllerX.selectLocation =
+                                                  value;
+                                            },
+                                            "Location",
+                                            (controllerX.widthRatio / 2),
+                                            // isEnable: controllerX.isEnable.value,
+                                            selected: controllerX
+                                                .selectLocation,
+                                            dialogHeight:
+                                            Get.height * controllerX.widthRatio,
+                                          ),
+                                          SizedBox(
+                                            width: 2,
+                                          ),
+                                          DropDownField.formDropDown1WidthMap(
+                                            controllerX
+                                                .masterModel
+                                                ?.lstStationMaster1 ??
+                                                [],
+                                                (value) {
+                                              controllerX.selectStation = value;
+                                            },
+                                            "Station",
+                                            (controllerX.widthRatio / 2),
+                                            // isEnable: controllerX.isEnable.value,
+                                            selected: controllerX.selectStation,
+                                            dialogHeight:
+                                            Get.height * controllerX.widthRatio,
+                                          ),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 6,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment
+                                            .center,
+                                        children: [
+                                          DropDownField.formDropDown1WidthMap(
+                                            controllerX
+                                                .masterModel?.lstPlaceMaster1 ??
+                                                [],
+                                                (value) {
+                                              controllerX.selectPlace = value;
+                                            },
+                                            "Place",
+                                            (controllerX.widthRatio / 2),
+                                            dialogHeight:
+                                            Get.height * controllerX.widthRatio,
+                                            selected: controllerX.selectPlace,
+                                          ),
+                                          SizedBox(
+                                            width: 2,
+                                          ),
+                                          InputFields.formFieldDisable(
+                                              hintTxt: "Mobile No",
+                                              widthRatio: controllerX
+                                                  .widthRatio / 2,
+                                              value: controllerX.mobileno
+                                                  .value),
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: 6,
+                                      ),
+                                      InputFields.formFieldDisable(
+                                          hintTxt: "Email ID",
+                                          widthRatio: controllerX.widthRatio,
+                                          value: controllerX.email.value),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: Get.width * 0.022,
+                                          ),
+                                          SizedBox(
+                                            width: Get.width * 0.079,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                              children: [
+                                                SizedBox(width: 5),
+                                                Obx(() =>
+                                                    Padding(
+                                                      padding: const EdgeInsets
+                                                          .only(
+                                                          top: 5.0),
+                                                      child: Checkbox(
+                                                        value: controllerX
+                                                            .isActive.value,
+                                                        onChanged: controllerX
+                                                            .isActive1.value
+                                                            ? (val) {
                                                           controllerX.isActive
                                                               .value = val!;
                                                         }
-                                                      : null,
-                                                  materialTapTargetSize:
-                                                      MaterialTapTargetSize
-                                                          .shrinkWrap,
+                                                            : null,
+                                                        materialTapTargetSize:
+                                                        MaterialTapTargetSize
+                                                            .shrinkWrap,
+                                                      ),
+                                                    )),
+                                                Padding(
+                                                  padding: const EdgeInsets
+                                                      .only(
+                                                      top: 5.0, left: 5),
+                                                  child: Text(
+                                                    "Is Active",
+                                                    style: TextStyle(
+                                                        fontSize:
+                                                        SizeDefine.labelSize1,
+                                                        color: Colors.black),
+                                                  ),
                                                 ),
-                                              )),
-                                          Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 5.0, left: 5),
-                                            child: Text(
-                                              "Is Active",
-                                              style: TextStyle(
-                                                  fontSize:
-                                                      SizeDefine.labelSize1,
-                                                  color: Colors.black),
+                                              ],
                                             ),
                                           ),
                                         ],
                                       ),
-                                    ),
-                                  ],
-                                ),
+                                    ],
+                                  );
+                                }),
                               ],
                             ),
                           ),
@@ -250,11 +273,12 @@ class SalesExecutiveMasterView extends StatelessWidget {
                         builder: (controller) {
                           try {
                             PermissionModel formPermissions =
-                                Get.find<MainController>()
-                                    .permissionList!
-                                    .lastWhere((element) =>
-                                        element.appFormName ==
-                                        "frmExecutiveMaster");
+                            Get
+                                .find<MainController>()
+                                .permissionList!
+                                .lastWhere((element) =>
+                            element.appFormName ==
+                                "frmExecutiveMaster");
                             if (controller.buttons != null) {
                               return Wrap(
                                 spacing: 5,
@@ -265,14 +289,15 @@ class SalesExecutiveMasterView extends StatelessWidget {
                                     FormButtonWrapper(
                                       btnText: btn["name"],
                                       callback: Utils.btnAccessHandler2(
-                                                  btn['name'],
-                                                  controller,
-                                                  formPermissions) ==
-                                              null
+                                          btn['name'],
+                                          controller,
+                                          formPermissions) ==
+                                          null
                                           ? null
-                                          : () => controllerX.formHandler(
-                                                btn['name'],
-                                              ),
+                                          : () =>
+                                          controllerX.formHandler(
+                                            btn['name'],
+                                          ),
                                     )
                                 ],
                               );
