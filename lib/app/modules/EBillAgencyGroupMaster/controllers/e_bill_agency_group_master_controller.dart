@@ -21,11 +21,17 @@ class EBillAgencyGroupMasterController extends GetxController {
   TextEditingController grpName = TextEditingController();
 
   RxBool grp = RxBool(false);
+  FocusNode grpNameFocus=FocusNode();
 
   @override
   void onInit() {
     getInit();
     super.onInit();
+    grpNameFocus.addListener(() {
+      if(!grpNameFocus.hasFocus){
+        grpName.text=grpName.text.toUpperCase();
+      }
+    });
   }
 
   getInit() {
@@ -74,7 +80,7 @@ class EBillAgencyGroupMasterController extends GetxController {
               });
             }
             mailTo.text = lstemaildetails![0].value ?? "";
-            mailCC.text = lstemaildetails![0].value ?? "";
+            mailCC.text = lstemaildetails![0].key ?? "";
           }
           update(["init", "billMaster"]);
         });
@@ -88,11 +94,11 @@ class EBillAgencyGroupMasterController extends GetxController {
         fun: (map) {
           Get.back();
           if (map is Map &&
-              map.containsKey("agency") &&
-              map["agency"] != null) {
+              map.containsKey("lstagency") &&
+              map["lstagency"] != null) {
             lstagencymaster = [];
-            if (map['agency'] != null) {
-              map['agency'].forEach((e) {
+            if (map['lstagency'] != null) {
+              map['lstagency'].forEach((e) {
                 lstagencymaster?.add(DropDownValue(
                     key: e["agencycode"].toString(), value: e["agencyname"]));
               });
@@ -175,6 +181,7 @@ class EBillAgencyGroupMasterController extends GetxController {
     Get.find<ConnectorControl>().GETMETHODCALL(
         api: ApiFactory.EBILL_AGENCY_ADD_GRP_NAME + grpName.text,
         fun: (map) {
+          grpName.text = "";
           Get.back();
           if (map is Map &&
               map.containsKey("addbutton") &&

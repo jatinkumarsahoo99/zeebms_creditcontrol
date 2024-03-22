@@ -59,7 +59,9 @@ class EBillAgencyGroupMasterView extends StatelessWidget {
                                   dialogHeight: Get.height * .35,
                                   autoFocus: true,
                                 ),
-                                SizedBox(height: 3,),
+                                SizedBox(
+                                  height: 3,
+                                ),
                                 DropDownField.formDropDown1WidthMap(
                                   controller.lstagency ?? [],
                                   (value) {
@@ -73,7 +75,9 @@ class EBillAgencyGroupMasterView extends StatelessWidget {
                                   dialogHeight: Get.height * .35,
                                   autoFocus: true,
                                 ),
-                                SizedBox(height: 3,),
+                                SizedBox(
+                                  height: 3,
+                                ),
                                 InputFields.formField5(
                                   hintTxt: "Mail To",
                                   controller: controller.mailTo,
@@ -88,7 +92,9 @@ class EBillAgencyGroupMasterView extends StatelessWidget {
                                   onchanged: (value) {},
                                   // autoFocus: true,
                                 ),
-                                SizedBox(height: 3,),
+                                SizedBox(
+                                  height: 3,
+                                ),
                                 InputFields.formField5(
                                   hintTxt: "MailCC",
                                   controller: controller.mailCC,
@@ -157,73 +163,75 @@ class EBillAgencyGroupMasterView extends StatelessWidget {
                                       init: controller,
                                       builder: (logic) {
                                         return (controller.lstagencymaster !=
-                                                      null &&
-                                                  (controller.lstagencymaster
-                                                          ?.isNotEmpty ??
-                                                      false))
-                                              ? Container(
-                                                  height: Get.height * 0.45,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.grey),
-                                                  ),
-                                                  child: ListView.builder(
-                                                    itemBuilder: (c, i) {
-                                                      return Row(
-                                                        children: [
-                                                          Checkbox(
-                                                              value: controller
+                                                    null &&
+                                                (controller.lstagencymaster
+                                                        ?.isNotEmpty ??
+                                                    false))
+                                            ? Container(
+                                                height: Get.height * 0.45,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.grey),
+                                                ),
+                                                child: ListView.builder(
+                                                  itemBuilder: (c, i) {
+                                                    return Row(
+                                                      children: [
+                                                        Checkbox(
+                                                            value: controller
+                                                                .lstagencymaster![
+                                                                    i]
+                                                                .isSelected,
+                                                            onChanged: (v) {
+                                                              controller
                                                                   .lstagencymaster![
                                                                       i]
-                                                                  .isSelected,
-                                                              onChanged: (v) {
-                                                                controller
-                                                                    .lstagencymaster![
-                                                                        i]
-                                                                    .isSelected = v;
-                                                                controller
-                                                                    .update([
-                                                                  "billMaster"
-                                                                ]);
-                                                              }),
-                                                          Text(controller
-                                                                  .lstagencymaster![
-                                                                      i]
-                                                                  .value ??
-                                                              "")
-                                                        ],
-                                                      );
-                                                    },
-                                                    itemCount: controller
-                                                            .lstagencymaster
-                                                            ?.length ??
-                                                        0,
-                                                  ),
-                                                )
-                                              : Container(
-                                                  height: Get.height * 0.45,
-                                                  // width: Get.width*0.25,
-                                                  decoration: BoxDecoration(
-                                                    border: Border.all(
-                                                        color: Colors.grey),
-                                                  ),
-                                                );
-
+                                                                  .isSelected = v;
+                                                              controller
+                                                                  .update([
+                                                                "billMaster"
+                                                              ]);
+                                                            }),
+                                                        Text(controller
+                                                                .lstagencymaster![
+                                                                    i]
+                                                                .value ??
+                                                            "")
+                                                      ],
+                                                    );
+                                                  },
+                                                  itemCount: controller
+                                                          .lstagencymaster
+                                                          ?.length ??
+                                                      0,
+                                                ),
+                                              )
+                                            : Container(
+                                                height: Get.height * 0.45,
+                                                // width: Get.width*0.25,
+                                                decoration: BoxDecoration(
+                                                  border: Border.all(
+                                                      color: Colors.grey),
+                                                ),
+                                              );
                                       }),
-                                  SizedBox(height: 10,),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
                                   Obx(() {
                                     return Visibility(
                                       visible: controller.grp.value,
                                       child: Row(
                                         children: [
                                           InputFields.formField1Width(
-                                            paddingLeft: 0,
-                                            hintTxt: "Group Name",
-                                            controller: controller.grpName,
-                                            widthRatio: 0.25
-                                          ),
+                                              paddingLeft: 0,
+                                              hintTxt: "Group Name",
+                                              controller: controller.grpName,
+                                              widthRatio: 0.25,
+                                              focus: controller.grpNameFocus),
                                           Padding(
-                                            padding: const EdgeInsets.only(left: 10,top: 15.0),
+                                            padding: const EdgeInsets.only(
+                                                left: 10, top: 15.0),
                                             child: FormButton1(
                                               btnText: "Save",
                                               callback: () {
