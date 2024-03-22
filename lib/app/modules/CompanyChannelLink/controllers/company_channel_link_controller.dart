@@ -22,7 +22,7 @@ class CompanyChannelLinkController extends GetxController {
   DropDownValue? selectSapProfCen;
 
   ChannelLinkMasterData? initData;
-  List<DropDownValue>? channelList = [];
+  RxList<DropDownValue>? channelList = RxList([]);
   RxList<DropDownValue>? sapProfileList = RxList([]);
   PlutoGridStateManager? gridManager;
 
@@ -61,13 +61,13 @@ class CompanyChannelLinkController extends GetxController {
         fun: (Map map) {
           if (map.containsKey("infoChannelList") &&
               map["infoChannelList"] != null) {
-            channelList = [];
+            channelList?.value = [];
             map["infoChannelList"].forEach((e) {
-              channelList?.add(DropDownValue(
+              channelList?.value.add(DropDownValue(
                   key: e["channelCode"], value: e["channelName"]));
             });
           }
-          update(["init"]);
+          // update(["init"]);
         });
   }
 

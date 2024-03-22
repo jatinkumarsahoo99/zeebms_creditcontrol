@@ -24,6 +24,7 @@ class SalesExecutiveMasterController extends GetxController {
   RxString mobileno = RxString("");
   RxString email = RxString("");
   RxBool isActive = RxBool(false);
+  RxBool isActive1 = RxBool(true);
   SalesExecutiveMasterModel? masterModel;
   SelectExecutiveModel? selectExecutiveModel;
 
@@ -52,6 +53,7 @@ class SalesExecutiveMasterController extends GetxController {
           if (map.containsKey("getRetrieve") && map["getRetrieve"] != null) {
             selectExecutiveModel =
                 SelectExecutiveModel.fromJson(map["getRetrieve"][0]);
+            isActive1.value = false;
             sapCode.value = selectExecutiveModel?.personnelNo ?? "";
             executiveName.value = selectExecutiveModel?.employeeName ?? "";
             department.value = selectExecutiveModel?.department ?? "";
@@ -111,12 +113,12 @@ class SalesExecutiveMasterController extends GetxController {
     Get.find<ConnectorControl>().POSTMETHOD(
       api: ApiFactory.SALES_EXECUTIVE_SAVE,
       json: {
-        "personnelCode": selectSapName?.key ?? "",
-        "userName": executiveName.value ?? "",
-        "personnelName": selectExecutiveModel?.personnelName ?? "",
+        "personnelCode": selectExecutiveModel?.personnelCode ?? "",
+        "userName": selectExecutiveModel?.personnelNo ?? "",
+        "personnelName": executiveName.value??"",
         "personnelShortName": "",
-        "departmentCode": department.value??"",
-        "designationCode": designation.value??"",
+        "departmentCode": department.value ?? "",
+        "designationCode": designation.value ?? "",
         "locationCode": selectLocation?.key,
         "companyCode": selectCompany?.key,
         "address1": "",
@@ -132,9 +134,9 @@ class SalesExecutiveMasterController extends GetxController {
       },
       fun: (map) {
         Get.back();
-        if(map is Map && map.containsKey("postsave")){
+        if (map is Map && map.containsKey("postsave")) {
           LoadingDialog.callDataSaved(msg: map["postsave"]);
-        }else{
+        } else {
           LoadingDialog.callErrorMessage1(msg: map.toString());
         }
       },

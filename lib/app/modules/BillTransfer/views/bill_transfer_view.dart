@@ -104,7 +104,7 @@ class BillTransferView extends GetView<BillTransferController> {
                             ),
                           ),
                           SizedBox(
-                            height: 4,
+                            height: 8,
                           ),
                           SizedBox(
                             width: Get.width * 0.425,
@@ -113,12 +113,12 @@ class BillTransferView extends GetView<BillTransferController> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 decoration: TextDecoration.underline,
-                                fontSize: 16,
+                                fontSize: 13,
                               ),
                             ),
                           ),
                           SizedBox(
-                            height: 4,
+                            height: 8,
                           ),
                           SizedBox(
                             width: Get.width * 0.425,

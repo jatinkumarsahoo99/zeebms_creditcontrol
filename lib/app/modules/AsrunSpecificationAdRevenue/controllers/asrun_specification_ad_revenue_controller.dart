@@ -236,7 +236,6 @@ class AsrunSpecificationAdRevenueController extends GetxController {
               : "";
           hhMM.text =
               response?.pouplateData?[0].asrunDifference.toString() ?? "";
-          hhMM.notifyListeners();
           maxDuration.text =
               (response?.pouplateData![0].maxDurationDifference != null &&
                       response?.pouplateData![0].maxDurationDifference != 0)

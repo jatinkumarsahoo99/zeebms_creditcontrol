@@ -20,10 +20,10 @@ class Utils {
 
   static String twoDigitsString(String n) => n.padLeft(2, "0");
 
-  static String toDoubleString({String ?data}){
+  static String toDoubleString({String ?data,int? decimalPoint = 2}){
     try{
       if(data != null && data != ""){
-        return double.parse(data).toStringAsFixed(2);
+        return double.parse(data).toStringAsFixed(decimalPoint??2);
       }else{
         return "";
       }

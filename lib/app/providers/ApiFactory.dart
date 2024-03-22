@@ -950,9 +950,8 @@ class ApiFactory {
   static String get STATION_MASTER_ON_LOAD =>
       "$BASE_URL/api/StationMaster/GetStationMasterOnLoad";
 
-  static String STATION_MASTER_RETRIEVE_RECORD(
-          String placeCode, String placeName) =>
-      "$BASE_URL/api/StationMaster/GetRetrieveRecord?PlaceCode=$placeCode&PlaceName=${Uri.encodeQueryComponent(placeName)}";
+  static String get STATION_MASTER_RETRIEVE_RECORD =>
+      "$BASE_URL/api/StationMaster/GetRetrieveRecord";
 
   static String get STATION_MASTER_POST_SAVE =>
       "$BASE_URL/api/StationMaster/PostSave";
@@ -1284,7 +1283,6 @@ class ApiFactory {
 
   static String get AGENCY_MASTER_POST =>
       "$BASE_URL/api/AgencyMasters/PostValidateAndSaveRecord";
-
 
   /// //////////////////  Agency Group Master ////////////////////////
   static String get AGENCY_GROUP_MASTER_GET_RETRIEVE_RECORD =>
