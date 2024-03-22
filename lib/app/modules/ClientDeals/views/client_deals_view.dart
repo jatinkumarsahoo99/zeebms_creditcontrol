@@ -1357,7 +1357,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                               null) {
                                                         controller.dialogGroupNoController.text =
                                                             (controller.linkDealRetrieveModel?.model
-                                                                        ?.dealcode ??
+                                                                        ?.groupNumber ??
                                                                     "")
                                                                 .toString();
                                                         controller.dialogDateController.text =
