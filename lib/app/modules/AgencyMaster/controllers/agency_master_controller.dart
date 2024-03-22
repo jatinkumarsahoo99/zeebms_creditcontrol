@@ -15,6 +15,7 @@ import '../../CommonDocs/views/common_docs_view.dart';
 import '../../CommonSearch/views/common_search_view.dart';
 import '../AgencyMasterRetrieveModel.dart';
 import '../InfoDataList.dart';
+import 'dart:html' as html;
 
 class AgencyMasterController extends GetxController {
   //TODO: Implement AgencyMasterController
@@ -329,8 +330,9 @@ class AgencyMasterController extends GetxController {
     }
   }
   clearAll() {
-    Get.delete<AgencyMasterController>();
-    Get.find<HomeController>().clearPage1();
+    // Get.delete<AgencyMasterController>();
+    // Get.find<HomeController>().clearPage1();
+    html.window.location.reload();
   }
 
 

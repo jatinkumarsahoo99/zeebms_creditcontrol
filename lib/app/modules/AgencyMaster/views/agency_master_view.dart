@@ -1,8 +1,10 @@
+import 'package:bms_creditcontrol/widgets/LoadingDialog.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
 import '../../../../widgets/FormButton.dart';
+import '../../../../widgets/PlutoGrid/src/helper/pluto_move_direction.dart';
 import '../../../../widgets/PlutoGrid/src/pluto_grid.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/floating_dialog.dart';
@@ -166,18 +168,30 @@ class AgencyMasterView extends StatelessWidget {
                     showIcon: false,
                     // isEnabled: btn['isDisabled'],
                     callback: () {
-                      if(controllerX.agencyMasterRetrieveModel != null &&
-                          controllerX.agencyMasterRetrieveModel?.retrieve != null &&
-                          controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo != null){
-                        List<Map<String, dynamic>> data = controllerX.getDataFromGrid2(
-                            controllerX.addInfoStateManager);
-                        controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo?.clear();
-                        for (var element in data) {
-                          controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo?.add(
-                              TblAddInfo.fromJson(element));
+                      try{
+                        LoadingDialog.call();
+                        controllerX.addInfoStateManager?.moveCurrentCell(PlutoMoveDirection.right,force: true);
+                        Future.delayed(const Duration(seconds: 1),() {
+                          if(controllerX.agencyMasterRetrieveModel != null &&
+                              controllerX.agencyMasterRetrieveModel?.retrieve != null &&
+                              controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo != null){
+                            List<Map<String, dynamic>> data = controllerX.getDataFromGrid2(
+                                controllerX.addInfoStateManager);
+                            controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo?.clear();
+                            for (var element in data) {
+                              controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo?.add(
+                                  TblAddInfo.fromJson(element));
+                            }
+                          }
+                          if (Get.isDialogOpen ?? false) {
+                            Get.back();
+                          }
+                        },);
+                      }catch(e){
+                        if (Get.isDialogOpen ?? false) {
+                          Get.back();
                         }
                       }
-
                       controllerX.dialogWidget = null;
                       controllerX.canDialogShow.value = false;
                       // controller.gridStateManagerLeft?.setFilter((element) => true);
