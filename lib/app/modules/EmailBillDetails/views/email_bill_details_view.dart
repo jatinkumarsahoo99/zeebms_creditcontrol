@@ -423,6 +423,9 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                               controllerX.gridData[event.rowIdx]['selected'] =
                                   (event.value.toString()) == "true";
                             },
+                            keyMapping: const {
+                              'ibf': 'IBF',
+                            }, // to change column name
                           ))),
                   SizedBox(
                     width: 10,
