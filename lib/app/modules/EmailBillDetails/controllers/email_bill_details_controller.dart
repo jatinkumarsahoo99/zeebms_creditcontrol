@@ -907,6 +907,7 @@ class EmailBillDetailsController extends GetxController {
       "testMailTo": tecTestTo.text,
       "testMailBody": tecbody.text,
       "isEmailSendTest": sendTest.value,
+      // 'files[$index].clientName':""
       // "files": sendBillsDetails,
       // "files": selectedFiles
     });

@@ -220,24 +220,24 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                                 controllerX.all1.value =
                                     !controllerX.all1.value;
                                 for (var i = 0;
-                                    i < controller.gridData.length;
+                                    i < controllerX.gridData.length;
                                     i++) {
-                                  controller.gridData.value[controller
+                                  controllerX.gridData.value[controllerX
                                           .stateManager!
                                           .refRows[i]
                                           .sortIdx]['selected'] =
-                                      controller.all1.value.toString();
-                                  controller.stateManager!.changeCellValue(
-                                    controller.stateManager!
+                                      controllerX.all1.value.toString();
+                                  controllerX.stateManager!.changeCellValue(
+                                    controllerX.stateManager!
                                         .getRowByIdx(i)!
                                         .cells['selected']!,
-                                    controller.all1.value.toString(),
+                                    controllerX.all1.value.toString(),
                                     callOnChangedEvent: false,
                                     force: true,
                                     notify: true,
                                   );
                                   // print(controller.responseData);
-                                  controller.gridData.refresh();
+                                  controllerX.gridData.refresh();
                                 }
                                 // controller.checkAll(val ?? false);
                                 // for (var element in controllerX.gridData.value) {
@@ -402,10 +402,10 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                             uncheckCheckBoxStr: "false",
                             actionIconKey: ["selected"],
                             onload: (PlutoGridOnLoadedEvent load) {
-                              controller.stateManager = load.stateManager;
+                              controllerX.stateManager = load.stateManager;
                             },
                             actionOnPress: (position, isSpaceCalled) {
-                              controller.handleactionOnPressChangeInward(
+                              controllerX.handleactionOnPressChangeInward(
                                 position,
                                 isSpaceCalled,
                               );
@@ -419,10 +419,13 @@ class EmailBillDetailsView extends GetView<EmailBillDetailsController> {
                               return Colors.white;
                             },
                             onEdit: (event) {
-                              controller.inwardLastSelectedIdx = event.rowIdx;
-                              controller.gridData[event.rowIdx]['selected'] =
+                              controllerX.inwardLastSelectedIdx = event.rowIdx;
+                              controllerX.gridData[event.rowIdx]['selected'] =
                                   (event.value.toString()) == "true";
                             },
+                            keyMapping: const {
+                              'ibf': 'IBF',
+                            }, // to change column name
                           ))),
                   SizedBox(
                     width: 10,
