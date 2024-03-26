@@ -121,12 +121,12 @@ extension LinkDealController on ClientDealsController {
       clearAll();
     }
     if (text == "Search") {
-      Get.to(SearchPage(
-          key: Key("Secondary Asrun Modification"),
-          screenName: "Secondary Asrun Modification",
-          appBarName: "Secondary Asrun Modification",
+     /* Get.to(const SearchPage(
+          key: Key("Link Deals"),
+          screenName: "Link Deals",
+          appBarName: "Link Deals",
           strViewName: "BMS_view_LinkedDeals",
-          isAppBarReq: true));
+          isAppBarReq: true));*/
     }
 
     if (text == "Docs") {

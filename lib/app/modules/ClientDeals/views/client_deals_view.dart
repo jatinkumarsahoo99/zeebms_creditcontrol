@@ -12,6 +12,7 @@ import 'package:get/get.dart';
 import '../../../../widgets/DateTime/DateWithThreeTextField.dart';
 import '../../../../widgets/FormButton.dart';
 import '../../../../widgets/LoadingDialog.dart';
+import '../../../../widgets/PlutoGrid/src/helper/pluto_move_direction.dart';
 import '../../../../widgets/PlutoGrid/src/pluto_grid.dart';
 import '../../../../widgets/dropdown.dart';
 import '../../../../widgets/floating_dialog.dart';
@@ -174,7 +175,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                     Align(
                       alignment: Alignment.center,
                       child: Text(
-                        'Info',
+                        'Info1',
                         style: TextStyle(
                           fontWeight: FontWeight.w600,
                           color: Colors.black,
@@ -190,6 +191,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                           List<Map<String, dynamic>> data =
                               controller.getDataFromGrid2(controller.addInfoStateManager);
                           controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.clear();
+                          controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo = [];
                           for (var element in data) {
                             controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo
                                 ?.add(AddInfo.fromJson(element));
@@ -412,6 +414,13 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                   value: controller.showSelected.value,
                                   onChanged: (val) {
                                     controller.showSelected.value = val!;
+                                    if(val){
+                                      controller.dealStateManager?.setFilter((element) => element.cells['selected']?.value.toString() == "true");
+                                      controller.dealStateManager?.notifyListeners();
+                                    }else{
+                                      controller.dealStateManager?.setFilter((element) => true);
+                                      controller.dealStateManager?.notifyListeners();
+                                    }
                                     // controller.weekend(val);
                                   },
                                   // fn: controller.weekEndFocus,
@@ -555,6 +564,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                     "networkname",
                                     "sun",
                                     "mun",
+                                    "mon",
                                     "tue",
                                     "wed",
                                     "thu",
@@ -755,9 +765,24 @@ class ClientDealsView extends GetView<ClientDealsController> {
                     initPosition: controller.getOffSetValue(constraints),
                     child: controller.dialogWidget!,
                     dragEndCall: () {
+                      Future.delayed(const Duration(seconds: 1),() {
+                        List<Map<String, dynamic>> data =
+                        controller.getDataFromGrid2(controller.addInfoStateManager);
+                        controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo?.clear();
+                        controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo = [];
+                        for (var element in data) {
+                          controller.clientDealRetrieveModel?.agencyLeaveModel?.addInfo
+                              ?.add(AddInfo.fromJson(element));
+                        }
+                        controller.update(['all']);
+                      },);
 
-                      controller.update(['all']);
+
+
                     },
+              dragStartCall: (){
+                controller.addInfoStateManager?.moveCurrentCell(PlutoMoveDirection.left,force: true);
+              },
                   )
                 : const SizedBox();
           }),
@@ -1299,7 +1324,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                 child: Row(
                                                   children: [
                                                     SizedBox(
-                                                      width: 150,
+                                                      width: 80,
                                                       child: LabelText2.style(hint: "Executive"),
                                                     ),
                                                     Obx(() {
@@ -1320,12 +1345,15 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                     Row(
                                                       children: [
                                                         SizedBox(
-                                                          width: 150,
+                                                          width: 80,
                                                           child: LabelText2.style(hint: "Payroute"),
                                                         ),
                                                         Obx(() {
-                                                          return text_m_w700(
-                                                            controller.payroute.value ?? "",
+                                                          return Container(
+                                                            width: Get.width * 0.16,
+                                                            child: text_m_w700(
+                                                              controller.payroute.value ?? "",
+                                                            ),
                                                           );
                                                         }),
                                                       ],
@@ -1426,7 +1454,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                                 child: Row(
                                                   children: [
                                                     SizedBox(
-                                                      width: 150,
+                                                      width: 80,
                                                       child: LabelText2.style(hint: "Zone"),
                                                     ),
                                                     Obx(() {
@@ -1745,7 +1773,12 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       onChanged: (val) {
                                         controller.type.value = val!;
                                         controller.accountEnaSta.value = val;
+                                        controller.selectAccount?.value = null;
+                                        controller.selectSubType?.value = null;
+                                        controller.subTypeSta.value = true;
                                         controller.accountEnaSta.refresh();
+                                        controller.subTypeSta.refresh();
+
                                       }),
 
                                   Obx(() {
@@ -1767,7 +1800,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       controller.selectSubType?.value = data;
                                     },
                                         selected: controller.selectSubType?.value,
-                                        isEnable: controller.accountEnaSta.value,
+                                        isEnable:(controller.subTypeSta.value == false)?false: controller.accountEnaSta.value,
                                         "Sub Type",
                                         .18,
                                         inkWellFocusNode: controller.subTypeFocus
@@ -1956,9 +1989,10 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                   SizedBox(
                                     width: Get.width * 0.18,
                                     child: Obx(() {
-                                      return InputFields.numbers4(
+                                      return InputFields.numbers5(
                                           hintTxt: controller.label24.value ?? "Seconds",
                                           controller: controller.secondsController2,
+                                          fn:controller.secondsFocus2,
                                           // fn: controller.secFocus,
                                           // titleInLeft: true,
                                           // titleSizeboxWidth: 45,

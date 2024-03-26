@@ -224,7 +224,7 @@ class AgencyMasterView extends StatelessWidget {
                 controllerX.addInfoStateManager?.moveCurrentCell(PlutoMoveDirection.left,force: true);
               },
               dragEndCall: () {
-                LoadingDialog.call();
+                // LoadingDialog.call();
                 Future.delayed(Duration(seconds: 1),() {
                   if(controllerX.infoDataList != null){
                     List<Map<String, dynamic>> data = controllerX.getDataFromGrid2(
@@ -242,9 +242,9 @@ class AgencyMasterView extends StatelessWidget {
                     });*/
 
                   }
-                  if (Get.isDialogOpen ?? false) {
+                  /*if (Get.isDialogOpen ?? false) {
                     Get.back();
-                  }
+                  }*/
                   controllerX.update(['all']);
 
                 });
