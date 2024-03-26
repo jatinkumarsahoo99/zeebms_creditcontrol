@@ -24,7 +24,7 @@ class BillExportView extends GetView<BillExportController> {
       floatingActionButton: Obx(() {
         return controller.canDialogShow.value
             ? DraggableFab(
-                initPosition: Offset((Get.width / 3.83), Get.height / 4),
+                initPosition: Offset((Get.width / 3.8), Get.height / 4.3),
                 child: controller.dialogWidget!,
               )
             : SizedBox();
@@ -206,14 +206,14 @@ class BillExportView extends GetView<BillExportController> {
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    FormButton1(
+                                    FormButtonWrapper(
                                       btnText: "Save",
                                       callback: () {
                                         controller.saveDetails();
                                       },
                                     ),
                                     sizedBoxWidth(10),
-                                    FormButton1(
+                                    FormButtonWrapper(
                                       btnText: "Clear",
                                       callback: () {
                                         Get.delete<BillExportController>();
@@ -221,12 +221,12 @@ class BillExportView extends GetView<BillExportController> {
                                       },
                                     ),
                                     sizedBoxWidth(10),
-                                    FormButton1(
+                                    FormButtonWrapper(
                                       btnText: "Exit",
-                                      callback: () {},
+                                      callback: (){},
                                     ),
                                     sizedBoxWidth(10),
-                                    FormButton1(
+                                    FormButtonWrapper(
                                       btnText: "Data",
                                       callback: () {
                                         controller.getDataDetails();

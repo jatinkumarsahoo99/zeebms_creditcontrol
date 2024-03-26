@@ -834,6 +834,7 @@ class AuditBookingsView extends GetView<AuditBookingsController> {
                 ),
                 Get.find<HomeController>().getCommonButton1(
                   Routes.R_O_AUDIT,
+                      disableBtns: ["Delete"],
                       (btnName) {
                     if (btnName == "Save") {
                       controller.saveFunCall();

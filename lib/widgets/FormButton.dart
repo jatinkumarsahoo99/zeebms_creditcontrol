@@ -619,7 +619,9 @@ class FormButton1 extends StatelessWidget {
               LoadingDialog.callExitForm(() {
                 // Get.find<HomeController>().updateDarwerSelection(0, "0", "0");
                 // Get.find<HomeController>()..selectChild1.value = null;
-                callback!();
+                if(callback!=null) {
+                  callback!();
+                }
               });
             }
           : callback,
