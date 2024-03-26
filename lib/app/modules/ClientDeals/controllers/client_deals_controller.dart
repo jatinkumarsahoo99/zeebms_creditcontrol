@@ -123,6 +123,7 @@ class ClientDealsController extends GetxController {
   Rx<bool> showSelected = Rx<bool>(false);
 
   Rx<bool> accountEnaSta = Rx<bool>(false);
+  Rx<bool> subTypeSta = Rx<bool>(true);
 
   FocusNode channelFocus = FocusNode();
   FocusNode channelFocus1 = FocusNode();
@@ -165,6 +166,7 @@ class ClientDealsController extends GetxController {
   FocusNode secFocus = FocusNode();
 
   FocusNode ratePerFocus = FocusNode();
+  FocusNode secondsFocus2 = FocusNode();
   FocusNode amountFocus2 = FocusNode();
   FocusNode valueRateFocus = FocusNode();
 
@@ -421,8 +423,13 @@ class ClientDealsController extends GetxController {
                 });
                 subTypeList.addAll(dataList);
                 subTypeList.refresh();
+                subTypeSta.value = true;
+                subTypeSta.refresh();
+
               } else {
                 subTypeList.clear();
+                subTypeSta.value = false;
+                subTypeSta.refresh();
               }
             },
             failed: (map) {
@@ -1031,6 +1038,23 @@ class ClientDealsController extends GetxController {
 
   remarkDialog() {}
 
+  calculateAmount(){
+    if(selectAccount?.value?.key == "I000100005" ||
+        selectAccount?.value?.key == "I000100010" || selectAccount?.value?.key == "I000100004"){
+      amountController2.text = (getMultiVal(a1:secondsController2.text ,a2:ratePerTenSecondsController.text )).toStringAsFixed(4);
+    }else{
+      amountController2.text = (getMultiVal(a1:secondsController2.text ,a2:ratePerTenSecondsController.text )/10).toStringAsFixed(4);
+    }
+  }
+
+  double getMultiVal({String? a1, String? a2}){
+    if(a1!= null && a2 != null && a1 != "" && a2 != ""){
+      return (double.parse(a1) * double.parse(a2));
+    }else{
+      return 0.0000;
+    }
+  }
+
   @override
   void onInit() {
     dealNoFocus = FocusNode(
@@ -1076,6 +1100,13 @@ class ClientDealsController extends GetxController {
       if (!ratePerFocus.hasFocus) {
         ratePerTenSecondsController.text =
             Utils.toDoubleString(data: ratePerTenSecondsController.text, decimalPoint: 4);
+        calculateAmount();
+      }
+    });
+
+    secondsFocus2.addListener(() {
+      if (!secondsFocus2.hasFocus) {
+        calculateAmount();
       }
     });
 
@@ -1322,6 +1353,9 @@ class ClientDealsController extends GetxController {
 
     isEnable2.value = false;
     isEnable2.refresh();
+
+    subTypeSta.value = true;
+    subTypeSta.refresh();
 
     update(['middle']);
   }
