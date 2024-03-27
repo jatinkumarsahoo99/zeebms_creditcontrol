@@ -389,7 +389,7 @@ class ClientMasterController extends GetxController {
           LstPayTerm data = addInPayTermNewTable();
           payTermList?[isDataExist] = data;
           update(["payTerm"]);
-        }, () {});
+        }, () {},deleteTitle: "Yes",cancelTitle: "No");
       } else {
         LstPayTerm data = addInPayTermNewTable();
         payTermList?.add(data);
