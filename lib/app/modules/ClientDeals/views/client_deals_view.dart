@@ -1989,7 +1989,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                   SizedBox(
                                     width: Get.width * 0.18,
                                     child: Obx(() {
-                                      return InputFields.numbers5(
+                                      return InputFields.numbers6(
                                           hintTxt: controller.label24.value ?? "Seconds",
                                           controller: controller.secondsController2,
                                           fn:controller.secondsFocus2,
