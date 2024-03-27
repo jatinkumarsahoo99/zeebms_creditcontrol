@@ -1004,7 +1004,7 @@ class ClientDealsController extends GetxController {
                 linkedDealNumberWithText.refresh();
               } else {
                 linkedDealNumberWithText.value = "sssssss";
-                clientEmb.value = "sssssss";
+                clientEmb.value = "Client Emb";
                 clientEmb.refresh();
                 linkedDealNumberWithText.refresh();
               }
