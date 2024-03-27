@@ -95,6 +95,8 @@ class CompanyChannelLinkController extends GetxController {
       LoadingDialog.callInfoMessage("Channel Name cannot be empty.");
     } else if (selectPayrouteCat == null) {
       LoadingDialog.callInfoMessage("Payroute category Name cannot be empty.");
+    }else if (selectSapProfCen == null) {
+      LoadingDialog.callInfoMessage("Sap Profit Center cannot be empty.");
     } else {
       List<MultiCheckBoxModel>? selectedList = initData
           ?.lstfillComboRes?.lstCurrencies
