@@ -21,15 +21,15 @@ class EBillAgencyGroupMasterController extends GetxController {
   TextEditingController grpName = TextEditingController();
 
   RxBool grp = RxBool(false);
-  FocusNode grpNameFocus=FocusNode();
+  FocusNode grpNameFocus = FocusNode();
 
   @override
   void onInit() {
     getInit();
     super.onInit();
     grpNameFocus.addListener(() {
-      if(!grpNameFocus.hasFocus){
-        grpName.text=grpName.text.toUpperCase();
+      if (!grpNameFocus.hasFocus) {
+        grpName.text = grpName.text.toUpperCase();
       }
     });
   }
@@ -192,6 +192,8 @@ class EBillAgencyGroupMasterController extends GetxController {
               grpList?.add(DropDownValue(
                   key: e["groupCode"].toString(), value: e["groupname"]));
             });
+            selectedGrp = null;
+            grp.value = false;
             update(["init"]);
           }
         });
