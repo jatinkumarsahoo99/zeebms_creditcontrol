@@ -1124,43 +1124,50 @@ class ClientDealsController extends GetxController {
   Rx<String> address = Rx<String>("");
 
   getAgencyAddress({String? code}) {
-    LoadingDialog.call();
-    try {
-      Get.find<ConnectorControl>().GETMETHODCALL(
-          api: "${ApiFactory.Client_Deal_GET_AGENCY_ADDRESS}?AgencyCode=$code",
-          fun: (map) {
-            closeDialogIfOpen();
-            if (map is Map && map['model'] != null) {
-              address.value = map['model'];
-              address.refresh();
-            }
-          },
-          failed: (map) {
-            closeDialogIfOpen();
-          });
-    } catch (e) {
-      closeDialogIfOpen();
+    if(code != null && code != ""){
+      LoadingDialog.call();
+      try {
+        Get.find<ConnectorControl>().GETMETHODCALL(
+            api: "${ApiFactory.Client_Deal_GET_AGENCY_ADDRESS}?AgencyCode=$code",
+            fun: (map) {
+              closeDialogIfOpen();
+              if (map is Map && map['model'] != null) {
+                address.value = map['model'];
+                address.refresh();
+              }
+            },
+            failed: (map) {
+              closeDialogIfOpen();
+            });
+      } catch (e) {
+        closeDialogIfOpen();
+      }
     }
+
+
   }
 
   getClientAddress({String? code}) {
-    LoadingDialog.call();
-    try {
-      Get.find<ConnectorControl>().GETMETHODCALL(
-          api: "${ApiFactory.Client_Deal_GET_CLIENT_ADDRESS}?clientCode=$code",
-          fun: (map) {
-            closeDialogIfOpen();
-            if (map is Map && map['model'] != null) {
-              address.value = map['model'];
-              address.refresh();
-            }
-          },
-          failed: (map) {
-            closeDialogIfOpen();
-          });
-    } catch (e) {
-      closeDialogIfOpen();
+    if(code != null && code != ""){
+      LoadingDialog.call();
+      try {
+        Get.find<ConnectorControl>().GETMETHODCALL(
+            api: "${ApiFactory.Client_Deal_GET_CLIENT_ADDRESS}?clientCode=$code",
+            fun: (map) {
+              closeDialogIfOpen();
+              if (map is Map && map['model'] != null) {
+                address.value = map['model'];
+                address.refresh();
+              }
+            },
+            failed: (map) {
+              // closeDialogIfOpen();
+            });
+      } catch (e) {
+        closeDialogIfOpen();
+      }
     }
+
   }
 
   bool checkImport = false;
