@@ -893,6 +893,7 @@ class ClientMasterView extends GetView<ClientMasterController> {
                                                     selected: controllerX
                                                         .selectAgency1,
                                                     autoFocus: false,
+                                                    dialogHeight: 200,
                                                   );
                                                 }),
                                                 /*SizedBox(
