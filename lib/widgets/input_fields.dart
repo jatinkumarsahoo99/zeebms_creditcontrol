@@ -3323,7 +3323,7 @@ class InputFields {
                                   if (!isNegativeReq) {
                                     print("Click on negative>>>" +
                                         controller.text);
-                                    if (controller.text != "0") {
+                                    if (controller.text != "0" && controller.text != "0.0000") {
                                       controller.text =
                                       ((double.tryParse(controller.text) ?? 1) - 1).toStringAsFixed(4);
                                       if (onchanged != null) {

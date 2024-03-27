@@ -2032,6 +2032,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                       // titleSizeboxWidth: 45,
                                       fieldWidth: 0.15,
                                       isNegativeReq: false,
+                                      isEnabled: false
                                     ),
                                   ),
                                   SizedBox(
