@@ -62,8 +62,8 @@ class BillExportController extends GetxController {
       "locationname": selectedLocation?.value ?? "",
       "channelname": selectedChannel?.value ?? "",
       "agencyname": selectedAgency?.value ?? "",
-      "fromDate": tecFrom.value.text.replaceAll("-", "/"),
-      "toDate": tecTo.value.text.replaceAll("-", "/")
+      "fromDate": Utils.dateFormatChange(tecFrom.value.text, "dd-MM-yyyy", "yyyy-MM-dd"),
+      "toDate": Utils.dateFormatChange(tecTo.value.text, "dd-MM-yyyy", "yyyy-MM-dd")
     };
 
     Get.find<ConnectorControl>().POSTMETHOD(
