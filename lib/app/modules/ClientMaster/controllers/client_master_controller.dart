@@ -199,7 +199,8 @@ class ClientMasterController extends GetxController {
                 (element) => element.key == retrieveData?.lstRecords?[0].city);
           }
 
-          if (retrieveData?.lstRecords?[0].countrycode != null && retrieveData?.lstRecords?[0].countrycode != "") {
+          if (retrieveData?.lstRecords?[0].countrycode != null &&
+              retrieveData?.lstRecords?[0].countrycode != "") {
             selectCountry = masterModel?.lstCountryCodes?.firstWhere(
                 (element) =>
                     element.key == retrieveData?.lstRecords?[0].countrycode);
@@ -211,7 +212,8 @@ class ClientMasterController extends GetxController {
                     element.key ==
                     retrieveData?.lstRecords?[0].paymentmodecode);
           }
-          if (retrieveData?.lstRecords?[0].creditRateCode != null && retrieveData?.lstRecords?[0].creditRateCode != "") {
+          if (retrieveData?.lstRecords?[0].creditRateCode != null &&
+              retrieveData?.lstRecords?[0].creditRateCode != "") {
             selectCredit = masterModel?.lstCreditRates?.firstWhere((element) =>
                 element.key == retrieveData?.lstRecords?[0].creditRateCode);
           }
@@ -361,15 +363,42 @@ class ClientMasterController extends GetxController {
   }
 
   void getAgencyFromList() {
+    agencyList1?.clear();
     if (lstClientAgencyMaster != null &&
         (lstClientAgencyMaster?.isNotEmpty ?? false)) {
       lstClientAgencyMaster?.forEach((e) {
-        agencyList1?.add(DropDownValue(key: e.agencyCode, value: e.agencyName));
+        if (agencyList1?.isEmpty ?? false) {
+          agencyList1
+              ?.add(DropDownValue(key: e.agencyCode, value: e.agencyName));
+        } else if (!(agencyList1
+                ?.any((element) => element.value == e.agencyName) ??
+            false)) {
+          agencyList1
+              ?.add(DropDownValue(key: e.agencyCode, value: e.agencyName));
+        }
       });
     }
   }
 
   void addPayTerm() {
+    if (payTermList != null && (payTermList?.isNotEmpty ?? false)) {
+      int? isDataExist = payTermList?.indexWhere(
+          (element) => element.agencyName == (selectAgency1?.value ?? ""));
+      if (isDataExist != null && isDataExist != -1) {
+        LstPayTerm data = addInPayTermNewTable();
+        payTermList?[isDataExist] = data;
+        update(["payTerm"]);
+      } else {
+        LstPayTerm data = addInPayTermNewTable();
+        payTermList?.add(data);
+        update(["payTerm"]);
+      }
+    } else {
+      addInPayTermNewTable();
+    }
+  }
+
+  LstPayTerm addInPayTermNewTable() {
     if (payTermList == null) {
       payTermList = [];
     }
@@ -382,7 +411,6 @@ class ClientMasterController extends GetxController {
     data.agencyCode = selectAgency1?.key ?? "";
     data.agencyName = selectAgency1?.value ?? "";
     data.clientName = selectClientName?.value ?? "";
-    payTermList?.add(data);
-    update(["payTerm"]);
+    return data;
   }
 }
