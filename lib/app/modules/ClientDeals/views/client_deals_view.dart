@@ -1025,7 +1025,7 @@ class ClientDealsView extends GetView<ClientDealsController> {
                                         btnText: "@",
                                         callback: () {
                                           controller.getClientAddress(
-                                              code: controller.selectedClient?.value?.key ?? "");
+                                              code: controller.selectedClient?.value?.key ?? controller.selectedClient2?.value?.key  ?? "");
                                         },
                                       ),
                                     ),
