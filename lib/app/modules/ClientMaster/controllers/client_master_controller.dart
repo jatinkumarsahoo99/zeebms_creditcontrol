@@ -385,9 +385,11 @@ class ClientMasterController extends GetxController {
       int? isDataExist = payTermList?.indexWhere(
           (element) => element.agencyName == (selectAgency1?.value ?? ""));
       if (isDataExist != null && isDataExist != -1) {
-        LstPayTerm data = addInPayTermNewTable();
-        payTermList?[isDataExist] = data;
-        update(["payTerm"]);
+        LoadingDialog.modify("Entry for this already exists!\nDo you want to modify it?", () {
+          LstPayTerm data = addInPayTermNewTable();
+          payTermList?[isDataExist] = data;
+          update(["payTerm"]);
+        }, () {});
       } else {
         LstPayTerm data = addInPayTermNewTable();
         payTermList?.add(data);
