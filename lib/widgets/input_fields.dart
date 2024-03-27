@@ -3169,6 +3169,219 @@ class InputFields {
   }) {
     // var data = 0.obs;
     var fN = fn ?? FocusNode();
+    var fN1 =  FocusNode();
+    var fN2 =  FocusNode();
+    final iconColor =
+    (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (!titleInLeft) ...{
+          Padding(
+            padding: EdgeInsets.only(left: padLeft ?? 10),
+            child: LabelText2.style(
+              hint: hintTxt,
+            ),
+          ),
+        },
+        Row(
+          children: [
+            if (titleInLeft) ...{
+              Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 5),
+                    child: SizedBox(
+                      width: titleSizeboxWidth,
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: LabelText.style(
+                          hint: hintTxt,
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              )
+            },
+            Expanded(
+              child: Container(
+                // padding: const EdgeInsets.only(
+                //     top: 6.0,
+                //     bottom: 6.0),
+                margin: EdgeInsets.only(left: padLeft ?? 10),
+                height: SizeDefine.heightInputField,
+                // width: Get.width * width!,
+                child: RawKeyboardListener(
+                  focusNode: fN,
+                  onKey: (RawKeyEvent keyEvent) {
+                    if (showbtn) {
+                      if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowDown)) {
+                        /* controller.text =
+                            "${(int.tryParse(controller.text) ?? 1) - 1}";*/
+                        if (!isNegativeReq) {
+                          if (double.tryParse(controller.text) != 1 &&
+                              double.tryParse(controller.text) != 0) {
+                            controller.text =
+                            ((double.tryParse(controller.text) ?? 1) - 1).toStringAsFixed(4);
+                          } else {
+                            controller.text = "0";
+                          }
+                        } else {
+                          controller.text =
+                          ((double.tryParse(controller.text) ?? 1) - 1).toStringAsFixed(4);
+                        }
+                      }
+                      if (keyEvent.isKeyPressed(LogicalKeyboardKey.arrowUp)) {
+                        controller.text =
+                        ((double.tryParse(controller.text) ?? 0) + 1).toStringAsFixed(4);
+                      }
+                    }
+                  },
+                  child: AbsorbPointer(
+                    absorbing: isEnabled != null ? !isEnabled : false,
+                    child: TextFormField(
+                      textCapitalization: capital
+                          ? TextCapitalization.characters
+                          : TextCapitalization.none,
+                      validator: validator,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      onChanged: (onchanged != null) ? onchanged : null,
+                      textAlignVertical: TextAlignVertical.center,
+                      keyboardType: TextInputType.datetime,
+                      textAlign: TextAlign.right,
+                      inputFormatters: [
+                        LengthLimitingTextInputFormatter(
+                            maxchar ?? SizeDefine.maxcharlimit),
+                        // FilteringTextInputFormatter.digitsOnly,
+                        FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,4}$'),),
+                      ],
+                      enabled: isEnabled ?? true,
+                      decoration: InputDecoration(
+                        errorBorder: InputBorder.none,
+                        contentPadding: const EdgeInsets.only(left: 10),
+                        labelStyle: TextStyle(
+                            fontSize: SizeDefine.labelSize,
+                            color: Colors.black),
+                        border: InputBorder.none,
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.deepPurpleAccent),
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        disabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide:
+                          BorderSide(color: Colors.deepPurpleAccent),
+                          borderRadius: BorderRadius.circular(0),
+                        ),
+                        prefixIcon: showbtn!
+                            ? Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            InkWell(
+                              canRequestFocus: isEnabled ?? true,
+                              focusNode: fN1,
+                              onFocusChange: (sta){
+                                if(!sta){
+                                  fN2.requestFocus();
+                                }
+
+                              },
+                              child: Icon(
+                                Icons.arrow_drop_up_sharp,
+                                size: 25,
+                                color: iconColor,
+                              ),
+                              onTap: () {
+                                if (isEnabled ?? true) {
+                                  controller.text =
+                                  ((double.tryParse(controller.text) ?? 0) + 1).toStringAsFixed(4);
+                                  if (onchanged != null) {
+                                    onchanged(controller.text);
+                                  }
+                                  // onchanged!(controller.text);
+                                } else {
+                                  print("Print tap");
+                                }
+                              },
+                            ),
+                            InkWell(
+                              canRequestFocus: (isEnabled ?? true),
+                              focusNode: fN2,
+                              child: Icon(
+                                Icons.arrow_drop_down_sharp,
+                                size: 25,
+                                color: iconColor,
+                              ),
+                              onTap: () {
+                                if (isEnabled ?? true) {
+                                  if (!isNegativeReq) {
+                                    print("Click on negative>>>" +
+                                        controller.text);
+                                    if (controller.text != "0") {
+                                      controller.text =
+                                      ((double.tryParse(controller.text) ?? 1) - 1).toStringAsFixed(4);
+                                      if (onchanged != null) {
+                                        onchanged(controller.text);
+                                      }
+                                    }
+                                  } else {
+                                    controller.text =
+                                    ((double.tryParse(controller.text) ?? 1) - 1).toStringAsFixed(4);
+                                    if (onchanged != null) {
+                                      onchanged(controller.text);
+                                    }
+                                  }
+                                } else {
+                                  print("Print tap");
+                                }
+                              },
+                            ),
+                          ],
+                        )
+                            : SizedBox(),
+                      ),
+                      controller: controller,
+                      style: TextStyle(fontSize: 12),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+
+  static Widget numbers6({
+    String? Function(String?)? validator,
+    required String hintTxt,
+    required TextEditingController controller,
+    Function(String)? onchanged,
+    double? padLeft,
+    bool? showbtn = true,
+    double? titleSizeboxWidth,
+    double? fieldWidth,
+    bool titleInLeft = false,
+    List<TextInputFormatter> inputformatters = const [],
+    // num? width = 0.12,
+    bool capital = false,
+    bool isNegativeReq = true,
+    int? maxchar,
+    bool? isEnabled,
+    FocusNode? fn
+  }) {
+    // var data = 0.obs;
+    var fN = fn ?? FocusNode();
+    var fN1 =  FocusNode();
+    var fN2 =  FocusNode();
     final iconColor =
     (isEnabled ?? true) ? Colors.deepPurpleAccent : Colors.grey;
     return Column(
@@ -3247,7 +3460,7 @@ class InputFields {
                       onChanged: (onchanged != null) ? onchanged : null,
                       textAlignVertical: TextAlignVertical.center,
                       keyboardType: TextInputType.datetime,
-                      textAlign: TextAlign.left,
+                      textAlign: TextAlign.right,
                       inputFormatters: [
                         LengthLimitingTextInputFormatter(
                             maxchar ?? SizeDefine.maxcharlimit),
@@ -3278,13 +3491,19 @@ class InputFields {
                           BorderSide(color: Colors.deepPurpleAccent),
                           borderRadius: BorderRadius.circular(0),
                         ),
-                        suffixIcon: showbtn!
+                        prefixIcon: showbtn!
                             ? Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             InkWell(
                               canRequestFocus: isEnabled ?? true,
+                              focusNode: fN1,
+                              onFocusChange: (sta){
+                                if(!sta){
+                                  fN2.requestFocus();
+                                }
+                              },
                               child: Icon(
                                 Icons.arrow_drop_up_sharp,
                                 size: 25,
@@ -3305,6 +3524,7 @@ class InputFields {
                             ),
                             InkWell(
                               canRequestFocus: (isEnabled ?? true),
+                              focusNode: fN2,
                               child: Icon(
                                 Icons.arrow_drop_down_sharp,
                                 size: 25,
