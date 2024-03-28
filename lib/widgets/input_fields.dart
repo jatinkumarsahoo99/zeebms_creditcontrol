@@ -333,6 +333,7 @@ class InputFields {
       //   FilteringTextInputFormatter.allow(RegExp(r"^(\w+ ?)*$")),
       // );
     }
+    final GlobalKey<FormFieldState<String>> _orderFormKey = GlobalKey<FormFieldState<String>>();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -363,6 +364,7 @@ class InputFields {
               width: Get.width * width!,
 
               child: TextFormField(
+                key: _orderFormKey,
                 maxLines: maxLines,
                 focusNode: focusNode,
                 readOnly: readOnly,
