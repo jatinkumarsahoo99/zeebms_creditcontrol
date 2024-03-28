@@ -382,28 +382,7 @@ class AgencyMasterController extends GetxController {
       for (var row in statemanager.rows) {
         Map<String, dynamic> rowMap = {};
         for (var key in row.cells.keys) {
-          if ((key.toString().trim() == "primaryEventCode") ||
-              (key.toString().trim() == "recordnumber") ||
-              (key.toString().trim() == "seconds") ||
-              (key.toString().trim() == "rate") ||
-              (key.toString().trim() == "amount") ||
-              (key.toString().trim() == "valuationRate") ||
-              (key.toString().trim() == "netCode") ||
-              (key.toString().trim() == "sun") ||
-              (key.toString().trim() == "mon") ||
-              (key.toString().trim() == "tue") ||
-              (key.toString().trim() == "wed") ||
-              (key.toString().trim() == "thu") ||
-              (key.toString().trim() == "fri") ||
-              (key.toString().trim() == "sat") ||
-              (key.toString().trim() == "eventcode") ||
-              (key.toString().trim() == "dealCode") ||
-              (key.toString().trim() == "dealDetailCode") ||
-              (key.toString().trim() == "primaryEventCode") ||
-              (key.toString().trim() == "recordnumber") ||
-              (key.toString().trim() == "groupValuationRate") ||
-              (key.toString().trim() == "isRequired")
-          ) {
+          if ((key.toString().trim() == "isRequired")) {
             if(row.cells[key]?.value != null && row.cells[key]?.value != ""){
               try{
                 rowMap[key] = int.parse( row.cells[key]?.value ?? "0");
