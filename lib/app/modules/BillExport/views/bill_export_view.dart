@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bms_creditcontrol/widgets/DateTime/DateWithThreeTextFieldExpanded.dart';
+import 'package:bms_creditcontrol/widgets/PlutoGrid/pluto_grid.dart';
 import 'package:bms_creditcontrol/widgets/sized_box_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -130,76 +131,92 @@ class BillExportView extends GetView<BillExportController> {
 
                                 // from
                                 GetBuilder<BillExportController>(
-                                    init: controller,
-                                    id: "grid",
-                                    builder: (logic) {
-                                      return Expanded(
-                                        child: (controller.gridData != null &&
-                                                controller.gridData.isNotEmpty)
-                                            ? DataGridFromMap(
-                                                mapData: controller.gridData
+                                  init: controller,
+                                  id: "grid",
+                                  builder: (logic) {
+                                    return Expanded(
+                                      child: (controller.gridData != null &&
+                                              controller.gridData.isNotEmpty)
+                                          ? DataGridFromMap3(
+                                              mapData: controller.gridData
+                                                  .map((e) => e.toJson())
+                                                  .toList(),
+                                              exportFileName: "Bill Export",
+                                              // checkRowKey: "Select",
+                                              // hideKeys: ["select"],
+                                              checkRow: true,
+                                              checkBoxColumnKey: ["select"],
+                                              actionIconKey: ['select'],
+                                              widthSpecificColumn: {
+                                                "printBillNumber": 200
+                                              },
+                                              actionOnPress:
+                                                  (position, isSpaceCalled) {
+                                                if (isSpaceCalled) {
+                                                  controller.stateManager
+                                                      ?.changeCellValue(
+                                                    controller.stateManager!
+                                                        .getRowByIdx(
+                                                            position.rowIdx)!
+                                                        .cells['select']!,
+                                                    (!(controller
+                                                                .gridData[
+                                                                    position
+                                                                        .rowIdx!]
+                                                                .select ??
+                                                            false))
+                                                        .toString(),
+                                                    force: true,
+                                                  );
+                                                }
+                                              },
+                                              checkBoxStrComparison: "true",
+                                              uncheckCheckBoxStr: "false",
+                                              onEdit: (event) {
+                                                controller
+                                                        .gridData[event.rowIdx]
+                                                        .select =
+                                                    (event.value == "true");
+                                              },
+                                              onload: (plutoGridRow) {
+                                                controller.stateManager =
+                                                    plutoGridRow.stateManager;
+                                                int i = -1;
+                                                controller.gridData
                                                     .map((e) => e.toJson())
-                                                    .toList(),
-                                                exportFileName: "Bill Export",
-                                                checkRowKey: "Select",
-                                                hideKeys: ["select"],
-                                                checkRow: true,
-                                                widthSpecificColumn: {
-                                                  "printBillNumber":200
-                                                },
-                                                onload: (plutoGridRow) {
-                                                  controller.stateManager =
-                                                      plutoGridRow.stateManager;
-                                                  int i = -1;
-                                                  controller.gridData
-                                                      .map((e) => e.toJson())
-                                                      .toList()
-                                                      .forEach((element) {
+                                                    .toList()
+                                                    .forEach(
+                                                  (element) {
                                                     i = ++i;
-                                                    plutoGridRow.stateManager
+                                                    /*plutoGridRow.stateManager
                                                         .setRowChecked(
                                                             plutoGridRow
                                                                 .stateManager
                                                                 .rows[i],
-                                                            element["select"]);
-                                                  });
-                                                },
-                                              )
-                                            : Container(
-                                                decoration: BoxDecoration(
-                                                  border: Border.all(
-                                                      color: Colors.grey),
-                                                ),
+                                                            element["select"]);*/
+                                                    controller.stateManager
+                                                        ?.changeCellValue(
+                                                      controller
+                                                          .stateManager!
+                                                          .refRows[i]!
+                                                          .cells['select']!,
+                                                      "true",
+                                                      force: true,
+                                                    );
+                                                  },
+                                                );
+
+                                              },
+                                            )
+                                          : Container(
+                                              decoration: BoxDecoration(
+                                                border: Border.all(
+                                                    color: Colors.grey),
                                               ),
-                                      );
-                                    }),
-                                // SizedBox(
-                                //   width: 10,
-                                // ),
-                                // Column(
-                                //   // mainAxisAlignment: MainAxisAlignment.start,
-                                //   children: [
-                                //     SizedBox(
-                                //       width: 80,
-                                //       child: FormButton(
-                                //         btnText: "Add",
-                                //         callback: () {},
-                                //         showIcon: false,
-                                //       ),
-                                //     ),
-                                //     SizedBox(
-                                //       height: 10,
-                                //     ),
-                                //     SizedBox(
-                                //       width: 80,
-                                //       child: FormButton(
-                                //         btnText: "Remove",
-                                //         callback: () {},
-                                //         showIcon: false,
-                                //       ),
-                                //     )
-                                //   ],
-                                // ),
+                                            ),
+                                    );
+                                  },
+                                ),
                                 SizedBox(
                                   height: 5,
                                 ),
@@ -223,7 +240,7 @@ class BillExportView extends GetView<BillExportController> {
                                     sizedBoxWidth(10),
                                     FormButtonWrapper(
                                       btnText: "Exit",
-                                      callback: (){},
+                                      callback: () {},
                                     ),
                                     sizedBoxWidth(10),
                                     FormButtonWrapper(
@@ -270,14 +287,52 @@ class BillExportView extends GetView<BillExportController> {
                   return SizedBox(
                     height: Get.height * 0.5,
                     width: Get.height * 0.85,
-                    child: (controller.modelData != null &&
-                            (controller.modelData?.isNotEmpty ?? false))
+                    child: (controller.modelData != null)
                         ? DataGridFromMap(
-                            mapData: controller.modelData!,
+                            mapData: (controller.modelData?.dataModels
+                                ?.map((e) => e.toJson())
+                                .toList())!,
                             exportFileName: "Bill Export",
+                            editKeys: [
+                              "broadcaster ID",
+                              "broadcaster",
+                              "channel ID",
+                              "channel",
+                              "agency ID",
+                              "branch Code",
+                              "bill Number",
+                              "bill date",
+                              "client Code",
+                              "client",
+                              "Gross Amount",
+                              "Service Tax",
+                              "Net Amount",
+                              "Agency Commision",
+                              "spotID",
+                              "spot Date",
+                              "brand",
+                              "caption",
+                              "programme",
+                              "telecast Date",
+                              "telecast Time",
+                              "day",
+                              "stime",
+                              "etime",
+                              "duration",
+                              "rate per10",
+                              "amount",
+                              "booking Ref No",
+                              "booking No",
+                            ],
+                            onEdit: (PlutoGridOnChangedEvent event){
+                              controller.stateManager1?.gridFocusNode
+                                  .requestFocus();
+                            },
                             onload: (plutoGridRow) {
                               controller.stateManager1 =
                                   plutoGridRow.stateManager;
+                              plutoGridRow.stateManager.gridFocusNode
+                                  .requestFocus();
                             },
                           )
                         : Container(

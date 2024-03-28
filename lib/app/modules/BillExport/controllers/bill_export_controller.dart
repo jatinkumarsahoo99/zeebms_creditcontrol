@@ -7,15 +7,12 @@ import 'package:file_saver/file_saver.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../widgets/FormButton.dart';
-import '../../../../widgets/gridFromMap.dart';
 import '../../../controller/ConnectorControl.dart';
 import '../../../data/DropDownValue.dart';
 import '../../../providers/ApiFactory.dart';
-import '../../../providers/SizeDefine.dart';
 import '../../../providers/Utils.dart';
-import '../../CompanyChannelLink/ChannelLinkMasterData.dart';
 import '../BillExportInitModel.dart';
+import '../GridData.dart';
 
 class BillExportController extends GetxController {
   var locationList = <DropDownValue>[].obs,
@@ -37,7 +34,10 @@ class BillExportController extends GetxController {
   Widget? dialogWidget;
   Rxn<int> initialOffset = Rxn<int>(null);
   Completer<bool>? completerDialog;
-  List<dynamic>? modelData;
+
+  // List<dynamic>? modelData;
+
+  DataModelList? modelData;
 
   @override
   void onInit() {
@@ -62,8 +62,10 @@ class BillExportController extends GetxController {
       "locationname": selectedLocation?.value ?? "",
       "channelname": selectedChannel?.value ?? "",
       "agencyname": selectedAgency?.value ?? "",
-      "fromDate": Utils.dateFormatChange(tecFrom.value.text, "dd-MM-yyyy", "yyyy-MM-dd"),
-      "toDate": Utils.dateFormatChange(tecTo.value.text, "dd-MM-yyyy", "yyyy-MM-dd")
+      "fromDate": Utils.dateFormatChange(
+          tecFrom.value.text, "dd-MM-yyyy", "yyyy-MM-dd"),
+      "toDate":
+          Utils.dateFormatChange(tecTo.value.text, "dd-MM-yyyy", "yyyy-MM-dd")
     };
 
     Get.find<ConnectorControl>().POSTMETHOD(
@@ -92,7 +94,9 @@ class BillExportController extends GetxController {
           tecFrom.value.text, "dd-MM-yyyy", "yyyy-MM-dd"),
       "toDate":
           Utils.dateFormatChange(tecTo.value.text, "dd-MM-yyyy", "yyyy-MM-dd"),
-      "billLstNumbers": stateManager?.checkedRows.map((e) {
+      "billLstNumbers": stateManager?.rows
+          .where((element) => element.cells["select"]?.value == "true")
+          .map((e) {
         return {"printBillNumber": e.cells["printBillNumber"]?.value ?? ""};
       }).toList()
     };
@@ -130,11 +134,12 @@ class BillExportController extends GetxController {
 
     Get.find<ConnectorControl>().POSTMETHOD(
         api: ApiFactory.BILL_VIEWS_DATA,
-        fun: (map) {
+        fun: (Map<String, dynamic> map) {
           Get.back();
           modelData = null;
           if (map is Map && map.containsKey("model") && map["model"] != null) {
-            modelData = map["model"];
+            // modelData = map["model"];
+            modelData = DataModelList.fromJson(map);
           }
           update(["grid1"]);
         },
