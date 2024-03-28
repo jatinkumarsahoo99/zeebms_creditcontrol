@@ -93,14 +93,14 @@ class AgencyMasterView extends StatelessWidget {
               Expanded(child: Container(
                 child: GetBuilder<AgencyMasterController>(
                     id: "all",
-                    builder: (controller) {
+                    builder: (controllerX) {
                       return Container(
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey),
                         ),
-                        child: (controller.infoDataList != null &&
-                            controller.infoDataList?.data != null  &&
-                            (controller.infoDataList?.data?.length??0) > 0
+                        child: (controllerX.infoDataList != null &&
+                            controllerX.infoDataList?.data != null  &&
+                            (controllerX.infoDataList?.data?.length??0) > 0
                         ) ? DataGridFromMap(
                           showSrNo: true,
                           hideCode: false,
@@ -110,7 +110,7 @@ class AgencyMasterView extends StatelessWidget {
                           colorCallback: (row) =>
                           (row.row.cells
                               .containsValue(
-                              controller.addInfoStateManager?.currentCell))
+                              controllerX.addInfoStateManager?.currentCell))
                               ? Colors.deepPurple.shade200
                               : Colors.white,
                           exportFileName: "Client Deals",
@@ -119,7 +119,7 @@ class AgencyMasterView extends StatelessWidget {
                             List<String>? data = (event.cell.row.cells['allowedValues']?.value ??
                                 "").toString().split("~").toList();
                             // List<String>? data =  dataLst.getRange(1, dataLst.length-1).toList();
-                            // print(">>>>>>>>dataList${data}");
+                            print(">>>>>>>>dataList${data}");
                             if (data != null && data.length > 0) {
                               if (int.parse(
                                   (event.cell.row.cells['selectIndex']?.value ?? "0").toString()) <
@@ -127,7 +127,8 @@ class AgencyMasterView extends StatelessWidget {
                                 event.cell.row.cells['selectIndex']?.value = (int.parse(
                                     (event.cell.row.cells['selectIndex']?.value ?? "0")
                                         .toString()) + 1).toString();
-                              } else {
+                              }
+                              else {
                                 event.cell.row.cells['selectIndex']?.value = "0";
                               }
 
@@ -138,20 +139,27 @@ class AgencyMasterView extends StatelessWidget {
                                     (event.cell.row.cells['selectIndex']?.value ?? "0")
                                         .toString())];
                               }
-                              controller.addInfoStateManager?.notifyListeners();
+                              controllerX.addInfoStateManager?.notifyListeners();
                             }
                           },
                           hideKeys: ["isRequired", "allowedValues", "selectIndex", "lstData"],
                           editKeys: ['infoValue'],
                           onEdit: (PlutoGridOnChangedEvent event){
-                            controller.addInfoStateManager?.notifyListeners();
+                            // print(">>>>>>>>edit call${event.value}");
+                            controllerX.addInfoStateManager?.rows[event.rowIdx??0].cells['infoValue']?.value = event.value;
+                            // print(">>>>>>>>edit call val${controllerX.addInfoStateManager?.rows[event.rowIdx??0].cells['infoValue']?.value}");
+                            controllerX.addInfoStateManager?.setKeepFocus(true);
+                            controllerX.addInfoStateManager?.notifyListeners();
+
+                            controllerX.infoDataList?.data?[event.rowIdx??0].infovalue = event.value;
                           },
-                          mapData: controller.infoDataList!.data!.map((e) => e.toJson()).toList(),
+                          mapData: controllerX.infoDataList!.data!.map((e) => e.toJson()).toList(),
                           // mapData: (controllerX.dataList)!,
                           widthRatio: Get.width / 9 - 1,
                           onload: (PlutoGridOnLoadedEvent load) {
-                            controller.addInfoStateManager =
+                            controllerX.addInfoStateManager =
                                 load.stateManager;
+                            controllerX.addInfoStateManager?.setKeepFocus(true);
                           },
                         ) : Container(),
                       );
@@ -220,36 +228,26 @@ class AgencyMasterView extends StatelessWidget {
               initPosition: controllerX.getOffSetValue(constraints),
               child: controllerX.dialogWidget!,
               dragStartCall: (){
-                print(">>>>>>>>>>start call");
+                // print(">>>>>>>>>>start call");
                 controllerX.addInfoStateManager?.moveCurrentCell(PlutoMoveDirection.left,force: true);
+                controllerX.addInfoStateManager?.setKeepFocus(true);
+
               },
               dragEndCall: () {
-                // LoadingDialog.call();
-                Future.delayed(Duration(seconds: 1),() {
-                  if(controllerX.infoDataList != null){
+                controllerX.addInfoStateManager?.moveCurrentCell(PlutoMoveDirection.left,force: true);
+                controllerX.addInfoStateManager?.setKeepFocus(true);
+                Future.delayed(const Duration(seconds: 1),() {
+                 /* if(controllerX.infoDataList != null){
                     List<Map<String, dynamic>> data = controllerX.getDataFromGrid2(
                         controllerX.addInfoStateManager);
-                    // controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo?.clear();
                     controllerX.infoDataList = InfoDataList(data: []);
                     for (var element in data) {
-                      print(">>>>>element ${element}\n");
-                      // controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo?.add(TblAddInfo.fromJson(element));
-
+                      // print(">>>>>>>>>>>>>${element}");
                       controllerX.infoDataList?.data?.add(DataLst.fromJson(element));
                     }
-                   /* controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo?.forEach((element) {
-                      controllerX.infoDataList?.data?.add(DataLst.fromJson(element.toJson()));
-                    });*/
-
-                  }
-                  /*if (Get.isDialogOpen ?? false) {
-                    Get.back();
                   }*/
                   controllerX.update(['all']);
-
                 });
-
-
               },
             )
                 : const SizedBox();
@@ -827,11 +825,19 @@ class AgencyMasterView extends StatelessWidget {
                             controllerX.agencyMasterRetrieveModel?.retrieve?.tblAddInfo?.forEach((element) {
                               controllerX.infoDataList?.data?.add(DataLst.fromJson(element.toJson()));
                             });
-                            dragInfoDialog();
+                            if(controllerX.infoDataList != null &&
+                                controllerX.infoDataList?.data != null &&
+                                (controllerX.infoDataList?.data?.length??0) >0){
+                              dragInfoDialog();
+                            }
 
                           }else{
                             controllerX.getInfoData().then((value){
-                              dragInfoDialog();
+                              if(controllerX.infoDataList != null &&
+                                  controllerX.infoDataList?.data != null &&
+                                  (controllerX.infoDataList?.data?.length??0) >0){
+                                dragInfoDialog();
+                              }
                             });
                           }
                         },
