@@ -1132,7 +1132,7 @@ class ClientDealsController extends GetxController {
             fun: (map) {
               closeDialogIfOpen();
               if (map is Map && map['model'] != null) {
-                address.value = map['model'];
+                address.value = 'Address : ${map['model']}';
                 address.refresh();
               }
             },
@@ -1156,7 +1156,7 @@ class ClientDealsController extends GetxController {
             fun: (map) {
               closeDialogIfOpen();
               if (map is Map && map['model'] != null) {
-                address.value = map['model'];
+                address.value = 'Address : ${map['model']}';
                 address.refresh();
               }
             },
