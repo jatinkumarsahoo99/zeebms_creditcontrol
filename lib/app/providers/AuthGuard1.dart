@@ -54,7 +54,7 @@ import '../modules/ViewDealChangeHistory/views/view_deal_change_history_view.dar
 import '../modules/home/views/home_view.dart';
 import '../routes/app_pages.dart';
 import 'dart:html' as w;
-/*
+
 class AuthGuard extends StatefulWidget {
   final String childName;
 
@@ -293,187 +293,141 @@ class _AuthGuard1State extends State<AuthGuard> with WidgetsBindingObserver {
       },
     );
   }
-}*/
-
-
-
-
-
-
-class AuthGuard extends StatelessWidget {
-  final String childName;
-
-  AuthGuard({required this.childName}) {
-    assert(this.childName != null);
-  }
-
-  Widget? currentWidget;
-
-  @override
-  Widget build(BuildContext context) {
-    return GetX<MainController>(
-      init: Get.find<MainController>(),
-      // init: MainController(),
-      initState: (c) {
-        // Get.find<MainController>().checkSession2();
-        Get.find<MainController>().checkSessionFromParams();
-      },
-      builder: (controller) {
-        print("Login value>>" + controller.loginVal.value.toString());
-        if (controller.loginVal.value == 1) {
-          switch (childName) {
-            case Routes.HOME:
-              currentWidget = HomeView();
-              break;
-            case Routes.ASRUN_IMPORT_SECONDARY_EVENTS:
-              currentWidget = AsrunImportSecondaryEventsView();
-              break;
-            case Routes.COMPANY_MASTER:
-              currentWidget = CompanyMasterView();
-              break;
-            case Routes.INVOICE_REVISION:
-              currentWidget = InvoiceRevisionView();
-              break;
-
-            case Routes.COMBO_DEAL_ENTRY:
-              currentWidget = ComboDealEntryView();
-              break;
-            case Routes.READYTO_BILLS:
-              currentWidget = ReadytoBillsView();
-              break;
-            case Routes.ASRUN_VERIFICATION:
-              currentWidget = AsrunVerificationView();
-              break;
-            case Routes.EBILLS:
-              currentWidget = EbillsView();
-              break;
-            case Routes.E_BILLS_FOR_BONUS_ACTIVITY:
-              currentWidget = EBillsForBonusActivityView();
-              break;
-            case Routes.UNDO_CANCELATION:
-              currentWidget = UndoCancelationView();
-              break;
-            case Routes.CLEAR_SECONDARY_SPOTS:
-              currentWidget = ClearSecondarySpotsView();
-              break;
-            case Routes.CLIENT_GROUP_MASTER:
-              currentWidget = ClientGroupMasterView();
-              break;
-            case Routes.CREDIT_RATE_MASTER:
-              currentWidget = CreditRateMasterView();
-              break;
-            case Routes.PAYROUTE_CATEGORY_MASTER:
-              currentWidget = PayrouteCategoryMasterView();
-              break;
-
-            case Routes.ASRUN_IMPORT_SECONDARY_EVENTS:
-              currentWidget = AsrunImportSecondaryEventsView();
-              break;
-            case Routes.R_O_AUDIT:
-              currentWidget = ROAuditView();
-              break;
-            case Routes.DEAL_REPORT:
-              currentWidget = DealReportView();
-              break;
-            case Routes.AGENCY_MASTER:
-              currentWidget = AgencyMasterView();
-              break;
-            case Routes.CLIENT_EMBARGO:
-              currentWidget = ClientEmbargoView();
-              break;
-            case Routes.SECONDARY_ASRUN_MODIFICATION:
-              currentWidget = SecondaryAsrunModificationView();
-              break;
-            case Routes.AGENCY_GROUP_MASTER:
-              currentWidget = AgencyGroupMasterView();
-              break;
-            case Routes.G_S_T_PLANT_INFO:
-              currentWidget = GSTPlantInfoView();
-              break;
-            case Routes.PLACE_TYPE_MASTER:
-              currentWidget = PlaceTypeMasterView();
-              break;
-            case Routes.PAYMENT_ROUTE_MASTER:
-              currentWidget = PaymentRouteMasterView();
-              break;
-            case Routes.AGENCY_EMBARGO:
-              currentWidget = AgencyEmbargoView();
-              break;
-
-            case Routes.SPOTS_NOT_TELECASTED_REPORT:
-              currentWidget = SpotsNotTelecastedReportView();
-              break;
-            case Routes.VIEW_DEAL_CHANGE_HISTORY:
-              currentWidget = ViewDealChangeHistoryView();
-              break;
-            case Routes.CLIENT_MASTER:
-              currentWidget = ClientMasterView();
-              break;
-            case Routes.STATION_MASTER:
-              currentWidget = StationMasterView();
-              break;
-            case Routes.PLACE_MASTER:
-              currentWidget = PlaceMasterView();
-              break;
-            case Routes.CURRENCY_TYPE_MASTER:
-              currentWidget = CurrencyTypeMasterView();
-              break;
-            case Routes.EXPORT_BILLING_F_P_C:
-              currentWidget = ExportBillingFPCView();
-              break;
-            case Routes.CLIENT_DEALS:
-              currentWidget = ClientDealsView();
-              break;
-            case Routes.SAP_BILL_CHECK_REPORT:
-              currentWidget = SAPBIllCheckReportView();
-              break;
-            case Routes.GENERATE_BOOKING_REPORT:
-              currentWidget = GenerateBookingReportView();
-              break;
-            case Routes.E_BILL_AGENCY_GROUP_MASTER:
-              currentWidget = EBillAgencyGroupMasterView();
-              break;
-            case Routes.ASRUN_SPECIFICATION_AD_REVENUE:
-              currentWidget = AsrunSpecificationAdRevenueView();
-              break;
-            case Routes.COMPANY_CHANNEL_LINK:
-              currentWidget = CompanyChannelLinkView();
-              break;
-            case Routes.TRAFFIC_ORDER_CORRECTION:
-              currentWidget = TrafficOrderCorrectionView();
-              break;
-            case Routes.BILL_EXPORT:
-              currentWidget = BillExportView();
-              break;
-            case Routes.SALES_EXECUTIVE_MASTER:
-              currentWidget = SalesExecutiveMasterView();
-              break;
-            case Routes.EMAIL_BILL_DETAILS:
-              currentWidget = EmailBillDetailsView();
-              break;
-            case Routes.AUDIT_BOOKINGS:
-              currentWidget = AuditBookingsView();
-              break;
-            case Routes.AUDIT_RESCHEDULE:
-              currentWidget = AuditRescheduleView();
-              break;
-            case Routes.AUDIT_CANCELLATION:
-              currentWidget = AuditCancellationView();
-              break;
-            case Routes.BILL_TRANSFER:
-              currentWidget = BillTransferView();
-              break;
-            default:
-              currentWidget = const NoDataFoundPage();
-          }
-          // currentWidget = child;
-        } else if (controller.loginVal.value == 2) {
-          currentWidget = const NoDataFoundPage();
-        } else {
-          currentWidget = const LoadingScreen();
-        }
-        return currentWidget!;
-      },
-    );
-  }
 }
+//
+// class AuthGuard extends StatelessWidget {
+//   final String childName;
+//
+//   AuthGuard({required this.childName}) {
+//     assert(this.childName != null);
+//   }
+//
+//   Widget? currentWidget;
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return GetX<MainController>(
+//       init: Get.find<MainController>(),
+//       // init: MainController(),
+//       initState: (c) {
+//         // Get.find<MainController>().checkSession2();
+//         Get.find<MainController>().checkSessionFromParams();
+//       },
+//       builder: (controller) {
+//         print("Login value>>" + controller.loginVal.value.toString());
+//         if (controller.loginVal.value == 1) {
+//           switch (childName) {
+//             case Routes.HOME:
+//               currentWidget = HomeView();
+//               break;
+//             case Routes.ASRUN_IMPORT_SECONDARY_EVENTS:
+//               currentWidget = AsrunImportSecondaryEventsView();
+//               break;
+//             case Routes.COMPANY_MASTER:
+//               currentWidget = CompanyMasterView();
+//               break;
+//             case Routes.INVOICE_REVISION:
+//               currentWidget = InvoiceRevisionView();
+//               break;
+//
+//             case Routes.COMBO_DEAL_ENTRY:
+//               currentWidget = ComboDealEntryView();
+//               break;
+//             case Routes.READYTO_BILLS:
+//               currentWidget = ReadytoBillsView();
+//               break;
+//             case Routes.ASRUN_VERIFICATION:
+//               currentWidget = AsrunVerificationView();
+//               break;
+//             case Routes.EBILLS:
+//               currentWidget = EbillsView();
+//               break;
+//
+//             case Routes.UNDO_CANCELATION:
+//               currentWidget = MovieUpdateView();
+//               break;
+//             case Routes.CLEAR_SECONDARY_SPOTS:
+//               currentWidget = ClearSecondarySpotsView();
+//               break;
+//             case Routes.CLIENT_GROUP_MASTER:
+//               currentWidget = ClientGroupMasterView();
+//               break;
+//             case Routes.CREDIT_RATE_MASTER:
+//               currentWidget = CreditRateMasterView();
+//               break;
+//             case Routes.PAYROUTE_CATEGORY_MASTER:
+//               currentWidget = PayrouteCategoryMasterView();
+//               break;
+//
+//             case Routes.ASRUN_IMPORT_SECONDARY_EVENTS:
+//               currentWidget = AsrunImportSecondaryEventsView();
+//               break;
+//             case Routes.R_O_AUDIT:
+//               currentWidget = ROAuditView();
+//               break;
+//             case Routes.DEAL_REPORT:
+//               currentWidget = DealReportView();
+//               break;
+//             case Routes.AGENCY_MASTER:
+//               currentWidget = AgencyMasterView();
+//               break;
+//             case Routes.CLIENT_EMBARGO:
+//               currentWidget = ClientEmbargoView();
+//               break;
+//             case Routes.SECONDARY_ASRUN_MODIFICATION:
+//               currentWidget = SecondaryAsrunModificationView();
+//               break;
+//             case Routes.AGENCY_GROUP_MASTER:
+//               currentWidget = AgencyGroupMasterView();
+//               break;
+//             case Routes.G_S_T_PLANT_INFO:
+//               currentWidget = GSTPlantInfoView();
+//               break;
+//             case Routes.PLACE_TYPE_MASTER:
+//               currentWidget = PlaceTypeMasterView();
+//               break;
+//             case Routes.PAYMENT_ROUTE_MASTER:
+//               currentWidget = PaymentRouteMasterView();
+//               break;
+//             case Routes.AGENCY_EMBARGO:
+//               currentWidget = AgencyEmbargoView();
+//               break;
+//
+//             case Routes.SPOTS_NOT_TELECASTED_REPORT:
+//               currentWidget = SpotsNotTelecastedReportView();
+//               break;
+//             case Routes.VIEW_DEAL_CHANGE_HISTORY:
+//               currentWidget = ViewDealChangeHistoryView();
+//               break;
+//             case Routes.CLIENT_MASTER:
+//               currentWidget = ClientMasterView();
+//               break;
+//             case Routes.STATION_MASTER:
+//               currentWidget = StationMasterView();
+//               break;
+//             case Routes.PLACE_MASTER:
+//               currentWidget = PlaceMasterView();
+//               break;
+//             case Routes.CURRENCY_TYPE_MASTER:
+//               currentWidget = CurrencyTypeMasterView();
+//               break;
+//             case Routes.EXPORT_BILLING_F_P_C:
+//               currentWidget = ExportBillingFPCView();
+//               break;
+//             case Routes.CLIENT_DEALS:
+//               currentWidget = ClientDealsView();
+//               break;
+//             default:
+//               currentWidget = const NoDataFoundPage();
+//           }
+//           // currentWidget = child;
+//         } else if (controller.loginVal.value == 2) {
+//           currentWidget = const NoDataFoundPage();
+//         } else {
+//           currentWidget = const LoadingScreen();
+//         }
+//         return currentWidget!;
+//       },
+//     );
+//   }
+// }
