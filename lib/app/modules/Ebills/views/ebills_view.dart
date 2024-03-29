@@ -15,6 +15,8 @@ class EbillsView extends GetView<EbillsController> {
   EbillsController controller = Get.put<EbillsController>(EbillsController());
   @override
   Widget build(BuildContext context) {
+
+
     return Scaffold(
         body: GetBuilder(
       init: controller,
